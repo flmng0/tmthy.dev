@@ -1,0 +1,11 @@
+[
+    {
+        "source": "grid-layer.js",
+        "stub": "grid-layer",
+        "name": "Column Grid Distribution",
+        "brief": "\"Uniformly\" distributing grid items of various heights (but similar width) into columns. Born out of testing the layout for the home page of my portfolio.",
+        "instructions": [
+            "Click or tap the canvas, to randomly re-generate the cells of the grid."
+        ]
+    }
+]

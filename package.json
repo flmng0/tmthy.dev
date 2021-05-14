@@ -1,0 +1,16 @@
+{
+    "name": "flmng0.github.io",
+    "private": true,
+    "scripts": {
+        "dev": "gridsome develop",
+        "explore": "gridsome explore",
+        "build": "gridsome build"
+    },
+    "dependencies": {
+        "gridsome": "^0.7.0"
+    },
+    "devDependencies": {
+        "node-sass": "^6.0.0",
+        "sass-loader": "^10.1.1"
+    }
+}
