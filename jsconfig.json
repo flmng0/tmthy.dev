@@ -1,12 +1,25 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "~/*": ["./src/*"]
-    },
     "module": "commonJS",
     "target": "es6",
+    "moduleResolution": "Node",
+    "lib": [
+      "ESNext",
+      "ESNext.AsyncIterable",
+      "DOM",
+    ],
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "strict": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"],
+      "@/*": ["./*"],
+    },
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "src/.temp"],
+  "typeAcquisition": {
+    "exclude": ["mdast-util-from-markdown"],
+  },
+  "include": ["./src/**/*"]
 }
