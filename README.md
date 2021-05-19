@@ -1,14 +1,15 @@
-# Default starter for Gridsome
+# Personal Portfolio
+Personal portfolio website for Tim Davis. Made using [Nuxt].
 
-This is the project you get when you run `gridsome create new-project`.
+[Nuxt]: https://nuxtjs.org
 
-### 1. Install Gridsome CLI tool if you don't have
+## Rationales
+### All Website Content is in The `src` Directory
+This is a simple but effective way to help cleanly organise the files for this website. It helps to separate the client from the server on larger projects as well, so I'm used to this style of organisation.
 
-`npm install --global @gridsome/cli`
+### "Sketches" Are Defined Using Markdown Files
+Utilising the @nuxt/content library, sketches are organised using Markdown (.md) files, but projects are defined with a JSON file.
 
-### 2. Create a Gridsome project
+This is because sketches all have their own page on the website, where someone may preview the sketch without leaving the page. This is unlike projects, which are all links to external sites.
 
-1. `gridsome create my-gridsome-site` to install default starter
-2. `cd my-gridsome-site` to open the folder
-3. `gridsome develop` to start a local dev server at `http://localhost:8080`
-4. Happy coding 🎉🙌
+Another reason for this, is because sketches have relatively extensive documentation and explanation, which would be tedious to write with JSON.
