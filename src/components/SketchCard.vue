@@ -6,25 +6,25 @@
 </template>
 
 <script>
-import "~/assets/showcase-card.scss";
+import '~/assets/showcase-card.scss'
 
 export default {
-  data: function () {
-    const link = `/sketches/${this.sketch.slug}`;
+  data: function() {
+    const link = `/sketches/${this.sketch.slug}`
 
     return {
       link,
-    };
+    }
   },
   methods: {
-    gotoLink: function () {
-      console.log(window.location.origin);
+    gotoLink: function() {
+      console.log(window.location.origin)
     },
   },
   props: {
     sketch: Object,
   },
-};
+}
 </script>
 
 <style lang="scss">

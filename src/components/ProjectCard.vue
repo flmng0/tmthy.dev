@@ -6,13 +6,13 @@
 </template>
 
 <script>
-import "~/assets/showcase-card.scss";
+import '~/assets/showcase-card.scss'
 
 export default {
   props: {
     project: Object,
   },
-};
+}
 </script>
 
 <style lang="scss">

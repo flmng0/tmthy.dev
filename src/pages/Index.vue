@@ -26,16 +26,20 @@
 
 <script>
 export default {
+  head: {
+    title: 'Home',
+  },
+
   async asyncData({ $content }) {
-    const projects = await $content("projects").fetch();
-    const sketches = await $content("sketches").fetch();
+    const projects = await $content('projects').fetch()
+    const sketches = await $content('sketches').fetch()
 
     return {
       projects,
       sketches,
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="scss">
