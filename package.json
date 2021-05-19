@@ -1,5 +1,6 @@
 {
   "name": "flmng0.github.io",
+  "description": "Personal porfolio website for Tim Davis",
   "private": true,
   "scripts": {
     "dev": "yarn nuxt",
