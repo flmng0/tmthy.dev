@@ -7,6 +7,7 @@
     "generate": "yarn nuxt generate"
   },
   "dependencies": {
+    "fibers": "^5.0.0",
     "nuxt": "^2.15.6"
   },
   "devDependencies": {
