@@ -1,7 +1,9 @@
 <template>
   <NuxtLink class="showcase-card sketch-card" :to="link">
-    <span class="sketch-card__name">{{ sketch.name }}</span>
-    <p class="sketch-card__brief">{{ sketch.brief }}</p>
+    <section class="sketch-card__details">
+      <span class="sketch-card__name">{{ sketch.name }}</span>
+      <p class="sketch-card__brief">{{ sketch.brief }}</p>
+    </section>
   </NuxtLink>
 </template>
 

@@ -50,9 +50,14 @@ export default {
   }
 
   &__list {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+
+    // outline: 1px solid red;
+
+    margin: 0 auto;
     padding-left: 0;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 </style>

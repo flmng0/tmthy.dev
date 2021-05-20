@@ -15,7 +15,8 @@
   },
   {
     "type": "Website",
-    "source": "https://flmng0.github.io",
+    "ref": "https://flmng0.github.io",
+    "source": "https://github.com/flmng0/flmng0.github.io",
     "name": "Portfolio",
     "slug": "portfolio",
     "brief": "The page you're looking at! My personal portfolio for the things I've made, information about me, etc."

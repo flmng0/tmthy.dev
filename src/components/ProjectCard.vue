@@ -1,8 +1,19 @@
 <template>
-  <a :href="project.source" class="showcase-card project-card">
-    <span class="project-card__name">{{ project.name }}</span>
-    <p class="project-card__brief">{{ project.brief }}</p>
-  </a>
+  <div class="showcase-card project-card">
+    <section class="project-card__details">
+      <span class="project-card__name">{{ project.name }}</span>
+      <p class="project-card__brief">{{ project.brief }}</p>
+    </section>
+    <section class="project-card__links">
+      <a :href="project.source" class="project-card__button">Source</a>
+      <a
+        v-if="project.type == 'Website'"
+        :href="project.ref"
+        class="project-card__button"
+        >Website</a
+      >
+    </section>
+  </div>
 </template>
 
 <script>
@@ -20,6 +31,35 @@ export default {
   &__name {
     font-size: 1.5rem;
     font-weight: 600;
+  }
+
+  &__brief {
+    line-height: 1.75em;
+  }
+
+  &__button {
+    display: block;
+
+    width: 100%;
+    height: 2em;
+
+    text-decoration: none;
+    text-align: center;
+
+    border-radius: 0.25em;
+    border-width: 1px;
+    border-style: solid;
+    border-color: hsla(0, 0%, 20%, 0.2);
+
+    transition: border-color 100ms linear;
+
+    &:hover {
+      border-color: hsla(0, 0%, 20%, 0.8);
+    }
+
+    & + & {
+      margin-top: 0.75em;
+    }
   }
 }
 </style>

@@ -15,7 +15,15 @@
 
 <style lang="scss">
 :root {
-  font-size: 16px;
+  font-size: 14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: currentColor;
 }
 
 body {
@@ -27,7 +35,7 @@ body {
 }
 
 .main-layout {
-  max-width: 760px;
+  max-width: 1000px;
   margin: 0 auto;
   padding-left: 20px;
   padding-right: 20px;
@@ -37,13 +45,15 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  height: 80px;
+  margin-bottom: 1.5em;
+  height: 5em;
 }
 
 .page-nav {
   &__link {
-    margin-left: 20px;
+    & + & {
+      margin-left: 20px;
+    }
   }
 }
 </style>
