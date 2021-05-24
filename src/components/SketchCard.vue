@@ -1,10 +1,10 @@
 <template>
-  <NuxtLink class="showcase-card sketch-card" :to="link">
-    <section class="sketch-card__details">
-      <span class="sketch-card__name">{{ sketch.name }}</span>
-      <p class="sketch-card__brief">{{ sketch.brief }}</p>
+  <nuxt-link class="showcase-card card" :to="link">
+    <section class="card__details">
+      <span class="card__name">{{ sketch.name }}</span>
+      <p class="card__brief">{{ sketch.brief }}</p>
     </section>
-  </NuxtLink>
+  </nuxt-link>
 </template>
 
 <script>
@@ -29,8 +29,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.sketch-card {
+<style lang="scss" scoped>
+.card {
   &__name {
     font-size: 1.5rem;
     font-weight: 600;

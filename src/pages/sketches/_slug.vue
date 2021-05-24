@@ -1,18 +1,18 @@
 <template>
-  <div class="sketch" ref="container">
+  <div class="container" ref="container">
     <canvas
       id="sketch-canvas"
-      class="sketch__canvas"
+      class="canvas"
       ref="sketchCanvas"
       width="1000"
       height="1000"
     ></canvas>
 
-    <h1 class="sketch__name">{{ sketch.name }}</h1>
-    <p class="sketch__brief">{{ sketch.brief }}</p>
-    <a :href="sketchSource">View Source</a>
+    <h1 class="name">{{ sketch.name }}</h1>
+    <p class="brief">{{ sketch.brief }}</p>
+    <a class="button" :href="sketchSource">View Source</a>
 
-    <nuxt-content :document="sketch" />
+    <nuxt-content class="doc" :document="sketch" />
   </div>
 </template>
 
@@ -73,12 +73,10 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.sketch {
-  &__canvas {
-    margin: 0 auto;
-    display: block;
-    box-shadow: 0 3px 8px rgba(17, 15, 15, 0.3);
-  }
+<style lang="scss" scoped>
+.canvas {
+  display: block;
+  margin: 0 auto;
+  box-shadow: 0 3px 8px rgba(17, 15, 15, 0.3);
 }
 </style>

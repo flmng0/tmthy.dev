@@ -1,15 +1,15 @@
 <template>
-  <div class="showcase-card project-card">
-    <section class="project-card__details">
-      <span class="project-card__name">{{ project.name }}</span>
-      <p class="project-card__brief">{{ project.brief }}</p>
+  <div class="showcase-card card">
+    <section class="card__details">
+      <span class="card__name">{{ project.name }}</span>
+      <p class="card__brief">{{ project.brief }}</p>
     </section>
-    <section class="project-card__links">
-      <a :href="project.source" class="project-card__button">Source</a>
+    <section class="card__links">
+      <a :href="project.source" class="card__button">Source</a>
       <a
         v-if="project.type == 'Website'"
         :href="project.ref"
-        class="project-card__button"
+        class="card__button"
         >Website</a
       >
     </section>
@@ -26,8 +26,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.project-card {
+<style lang="scss" scoped>
+.card {
   &__name {
     font-size: 1.5rem;
     font-weight: 600;

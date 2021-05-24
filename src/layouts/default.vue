@@ -1,15 +1,16 @@
 <template>
-  <div class="main-layout">
-    <header class="page-header">
+  <div class="container">
+    <header class="header">
       <strong>
-        <NuxtLink to="/">Tim's Portfolio</NuxtLink>
+        <nuxt-link to="/">Tim's Portfolio</nuxt-link>
       </strong>
-      <nav class="page-nav">
-        <NuxtLink class="page-nav__link" to="/">Home</NuxtLink>
-        <NuxtLink class="page-nav__link" to="/about/">About</NuxtLink>
+      <nav class="nav">
+        <nuxt-link class="nav__link" to="/">Home</nuxt-link>
+        <nuxt-link class="nav__link" to="/about/">About</nuxt-link>
       </nav>
     </header>
-    <Nuxt />
+    <nuxt />
+    <footer></footer>
   </div>
 </template>
 
@@ -33,15 +34,17 @@ body {
   padding: 0;
   line-height: 1.5;
 }
+</style>
 
-.main-layout {
+<style lang="scss" scoped>
+.container {
   max-width: 1000px;
   margin: 0 auto;
   padding-left: 20px;
   padding-right: 20px;
 }
 
-.page-header {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -49,7 +52,7 @@ body {
   height: 5em;
 }
 
-.page-nav {
+.nav {
   &__link {
     & + & {
       margin-left: 20px;
