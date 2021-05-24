@@ -1,7 +1,7 @@
 *.log
 .cache
 .DS_Store
-.nuxt
+.next
 node_modules
 dist
 .env
