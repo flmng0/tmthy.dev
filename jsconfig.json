@@ -18,8 +18,5 @@
       "@/*": ["./*"],
     },
   },
-  "typeAcquisition": {
-    "exclude": ["mdast-util-from-markdown"],
-  },
   "include": ["./src/**/*"]
 }

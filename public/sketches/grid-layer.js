@@ -55,7 +55,7 @@ if (cvs !== null) {
   let columns = null
   function regenerate() {
     const items = Array.from({ length: ITEM_COUNT }, () => Math.random()).map(
-      height => {
+      (height) => {
         return {
           height: height,
           value: height,
