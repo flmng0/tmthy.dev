@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "generate": "next generate"
+    "build": "next build"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

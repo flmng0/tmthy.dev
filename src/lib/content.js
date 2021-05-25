@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
+import remark from 'remark'
+import html from 'remark-html'
 
 export function getAllProjects() {
   const projects = require('~/data/projects.json')
@@ -9,7 +11,7 @@ export function getAllProjects() {
 
 const sketchesDir = path.join(process.cwd(), 'src/data/sketches')
 
-export function getAllSketches() {
+export function getAllSketchMeta() {
   const entries = fs.readdirSync(sketchesDir)
 
   const sketches = entries.map((entry) => {
@@ -27,4 +29,28 @@ export function getAllSketches() {
   })
 
   return sketches
+}
+
+export function getAllSketchIDs() {
+  const entries = fs.readdirSync(sketchesDir)
+
+  const ids = entries.map((entry) => entry.replace(/\.md$/, ''))
+
+  return ids
+}
+
+export async function getSketchData(id) {
+  const fullPath = path.join(sketchesDir, `${id}.md`)
+  const contents = await fs.promises.readFile(fullPath, 'utf8')
+
+  const matterResult = matter(contents)
+
+  const remarkResult = await remark().use(html).process(matterResult.content)
+  const contentHtml = remarkResult.toString()
+
+  return {
+    id,
+    contentHtml,
+    ...matterResult.data,
+  }
 }

@@ -1,14 +1,14 @@
 import Link from 'next/link'
 import * as React from 'react'
 
-import { getAllProjects, getAllSketches } from '~/lib/content'
+import { getAllProjects, getAllSketchMeta } from '~/lib/content'
 import ProjectCard from '~/components/ProjectCard'
 import Layout from '~/components/Layout'
 import SketchCard from '~/components/SketchCard'
 
 export function getStaticProps() {
   const allProjects = getAllProjects()
-  const allSketches = getAllSketches()
+  const allSketches = getAllSketchMeta()
   return {
     props: {
       allProjects,
@@ -19,7 +19,7 @@ export function getStaticProps() {
 
 export default function Home({ allProjects, allSketches }) {
   return (
-    <Layout home>
+    <Layout title="Home" home>
       <section className="showcase projects">
         <h2 className="showcase-title">Projects</h2>
         <ul className="showcase-list">
@@ -37,7 +37,9 @@ export default function Home({ allProjects, allSketches }) {
           {allSketches.map((sketch) => (
             <li className="showcase-card" key={sketch.id}>
               <Link href={`/sketches/${sketch.id}`}>
-                <SketchCard sketch={sketch} />
+                <a>
+                  <SketchCard sketch={sketch} />
+                </a>
               </Link>
             </li>
           ))}
@@ -59,6 +61,12 @@ export default function Home({ allProjects, allSketches }) {
           padding-left: 0;
         }
 
+        .showcase-card,
+        .showcase-card * {
+          text-decoration: none;
+          color: currentColor;
+        }
+
         .showcase-card {
           display: flex;
           flex-flow: column nowrap;
@@ -66,9 +74,6 @@ export default function Home({ allProjects, allSketches }) {
 
           height: 20rem;
           width: 30ch;
-
-          text-decoration: none;
-          color: currentColor;
 
           padding: 1rem;
           margin: 0.5rem 0.75rem;
