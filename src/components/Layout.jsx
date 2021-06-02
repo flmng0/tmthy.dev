@@ -15,19 +15,21 @@ export default function Layout({ children, home, title }) {
         <title>{`${title} | ${siteName}`}</title>
       </Head>
 
-      <header className="header">
-        <strong>
-          <Link href="/">Tim's Portfolio</Link>
-        </strong>
-        <nav className="nav">
-          <Link href="/">
-            <a className="nav__link">Home</a>
-          </Link>
-          <Link href="/about/">
-            <a className="nav__link">About</a>
-          </Link>
-        </nav>
-      </header>
+      {!home && (
+        <header className="header">
+          <strong>
+            <Link href="/">Tim's Portfolio</Link>
+          </strong>
+          <nav className="nav">
+            <Link href="/">
+              <a className="nav__link">Home</a>
+            </Link>
+            <Link href="/about/">
+              <a className="nav__link">About</a>
+            </Link>
+          </nav>
+        </header>
+      )}
 
       {children}
 
