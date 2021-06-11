@@ -1,8 +1,4 @@
-*.log
-.cache
 .DS_Store
-.next
 node_modules
-out
-.env
-.env.*
+/.svelte-kit
+/package
