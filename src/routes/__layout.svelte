@@ -1,37 +1,24 @@
 <script>
-	import { onMount } from 'svelte'
+	import { setContext } from 'svelte'
+	import { writable } from 'svelte/store'
+	import { fly } from 'svelte/transition'
 
-	import BackToTop from '$lib/BackToTop.svelte'
-	import Navigation from '$lib/Navigation.svelte'
+	import AvatarIntro from '$components/AvatarIntro.svelte'
 
-	let headerHeight
-
-	onMount(() => {
-		const header = document.querySelector('#page-header')
-		const headerHeightStr = getComputedStyle(header).height
-
-		headerHeight = Number(headerHeightStr.slice(0, -2))
-		console.log(headerHeight)
-	})
+	const introHasPlayed = writable(false)
+	setContext('intro-played', introHasPlayed)
 </script>
 
-<header id="page-header">
-	<Navigation />
-</header>
+{#if $introHasPlayed}
+	<main in:fly={{ x: -200, delay: 500 }}>
+		<slot />
+	</main>
+{:else}
+	<AvatarIntro />
+{/if}
 
-<main>
-	<slot />
-</main>
-
-<footer>
-	<!-- keep -->
-</footer>
-
-<BackToTop minFromTop={headerHeight || 50} />
-
-<style>
-	header,
+<style lang="scss">
 	main {
-		padding: 0 1.5rem;
+		width: 100%;
 	}
 </style>

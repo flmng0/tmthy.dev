@@ -1,14 +1,15 @@
 <script>
-	import AvatarIcon from '$lib/AvatarIcon.svelte'
+	import BackToTop from '$components/BackToTop.svelte'
+	import Hero from '$components/Hero.svelte'
 </script>
 
-<div class="icon-container">
-	<AvatarIcon size="100%" />
-</div>
+<svelte:head>
+	<title>flmng0</title>
+</svelte:head>
 
-<style>
-	.icon-container {
-		width: min(80%, 700px);
-		margin: 0 auto;
-	}
+<Hero />
+
+<BackToTop />
+
+<style lang="scss">
 </style>

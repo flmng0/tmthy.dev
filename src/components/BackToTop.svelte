@@ -3,11 +3,11 @@
 
 	import { ArrowUpIcon } from 'svelte-feather-icons'
 
-	import { featherIconSize, transitionDuration } from './consts'
+	import { featherIconSize } from '$lib/consts'
 
 	export let minFromTop = 50
 	export let iconSize = featherIconSize
-	export let duration = transitionDuration
+	export let duration = 250
 	let y
 
 	function gotoTop() {
@@ -24,7 +24,7 @@
 	</button>
 {/if}
 
-<style>
+<style lang="scss">
 	button {
 		position: fixed;
 		bottom: 1rem;
@@ -32,18 +32,18 @@
 		background-color: var(--color-bg-secondary);
 
 		border: 0;
-		box-shadow: var(--value-shadow) var(--color-shadow);
+		box-shadow: 0 2px 5px var(--color-shadow);
 		color: var(--color-fg-primary);
 		border-radius: 50%;
 		padding: 1em;
-	}
 
-	button:hover {
-		background-color: var(--color-bg-primary);
-		color: var(--color-fg-primary);
-	}
+		&:hover {
+			background-color: var(--color-bg-primary);
+			color: var(--color-fg-primary);
+		}
 
-	button :global(.feather) {
-		stroke: currentColor;
+		:global(.feather) {
+			stroke: currentColor;
+		}
 	}
 </style>

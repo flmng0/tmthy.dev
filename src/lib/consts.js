@@ -1,7 +1,6 @@
 export const featherIconSize = '1.5x'
 
-// NOTE: Change this in /global.css as well (--transition)
-export const transitionDuration = 250
+export const skills = ['Web Developer', 'Network Engineer', 'Game Developer', 'Digital Artist']
 
 export const avatarTriangles = [
 	[
@@ -100,13 +99,3 @@ export const avatarTriangles = [
 		{ x: 79.01932, y: 25.066951 },
 	],
 ]
-// const scale = 100 / 105
-// console.log(
-// 	JSON.stringify(
-// 		avatarTriangles.map((tri) =>
-// 			tri.map((point) => {
-// 				return { x: point.x * scale, y: point.y * scale }
-// 			})
-// 		)
-// 	)
-// )
