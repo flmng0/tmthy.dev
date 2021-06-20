@@ -11,5 +11,7 @@
 
 <BackToTop />
 
+<a href="/test">Go to test page</a>
+
 <style lang="scss">
 </style>

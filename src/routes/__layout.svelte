@@ -1,15 +1,12 @@
 <script>
 	import { setContext } from 'svelte'
-	import { writable } from 'svelte/store'
+	import { session } from '$app/stores'
 	import { fly } from 'svelte/transition'
 
 	import AvatarIntro from '$components/AvatarIntro.svelte'
-
-	const introHasPlayed = writable(false)
-	setContext('intro-played', introHasPlayed)
 </script>
 
-{#if $introHasPlayed}
+{#if $session.introHasPlayed}
 	<main in:fly={{ x: -200, delay: 500 }}>
 		<slot />
 	</main>

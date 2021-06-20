@@ -2,10 +2,9 @@
 	import { getContext, onMount } from 'svelte'
 	import { backIn } from 'svelte/easing'
 	import { fade } from 'svelte/transition'
+	import { session } from '$app/stores'
 
 	import AvatarIcon from '$components/AvatarIcon.svelte'
-
-	const introHasPlayed = getContext('intro-played')
 
 	let complete = false
 	const avatarTransition = {
@@ -26,7 +25,7 @@
 	}
 
 	function finished() {
-		introHasPlayed.set(true)
+		session.set({ ...$session, introHasPlayed: true })
 	}
 
 	let avatarContainer
@@ -64,13 +63,16 @@
 		top: 0;
 		left: 0;
 
-		right: 0;
-		bottom: 0;
+		width: 100vw;
+		height: 100vh;
+
+		display: grid;
+		place-items: center;
 
 		background-color: var(--color-bg-primary);
 	}
 
 	.avatar {
-		height: 100%;
+		height: min(100%, 700px);
 	}
 </style>

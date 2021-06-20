@@ -10,7 +10,7 @@
 body,
 body[data-theme='dark'] {
 	--color-main: hsl(325, 100%, 80%);
-	--color-accent: hsl(0, 0%, 60%);
+	--color-accent: hsl(122, 91%, 21%);
 
 	--color-bg-primary: hsl(0, 0%, 10%);
 	--color-bg-secondary: hsl(0, 0%, 20%);
