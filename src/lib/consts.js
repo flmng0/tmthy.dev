@@ -1,7 +1,5 @@
 export const featherIconSize = '1.5x'
 
-export const skills = ['Web Developer', 'Network Engineer', 'Game Developer', 'Digital Artist']
-
 export const avatarTriangles = [
 	[
 		{ x: 29.236745, y: 70.113523 },

@@ -7,15 +7,15 @@
 </script>
 
 {#if $session.introHasPlayed}
-	<main in:fly={{ x: -200, delay: 500 }}>
+	<div class="container" in:fly={{ x: -200, delay: 500 }}>
 		<slot />
-	</main>
+	</div>
 {:else}
 	<AvatarIntro />
 {/if}
 
 <style lang="scss">
-	main {
+	.container {
 		width: 100%;
 	}
 </style>

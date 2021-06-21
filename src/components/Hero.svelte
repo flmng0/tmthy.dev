@@ -1,11 +1,12 @@
 <script>
-	import { skills } from '$lib/consts'
 	import TextRotator from '$components/TextRotator.svelte'
+
+	const skills = ['Web Developer', 'Network Engineer', 'Game Developer', 'Digital Artist']
 
 	const skillInterval = 2000
 </script>
 
-<header class="hero">
+<div class="hero">
 	<section class="heading">
 		<h1>Hello, my name is Tim. I am a</h1>
 
@@ -13,7 +14,7 @@
 			<TextRotator items={skills} interval={skillInterval} />
 		</div>
 	</section>
-</header>
+</div>
 
 <style lang="scss">
 	.hero {
