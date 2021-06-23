@@ -65,7 +65,8 @@
 		font-size: 1.5rem;
 
 		padding: 0 0.5em;
-		margin: 0 auto;
+		margin: 1rem auto;
+		// margin-top: 1rem;
 
 		width: var(--content-width);
 		height: var(--header-height);
@@ -74,8 +75,6 @@
 		box-shadow: 0 2px 8px 0 var(--color-shadow);
 
 		@media screen and (min-width: 800px) {
-			margin-top: 1rem;
-
 			&::before,
 			&::after {
 				content: '';
