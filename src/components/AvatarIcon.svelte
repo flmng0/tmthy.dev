@@ -15,9 +15,9 @@
 
 	const dispatch = createEventDispatcher()
 
-	const duration = 750
-	const delayInterval = 50
-	const initialDelay = 250
+	const duration = animate ? 750 : 0
+	const delayInterval = animate ? 50 : 0
+	const initialDelay = animate ? 250 : 0
 
 	// Left undefined on purpose. See notes at {#if order} below.
 	let order
@@ -66,7 +66,7 @@
 	>
 		{#each avatarTriangles as tri, i}
 			<path
-				in:draw={animate && {
+				in:draw={{
 					duration,
 					delay: initialDelay + order[i] * delayInterval,
 				}}

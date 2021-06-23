@@ -11,7 +11,6 @@
 	export let duration = 250
 
 	export let target
-	$: console.log(target)
 	let y
 
 	function gotoTop() {
@@ -27,7 +26,6 @@
 
 <svelte:window bind:scrollY={y} />
 
-<!-- Wrapped inside a div, so that it keeps persistent layout -->
 {#if y >= minFromTop}
 	<button transition:fade={{ duration }} on:click={gotoTop}>
 		<ArrowUpIcon size={iconSize} />
@@ -50,10 +48,6 @@
 		&:hover {
 			background-color: var(--color-bg-primary);
 			color: var(--color-fg-primary);
-		}
-
-		:global(.feather) {
-			stroke: currentColor;
 		}
 	}
 </style>

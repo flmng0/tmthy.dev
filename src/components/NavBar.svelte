@@ -66,7 +66,6 @@
 
 		padding: 0 0.5em;
 		margin: 1rem auto;
-		// margin-top: 1rem;
 
 		width: var(--content-width);
 		height: var(--header-height);
