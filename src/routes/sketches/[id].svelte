@@ -47,6 +47,7 @@
 	})
 </script>
 
+<!-- on:click|preventDefault|stopPropagation={() => {}} -->
 <canvas id="sketch-canvas" width="800" height="800" />
 
 <main>
@@ -58,10 +59,11 @@
 
 <style lang="scss">
 	#sketch-canvas {
+		user-select: none;
+
 		width: min(100%, 800px);
 
 		background-color: white;
-
 		box-shadow: 0 2px 8px var(--color-shadow);
 	}
 </style>
