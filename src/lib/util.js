@@ -11,3 +11,13 @@ export function shuffle(array) {
 
 	return copy
 }
+
+// export function getPreferredTheme() {
+// 	let theme = null
+
+// 	if ()
+
+// 	if (window.matchMedia) {
+// 		theme = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light'
+// 	}
+// }
