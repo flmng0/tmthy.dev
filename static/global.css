@@ -13,6 +13,12 @@
 	--transition: var(--transition-duration) var(--transition-function);
 }
 
+@media screen and (min-width: 800px) {
+	:root {
+		scroll-padding-top: calc(var(--header-height) + 2 * 1rem);
+	}
+}
+
 body,
 body[data-theme='dark'] {
 	--color-main: hsl(325, 100%, 80%);

@@ -25,14 +25,14 @@
 </script>
 
 <main>
-	<ul>
+	<nav>
 		{#each sketches as sketch (sketch.id)}
-			<a class="sketch" href={sketchRoute(sketch.id)}>
+			<a sveltekit:prefetch class="sketch" href={sketchRoute(sketch.id)}>
 				<h2 class="sketch__name">{sketch.name}</h2>
 				<p class="sketch__brief">{sketch.brief}</p>
 			</a>
 		{/each}
-	</ul>
+	</nav>
 </main>
 
 <style>

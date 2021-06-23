@@ -74,7 +74,7 @@
 		box-shadow: 0 2px 8px 0 var(--color-shadow);
 
 		@media screen and (min-width: 800px) {
-			top: 1em;
+			margin-top: 1rem;
 
 			&::before,
 			&::after {
