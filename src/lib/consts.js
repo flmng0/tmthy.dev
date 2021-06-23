@@ -1,3 +1,5 @@
+export const sketchesSub = 'src/data/sketches'
+
 export const featherIconSize = '1.5x'
 
 export const avatarTriangles = [

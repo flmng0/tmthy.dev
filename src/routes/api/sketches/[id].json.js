@@ -1,9 +1,11 @@
 import marked from 'marked'
 import matter from 'gray-matter'
 import path from 'path'
-import { promises as fs } from 'fs'
+import fs from 'fs'
 
-const sketchesDir = path.join(process.cwd(), 'src/data/sketches')
+import { sketchesSub } from '$lib/consts'
+
+const sketchesDir = path.join(process.cwd(), sketchesSub)
 
 export async function get({ params }) {
 	const { id } = params
@@ -11,7 +13,7 @@ export async function get({ params }) {
 	const sketchPath = path.join(sketchesDir, `${id}.md`)
 
 	try {
-		const fileContent = await fs.readFile(sketchPath)
+		const fileContent = await fs.promises.readFile(sketchPath)
 
 		const matterResult = matter(fileContent)
 		const contentHtml = marked(matterResult.content)

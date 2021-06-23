@@ -2,7 +2,7 @@
 	export async function load({ page, fetch }) {
 		const { id } = page.params
 
-		const request = await fetch(`/sketches/${id}.json`)
+		const request = await fetch(`/api/sketches/${id}.json`)
 
 		if (request.ok) {
 			const data = await request.json()
