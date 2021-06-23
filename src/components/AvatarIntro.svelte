@@ -52,7 +52,7 @@
 			on:outroend={finished}
 			on:click={skipAnimation}
 		>
-			<AvatarIcon animate size="100%" bind:complete />
+			<AvatarIcon stroke animate size="100%" on:introend={() => (complete = true)} />
 		</div>
 	</div>
 {/if}

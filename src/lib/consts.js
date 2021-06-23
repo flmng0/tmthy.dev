@@ -97,3 +97,10 @@ export const avatarTriangles = [
 		{ x: 79.01932, y: 25.066951 },
 	],
 ]
+
+export const avatarColors = [
+	'#282a36', // beak
+	'#f65a93', // head
+]
+
+export const avatarColorMap = [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]

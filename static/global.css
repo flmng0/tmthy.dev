@@ -1,6 +1,12 @@
 :root {
 	font-size: 1rem;
 
+	--header-height: 5rem;
+	scroll-padding-top: var(--header-height);
+
+	--content-max: 800px;
+	--content-width: min(100%, var(--content-max));
+
 	scroll-behavior: smooth;
 	--transition-duration: 250ms;
 	--transition-function: ease-out;

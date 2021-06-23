@@ -1,53 +1,64 @@
 <script>
-	import { onMount } from 'svelte'
+	import { createEventDispatcher, onMount } from 'svelte'
 	import { draw } from 'svelte/transition'
 
-	import { avatarTriangles as originalTriangles } from '$lib/consts'
+	import { avatarColorMap, avatarColors, avatarTriangles } from '$lib/consts'
 	import { shuffle } from '$lib/util'
 
-	export let animate
+	export let animate = false
 
 	export let size = '100%'
 	export let strokeWidth = 1.5
 
-	let duration, delayInterval, initialDelay
+	export let stroke = false
+	export let fill = false
 
-	if (animate) {
-		duration = 750
-		delayInterval = 50
-		initialDelay = 250
-	} else {
-		duration = delayInterval = initialDelay = 0
-	}
+	const dispatch = createEventDispatcher()
 
-	// Left undefined on purpose. See notes at {#if avatarTriangles} below.
-	let avatarTriangles
+	const duration = 750
+	const delayInterval = 50
+	const initialDelay = 250
+
+	// Left undefined on purpose. See notes at {#if order} below.
+	let order
+
+	const fillColor = (i) => avatarColors[avatarColorMap[i]]
 
 	const pathString = (tri) =>
 		`M ${tri.map((point) => Object.values(point).join(',')).join(' ')} Z`
 
 	let drawnTriangles = 0
 
-	export let complete
-	$: complete = !animate || (avatarTriangles && drawnTriangles == avatarTriangles.length)
+	let introstart = () => {
+		dispatch('introstart')
+		// One off
+		introstart = () => {}
+	}
+
+	let introend = () => {
+		drawnTriangles += 1
+		if (drawnTriangles == avatarTriangles.length) {
+			dispatch('introend')
+		}
+	}
 
 	onMount(() => {
-		// See notes at {#if avatarTriangles} below.
-		avatarTriangles = Array.from(originalTriangles)
+		order = Array.from({ length: avatarTriangles.length }, (_, i) => i)
+		// See notes at {#if order} below, for why this is defined here.
 		if (animate) {
-			avatarTriangles = shuffle(avatarTriangles)
+			order = shuffle(order)
 		}
 	})
 </script>
 
 <!-- Makes it so the avatar doesn't flicker when it's mounted. -->
-{#if avatarTriangles}
+{#if order}
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		width={size}
 		height={size}
 		viewBox="0 0 100 100"
-		stroke="currentColor"
+		stroke={stroke ? 'currentColor' : null}
 		stroke-width={`${strokeWidth}`}
 		stroke-linecap="round"
 		stroke-linejoin="round"
@@ -55,13 +66,13 @@
 	>
 		{#each avatarTriangles as tri, i}
 			<path
-				in:draw={{
+				in:draw={animate && {
 					duration,
-					delay: initialDelay + i * delayInterval,
+					delay: initialDelay + order[i] * delayInterval,
 				}}
-				on:introend={() => {
-					drawnTriangles += 1
-				}}
+				on:introstart={introstart}
+				on:introend={introend}
+				fill={fill ? fillColor(i) : null}
 				d={pathString(tri)}
 			/>
 		{/each}

@@ -4,15 +4,25 @@
 	import { ArrowUpIcon } from 'svelte-feather-icons'
 
 	import { featherIconSize } from '$lib/consts'
+	import { onMount } from 'svelte'
 
 	export let minFromTop = 50
 	export let iconSize = featherIconSize
 	export let duration = 250
+
+	export let target
+	$: console.log(target)
 	let y
 
 	function gotoTop() {
-		document.body.scrollIntoView()
+		target.scrollIntoView()
 	}
+
+	onMount(() => {
+		if (!target) {
+			target = document.body
+		}
+	})
 </script>
 
 <svelte:window bind:scrollY={y} />

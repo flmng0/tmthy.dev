@@ -44,7 +44,7 @@
 	<!-- Middle -->
 	<section class="header-middle">
 		<a class="avatar" href="/">
-			<AvatarIcon size="100%" />
+			<AvatarIcon stroke size="100%" />
 		</a>
 	</section>
 
@@ -62,13 +62,46 @@
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 
-		padding: 0 1rem;
 		font-size: 1.5rem;
-		--header-height: 3em;
+
+		padding: 0 0.5em;
+		margin: 0 auto;
+
+		width: var(--content-width);
 		height: var(--header-height);
 
 		background-color: var(--color-bg-secondary);
 		box-shadow: 0 2px 8px 0 var(--color-shadow);
+
+		@media screen and (min-width: 800px) {
+			top: 1em;
+
+			&::before,
+			&::after {
+				content: '';
+
+				position: absolute;
+
+				--size: var(--header-height);
+				width: var(--size);
+				height: var(--size);
+
+				z-index: -1;
+
+				border-radius: 50%;
+				background-color: inherit;
+
+				--offset: calc(-0.5 * var(--size));
+			}
+
+			&::before {
+				left: var(--offset);
+			}
+
+			&::after {
+				right: var(--offset);
+			}
+		}
 	}
 
 	.header-left {
@@ -100,8 +133,9 @@
 	button {
 		position: relative;
 
-		width: var(--header-height);
-		height: var(--header-height);
+		--size: calc(0.66 * var(--header-height));
+		width: var(--size);
+		height: var(--size);
 
 		border: none;
 
