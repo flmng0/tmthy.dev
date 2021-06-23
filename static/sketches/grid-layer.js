@@ -66,8 +66,7 @@ if (cvs !== null) {
 
 	regenerate()
 
-	cvs.addEventListener('mousedown', regenerate)
-	cvs.addEventListener('touchend', regenerate)
+	cvs.addEventListener('click', regenerate, true)
 
 	const draw = () => {
 		ctx.fillStyle = 'lightgrey'
