@@ -20,13 +20,14 @@
 	}
 </script>
 
-<script>
-	import { page } from '$app/stores'
+<script lang="ts">
 	import { onMount } from 'svelte'
 
-	export let name
-	export let brief
-	export let contentHtml
+	import { page } from '$app/stores'
+
+	export let name: string
+	export let brief: string
+	export let contentHtml: string
 
 	const id = $page.params.id
 
@@ -47,15 +48,19 @@
 	})
 </script>
 
+<svelte:head>
+	<title>Sketch: {name} | flmng0</title>
+</svelte:head>
+
 <!-- on:click|preventDefault|stopPropagation={() => {}} -->
 <canvas id="sketch-canvas" width="800" height="800" />
 
-<main>
+<div class="docs">
 	<h1>{name}</h1>
 	<p>{brief}</p>
 
 	{@html contentHtml}
-</main>
+</div>
 
 <style lang="scss">
 	#sketch-canvas {

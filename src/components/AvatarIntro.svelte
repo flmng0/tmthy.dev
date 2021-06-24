@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
 	import { getContext, onMount } from 'svelte'
 	import { backIn } from 'svelte/easing'
 	import { fade } from 'svelte/transition'
+
 	import { session } from '$app/stores'
 
 	import AvatarIcon from '$components/AvatarIcon.svelte'
@@ -13,9 +14,9 @@
 		easing: backIn,
 	}
 
-	function outro(node, { blur, ...options }) {
+	function outro(node: Element, { blur, ...options }) {
 		return {
-			css: (t) => `
+			css: (t: number) => `
                 transform: scale(${0.5 + t * 0.5});
                 filter: blur(${blur - blur * t}px);
                 opacity: ${t};
@@ -26,12 +27,6 @@
 
 	function finished() {
 		session.set({ ...$session, introHasPlayed: true })
-	}
-
-	let avatarContainer
-
-	function skipAnimation() {
-		avatarContainer.style.animationDuration = '1ms'
 	}
 
 	onMount(() => {
@@ -45,13 +40,7 @@
 
 {#if !complete}
 	<div class="overlay">
-		<div
-			class="avatar"
-			bind:this={avatarContainer}
-			out:outro={avatarTransition}
-			on:outroend={finished}
-			on:click={skipAnimation}
-		>
+		<div class="avatar" out:outro={avatarTransition} on:outroend={finished}>
 			<AvatarIcon stroke animate size="100%" on:introend={() => (complete = true)} />
 		</div>
 	</div>

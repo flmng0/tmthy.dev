@@ -1,4 +1,4 @@
-export function shuffle(array) {
+export function shuffle<T>(array: Array<T>): Array<T> {
 	const copy = Array.from(array)
 
 	for (let i = copy.length - 1; i > 0; i -= 1) {

@@ -18,25 +18,32 @@
 	}
 </script>
 
-<script>
-	export let sketches
+<script lang="ts">
+	import DisplayCard from '$components/DisplayCard.svelte'
 
-	const sketchRoute = (id) => `/sketches/${id}`
+	import type { CardItem, Sketch } from '$lib/types'
+
+	export let sketches: Array<Sketch>
+
+	const sketchRoute = (id: string): string => `/sketches/${id}`
+	const cardItem = (sketch: Sketch): CardItem => ({
+		name: sketch.name,
+		description: sketch.brief,
+		imagePath: null,
+	})
 </script>
 
-<main>
-	<nav>
-		{#each sketches as sketch (sketch.id)}
-			<a sveltekit:prefetch class="sketch" href={sketchRoute(sketch.id)}>
-				<h2 class="sketch__name">{sketch.name}</h2>
-				<p class="sketch__brief">{sketch.brief}</p>
-			</a>
-		{/each}
-	</nav>
-</main>
+<nav>
+	{#each sketches as sketch (sketch.id)}
+		<a sveltekit:prefetch href={sketchRoute(sketch.id)}>
+			<DisplayCard item={cardItem(sketch)} />
+		</a>
+	{/each}
+</nav>
 
 <style>
 	a {
+		display: block;
 		text-decoration: none;
 	}
 </style>

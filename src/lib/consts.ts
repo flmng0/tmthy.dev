@@ -1,8 +1,8 @@
-export const sketchesSub = 'src/data/sketches'
+import { Triangle } from './types'
 
-export const featherIconSize = '1.5x'
+export const featherIconSize: string = '1.5x'
 
-export const avatarTriangles = [
+export const avatarTriangles: Array<Triangle> = [
 	[
 		{ x: 29.236745, y: 70.113523 },
 		{ x: 20.191964, y: 63.492073 },
@@ -100,9 +100,29 @@ export const avatarTriangles = [
 	],
 ]
 
-export const avatarColors = [
+export const avatarColors: Array<string> = [
 	'#282a36', // beak
 	'#f65a93', // head
 ]
 
-export const avatarColorMap = [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+export const avatarColorMap: Array<number> = [
+	0,
+	0,
+	0,
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
+	1,
+]

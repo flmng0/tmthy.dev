@@ -2,11 +2,11 @@ import matter from 'gray-matter'
 import path from 'path'
 import fs from 'fs'
 
-import { sketchesSub } from '$lib/consts'
+import type { RequestHandler } from '@sveltejs/kit'
 
-const sketchesDir = path.join(process.cwd(), sketchesSub)
+const sketchesDir = path.join(process.cwd(), 'src/data/sketches')
 
-export async function get({ params }) {
+export const get: RequestHandler = async ({ params }) => {
 	// Maybe use params for a count at some point.
 
 	try {

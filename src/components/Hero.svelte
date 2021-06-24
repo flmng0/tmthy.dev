@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
 	import TextRotator from '$components/TextRotator.svelte'
 
 	const skills = ['Web Developer', 'Network Engineer', 'Game Developer', 'Digital Artist']
-
 	const skillInterval = 2000
+
+	export let target: Element
 </script>
 
 <div class="hero">

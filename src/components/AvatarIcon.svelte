@@ -1,17 +1,19 @@
-<script>
+<script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte'
 	import { draw } from 'svelte/transition'
+	import type { TransitionConfig } from 'svelte/transition'
 
 	import { avatarColorMap, avatarColors, avatarTriangles } from '$lib/consts'
 	import { shuffle } from '$lib/util'
+	import type { Triangle } from '$lib/types'
 
-	export let animate = false
+	export let animate: boolean = false
 
-	export let size = '100%'
-	export let strokeWidth = 1.5
+	export let size: string = '100%'
+	export let strokeWidth: number = 1.5
 
-	export let stroke = false
-	export let fill = false
+	export let stroke: boolean = false
+	export let fill: boolean = false
 
 	const dispatch = createEventDispatcher()
 
@@ -20,11 +22,16 @@
 	const initialDelay = animate ? 250 : 0
 
 	// Left undefined on purpose. See notes at {#if order} below.
-	let order
+	let order: Array<number>
 
-	const fillColor = (i) => avatarColors[avatarColorMap[i]]
+	const transitionOptions = (i: number): TransitionConfig => ({
+		duration,
+		delay: initialDelay + i * delayInterval,
+	})
 
-	const pathString = (tri) =>
+	const fillColor = (i: number): string => avatarColors[avatarColorMap[i]]
+
+	const pathString = (tri: Triangle): string =>
 		`M ${tri.map((point) => Object.values(point).join(',')).join(' ')} Z`
 
 	let drawnTriangles = 0
@@ -66,10 +73,7 @@
 	>
 		{#each avatarTriangles as tri, i}
 			<path
-				in:draw={{
-					duration,
-					delay: initialDelay + order[i] * delayInterval,
-				}}
+				in:draw={transitionOptions(i)}
 				on:introstart={introstart}
 				on:introend={introend}
 				fill={fill ? fillColor(i) : null}

@@ -1,20 +1,27 @@
-<script>
-	import { XIcon, HomeIcon, MenuIcon, PenToolIcon } from 'svelte-feather-icons'
+<script lang="ts">
+	import { SvelteComponent } from 'svelte'
 	import { slide } from 'svelte/transition'
-
-	import { featherIconSize } from '$lib/consts'
+	import { XIcon, HomeIcon, MenuIcon, PenToolIcon } from 'svelte-feather-icons'
 
 	import AvatarIcon from '$components/AvatarIcon.svelte'
 	import Dropdown from '$components/Dropdown.svelte'
 	import ThemePicker from '$components/ThemePicker.svelte'
 
-	const pages = [
+	import { featherIconSize } from '$lib/consts'
+
+	interface NavItem {
+		route: string
+		label: string
+		icon: typeof SvelteComponent
+	}
+
+	const pages: Array<NavItem> = [
 		{ route: '/', label: 'Home', icon: HomeIcon },
 		{ route: '/sketches', label: 'Sketches', icon: PenToolIcon },
 	]
 
-	let menuButton
-	let menuShown
+	let menuButton: Element
+	let menuShown: boolean
 </script>
 
 <header>

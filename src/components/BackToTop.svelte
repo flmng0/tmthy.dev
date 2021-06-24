@@ -1,17 +1,20 @@
-<script>
+<script lang="ts">
+	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
-
 	import { ArrowUpIcon } from 'svelte-feather-icons'
 
-	import { featherIconSize } from '$lib/consts'
-	import { onMount } from 'svelte'
+	// FIXME: For some reason this file isn't recognising any imports at all
+	// from $lib. It works with other alias though...
+	//
+	// import { featherIconSize } from '$lib/consts'
+	// export let iconSize: string = featherIconSize
 
-	export let minFromTop = 50
-	export let iconSize = featherIconSize
-	export let duration = 250
+	export let minFromTop: number = 50
+	export let iconSize: string = '1.5x'
+	export let duration: number = 250
 
-	export let target
-	let y
+	export let target: Element
+	let y: number
 
 	function gotoTop() {
 		target.scrollIntoView()

@@ -1,9 +1,15 @@
-<script>
+<script lang="ts">
+	import type { SvelteComponent } from 'svelte'
 	import { MoonIcon, SunIcon } from 'svelte-feather-icons'
 
 	import { featherIconSize } from '$lib/consts'
 
-	const themes = [
+	interface ThemeButton {
+		name: string
+		icon: typeof SvelteComponent
+	}
+
+	const themes: Array<ThemeButton> = [
 		{ name: 'dark', icon: MoonIcon },
 		{ name: 'light', icon: SunIcon },
 	]
@@ -11,7 +17,7 @@
 	let current = themes[0].name
 	$: document.body.setAttribute('data-theme', current)
 
-	function clickEvent(theme) {
+	function clickEvent(theme: ThemeButton) {
 		return () => {
 			current = theme.name
 		}

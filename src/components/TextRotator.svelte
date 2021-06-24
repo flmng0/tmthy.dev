@@ -1,12 +1,12 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte'
-
 	import { fade } from 'svelte/transition'
+	import type { TransitionConfig } from 'svelte/transition'
 
-	export let items
-	export let transitionType = fade
-	export let transitionOptions = { duration: 750 }
-	export let interval = 500
+	export let items: Array<string>
+	export let transitionType: (node: Element, props: any) => TransitionConfig = fade
+	export let transitionOptions: any = { duration: 750 }
+	export let interval: number = 500
 
 	let current = 0
 	let showing = false

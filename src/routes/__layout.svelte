@@ -1,26 +1,27 @@
-<script>
+<script lang="ts">
 	import { setContext } from 'svelte'
-	import { session, page } from '$app/stores'
 	import { fly } from 'svelte/transition'
+
+	import { session, page } from '$app/stores'
 
 	import BackToTop from '$components/BackToTop.svelte'
 	import Hero from '$components/Hero.svelte'
 	import NavBar from '$components/NavBar.svelte'
 	import AvatarIntro from '$components/AvatarIntro.svelte'
 
-	let mainElement
+	let container: Element
 </script>
 
 {#if $session.introHasPlayed}
 	{#if $page.path == '/'}
-		<Hero {mainElement} />
+		<Hero target={container} />
 	{/if}
 
 	<NavBar />
 
-	<BackToTop target={mainElement} />
+	<BackToTop target={container} />
 
-	<main bind:this={mainElement} in:fly={{ x: -200, delay: 500 }}>
+	<main bind:this={container} in:fly={{ x: -200, delay: 500 }}>
 		<slot />
 	</main>
 {:else}

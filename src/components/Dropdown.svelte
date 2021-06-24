@@ -1,26 +1,29 @@
-<script>
+<script lang="ts">
 	import { onMount, tick } from 'svelte'
-
 	import { slide } from 'svelte/transition'
 
-	export let open = false
-	export let button
+	export let open: boolean = false
+	export let button: Element
 
-	function maybeClose(e) {
+	function maybeClose(e: Event) {
 		if (e.target != button) {
 			open = false
 		}
 	}
 
+	function toggle(e: MouseEvent) {
+		if (e) {
+			e.stopPropagation()
+		}
+		open = !open
+	}
+
 	onMount(async () => {
 		await tick()
-		const listener = button.addEventListener('click', (e) => {
-			e.stopPropagation()
-			open = !open
-		})
+		const listener = button.addEventListener('click', toggle)
 
 		return () => {
-			button.removeEventListener(listener)
+			button.removeEventListener('click', toggle)
 		}
 	})
 </script>
