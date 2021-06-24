@@ -66,7 +66,12 @@
 	#sketch-canvas {
 		user-select: none;
 
-		width: min(100%, 800px);
+		display: block;
+
+		// Have a sane default, but keep the constraints of "content-width".
+		--visible-area: calc(0.9 * (100vh - var(--header-height) - 1rem));
+		width: min(var(--content-width), var(--visible-area));
+		margin: 0 auto;
 
 		background-color: white;
 		box-shadow: 0 2px 8px var(--color-shadow);
