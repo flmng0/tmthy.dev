@@ -1,4 +1,4 @@
-<script context="module">
+<script lang="ts" context="module">
 	export async function load({ fetch }) {
 		const request = await fetch('/api/sketches.json')
 
@@ -41,9 +41,13 @@
 	{/each}
 </nav>
 
-<style>
+<style lang="scss">
 	a {
 		display: block;
 		text-decoration: none;
+
+		& + & {
+			margin-top: 1em;
+		}
 	}
 </style>
