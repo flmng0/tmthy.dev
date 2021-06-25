@@ -25,7 +25,11 @@ function getPages() {
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	preprocess: preprocess(),
+	preprocess: preprocess({
+		postcss: true,
+		globalStyle: true,
+		sourceMap: true,
+	}),
 
 	kit: {
 		adapter: adapter({
