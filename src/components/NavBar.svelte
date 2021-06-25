@@ -28,7 +28,7 @@
 	<!-- Left -->
 	<section class="header-left">
 		<Dropdown button={menuButton} bind:open={menuShown}>
-			<button bind:this={menuButton} class:active={menuShown}>
+			<button bind:this={menuButton} class:active={menuShown} title="Open navigation menu">
 				{#if menuShown}
 					<XIcon size={featherIconSize} />
 				{:else}
@@ -37,7 +37,7 @@
 			</button>
 			<nav transition:slide slot="dropdown-items">
 				{#each pages as page}
-					<a href={page.route}>
+					<a href={page.route} title={`Visit the ${page.label} page`}>
 						<span class="nav-label">{page.label}</span>
 						<span class="nav-icon">
 							<svelte:component this={page.icon} size={featherIconSize} />
@@ -63,6 +63,8 @@
 
 <style lang="scss">
 	header {
+		// Just incase;
+		z-index: 10;
 		position: sticky;
 		top: 0;
 
@@ -72,41 +74,13 @@
 		font-size: 1.5rem;
 
 		padding: 0 0.5em;
-		margin: 1rem auto;
+		margin-bottom: 1rem;
 
-		width: var(--content-width);
+		width: 100%;
 		height: var(--header-height);
 
 		background-color: var(--color-bg-secondary);
 		box-shadow: 0 2px 8px 0 var(--color-shadow);
-
-		@media screen and (min-width: 800px) {
-			&::before,
-			&::after {
-				content: '';
-
-				position: absolute;
-
-				--size: var(--header-height);
-				width: var(--size);
-				height: var(--size);
-
-				z-index: -1;
-
-				border-radius: 50%;
-				background-color: inherit;
-
-				--offset: calc(-0.5 * var(--size));
-			}
-
-			&::before {
-				left: var(--offset);
-			}
-
-			&::after {
-				right: var(--offset);
-			}
-		}
 	}
 
 	.header-left {
@@ -138,9 +112,7 @@
 	button {
 		position: relative;
 
-		--size: calc(0.66 * var(--header-height));
-		width: var(--size);
-		height: var(--size);
+		padding: 1em 1.2em;
 
 		border: none;
 

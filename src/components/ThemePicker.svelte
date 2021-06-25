@@ -26,7 +26,11 @@
 
 <nav class="picker">
 	{#each themes as theme}
-		<button class:current={theme.name == current} on:click={clickEvent(theme)}>
+		<button
+			class:current={theme.name == current}
+			on:click={clickEvent(theme)}
+			title={`Switch to the ${theme.name} theme`}
+		>
 			<svelte:component this={theme.icon} size={featherIconSize} />
 		</button>
 	{/each}

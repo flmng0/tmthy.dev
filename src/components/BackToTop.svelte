@@ -30,23 +30,26 @@
 <svelte:window bind:scrollY={y} />
 
 {#if y >= minFromTop}
-	<button transition:fade={{ duration }} on:click={gotoTop}>
+	<button transition:fade={{ duration }} on:click={gotoTop} title="Scroll to top">
 		<ArrowUpIcon size={iconSize} />
 	</button>
 {/if}
 
 <style lang="scss">
 	button {
+		cursor: pointer;
+
 		position: fixed;
 		bottom: 1rem;
 		right: 1rem;
-		background-color: var(--color-bg-secondary);
 
+		padding: 1em;
+
+		background-color: var(--color-bg-secondary);
 		border: 0;
 		box-shadow: 0 2px 5px var(--color-shadow);
 		color: var(--color-fg-primary);
 		border-radius: 50%;
-		padding: 1em;
 
 		&:hover {
 			background-color: var(--color-bg-primary);
