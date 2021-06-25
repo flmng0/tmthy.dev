@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { setContext } from 'svelte'
+	import { onMount, setContext } from 'svelte'
 	import { fly } from 'svelte/transition'
 
 	import { session, page } from '$app/stores'
@@ -9,7 +9,13 @@
 	import NavBar from '$components/NavBar.svelte'
 	import AvatarIntro from '$components/AvatarIntro.svelte'
 
+	import { theme } from '$lib/stores'
+
 	let container: Element
+
+	onMount(() => {
+		document.body.setAttribute('data-theme', $theme)
+	})
 </script>
 
 {#if $session.introHasPlayed}

@@ -3,6 +3,7 @@
 	import { MoonIcon, SunIcon } from 'svelte-feather-icons'
 
 	import { featherIconSize } from '$lib/consts'
+	import { theme } from '$lib/stores'
 
 	interface ThemeButton {
 		name: string
@@ -14,24 +15,25 @@
 		{ name: 'light', icon: SunIcon },
 	]
 
-	let current = themes[0].name
-	$: document.body.setAttribute('data-theme', current)
+	theme.subscribe((theme) => {
+		document.body.setAttribute('data-theme', theme)
+	})
 
-	function clickEvent(theme: ThemeButton) {
+	function clickEvent(themeItem: ThemeButton) {
 		return () => {
-			current = theme.name
+			$theme = themeItem.name
 		}
 	}
 </script>
 
 <nav class="picker">
-	{#each themes as theme}
+	{#each themes as themeItem}
 		<button
-			class:current={theme.name == current}
-			on:click={clickEvent(theme)}
-			title={`Switch to the ${theme.name} theme`}
+			class:current={themeItem.name == $theme}
+			on:click={clickEvent(themeItem)}
+			title={`Switch to the ${themeItem.name} theme`}
 		>
-			<svelte:component this={theme.icon} size={featherIconSize} />
+			<svelte:component this={themeItem.icon} size={featherIconSize} />
 		</button>
 	{/each}
 </nav>
