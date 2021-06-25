@@ -26,7 +26,7 @@
 
 	const transitionOptions = (i: number): TransitionConfig => ({
 		duration,
-		delay: initialDelay + i * delayInterval,
+		delay: initialDelay + order[i] * delayInterval,
 	})
 
 	const fillColor = (i: number): string => avatarColors[avatarColorMap[i]]
