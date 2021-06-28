@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { SvelteComponent } from 'svelte'
 	import { slide } from 'svelte/transition'
-	import { XIcon, HomeIcon, MenuIcon, PenToolIcon } from 'svelte-feather-icons'
+	import { XIcon, HomeIcon, MenuIcon, PenToolIcon, CodeIcon } from 'svelte-feather-icons'
 
 	import AvatarIcon from '$components/AvatarIcon.svelte'
 	import Dropdown from '$components/Dropdown.svelte'
@@ -18,6 +18,7 @@
 	const pages: Array<NavItem> = [
 		{ route: '/', label: 'Home', icon: HomeIcon },
 		{ route: '/sketches', label: 'Sketches', icon: PenToolIcon },
+		{ route: '/projects', label: 'Projects', icon: CodeIcon },
 	]
 
 	let menuButton: Element

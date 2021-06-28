@@ -33,6 +33,10 @@
 	})
 </script>
 
+<svelte:head>
+	<title>Sketch Directory | flmng0</title>
+</svelte:head>
+
 <nav>
 	{#each sketches as sketch (sketch.id)}
 		<a sveltekit:prefetch href={sketchRoute(sketch.id)}>
