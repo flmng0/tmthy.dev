@@ -38,6 +38,10 @@
 	})
 </script>
 
+<svelte:head>
+	<title>flmng0</title>
+</svelte:head>
+
 {#if !complete}
 	<div class="overlay">
 		<div class="avatar" out:outro={avatarTransition} on:outroend={finished}>
