@@ -1,3 +1,5 @@
+import { run } from './framework.js'
+
 const modulo = (n, d) => ((n % d) + d) % d
 
 // For if it's used as a module.
@@ -50,8 +52,6 @@ if (cvs !== null) {
 	const ITEM_COUNT = 15
 	const layer = new GridLayer(COLUMNS)
 
-	const ctx = cvs.getContext('2d')
-
 	let columns = null
 	const regenerate = () => {
 		const items = Array.from({ length: ITEM_COUNT }, () => Math.random()).map((height) => {
@@ -66,33 +66,33 @@ if (cvs !== null) {
 
 	regenerate()
 
-	cvs.addEventListener('click', regenerate, true)
+    function init({cvs}) {
+        cvs.addEventListener('click', () => {regenerate()}, true);
+    }
 
-	const draw = () => {
-		ctx.fillStyle = 'lightgrey'
-		ctx.strokeStyle = 'green'
-		ctx.clearRect(0, 0, cvs.width, cvs.height)
+    function draw({ ctx, cvs }) {
+        ctx.fillStyle = 'lightgrey'
+        ctx.strokeStyle = 'green'
+        ctx.clearRect(0, 0, cvs.width, cvs.height)
 
-		const minHeight = cvs.width / 8
-		const maxHeight = minHeight * 2
+        const minHeight = cvs.width / 8
+        const maxHeight = minHeight * 2
 
-		for (const [i, column] of columns.entries()) {
-			let x = (i * cvs.width) / COLUMNS
-			let y = 0
+        for (const [i, column] of columns.entries()) {
+            let x = (i * cvs.width) / COLUMNS
+            let y = 0
 
-			for (const item of column) {
-				const height = minHeight + item * (maxHeight - minHeight)
-				let rect = [x, y, cvs.width / COLUMNS, height]
+            for (const item of column) {
+                const height = minHeight + item * (maxHeight - minHeight)
+                let rect = [x, y, cvs.width / COLUMNS, height]
 
-				ctx.fillRect(...rect)
-				ctx.strokeRect(...rect)
+                ctx.fillRect(...rect)
+                ctx.strokeRect(...rect)
 
-				y += height
-			}
-		}
+                y += height
+            }
+        }
+    }
 
-		window.requestAnimationFrame(draw)
-	}
-
-	window.requestAnimationFrame(draw)
+    run(draw, { init, cvs })
 }
