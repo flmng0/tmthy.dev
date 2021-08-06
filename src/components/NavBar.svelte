@@ -26,40 +26,46 @@
 </script>
 
 <header>
-	<!-- Left -->
-	<section class="header-left">
-		<Dropdown button={menuButton} bind:open={menuShown}>
-			<button bind:this={menuButton} class:active={menuShown} title="Open navigation menu">
-				{#if menuShown}
-					<XIcon size={featherIconSize} />
-				{:else}
-					<MenuIcon size={featherIconSize} />
-				{/if}
-			</button>
-			<nav transition:slide slot="dropdown-items">
-				{#each pages as page}
-					<a href={page.route} title={`Visit the ${page.label} page`}>
-						<span class="nav-label">{page.label}</span>
-						<span class="nav-icon">
-							<svelte:component this={page.icon} size={featherIconSize} />
-						</span>
-					</a>
-				{/each}
-			</nav>
-		</Dropdown>
-	</section>
+	<div class="inner">
+		<!-- Left -->
+		<section class="header-left">
+			<Dropdown button={menuButton} bind:open={menuShown}>
+				<button
+					bind:this={menuButton}
+					class:active={menuShown}
+					title="Open navigation menu"
+				>
+					{#if menuShown}
+						<XIcon size={featherIconSize} />
+					{:else}
+						<MenuIcon size={featherIconSize} />
+					{/if}
+				</button>
+				<nav transition:slide slot="dropdown-items">
+					{#each pages as page}
+						<a href={page.route} title={`Visit the ${page.label} page`}>
+							<span class="nav-label">{page.label}</span>
+							<span class="nav-icon">
+								<svelte:component this={page.icon} size={featherIconSize} />
+							</span>
+						</a>
+					{/each}
+				</nav>
+			</Dropdown>
+		</section>
 
-	<!-- Middle -->
-	<section class="header-middle">
-		<a class="avatar" href="/">
-			<AvatarIcon stroke size="100%" />
-		</a>
-	</section>
+		<!-- Middle -->
+		<section class="header-middle">
+			<a class="avatar" href="/">
+				<AvatarIcon stroke size="100%" />
+			</a>
+		</section>
 
-	<!-- Right -->
-	<section class="header-right">
-		<ThemePicker />
-	</section>
+		<!-- Right -->
+		<section class="header-right">
+			<ThemePicker />
+		</section>
+	</div>
 </header>
 
 <style lang="scss">
@@ -68,9 +74,6 @@
 		z-index: 10;
 		position: sticky;
 		top: 0;
-
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
 
 		font-size: 1.5rem;
 
@@ -82,6 +85,15 @@
 
 		background-color: var(--color-bg-secondary);
 		box-shadow: 0 2px 8px 0 var(--color-shadow);
+	}
+	.inner {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+
+		margin: 0 auto;
+
+		width: var(--content-width);
+		height: 100%;
 	}
 
 	.header-left {
