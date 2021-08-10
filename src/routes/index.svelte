@@ -1,4 +1,6 @@
 <script lang="ts">
+	import LinkedSection from '$components/LinkedSection.svelte'
+
 	const birthday = new Date(2002, 9, 7)
 	const today = new Date()
 
@@ -12,57 +14,79 @@
 	<title>flmng0</title>
 </svelte:head>
 
-<section id="about">
-	<h1>About Me</h1>
+<div class="container">
+	<LinkedSection id="about">
+		<h1 slot="header">About Me</h1>
 
-	<p>
-		"Timothy Mitchell Davis" is the name, and programming is the game. I'm currently {age} years
-		old, and have been developing since I was 9. I graduated in 2020 as the DUX of my high-school,
-		with an ATAR of 86.55.
-	</p>
-	<p>
-		For the past 10 years, I've been making projects to improve my skills. As every developer I
-		know, I started off making games. I then moved on to game engines, and then automation and
-		reporting.
-	</p>
+		<p>
+			"Timothy Mitchell Davis" is the name, and programming is the game. I'm currently {age} years
+			old, and have been developing since I was 9. I graduated high-school in 2020 as the DUX of
+			my grade, with an ATAR of 86.55. I achieved STEM Student of the Year for the Northern Territory
+			in the same year.
+		</p>
+		<p>
+			For the past 10 years, I've been making projects to improve my skills. As every
+			developer I know, I started off making games. I then moved on to game engines, and then
+			automation and reporting.
+		</p>
 
-	<p>
-		After all this time, making games is still my favourite passtime. I would happily show them
-		to you... but my bad habit is not finishing projects. For instance, the website you're
-		looking at right now went un-touched for a good month or two.
-	</p>
+		<p>
+			After all this time, making games is still my favourite passtime. I would happily show
+			them to you... but my bad habit is not finishing projects. For instance, the website
+			you're looking at right now went un-touched for a good month or two.
+		</p>
 
-	<p>
-		For a portfolio, this isn't making me sound good, so let me just give you the "specs"
-		instead.
-	</p>
-</section>
+		<p>
+			For a portfolio, that last paragraph doesn't make me sound good, so let me just give you
+			the "specs" instead.
+		</p>
+	</LinkedSection>
 
-<section id="specs">
-	<h1>The Specs (Certifications)</h1>
+	<LinkedSection id="specs">
+		<h1 slot="header">The Specs (Qualifications)</h1>
 
-	<p>Following are awards and certifications that make me feel like less of an imposter:</p>
-	<ul>
-		<li class="in-progress" data-year="2021">
-			Certificate III in Information, Digital Media and Technology
-		</li>
-		<li data-year="2020">STEM Student of the Year for the Northern Territory</li>
-		<li data-year="2019">80% Certification Toward Cisco IT Essentials</li>
-		<!-- <li></li> -->
-	</ul>
-	<p class="special-notes"><span style="font-size: 1.25em;">*</span> Currently in progress</p>
-</section>
+		<LinkedSection id="specs--certificates">
+			<h2 slot="header">Certificates</h2>
+
+			<p>
+				Following are awards and certifications that make me feel like less of an imposter:
+			</p>
+			<ul>
+				<li class="in-progress" data-year="2021">
+					Certificate III in Information, Digital Media and Technology
+				</li>
+				<li data-year="2020">STEM Student of the Year for the Northern Territory</li>
+				<li data-year="2019">80% Certification Toward Cisco IT Essentials</li>
+				<!-- <li></li> -->
+			</ul>
+			<p class="special-notes">
+				<span style="font-size: 1.25em;">*</span> Currently in progress
+			</p>
+		</LinkedSection>
+
+		<!-- <LinkedSection id="specs--experience">
+			<h2 slot="header">Work Experience</h2>
+		</LinkedSection> -->
+	</LinkedSection>
+</div>
 
 <style lang="scss">
-	h1 {
+	.container > :not(:first-child) {
+		margin-top: 4.5em;
+	}
+
+	h1,
+	h2 {
 		text-transform: uppercase;
 		letter-spacing: 0.3em;
 	}
 
-	section + section {
-		margin-top: 4.5em;
+	h1 {
+		font-size: 1.8em;
+	}
 
-		// font: inherit;
+	h2 {
+		font-size: 1.5em;
 	}
 
 	p,
