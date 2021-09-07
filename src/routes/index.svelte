@@ -1,13 +1,47 @@
 <script lang="ts">
 	import LinkedSection from '$components/LinkedSection.svelte'
 
-	const birthday = new Date(2002, 9, 7)
-	const today = new Date()
+	const birthday = {
+		date: 7,
+		month: 8, // 9th month is index 8
+		year: 2002,
+	}
 
-	const difference = +today - +birthday
-	const days = Math.ceil(difference / (1000 * 3600 * 24))
-	const years = days / 365.25 // close enough
-	const age = Math.round((years + Number.EPSILON) * 1000) / 1000
+	function getAge() {
+		const now = new Date()
+		const bdayDate = new Date(birthday.year, birthday.month, birthday.date)
+
+		const today = {
+			date: now.getDate(),
+			month: now.getMonth(),
+			year: now.getFullYear(),
+		}
+
+		if (birthday.date == today.date && birthday.month == today.month) {
+			return [`${today.year - birthday.year} 🎂!`, true]
+		}
+
+		const beforeBday = today.month < birthday.month && today.date < birthday.date
+
+		const years = today.year - birthday.year - +beforeBday
+
+		const fromYear = today.year - +beforeBday
+		const from = new Date(fromYear, birthday.month, birthday.date)
+		const to = now
+
+		const diff = +to - +from
+		const denom = (355 + +(fromYear % 4 == 0)) * 1000 * 3600 * 24
+
+		const part = diff / denom
+		const rounded = Math.round((part + Number.EPSILON) * 1000)
+		const roundStr = `${rounded}`.padStart(3, '0')
+		// const fromYear = beforeBday ? new Date(today.year - 1, birthday.month, birthday.date) : now
+		// const to = beforeBday ? now :
+
+		return [`${years}.${roundStr}`, false]
+	}
+
+	const [age, isBirthday] = getAge()
 </script>
 
 <svelte:head>
@@ -19,10 +53,17 @@
 		<h1 slot="header">About Me</h1>
 
 		<p>
-			"Timothy Mitchell Davis" is the name, and programming is the game. I'm currently {age} years
-			old, and have been developing since I was 9. I graduated high-school in 2020 as the DUX of
-			my grade, with an ATAR of 86.55. I achieved STEM Student of the Year for the Northern Territory
-			in the same year.
+			"Timothy Mitchell Davis" is the name, and programming is the game. I'm currently
+			<span
+				class="age"
+				class:isBirthday
+				title={isBirthday ? 'Happy birthday to me! (7th September)' : ''}
+			>
+				{age}
+			</span>
+			years old, and have been developing since I was 9. I graduated high-school in 2020 as the
+			DUX of my grade, with an ATAR of 86.55. I achieved STEM Student of the Year for the Northern
+			Territory in the same year.
 		</p>
 		<p>
 			For the past 10 years, I've been making projects to improve my skills. As every
@@ -125,6 +166,10 @@
 			position: absolute;
 			right: 100%;
 		}
+	}
+
+	.age.isBirthday {
+		text-decoration: underline;
 	}
 
 	.special-notes {
