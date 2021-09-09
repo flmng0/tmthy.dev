@@ -35,8 +35,6 @@
 		const part = diff / denom
 		const rounded = Math.round((part + Number.EPSILON) * 1000)
 		const roundStr = `${rounded}`.padStart(3, '0')
-		// const fromYear = beforeBday ? new Date(today.year - 1, birthday.month, birthday.date) : now
-		// const to = beforeBday ? now :
 
 		return [`${years}.${roundStr}`, false]
 	}
