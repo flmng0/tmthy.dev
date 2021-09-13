@@ -16,6 +16,18 @@
 	onMount(() => {
 		document.body.setAttribute('data-theme', $theme)
 	})
+
+	function mainLoaded() {
+		const hash = window.location.hash
+
+		if (hash.length > 0) {
+			const elem = document.querySelector(hash)
+			if (elem) {
+				elem.scrollIntoView()
+			}
+		}
+		// if $page.path
+	}
 </script>
 
 {#if $session.introHasPlayed}
@@ -27,7 +39,7 @@
 
 	<BackToTop target={container} />
 
-	<main bind:this={container} in:fly={{ x: -200, delay: 500 }}>
+	<main bind:this={container} in:fly={{ x: -200, delay: 500 }} on:introend={mainLoaded}>
 		<slot />
 	</main>
 {:else}
