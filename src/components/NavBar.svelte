@@ -80,20 +80,10 @@
 
 		background-color: var(--color-bg-secondary);
 		box-shadow: 0 2px 8px 0 var(--color-shadow);
+	}
 
-		a,
-		button {
-			border: 0;
-			font-size: inherit;
-
-			line-height: normal;
-			padding: 0.5em 0.6em;
-			margin: 0 0.5em;
-
-			background-color: var(--header-bg, inherit);
-			color: currentColor;
-			cursor: pointer;
-		}
+	h1 {
+		font-size: 1.25rem;
 	}
 
 	a {
@@ -102,6 +92,17 @@
 
 	a,
 	button {
+		border: 0;
+		font-size: inherit;
+
+		line-height: normal;
+		padding: 0.5em 0.6em;
+		margin: 0 0.5em;
+
+		background-color: var(--header-bg, inherit);
+		color: currentColor;
+		cursor: pointer;
+
 		transition: opacity 100ms var(--transition-function);
 		&:hover {
 			opacity: 0.6;
