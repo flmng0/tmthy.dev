@@ -1,4 +1,17 @@
 import { Triangle } from './types'
+import { SvelteComponent } from 'svelte'
+
+import { MoonIcon, SunIcon } from 'svelte-feather-icons'
+
+interface ThemeButton {
+	name: string
+	icon: typeof SvelteComponent
+}
+
+export const themes: Array<ThemeButton> = [
+	{ name: 'dark', icon: MoonIcon },
+	{ name: 'light', icon: SunIcon },
+]
 
 export const featherIconSize: string = '1.5x'
 

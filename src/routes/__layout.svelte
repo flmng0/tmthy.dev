@@ -57,7 +57,7 @@
 			--header-height: 5rem;
 			scroll-padding-top: calc(var(--header-height) + 1rem);
 
-			--content-max: 800px;
+			--content-max: 1000px;
 			--content-width: min(100%, var(--content-max));
 
 			scroll-behavior: smooth;
