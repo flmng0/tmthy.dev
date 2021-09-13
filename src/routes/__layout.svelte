@@ -26,7 +26,6 @@
 				elem.scrollIntoView()
 			}
 		}
-		// if $page.path
 	}
 </script>
 
