@@ -60,13 +60,15 @@
 				{age}
 			</span>
 			years old, and have been developing since I was 9. I graduated high-school in 2020 as the
-			DUX of my grade, with an ATAR of 86.55. I achieved STEM Student of the Year for the Northern
-			Territory in the same year.
+			DUX of my grade, with an ATAR of 86.55. I achieved
+			<a href="https://ntdigitalawards.org.au/winners/2020-winners"
+				>STEM Student of the Year for the Northern Territory</a
+			> in the same year.
 		</p>
 		<p>
-			For the past 10 years, I've been making projects to improve my skills. As every
-			developer I know, I started off making games. I then moved on to game engines, and then
-			automation and reporting.
+			For the past 10 years, I've been making <a href="/projects">projects</a> to improve my skills.
+			As every developer I know, I started off making games. I then moved on to game engines, and
+			then automation and reporting.
 		</p>
 
 		<p>
@@ -82,7 +84,7 @@
 	</LinkedSection>
 
 	<LinkedSection id="specs">
-		<h1 slot="header">The Specs (Qualifications)</h1>
+		<h1 slot="header">The Specs <!-- (Qualifications) --></h1>
 
 		<LinkedSection id="specs--certificates">
 			<h2 slot="header">Certificates</h2>
