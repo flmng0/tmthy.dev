@@ -64,9 +64,8 @@ if (cvs !== null) {
 		columns = layer.layout(items)
 	}
 
-	regenerate()
-
     function init({cvs}) {
+        regenerate()
         cvs.addEventListener('click', () => {regenerate()}, true);
     }
 
