@@ -2,8 +2,7 @@ import { run } from './framework.js'
 
 const modulo = (n, d) => ((n % d) + d) % d
 
-// For if it's used as a module.
-export class GridLayer {
+class GridLayer {
 	constructor(count) {
 		// The number of columns.
 		this.count = count || 3
@@ -44,10 +43,8 @@ export class GridLayer {
 	}
 }
 
-const cvs = document.querySelector('#sketch-canvas')
-
 // We are running as a sketch, and not a module.
-if (cvs !== null) {
+if (document.querySelector('#sketch-canvas')) {
 	const COLUMNS = 4
 	const ITEM_COUNT = 15
 	const layer = new GridLayer(COLUMNS)
@@ -64,34 +61,40 @@ if (cvs !== null) {
 		columns = layer.layout(items)
 	}
 
-    function init({cvs}) {
-        regenerate()
-        cvs.addEventListener('click', () => {regenerate()}, true);
-    }
+	function init({ cvs }) {
+		regenerate()
+		cvs.addEventListener(
+			'click',
+			() => {
+				regenerate()
+			},
+			true
+		)
+	}
 
-    function draw({ ctx, cvs }) {
-        ctx.fillStyle = 'lightgrey'
-        ctx.strokeStyle = 'green'
-        ctx.clearRect(0, 0, cvs.width, cvs.height)
+	function draw({ ctx, cvs }) {
+		ctx.fillStyle = 'lightgrey'
+		ctx.strokeStyle = 'green'
+		ctx.clearRect(0, 0, cvs.width, cvs.height)
 
-        const minHeight = cvs.width / 8
-        const maxHeight = minHeight * 2
+		const minHeight = cvs.width / 8
+		const maxHeight = minHeight * 2
 
-        for (const [i, column] of columns.entries()) {
-            let x = (i * cvs.width) / COLUMNS
-            let y = 0
+		for (const [i, column] of columns.entries()) {
+			let x = (i * cvs.width) / COLUMNS
+			let y = 0
 
-            for (const item of column) {
-                const height = minHeight + item * (maxHeight - minHeight)
-                let rect = [x, y, cvs.width / COLUMNS, height]
+			for (const item of column) {
+				const height = minHeight + item * (maxHeight - minHeight)
+				let rect = [x, y, cvs.width / COLUMNS, height]
 
-                ctx.fillRect(...rect)
-                ctx.strokeRect(...rect)
+				ctx.fillRect(...rect)
+				ctx.strokeRect(...rect)
 
-                y += height
-            }
-        }
-    }
+				y += height
+			}
+		}
+	}
 
-    run(draw, { init, cvs })
+	run(draw, { init })
 }
