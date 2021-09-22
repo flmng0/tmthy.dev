@@ -21,6 +21,7 @@
 
 <script lang="ts">
 	import DisplayCard from '$components/DisplayCard.svelte'
+	import Main from '$components/Main.svelte'
 	import type { CardItem, Project } from '$lib/types'
 
 	const cardItem = (project: Project): CardItem => ({
@@ -36,13 +37,15 @@
 	<title>Project Directory | flmng0</title>
 </svelte:head>
 
-<nav>
-	{#each projects as project}
-		<a href={project.source}>
-			<DisplayCard item={cardItem(project)} />
-		</a>
-	{/each}
-</nav>
+<Main>
+	<nav>
+		{#each projects as project}
+			<a href={project.source}>
+				<DisplayCard item={cardItem(project)} />
+			</a>
+		{/each}
+	</nav>
+</Main>
 
 <style lang="scss">
 	a {

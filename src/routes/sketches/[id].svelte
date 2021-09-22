@@ -30,6 +30,7 @@
 
 	import { page } from '$app/stores'
 	import CodeBlock from '$components/CodeBlock.svelte'
+	import Main from '$components/Main.svelte'
 
 	export let name: string
 	export let brief: string
@@ -63,48 +64,49 @@
 	<title>Sketch: {name} | flmng0</title>
 </svelte:head>
 
-<canvas id="sketch-canvas" width="800" height="800" />
+<Main>
+	<canvas id="sketch-canvas" width="800" height="800" />
 
-<div class="source-code" class:showing={showSource}>
-	<button
-		class="source-code__show"
-		on:click={() => {
-			showSource = !showSource
-		}}
-	>
-		<span>View Source</span>
-		<div class="showing-button"><ArrowRightIcon size="1x" /></div>
-	</button>
-	<div class="source-code__text">
-		<CodeBlock dataSrc={source} language="javascript" />
+	<div class="source-code" class:showing={showSource}>
+		<button
+			class="source-code__show"
+			on:click={() => {
+				showSource = !showSource
+			}}
+		>
+			<span>View Source</span>
+			<div class="showing-button"><ArrowRightIcon size="1x" /></div>
+		</button>
+		<div class="source-code__text">
+			<CodeBlock dataSrc={source} language="javascript" />
+		</div>
 	</div>
-</div>
 
-<div class="docs">
-	<h1>{name}</h1>
-	<p>{brief}</p>
+	<div class="docs">
+		<h1>{name}</h1>
+		<p>{brief}</p>
 
-	{@html contentHtml}
-</div>
+		{@html contentHtml}
+	</div>
+</Main>
 
 <style lang="scss">
 	#sketch-canvas {
 		user-select: none;
 
 		display: block;
+		margin: 0 auto 2.5rem;
 
 		// Make sure the canvas is visible when the page loads.
+		// i.e. when the scroll of the page is 0.
 		--visible-area: calc(0.9 * (100vh - var(--header-height) - 1rem));
 		width: min(100%, var(--visible-area));
-		margin: 0 auto 2.5rem;
 
 		background-color: hsl(60, 30%, 94%);
 		box-shadow: 0 2px 8px var(--color-shadow);
 	}
 
 	.source-code {
-		width: 100%;
-
 		&__show {
 			cursor: pointer;
 
@@ -142,6 +144,10 @@
 		&.showing &__text {
 			display: block;
 		}
+	}
+
+	:global(code) {
+		font-family: Fira Code, Consolas, 'Courier New', monospace;
 	}
 
 	.docs {

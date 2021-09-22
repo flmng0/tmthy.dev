@@ -1,24 +1,24 @@
 [
-  {
-    "type": "GitHub",
-    "source": "https://github.com/flmng0/peach",
-    "name": "Peach",
-    "slug": "peach",
-    "brief": "Processing inspired creative coding API, written in Rust using WGPU."
-  },
-  {
-    "type": "GitHub",
-    "source": "https://github.com/flmng0/MajorProject",
-    "name": "Major Project",
-    "slug": "major-project",
-    "brief": "Graphing calculator made in C# using .NET Core, for IES20 Major Project."
-  },
-  {
-    "type": "Website",
-    "ref": "https://flmng0.github.io",
-    "source": "https://github.com/flmng0/flmng0.github.io",
-    "name": "Portfolio",
-    "slug": "portfolio",
-    "brief": "The page you're looking at! My personal portfolio for the things I've made, information about me, etc."
-  }
+	{
+		"type": "GitHub",
+		"source": "https://github.com/flmng0/peach",
+		"name": "Peach",
+		"slug": "peach",
+		"brief": "Processing inspired creative coding API, written in Rust using WGPU."
+	},
+	{
+		"type": "GitHub",
+		"source": "https://github.com/flmng0/MajorProject",
+		"name": "Major Project",
+		"slug": "major-project",
+		"brief": "Graphing calculator made in C# using .NET Core, for IES20 Major Project."
+	},
+	{
+		"type": "Website",
+		"ref": "https://tmthydvs.dev",
+		"source": "https://github.com/flmng0/flmng0.github.io",
+		"name": "Portfolio",
+		"slug": "portfolio",
+		"brief": "The page you're looking at! My personal portfolio for the things I've made, information about me, etc."
+	}
 ]

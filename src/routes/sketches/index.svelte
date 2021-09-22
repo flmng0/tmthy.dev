@@ -20,6 +20,7 @@
 
 <script lang="ts">
 	import DisplayCard from '$components/DisplayCard.svelte'
+	import Main from '$components/Main.svelte'
 
 	import type { CardItem, Sketch } from '$lib/types'
 
@@ -37,13 +38,15 @@
 	<title>Sketch Directory | flmng0</title>
 </svelte:head>
 
-<nav>
-	{#each sketches as sketch (sketch.id)}
-		<a sveltekit:prefetch href={sketchRoute(sketch.id)}>
-			<DisplayCard item={cardItem(sketch)} />
-		</a>
-	{/each}
-</nav>
+<Main>
+	<nav>
+		{#each sketches as sketch (sketch.id)}
+			<a sveltekit:prefetch href={sketchRoute(sketch.id)}>
+				<DisplayCard item={cardItem(sketch)} />
+			</a>
+		{/each}
+	</nav>
+</Main>
 
 <style lang="scss">
 	a {

@@ -3,7 +3,7 @@
 	import { draw } from 'svelte/transition'
 	import type { TransitionConfig } from 'svelte/transition'
 
-	import { avatarColorMap, avatarColors, avatarTriangles } from '$lib/consts'
+	import { avatar } from '$lib/consts'
 	import { shuffle } from '$lib/util'
 	import type { Triangle } from '$lib/types'
 
@@ -29,7 +29,7 @@
 		delay: initialDelay + order[i] * delayInterval,
 	})
 
-	const fillColor = (i: number): string => avatarColors[avatarColorMap[i]]
+	const fillColor = (i: number): string => avatar.colors[avatar.colorMap[i]]
 
 	const pathString = (tri: Triangle): string =>
 		`M ${tri.map((point) => Object.values(point).join(',')).join(' ')} Z`
@@ -44,13 +44,13 @@
 
 	let introend = () => {
 		drawnTriangles += 1
-		if (drawnTriangles == avatarTriangles.length) {
+		if (drawnTriangles == avatar.triangles.length) {
 			dispatch('introend')
 		}
 	}
 
 	onMount(() => {
-		order = Array.from({ length: avatarTriangles.length }, (_, i) => i)
+		order = Array.from({ length: avatar.triangles.length }, (_, i) => i)
 		// See notes at {#if order} below, for why this is defined here.
 		if (animate) {
 			order = shuffle(order)
@@ -71,7 +71,7 @@
 		stroke-linejoin="round"
 		fill="none"
 	>
-		{#each avatarTriangles as tri, i}
+		{#each avatar.triangles as tri, i}
 			<path
 				in:draw={transitionOptions(i)}
 				on:introstart={introstart}

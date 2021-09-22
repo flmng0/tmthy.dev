@@ -1,81 +1,75 @@
 <script lang="ts">
-	import { SvelteComponent } from 'svelte'
-	import { slide } from 'svelte/transition'
-	import { XIcon, HomeIcon, MenuIcon, PenToolIcon, CodeIcon } from 'svelte-feather-icons'
+	import { GithubIcon, MoonIcon, SunIcon } from 'svelte-feather-icons'
+	import { featherIconSize, themes } from '$lib/consts'
+	import { onMount, SvelteComponent } from 'svelte'
+	import { theme } from '$lib/stores'
 
-	import AvatarIcon from '$components/AvatarIcon.svelte'
-	import Dropdown from '$components/Dropdown.svelte'
-	import ThemePicker from '$components/ThemePicker.svelte'
-
-	import { featherIconSize } from '$lib/consts'
-
-	interface NavItem {
-		route: string
-		label: string
-		icon: typeof SvelteComponent
+	interface Page {
+		name: string
+		href: string
 	}
 
-	const pages: Array<NavItem> = [
-		{ route: '/', label: 'Home', icon: HomeIcon },
-		{ route: '/sketches', label: 'Sketches', icon: PenToolIcon },
-		{ route: '/projects', label: 'Projects', icon: CodeIcon },
+	const pages: Array<Page> = [
+		{ name: 'Home', href: '/' },
+		{ name: 'Projects', href: '/projects' },
+		{ name: 'Sketches', href: '/sketches' },
 	]
 
-	let menuButton: Element
-	let menuShown: boolean
+	let currentTheme: number = 0
+
+	function toggleTheme() {
+		currentTheme = (currentTheme + 1) % themes.length
+		$theme = themes[currentTheme].name
+	}
+
+	onMount(() => {
+		currentTheme = themes.findIndex((item) => item.name == $theme)
+
+		theme.subscribe((theme) => {
+			document.body.setAttribute('data-theme', theme)
+		})
+	})
 </script>
 
-<header>
+<header class="page-nav">
 	<div class="inner">
 		<!-- Left -->
 		<section class="header-left">
-			<Dropdown button={menuButton} bind:open={menuShown}>
-				<button
-					bind:this={menuButton}
-					class:active={menuShown}
-					title="Open navigation menu"
-				>
-					{#if menuShown}
-						<XIcon size={featherIconSize} />
-					{:else}
-						<MenuIcon size={featherIconSize} />
-					{/if}
-				</button>
-				<nav transition:slide slot="dropdown-items">
-					{#each pages as page}
-						<a href={page.route} title={`Visit the ${page.label} page`}>
-							<span class="nav-label">{page.label}</span>
-							<span class="nav-icon">
-								<svelte:component this={page.icon} size={featherIconSize} />
-							</span>
-						</a>
-					{/each}
-				</nav>
-			</Dropdown>
+			<h1><a href="/">tmthydvs.dev</a></h1>
 		</section>
 
 		<!-- Middle -->
 		<section class="header-middle">
-			<a class="avatar" href="/">
-				<AvatarIcon stroke size="100%" />
-			</a>
+			<nav>
+				{#each pages as page}
+					<a href={page.href}>{page.name}</a>
+				{/each}
+			</nav>
 		</section>
 
 		<!-- Right -->
 		<section class="header-right">
-			<ThemePicker />
+			<!-- Theme Picker -->
+			<button on:click={toggleTheme} title="Toggle current site theme">
+				<svelte:component this={themes[currentTheme].icon} size={featherIconSize} />
+			</button>
+			<!-- Link to my GitHub user page -->
+			<a href="https://github.com/flmng0" target="_blank">
+				<GithubIcon size={featherIconSize} />
+			</a>
 		</section>
 	</div>
 </header>
 
 <style lang="scss">
 	header {
-		// Just incase;
+		// Just incase
 		z-index: 10;
+
 		position: sticky;
 		top: 0;
 
-		font-size: 1.5rem;
+		font-size: 1rem;
 
 		padding: 0 0.5em;
 		margin-bottom: 1rem;
@@ -83,12 +77,47 @@
 		width: 100%;
 		height: var(--header-height);
 
+		--header-bg: var(--color-bg-secondary);
+
 		background-color: var(--color-bg-secondary);
-		box-shadow: 0 2px 8px 0 var(--color-shadow);
 	}
+
+	h1 {
+		font-size: 1.25rem;
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+	a,
+	button {
+		border: 0;
+		font-size: inherit;
+
+		line-height: normal;
+		padding: 0.5em 0.6em;
+		margin: 0 0.5em;
+
+		background-color: var(--header-bg, inherit);
+		color: currentColor;
+		cursor: pointer;
+
+		transition: opacity 100ms var(--transition-function);
+		&:hover {
+			opacity: 0.6;
+		}
+	}
+
+	nav {
+		display: flex;
+	}
+
 	.inner {
+		// Uses grid instead of flex (and justify: space-between), so that
+		// the navigation items are actually centered on the screen.
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: 1fr 2.5fr 1fr;
 
 		margin: 0 auto;
 
@@ -110,60 +139,5 @@
 		height: var(--header-height);
 		display: flex;
 		align-items: center;
-	}
-
-	.avatar {
-		display: block;
-		height: 100%;
-	}
-
-	nav {
-		width: 20ch;
-		box-shadow: 0 2px 8px 0 var(--color-shadow);
-	}
-
-	button {
-		position: relative;
-
-		padding: 1em 1.2em;
-
-		border: none;
-
-		&::after {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-		}
-
-		&.active {
-			background-color: var(--color-fg-secondary);
-			color: var(--color-bg-secondary);
-		}
-	}
-
-	button,
-	nav > a {
-		background-color: var(--color-bg-primary);
-		color: var(--color-fg-primary);
-
-		cursor: pointer;
-		&:hover {
-			background-color: var(--color-fg-primary);
-			color: var(--color-bg-primary);
-		}
-	}
-
-	nav > a {
-		display: flex;
-		justify-content: space-between;
-
-		padding: 1em 2em;
-		font-size: 1rem;
-
-		border: 2px solid var(--color-bg-primary);
-		text-decoration: none;
 	}
 </style>
