@@ -1,5 +1,7 @@
 <script lang="ts">
+	import Hero from '$components/index/Hero.svelte'
 	import LinkedSection from '$components/LinkedSection.svelte'
+	import Main from '$components/Main.svelte'
 
 	const birthday = {
 		date: 7,
@@ -46,7 +48,9 @@
 	<title>flmng0</title>
 </svelte:head>
 
-<div class="container">
+<Hero />
+
+<Main flags={{ id: 'index-main' }}>
 	<LinkedSection id="about">
 		<h1 slot="header">About Me</h1>
 
@@ -109,10 +113,10 @@
 			<h2 slot="header">Work Experience</h2>
 		</LinkedSection> -->
 	</LinkedSection>
-</div>
+</Main>
 
 <style lang="scss">
-	.container > :not(:first-child) {
+	:global(#index-main) > :not(:first-child) {
 		margin-top: 4.5em;
 	}
 

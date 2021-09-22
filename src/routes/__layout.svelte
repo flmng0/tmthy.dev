@@ -1,49 +1,21 @@
 <script lang="ts">
-	import { onMount, setContext } from 'svelte'
-	import { fly } from 'svelte/transition'
-
-	import { session, page } from '$app/stores'
+	import { onMount } from 'svelte'
 
 	import BackToTop from '$components/BackToTop.svelte'
-	import Hero from '$components/Hero.svelte'
 	import NavBar from '$components/NavBar.svelte'
-	import AvatarIntro from '$components/AvatarIntro.svelte'
 
 	import { theme } from '$lib/stores'
-
-	let container: Element
 
 	onMount(() => {
 		document.body.setAttribute('data-theme', $theme)
 	})
-
-	function mainLoaded() {
-		const hash = window.location.hash
-
-		if (hash.length > 0) {
-			const elem = document.querySelector(hash)
-			if (elem) {
-				elem.scrollIntoView()
-			}
-		}
-	}
 </script>
 
-{#if $session.introHasPlayed}
-	{#if $page.path == '/'}
-		<Hero target={container} />
-	{/if}
+<NavBar />
 
-	<NavBar />
+<BackToTop />
 
-	<BackToTop target={container} />
-
-	<main bind:this={container} in:fly={{ x: -200, delay: 500 }} on:introend={mainLoaded}>
-		<slot />
-	</main>
-{:else}
-	<AvatarIntro />
-{/if}
+<slot />
 
 <style lang="scss">
 	:global {
@@ -119,12 +91,5 @@
 		body[data-theme='light'] ::selection {
 			background-color: hsl(121, 32%, 71%);
 		}
-	}
-
-	main {
-		margin: 0 auto;
-
-		width: var(--content-width);
-		padding: 1em 2em;
 	}
 </style>
