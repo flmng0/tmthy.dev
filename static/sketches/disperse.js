@@ -115,7 +115,7 @@ function init({ cvs, t }) {
 	const touchEv = (e) => {
 		const targetTouches = e.targetTouches
 		touches = Array.from({ length: targetTouches.length }, (v, i) =>
-			computeMousePos(targetTouches[i])
+			computeMousePos(targetTouches[i], cvs)
 		)
 	}
 
@@ -147,7 +147,7 @@ function draw({ cvs, ctx, dt, t }) {
 
 		for (const touch of touches) {
 			const touchVec = new Vector(touch.x, touch.y)
-			particle.maybeRepel()
+			particle.maybeRepel(touchVec)
 		}
 
 		particle.update(dt)
@@ -180,99 +180,3 @@ function draw({ cvs, ctx, dt, t }) {
 if (document.querySelector('#sketch-canvas')) {
 	run(draw, { init })
 }
-// let particles = []
-// let originalDistances = []
-// let mouse = null
-// let touches = []
-
-// /** @type import('./framework.js').InitCallback */
-// function init({ cvs, t }) {
-// 	particles = points.map((point) => new Particle(point.x * polygonScale, point.y * polygonScale))
-
-// 	originalDistances = connections.map((connection) => {
-// 		const from = particles[connection[0]].pos
-// 		const to = particles[connection[1]].pos
-
-// 		const p = new Vector(from.x, from.y)
-// 		const q = new Vector(to.x, to.y)
-
-// 		const d = p.dist(q)
-
-// 		return d
-// 	})
-
-// 	cvs.addEventListener('mousemove', (e) => {
-// 		mouse = computeMousePos(e, cvs)
-// 	})
-// 	cvs.addEventListener('mouseleave', () => (mouse = null))
-
-// 	/**
-// 	 * @param {TouchEvent} e
-// 	 */
-// 	function touchEv(e) {
-// 		const targetTouches = e.targetTouches
-// 		touches = Array.from({ length: targetTouches.length }, (v, i) =>
-// 			computeMousePos(targetTouches[i])
-// 		)
-// 	}
-
-// 	cvs.addEventListener('touchstart', touchEv)
-// 	cvs.addEventListener('touchmove', touchEv)
-// 	cvs.addEventListener('touchend', touchEv)
-// 	cvs.addEventListener('touchcancel', touchEv)
-// }
-
-// /** @type import('./framework.js').DrawCallback */
-// function draw({ cvs, ctx, dt, t }) {
-// 	ctx.clearRect(0, 0, cvs.width, cvs.height)
-
-// 	const centerVec = new Vector(cvs.width, cvs.height)
-// 		.sub(new Vector(polygonScale, polygonScale))
-// 		.div(2)
-
-// 	let mouseVec = null
-// 	if (mouse) {
-// 		mouseVec = new Vector(mouse.x, mouse.y).sub(centerVec)
-// 	}
-
-// 	ctx.save()
-// 	ctx.translate(centerVec.x, centerVec.y)
-
-// 	ctx.fillStyle = 'black'
-// 	for (const particle of particles) {
-// 		particle.maybeRepel(mouseVec)
-
-// 		for (const touch of touches) {
-// 			const touchVec = new Vector(touch.x, touch.y)
-// 			particle.maybeRepel()
-// 		}
-
-// 		particle.update(dt)
-// 		particle.draw(ctx)
-// 	}
-
-// 	// Looped after-wards so that the updated positions are used.
-// 	for (let i = 0; i < connections.length; i += 1) {
-// 		const [fromIdx, toIdx] = connections[i]
-// 		const dist = originalDistances[i]
-
-// 		const from = particles[fromIdx].pos
-// 		const to = particles[toIdx].pos
-
-// 		const d = from.dist(to)
-// 		const diff = Math.abs(dist - d)
-// 		ctx.lineWidth = connectWidth * Math.max(0.1, 1.0 - diff * 0.01)
-
-// 		ctx.beginPath()
-// 		ctx.moveTo(from.x, from.y)
-// 		ctx.lineTo(to.x, to.y)
-// 		ctx.stroke()
-// 		ctx.closePath()
-// 	}
-
-// 	ctx.restore()
-// }
-
-// if (document.querySelector('#sketch-canvas')) {
-// 	run(draw, { init })
-// }
