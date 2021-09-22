@@ -17,10 +17,6 @@
 
 	let currentTheme: number = 0
 
-	theme.subscribe((theme) => {
-		document.body.setAttribute('data-theme', theme)
-	})
-
 	function toggleTheme() {
 		currentTheme = (currentTheme + 1) % themes.length
 		$theme = themes[currentTheme].name
@@ -28,10 +24,14 @@
 
 	onMount(() => {
 		currentTheme = themes.findIndex((item) => item.name == $theme)
+
+		theme.subscribe((theme) => {
+			document.body.setAttribute('data-theme', theme)
+		})
 	})
 </script>
 
-<header>
+<header class="page-nav">
 	<div class="inner">
 		<!-- Left -->
 		<section class="header-left">
@@ -54,7 +54,7 @@
 				<svelte:component this={themes[currentTheme].icon} size={featherIconSize} />
 			</button>
 			<!-- Link to my GitHub user page -->
-			<a href="https://github.com/flmng0">
+			<a href="https://github.com/flmng0" target="_blank">
 				<GithubIcon size={featherIconSize} />
 			</a>
 		</section>
@@ -65,6 +65,7 @@
 	header {
 		// Just incase
 		z-index: 10;
+
 		position: sticky;
 		top: 0;
 
@@ -79,7 +80,6 @@
 		--header-bg: var(--color-bg-secondary);
 
 		background-color: var(--color-bg-secondary);
-		box-shadow: 0 2px 8px 0 var(--color-shadow);
 	}
 
 	h1 {
