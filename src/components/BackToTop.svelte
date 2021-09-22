@@ -3,35 +3,23 @@
 	import { fade } from 'svelte/transition'
 	import { ArrowUpIcon } from 'svelte-feather-icons'
 
-	// FIXME: For some reason this file isn't recognising any imports at all
-	// from $lib. It works with other alias though...
-	//
-	// import { featherIconSize } from '$lib/consts'
-	// export let iconSize: string = featherIconSize
+	import { featherIconSize } from '$lib/consts'
 
 	export let minFromTop: number = 50
-	export let iconSize: string = '1.5x'
 	export let duration: number = 250
 
-	export let target: Element
 	let y: number
 
 	function gotoTop() {
-		target.scrollIntoView()
+		document.body.scrollIntoView()
 	}
-
-	onMount(() => {
-		if (!target) {
-			target = document.body
-		}
-	})
 </script>
 
 <svelte:window bind:scrollY={y} />
 
 {#if y >= minFromTop}
 	<button transition:fade={{ duration }} on:click={gotoTop} title="Scroll to top">
-		<ArrowUpIcon size={iconSize} />
+		<ArrowUpIcon size={featherIconSize} />
 	</button>
 {/if}
 
