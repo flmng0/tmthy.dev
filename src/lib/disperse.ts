@@ -55,21 +55,25 @@ class Particle {
 		this.acc.mul(0)
 	}
 
-	draw(ctx: CanvasRenderingContext2D) {
+	draw(settings: Settings, ctx: CanvasRenderingContext2D) {
+		const { polygonSize } = settings
+
 		ctx.beginPath()
-		ctx.arc(this.pos.x, this.pos.y, 2, 0, Math.PI * 2)
+		ctx.arc(this.pos.x * polygonSize, this.pos.y * polygonSize, 2, 0, Math.PI * 2)
 		ctx.fill()
 		ctx.closePath()
 	}
 
 	maybeRepel(settings: Settings, point: Vector | null) {
-		const { minRepelDist, repelStrength } = settings
+		const { minRepelDist, repelStrength, polygonSize } = settings
 
 		if (point == null) {
 			return
 		}
 
-		const dd = this.pos.distSq(point)
+		const scaledPos = Vector.mul(this.pos, polygonSize)
+
+		const dd = scaledPos.distSq(point)
 		if (dd > minRepelDist * minRepelDist) {
 			return
 		}
@@ -77,7 +81,9 @@ class Particle {
 		const d = Math.sqrt(dd)
 		const inverse = 1.0 - d / minRepelDist
 
-		const away = Vector.sub(this.pos, point).mul(inverse * repelStrength)
+		const away = Vector.sub(scaledPos, point)
+			.div(polygonSize)
+			.mul(inverse * repelStrength)
 		this.vel.add(away)
 	}
 }
@@ -95,13 +101,7 @@ function computePointPos(
 	const x = point.clientX - rect.left
 	const y = point.clientY - rect.top
 
-	const scaleX = cvs.width / rect.width
-	const scaleY = cvs.height / rect.height
-
-	const canvasX = x * scaleX
-	const canvasY = y * scaleY
-
-	return new Vector(canvasX, canvasY)
+	return { x: x, y: y }
 }
 
 export class DisperseSimulation {
@@ -112,7 +112,6 @@ export class DisperseSimulation {
 	pointStyle: string
 	connectStyle: string
 
-	// polygon: DispersePolygon
 	particles: Array<Particle>
 	connections: Array<[number, number]>
 	originalDistances: Array<number>
@@ -128,13 +127,13 @@ export class DisperseSimulation {
 		this.mouse = null
 		this.touches = []
 
-		this.pointStyle = 'grey'
-		this.connectStyle = 'rgba(255, 255, 255, 50%)'
+		this.pointStyle = 'white'
+		this.connectStyle = 'white'
 
 		this.particles = polygon.points.map((point) => new Particle(point))
 		this.particles.forEach((particle) => {
-			particle.origin.mul(settings.polygonSize)
-			particle.pos.mul(settings.polygonSize)
+			// particle.origin.mul(settings.polygonSize)
+			// particle.pos.mul(settings.polygonSize)
 		})
 
 		this.connections = polygon.lines
@@ -228,10 +227,12 @@ export class DisperseSimulation {
 			}
 
 			particle.update(this.settings, dt)
-			particle.draw(ctx)
+			particle.draw(this.settings, ctx)
 		}
 
 		for (let i = 0; i < this.connections.length; i++) {
+			const scale = this.settings.polygonSize
+
 			const [fromIdx, toIdx] = this.connections[i]
 			const dist = this.originalDistances[i]
 
@@ -240,11 +241,11 @@ export class DisperseSimulation {
 
 			const d = from.dist(to)
 			const diff = Math.abs(dist - d)
-			ctx.lineWidth = this.settings.minConnectWidth * Math.max(0.1, 1.0 - diff * 0.01)
+			ctx.lineWidth = this.settings.minConnectWidth * Math.max(0.1, 1.0 - diff * 1.5)
 
 			ctx.beginPath()
-			ctx.moveTo(from.x, from.y)
-			ctx.lineTo(to.x, to.y)
+			ctx.moveTo(from.x * scale, from.y * scale)
+			ctx.lineTo(to.x * scale, to.y * scale)
 			ctx.stroke()
 			ctx.closePath()
 		}

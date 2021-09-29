@@ -25,11 +25,11 @@
 	const settings: Settings = {
 		minRepelDist: 100,
 
-		repelStrength: 20,
-		returnStrength: 10,
-		frictionStrength: 1.5,
+		repelStrength: 10.0,
+		returnStrength: 16.0,
+		frictionStrength: 1.2,
 
-		minConnectWidth: 2,
+		minConnectWidth: 2.0,
 		polygonSize: 512,
 	}
 
@@ -37,6 +37,7 @@
 	const connectOpacity = 0.3
 
 	let introComplete: boolean = false
+	let simulation: DisperseSimulation = null
 
 	const onIntroComplete = async () => {
 		introComplete = true
@@ -45,7 +46,7 @@
 
 		const canvas: HTMLCanvasElement = document.querySelector('canvas#hero--canvas')
 
-		const simulation = new DisperseSimulation(canvas, avatar, settings)
+		simulation = new DisperseSimulation(canvas, avatar, settings)
 
 		theme.subscribe((theme) => {
 			switch (theme) {
@@ -90,9 +91,15 @@
 		width = document.body.clientWidth
 		height = window.innerHeight - navHeight
 
+		settings.polygonSize = Math.min(512, width * 0.8, height * 0.8)
+
 		window.addEventListener('resize', (e) => {
 			width = document.body.clientWidth
 			height = window.innerHeight - navHeight
+
+			if (simulation) {
+				simulation.settings.polygonSize = Math.min(512, width * 0.8, height * 0.8)
+			}
 		})
 
 		avatarIntroSize = Math.min(settings.polygonSize * 1.5, width * 0.95, height * 0.95)
