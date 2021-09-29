@@ -121,6 +121,7 @@ export class DisperseSimulation {
 	ctx: CanvasRenderingContext2D
 
 	t: number | null
+	paused: boolean
 
 	constructor(cvs: HTMLCanvasElement, polygon: DispersePolygon, settings: Settings) {
 		this.settings = settings
@@ -152,14 +153,30 @@ export class DisperseSimulation {
 		this.ctx = cvs.getContext('2d')
 
 		this.t = null
+		this.paused = false
 
-		cvs.addEventListener('resize', (e) => {
-			// e.
-		})
-
-		cvs.addEventListener('mousemove', (e) => {
+		const mouseListener = (e: MouseEvent) => {
 			this.mouse = computePointPos(e, cvs)
-		})
+		}
+
+		// Only listen to mouse events if the canvas is on screen.
+		const observer = new IntersectionObserver(
+			(entries) => {
+				const cvsEntry = entries[0]
+				if (cvsEntry.isIntersecting) {
+					window.addEventListener('mousemove', mouseListener)
+					this.paused = false
+				} else {
+					window.removeEventListener('mousemove', mouseListener)
+					this.paused = true
+				}
+			},
+			{
+				threshold: 0.0,
+			}
+		)
+		observer.observe(cvs)
+
 		cvs.addEventListener('mouseleave', () => (this.mouse = null))
 
 		const touchEv = (e: TouchEvent) => {
@@ -176,6 +193,10 @@ export class DisperseSimulation {
 	}
 
 	draw(t: number) {
+		if (this.paused) {
+			return
+		}
+
 		const dt = Math.min(0.1, (this.t ? t - this.t : 0) / 1000)
 		this.t = t
 

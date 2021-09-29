@@ -10,7 +10,7 @@
 	export let animate: boolean = false
 
 	export let size: string = '100%'
-	export let strokeWidth: number = 1.5
+	export let strokeWidth: string = '1.5'
 
 	export let stroke: boolean = false
 	export let fill: boolean = false
@@ -66,7 +66,7 @@
 		height={size}
 		viewBox="0 0 100 100"
 		stroke={stroke ? 'currentColor' : null}
-		stroke-width={`${strokeWidth}`}
+		stroke-width={strokeWidth}
 		stroke-linecap="round"
 		stroke-linejoin="round"
 		fill="none"
