@@ -34,7 +34,7 @@
 	}
 
 	let width: number, height: number
-	const connectOpacity = 0.125
+	const connectOpacity = 0.3
 
 	let introComplete: boolean = false
 
