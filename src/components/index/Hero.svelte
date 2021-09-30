@@ -126,7 +126,10 @@
 	}
 </script>
 
-<div class="hero-container" style="--width: {width}px; --height: {height}px">
+<div
+	class="hero-container"
+	style="--width: {width}px; --height: {height ? `${height}px` : '100vh'}"
+>
 	{#if !introComplete}
 		<div class="hero--intro" out:avatarOutro>
 			<AvatarIcon
