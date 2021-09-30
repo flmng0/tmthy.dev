@@ -2,6 +2,7 @@
 	import Hero from '$components/index/Hero.svelte'
 	import LinkedSection from '$components/LinkedSection.svelte'
 	import Main from '$components/Main.svelte'
+	import { siteName } from '$lib/consts'
 
 	const birthday = {
 		date: 7,
@@ -45,7 +46,7 @@
 </script>
 
 <svelte:head>
-	<title>flmng0</title>
+	<title>{siteName}</title>
 </svelte:head>
 
 <Hero />

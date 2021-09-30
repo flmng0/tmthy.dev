@@ -31,6 +31,7 @@
 	import { page } from '$app/stores'
 	import CodeBlock from '$components/CodeBlock.svelte'
 	import Main from '$components/Main.svelte'
+	import { siteName } from '$lib/consts'
 
 	export let name: string
 	export let brief: string
@@ -61,7 +62,7 @@
 </script>
 
 <svelte:head>
-	<title>Sketch: {name} | flmng0</title>
+	<title>Sketch: {name} | {siteName}</title>
 </svelte:head>
 
 <Main>

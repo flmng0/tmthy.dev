@@ -23,6 +23,7 @@
 	import Main from '$components/Main.svelte'
 
 	import type { CardItem, Sketch } from '$lib/types'
+	import { siteName } from '$lib/consts'
 
 	export let sketches: Array<Sketch>
 
@@ -35,7 +36,7 @@
 </script>
 
 <svelte:head>
-	<title>Sketch Directory | flmng0</title>
+	<title>Sketch Directory | {siteName}</title>
 </svelte:head>
 
 <Main>

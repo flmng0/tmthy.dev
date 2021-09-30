@@ -22,6 +22,8 @@
 <script lang="ts">
 	import DisplayCard from '$components/DisplayCard.svelte'
 	import Main from '$components/Main.svelte'
+
+	import { siteName } from '$lib/consts'
 	import type { CardItem, Project } from '$lib/types'
 
 	const cardItem = (project: Project): CardItem => ({
@@ -34,7 +36,7 @@
 </script>
 
 <svelte:head>
-	<title>Project Directory | flmng0</title>
+	<title>Project Directory | {siteName}</title>
 </svelte:head>
 
 <Main>
