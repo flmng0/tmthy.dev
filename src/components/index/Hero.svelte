@@ -25,7 +25,7 @@
 	const settings: Settings = {
 		minRepelDist: 100,
 
-		repelStrength: 10.0,
+		repelStrength: 24.0,
 		returnStrength: 16.0,
 		frictionStrength: 1.2,
 

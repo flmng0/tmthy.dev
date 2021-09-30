@@ -38,8 +38,7 @@ const config = {
 		prerender: {
 			enabled: true,
 			crawl: true,
-			force: true,
-			pages: getPages(),
+			entries: getPages(),
 		},
 		target: 'body',
 		vite: {
