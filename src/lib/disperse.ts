@@ -3,11 +3,11 @@ import { Vector } from './math'
 import { Point } from './types'
 
 export interface Settings {
-	minRepelDist: number // = 100
+	minRepelDist: number
 
-	repelStrength: number // = 20
-	returnStrength: number // = 10
-	frictionStrength: number // = 1.5
+	repelStrength: number
+	returnStrength: number
+	frictionStrength: number
 
 	minConnectWidth: number
 	polygonSize: number
@@ -107,7 +107,6 @@ function computePointPos(
 export class DisperseSimulation {
 	settings: Settings
 	mouse: Point | null
-	touches: Array<Point>
 
 	pointStyle: string
 	connectStyle: string
@@ -125,16 +124,11 @@ export class DisperseSimulation {
 	constructor(cvs: HTMLCanvasElement, polygon: DispersePolygon, settings: Settings) {
 		this.settings = settings
 		this.mouse = null
-		this.touches = []
 
 		this.pointStyle = 'white'
 		this.connectStyle = 'white'
 
 		this.particles = polygon.points.map((point) => new Particle(point))
-		this.particles.forEach((particle) => {
-			// particle.origin.mul(settings.polygonSize)
-			// particle.pos.mul(settings.polygonSize)
-		})
 
 		this.connections = polygon.lines
 
@@ -177,18 +171,6 @@ export class DisperseSimulation {
 		observer.observe(cvs)
 
 		cvs.addEventListener('mouseleave', () => (this.mouse = null))
-
-		const touchEv = (e: TouchEvent) => {
-			const targetTouches = e.targetTouches
-			this.touches = Array.from({ length: targetTouches.length }, (v, i) =>
-				computePointPos(targetTouches[i], cvs)
-			)
-		}
-
-		cvs.addEventListener('touchstart', touchEv)
-		cvs.addEventListener('touchmove', touchEv)
-		cvs.addEventListener('touchend', touchEv)
-		cvs.addEventListener('touchcancel', touchEv)
 	}
 
 	draw(t: number) {
@@ -210,6 +192,7 @@ export class DisperseSimulation {
 		let mouseVec = null
 		if (this.mouse) {
 			mouseVec = new Vector(this.mouse.x, this.mouse.y).sub(centerVec)
+			this.mouse = null
 		}
 
 		ctx.save()
@@ -220,11 +203,6 @@ export class DisperseSimulation {
 
 		for (const particle of this.particles) {
 			particle.maybeRepel(this.settings, mouseVec)
-
-			for (const touch of this.touches) {
-				const touchVec = new Vector(touch.x, touch.y)
-				particle.maybeRepel(this.settings, touchVec)
-			}
 
 			particle.update(this.settings, dt)
 			particle.draw(this.settings, ctx)
