@@ -173,7 +173,7 @@ export class DisperseSimulation {
 		cvs.addEventListener('mouseleave', () => (this.mouse = null))
 	}
 
-	draw(t: number) {
+	draw(t: number | null) {
 		if (this.paused) {
 			return
 		}

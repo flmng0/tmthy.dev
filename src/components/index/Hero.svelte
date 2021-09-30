@@ -69,6 +69,8 @@
 		const nav = document.querySelector('.page-nav')
 		headerHeight = nav.getBoundingClientRect().height
 
+		simulation.draw(null)
+
 		const draw: FrameRequestCallback = (t) => {
 			simulation.draw(t)
 			latestAnimationRequest = window.requestAnimationFrame(draw)
