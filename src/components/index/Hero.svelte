@@ -108,12 +108,13 @@
 
 	const avatarOutro = (node: Element, params: any): TransitionConfig => {
 		const transformScale = 1.0 - 1.0 / avatarIntroRatio
-
 		const opacityScale = 1.0 - connectOpacity
+
+		// TODO: Maybe actually calculate the stroke width?
 
 		return {
 			delay: params.delay || 0,
-			duration: params.duration || 1000,
+			duration: params.duration || 2000,
 			easing: params.easing || quintOut,
 
 			css: (t, u) => `

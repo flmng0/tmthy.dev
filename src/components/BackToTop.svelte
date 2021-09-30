@@ -27,6 +27,8 @@
 	button {
 		cursor: pointer;
 
+		font-size: 1rem;
+
 		position: fixed;
 		bottom: 1rem;
 		right: 1rem;
