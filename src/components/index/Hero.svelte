@@ -37,10 +37,13 @@
 	const connectOpacity = 0.3
 
 	let introComplete: boolean = false
+	let outroComplete: boolean = false
 	let simulation: DisperseSimulation = null
 
-	const onIntroComplete = async () => {
-		introComplete = true
+	let latestAnimationRequest: number = null
+
+	const onOutroComplete = async () => {
+		outroComplete = true
 
 		await tick()
 
@@ -66,19 +69,12 @@
 		const nav = document.querySelector('.page-nav')
 		headerHeight = nav.getBoundingClientRect().height
 
-		let latestAnimationRequest: number
 		const draw: FrameRequestCallback = (t) => {
 			simulation.draw(t)
 			latestAnimationRequest = window.requestAnimationFrame(draw)
 		}
 
-		window.requestAnimationFrame(draw)
-
-		return () => {
-			if (latestAnimationRequest) {
-				window.cancelAnimationFrame(latestAnimationRequest)
-			}
-		}
+		latestAnimationRequest = window.requestAnimationFrame(draw)
 	}
 
 	let avatarIntroSize: number
@@ -104,6 +100,12 @@
 
 		avatarIntroSize = Math.min(settings.polygonSize * 1.5, width * 0.95, height * 0.95)
 		avatarIntroRatio = avatarIntroSize / settings.polygonSize
+
+		return () => {
+			if (latestAnimationRequest) {
+				window.cancelAnimationFrame(latestAnimationRequest)
+			}
+		}
 	})
 
 	const avatarOutro = (node: Element, params: any): TransitionConfig => {
@@ -124,26 +126,32 @@
             `,
 		}
 	}
+
+	const outroDuration: number = 2000
 </script>
 
 <div
 	class="hero-container"
 	style="--width: {width}px; --height: {height ? `${height}px` : '100vh'}"
 >
-	{#if !introComplete}
-		<div class="hero--intro" out:avatarOutro>
-			<AvatarIcon
-				on:introend={onIntroComplete}
-				stroke
-				strokeWidth="inherit"
-				animate
-				size="{avatarIntroSize}px"
-			/>
-		</div>
+	{#if !outroComplete}
+		{#if !introComplete}
+			<div class="hero--intro" out:avatarOutro on:outroend={onOutroComplete}>
+				<AvatarIcon
+					on:introend={() => {
+						introComplete = true
+					}}
+					stroke
+					strokeWidth="inherit"
+					animate
+					size="{avatarIntroSize}px"
+				/>
+			</div>
+		{/if}
 	{:else}
-		<div class="hero--main" in:fade>
+		<div class="hero--main">
 			<canvas id="hero--canvas" {width} {height} />
-			<p in:fade={{ delay: 500 }}>
+			<p in:fade>
 				Hi! I'm Tim: <span class="skill"><TextRotator items={skills} /></span>
 			</p>
 		</div>
