@@ -29,6 +29,8 @@
 
 		font-size: 1rem;
 
+		z-index: 10;
+
 		position: fixed;
 		bottom: 1rem;
 		right: 1rem;
