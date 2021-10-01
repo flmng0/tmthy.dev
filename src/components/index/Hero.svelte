@@ -4,8 +4,8 @@
 	import { DisperseSimulation } from '$lib/disperse'
 	import { theme } from '$lib/stores'
 
-	import AvatarIcon from '$components/AvatarIcon.svelte'
-	import TextRotator from '$components/index/TextRotator.svelte'
+	import AvatarIcon from './AvatarIcon.svelte'
+	import TextRotator from './TextRotator.svelte'
 
 	import { onMount, tick } from 'svelte'
 	import type { TransitionConfig } from 'svelte/transition'
