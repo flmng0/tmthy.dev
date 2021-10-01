@@ -24,7 +24,7 @@
 		}
 
 		:root {
-			font-size: 1rem;
+			font-size: 16px;
 
 			--header-height: 5rem;
 			scroll-padding-top: calc(var(--header-height) + 1rem);
@@ -36,6 +36,12 @@
 			--transition-duration: 250ms;
 			--transition-function: ease-out;
 			--transition: var(--transition-duration) var(--transition-function);
+		}
+
+		@media screen and (max-width: 400px) {
+			:root {
+				font-size: 0.04vw; // (16 / 400)vw
+			}
 		}
 
 		body {
