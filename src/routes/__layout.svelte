@@ -40,7 +40,7 @@
 
 		@media screen and (max-width: 400px) {
 			:root {
-				font-size: 0.04vw; // (16 / 400)vw
+				font-size: 4vw; // (16 / 400)vw
 			}
 		}
 
