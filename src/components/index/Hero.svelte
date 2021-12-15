@@ -207,10 +207,10 @@
 			letter-spacing: 0.08em;
 			position: absolute;
 			top: 45%;
-			left: calc(50% + 1em);
+			left: calc(50%);
 			transform: translate(-50%, -50%);
 
-			width: 20ch;
+			width: min(18ch, 100%);
 			min-height: 7.5ch;
 
 			font-size: 2rem;
