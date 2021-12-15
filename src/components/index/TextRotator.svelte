@@ -7,6 +7,7 @@
 	export let transitionType: (node: Element, props: any) => TransitionConfig = fade
 	export let transitionOptions: any = { duration: 750 }
 	export let interval: number = 500
+	export let initialDelay = 0
 
 	let current = 0
 	let showing = false
@@ -23,7 +24,9 @@
 	}
 
 	onMount(() => {
-		showing = true
+		setTimeout(() => {
+			showing = true
+		}, initialDelay)
 	})
 </script>
 

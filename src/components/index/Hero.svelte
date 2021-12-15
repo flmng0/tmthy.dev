@@ -8,7 +8,7 @@
 	import TextRotator from './TextRotator.svelte'
 
 	import { onMount, tick } from 'svelte'
-	import type { TransitionConfig } from 'svelte/transition'
+	import { fly, TransitionConfig } from 'svelte/transition'
 	import { fade } from 'svelte/transition'
 	import { quintOut } from 'svelte/easing'
 
@@ -153,8 +153,15 @@
 	{:else}
 		<div class="hero--main">
 			<canvas id="hero--canvas" {width} {height} />
-			<p in:fade>
-				Hi! I'm Tim: <span class="skill"><TextRotator items={skills} /></span>
+			<div class="text">
+				<p in:fade>Hi! I'm Tim</p>
+				<p in:fade={{ delay: 1000 }} class="skill">
+					<TextRotator initialDelay={1000} interval={1500} items={skills} />
+				</p>
+			</div>
+			<p in:fly={{ delay: 3000, duration: 500, x: -200 }} class="wip-text">
+				This site is currently in development, but you can follow its development on
+				<a href="https://github.com/flmng0/flmng0.github.io">GitHub</a>.
 			</p>
 		</div>
 	{/if}
@@ -195,18 +202,44 @@
 			width: 100%;
 		}
 
-		& > p {
+		& > .text {
+			font-weight: 500;
+			letter-spacing: 0.08em;
 			position: absolute;
-			top: 40%;
-			left: 50%;
+			top: 45%;
+			left: calc(50% + 1em);
 			transform: translate(-50%, -50%);
+
+			width: 20ch;
+			min-height: 7.5ch;
 
 			font-size: 2rem;
 
 			user-select: none;
 		}
 
+		p {
+			margin: 0.5em;
+		}
+
 		.skill {
+			color: var(--color-main);
+		}
+	}
+
+	.wip-text {
+		position: absolute;
+		bottom: 5em;
+		font-size: 1.5em;
+		font-weight: 200;
+
+		left: 50%;
+		transform: translateX(-50%);
+
+		max-width: 30ch;
+		color: var(--color-fg-secondary);
+
+		a {
 			color: var(--color-main);
 		}
 	}

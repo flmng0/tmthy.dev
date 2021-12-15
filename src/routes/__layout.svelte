@@ -74,7 +74,7 @@
 		}
 
 		body[data-theme='light'] {
-			--color-main: hsl(0, 0%, 40%);
+			--color-main: hsl(121, 50%, 55%);
 			--color-accent: hsl(0, 0%, 60%);
 
 			--color-bg-primary: hsl(0, 0%, 90%);

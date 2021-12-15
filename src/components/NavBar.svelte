@@ -6,17 +6,6 @@
 	import { featherIconSize, themes } from '$lib/consts'
 	import { theme } from '$lib/stores'
 
-	interface Page {
-		name: string
-		href: string
-	}
-
-	const pages: Array<Page> = [
-		{ name: 'Home', href: '/' },
-		{ name: 'Projects', href: '/projects' },
-		{ name: 'Sketches', href: '/sketches' },
-	]
-
 	let currentTheme: number = 0
 
 	function toggleTheme() {
@@ -55,15 +44,7 @@
 		</section>
 
 		<!-- Middle -->
-		<section class="header-middle">
-			{#if width > 800}
-				<nav class="desktop-nav">
-					{#each pages as page}
-						<a href={page.href}>{page.name}</a>
-					{/each}
-				</nav>
-			{/if}
-		</section>
+		<section class="header-middle" />
 
 		<!-- Right -->
 		<section class="header-right">
@@ -75,71 +56,11 @@
 			<a href="https://github.com/flmng0" target="_blank">
 				<GithubIcon size={featherIconSize} />
 			</a>
-
-			{#if width <= 800}
-				<div class="mobile-nav">
-					<button
-						class="mobile-nav--button"
-						on:click|stopPropagation={() => {
-							mobileNavOpen = !mobileNavOpen
-						}}
-						bind:this={mobileNavButton}
-					>
-						{#if mobileNavOpen}
-							<XIcon size={featherIconSize} />
-						{:else}
-							<MenuIcon size={featherIconSize} />
-						{/if}
-					</button>
-					{#if mobileNavOpen}
-						<nav class="mobile-nav--container">
-							{#each pages as page}
-								<a href={page.href}>{page.name}</a>
-							{/each}
-						</nav>
-					{/if}
-				</div>
-			{/if}
 		</section>
 	</div>
 </header>
 
 <style lang="scss">
-	.mobile-nav {
-		position: relative;
-
-		// background: var(--color-bg-primary);
-
-		&--button {
-			background: var(--color-bg-primary);
-		}
-
-		&--container {
-			background: var(--color-bg-primary);
-
-			display: flex;
-			flex-flow: column wrap;
-
-			position: absolute;
-			top: 100%;
-			right: 0;
-
-			width: 20ch;
-			box-shadow: 0 2px 8px 0 var(--color-shadow);
-
-			& > a {
-				background: none;
-				margin: 0;
-				padding: 0.8rem 1.2rem;
-
-				&:hover {
-					opacity: 1;
-					background: var(--color-bg-secondary);
-				}
-			}
-		}
-	}
-
 	header {
 		// Just incase
 		z-index: 10;
@@ -150,7 +71,6 @@
 		font-size: 1rem;
 
 		padding: 0 0.5em;
-		margin-bottom: 1rem;
 
 		width: 100%;
 		height: var(--header-height);
@@ -185,10 +105,6 @@
 		&:hover {
 			opacity: 0.6;
 		}
-	}
-
-	nav {
-		display: flex;
 	}
 
 	.inner {

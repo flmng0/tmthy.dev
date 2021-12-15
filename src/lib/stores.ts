@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store'
 
-const themeKey = 'tmthydvs.dev-theme'
+const themeKey = 'theme'
 const initialTheme = () => {
 	if (typeof window !== 'undefined') {
 		if (window.localStorage) {
