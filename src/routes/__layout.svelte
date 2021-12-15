@@ -45,8 +45,7 @@
 		}
 
 		body {
-			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-				Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+			font-family: Roboto, sans-serif;
 
 			margin: 0 auto;
 			padding: 0;

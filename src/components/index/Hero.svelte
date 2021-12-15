@@ -210,7 +210,7 @@
 			left: calc(50%);
 			transform: translate(-50%, -50%);
 
-			width: min(18ch, 100%);
+			width: min(21ch, 100%);
 			min-height: 7.5ch;
 
 			font-size: 2rem;
