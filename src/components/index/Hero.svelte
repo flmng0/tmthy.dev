@@ -230,13 +230,13 @@
 	.wip-text {
 		position: absolute;
 		bottom: 5em;
-		font-size: 1.5em;
+		font-size: 1.2em;
 		font-weight: 200;
 
 		left: 50%;
 		transform: translateX(-50%);
 
-		max-width: 30ch;
+		width: min(100%, 30ch);
 		color: var(--color-fg-secondary);
 
 		a {
