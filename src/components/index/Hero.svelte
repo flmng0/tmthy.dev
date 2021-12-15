@@ -160,7 +160,7 @@
 				</p>
 			</div>
 			<p in:fly={{ delay: 3000, duration: 500, x: -200 }} class="wip-text">
-				This site is currently in development, but you can follow its development on
+				This site is currently in development, but you can follow its progress on
 				<a href="https://github.com/flmng0/flmng0.github.io">GitHub</a>.
 			</p>
 		</div>
@@ -207,10 +207,10 @@
 			letter-spacing: 0.08em;
 			position: absolute;
 			top: 45%;
-			left: calc(50% + 1em);
+			left: calc(50%);
 			transform: translate(-50%, -50%);
 
-			width: 20ch;
+			width: min(18ch, 100%);
 			min-height: 7.5ch;
 
 			font-size: 2rem;
