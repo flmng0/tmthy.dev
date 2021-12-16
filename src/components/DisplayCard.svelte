@@ -40,16 +40,12 @@
 
 		border-radius: 0.75em;
 		overflow: hidden;
-	}
 
-	.card:hover,
-	.card:active {
-		h1 {
-			text-decoration: underline;
-		}
-
-		> img + .text {
-			bottom: 0;
+		&:hover,
+		&:active {
+			> img + .text {
+				bottom: 0;
+			}
 		}
 	}
 
@@ -67,13 +63,17 @@
 		background-color: var(--color-bg-secondary);
 		width: 100%;
 		height: 100%;
+
+		&:hover,
+		&:active {
+			h1 {
+				text-decoration: underline;
+			}
+		}
 	}
 
 	img + .text {
 		height: auto;
-	}
-
-	img + .text {
 		position: absolute;
 		bottom: calc(-1 * var(--desc-height, 0) - var(--vert-padding));
 
