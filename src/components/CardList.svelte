@@ -1,7 +1,3 @@
-<script lang="ts">
-	import DisplayCard from '$components/DisplayCard.svelte'
-</script>
-
 <div class="container">
 	<slot />
 </div>
