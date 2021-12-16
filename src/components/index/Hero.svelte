@@ -10,7 +10,7 @@
 	import { onMount, tick } from 'svelte'
 	import { fly, TransitionConfig } from 'svelte/transition'
 	import { fade } from 'svelte/transition'
-	import { quintOut } from 'svelte/easing'
+	import { cubicOut, quintOut } from 'svelte/easing'
 
 	let text: HTMLParagraphElement = null
 	let headerHeight: number = 0
@@ -118,8 +118,8 @@
 
 		return {
 			delay: params.delay || 0,
-			duration: params.duration || 2000,
-			easing: params.easing || quintOut,
+			duration: params.duration || 1500,
+			easing: params.easing || cubicOut,
 
 			css: (t, u) => `
                 stroke-width: ${1.0 - u * 0.7};
@@ -128,8 +128,6 @@
             `,
 		}
 	}
-
-	const outroDuration: number = 2000
 </script>
 
 <div
@@ -154,15 +152,11 @@
 		<div class="hero--main">
 			<canvas id="hero--canvas" {width} {height} />
 			<div class="text">
-				<p in:fade>Hi! I'm Tim</p>
-				<p in:fade={{ delay: 1000 }} class="skill">
+				<p in:fade={{ delay: 1000 }}>Hi! I'm Tim.</p>
+				<p in:fade={{ delay: 2000 }} class="skill">
 					<TextRotator initialDelay={1000} interval={1500} items={skills} />
 				</p>
 			</div>
-			<p in:fly={{ delay: 3000, duration: 500, x: -200 }} class="wip-text">
-				This site is currently in development, but you can follow its progress on
-				<a href="https://github.com/flmng0/flmng0.github.io">GitHub</a>.
-			</p>
 		</div>
 	{/if}
 </div>
@@ -223,23 +217,6 @@
 		}
 
 		.skill {
-			color: var(--color-main);
-		}
-	}
-
-	.wip-text {
-		position: absolute;
-		bottom: 5em;
-		font-size: 1.2em;
-		font-weight: 200;
-
-		left: 50%;
-		transform: translateX(-50%);
-
-		width: min(100%, 30ch);
-		color: var(--color-fg-secondary);
-
-		a {
 			color: var(--color-main);
 		}
 	}
