@@ -1,9 +1,18 @@
 <script lang="ts">
-	export let href: string
+	import { onMount, SvelteComponent } from 'svelte'
+	import { GithubIcon, GlobeIcon } from 'svelte-feather-icons'
+
+	export let href: string = null
+	export let links: Record<string, string> = null
 	export let name: string
 	export let description: string
 
 	export let imageSrc: string = null
+
+	const linkIcons: Record<string, typeof SvelteComponent> = {
+		github: GithubIcon,
+		web: GlobeIcon,
+	}
 
 	function loaded(node: HTMLElement) {
 		const setHeight = (node: HTMLElement) => {
@@ -18,16 +27,42 @@
 
 		setHeight(node)
 	}
+
+	onMount(() => {
+		// If there is only one link, set it as the main header text link
+		// as-well.
+		if (href == null) {
+			const values = Object.values(links)
+			if (values.length == 1) {
+				href = values[0]
+			}
+		}
+	})
 </script>
 
 <div use:loaded class="card">
 	{#if imageSrc}
 		<img src={imageSrc} alt="Image of {name}" />
 	{/if}
-	<a {href} class="text">
-		<h1>{name}</h1>
+	<div class="text">
+		<header>
+			{#if href}
+				<a {href}>
+					<h1>{name}</h1>
+				</a>
+			{:else}
+				<h1>{name}</h1>
+			{/if}
+			{#if links}
+				{#each Object.entries(links).filter(([type]) => !!linkIcons[type]) as [type, href]}
+					<a {href}>
+						<svelte:component this={linkIcons[type]} size="1.5x" />
+					</a>
+				{/each}
+			{/if}
+		</header>
 		<p>{description}</p>
-	</a>
+	</div>
 </div>
 
 <style lang="scss">
@@ -49,14 +84,18 @@
 		}
 	}
 
+	a:hover {
+		text-decoration: none;
+	}
+
 	img {
 		width: 100%;
 		margin: 0;
+		background: #f8f8f2;
 	}
 
 	.text {
 		display: block;
-		text-decoration: none;
 
 		--vert-padding: 2em;
 		padding: 1em var(--vert-padding);
@@ -64,10 +103,32 @@
 		width: 100%;
 		height: 100%;
 
-		&:hover,
-		&:active {
+		header {
+			display: flex;
+			flex-flow: row nowrap;
+			width: 100%;
+			gap: 0.75em;
+
 			h1 {
-				text-decoration: underline;
+				margin: 0.5em 0;
+			}
+
+			> :first-child {
+				flex-grow: 1;
+			}
+
+			> :not(:first-child) {
+				line-height: 1em;
+				margin: 1em 0;
+				padding: 0.7em 0.8em;
+				height: min-content;
+				border-radius: 0.5em;
+				background-color: var(--color-bg-primary);
+
+				&:hover,
+				&:active {
+					filter: brightness(1.2);
+				}
 			}
 		}
 	}
