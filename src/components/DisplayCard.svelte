@@ -55,7 +55,7 @@
 			{/if}
 			{#if links}
 				{#each Object.entries(links).filter(([type]) => !!linkIcons[type]) as [type, href]}
-					<a {href}>
+					<a {href} target="_blank">
 						<svelte:component this={linkIcons[type]} size="1.5x" />
 					</a>
 				{/each}
