@@ -1,22 +1,23 @@
 <script lang="ts">
+	import rawProjects from '$data/projects.json'
+
 	import CardList from '$components/CardList.svelte'
 	import DisplayCard from '$components/DisplayCard.svelte'
+
+	type Project = {
+		links: Record<string, string>
+		name: string
+		description: string
+	}
+
+	const projects = rawProjects as Project[]
 </script>
 
 <main>
 	<CardList>
-		<DisplayCard
-			href="#"
-			name="Card Test"
-			description="This is a test to make sure the styling of the cards look somewhat decent"
-		/>
-
-		<DisplayCard
-			href="#"
-			name="Card With Image Test"
-			description="This is a test to make sure the styling of the cards with images in them look somewhat decent"
-			imageSrc="https://picsum.photos/512/512"
-		/>
+		{#each projects as project}
+			<DisplayCard href={project.links['web']} {...project} />
+		{/each}
 	</CardList>
 </main>
 
