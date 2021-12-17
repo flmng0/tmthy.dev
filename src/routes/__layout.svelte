@@ -86,7 +86,7 @@
 			--color-fg-primary: hsl(0, 0%, 10%);
 			--color-fg-secondary: hsl(0, 0%, 20%);
 
-			--color-shadow: hsla(0, 0%, 15%, 60%);
+			--color-shadow: hsla(0, 0%, 15%, 30%);
 
 			::selection {
 				background-color: hsl(121, 32%, 71%);
