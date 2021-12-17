@@ -70,6 +70,10 @@
 			--color-fg-secondary: hsl(0, 0%, 80%);
 
 			--color-shadow: hsla(0, 0%, 0%, 100%);
+
+			::selection {
+				background-color: hsl(325, 45%, 60%);
+			}
 		}
 
 		body[data-theme='light'] {
@@ -83,18 +87,19 @@
 			--color-fg-secondary: hsl(0, 0%, 20%);
 
 			--color-shadow: hsla(0, 0%, 15%, 60%);
+
+			::selection {
+				background-color: hsl(121, 32%, 71%);
+			}
 		}
 
 		a {
 			color: currentColor;
 		}
 
-		body[data-theme='dark'] ::selection {
-			background-color: hsl(325, 45%, 60%);
-		}
-
-		body[data-theme='light'] ::selection {
-			background-color: hsl(121, 32%, 71%);
+		body > main {
+			width: min(100%, 60rem);
+			margin: 1em auto;
 		}
 	}
 </style>

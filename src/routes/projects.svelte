@@ -20,10 +20,3 @@
 		{/each}
 	</CardList>
 </main>
-
-<style lang="scss">
-	main {
-		width: min(100%, 60rem);
-		margin: 1em auto;
-	}
-</style>
