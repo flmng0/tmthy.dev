@@ -1,10 +1,25 @@
+<script lang="ts" context="module">
+	export type Page = {
+		name: string
+		href: string
+	}
+</script>
+
 <script lang="ts">
-	import { GithubIcon, MenuIcon, MoonIcon, SunIcon, XIcon } from 'svelte-feather-icons'
+	import { GithubIcon, MoonIcon, SunIcon } from 'svelte-feather-icons'
 	import { onMount, SvelteComponent } from 'svelte'
 	import { slide } from 'svelte/transition'
 
 	import { featherIconSize, themes } from '$lib/consts'
 	import { theme } from '$lib/stores'
+	import MobileNav from './MobileNav.svelte'
+	import { page } from '$app/stores'
+
+	const pages: Page[] = [
+		{ name: 'Home', href: '/' },
+		{ name: 'Projects', href: '/projects' },
+		{ name: 'Sketches', href: '/sketches' },
+	]
 
 	let currentTheme: number = 0
 
@@ -23,17 +38,9 @@
 
 	let width: number
 
-	let mobileNavButton: Element
-	let mobileNavOpen: boolean = false
-
-	const maybeCloseMobileNav = (e) => {
-		if (e.target != mobileNavButton) {
-			mobileNavOpen = false
-		}
-	}
+	const minMobileWidth = 800
 </script>
 
-<svelte:body on:click={maybeCloseMobileNav} />
 <svelte:window bind:innerWidth={width} />
 
 <header class="page-nav">
@@ -44,7 +51,13 @@
 		</section>
 
 		<!-- Middle -->
-		<section class="header-middle" />
+		<section class="header-middle">
+			{#if width > minMobileWidth}
+				{#each pages as p}
+					<a href={p.href} aria-current={$page.path == p.href || null}>{p.name}</a>
+				{/each}
+			{/if}
+		</section>
 
 		<!-- Right -->
 		<section class="header-right">
@@ -56,6 +69,10 @@
 			<a href="https://github.com/flmng0" target="_blank">
 				<GithubIcon size={featherIconSize} />
 			</a>
+
+			{#if width <= minMobileWidth}
+				<MobileNav {pages} />
+			{/if}
 		</section>
 	</div>
 </header>
@@ -78,32 +95,42 @@
 		--header-bg: var(--color-bg-secondary);
 
 		background-color: var(--color-bg-secondary);
+		box-shadow: 0 0 8px 2px var(--color-shadow);
+	}
+
+	section > :global(*) {
+		margin: 0 0.5em;
 	}
 
 	h1 {
 		font-size: 1.25rem;
 	}
 
-	a {
-		text-decoration: none;
-	}
-
 	a,
 	button {
+		cursor: pointer;
+
 		border: 0;
 		font-size: inherit;
 
-		line-height: normal;
 		padding: 0.5em 0.6em;
-		margin: 0 0.5em;
+		line-height: normal;
 
 		background-color: var(--header-bg, inherit);
 		color: currentColor;
-		cursor: pointer;
 
 		transition: opacity 100ms var(--transition-function);
 		&:hover {
 			opacity: 0.6;
+		}
+	}
+
+	a {
+		text-decoration: none;
+		border-bottom: thin solid transparent;
+
+		&[aria-current] {
+			border-color: currentColor;
 		}
 	}
 
