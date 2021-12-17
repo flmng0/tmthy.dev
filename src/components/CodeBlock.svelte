@@ -6,16 +6,18 @@
 	export let dataSrc: string
 	export let language: string
 
-	let codeElem: Element
+	export let height = null
 
-	let test = 0
+	function loaded(node: HTMLElement) {
+		prism.highlightElement(node, true)
 
-	onMount(() => {
-		prism.highlightElement(codeElem)
-	})
+		prism.hooks.add('complete', () => {
+			height = getComputedStyle(node).height
+		})
+	}
 </script>
 
-<pre class="language-{language}" bind:this={codeElem} data-src={dataSrc} />
+<pre use:loaded class="language-{language}" data-src={dataSrc} />
 
 <style global lang="scss">
 	body,
