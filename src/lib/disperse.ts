@@ -1,3 +1,6 @@
+// NOTE: Don't forget to change the reference in the Markdown for the disperse
+// sketch, if this moves.
+
 // TODO: Move Point to math? It's only an interface though...
 import { Vector } from './math'
 import { Point } from './types'
