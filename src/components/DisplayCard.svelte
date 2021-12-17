@@ -14,13 +14,16 @@
 		web: GlobeIcon,
 	}
 
-	function loaded(node: HTMLElement) {
-		const setHeight = (node: HTMLElement) => {
-			const desc = node.querySelector('.text > p')
+	const setHeight = (node: HTMLElement) => {
+		const desc = node.querySelector('.text > p')
+
+		if (desc) {
 			const height = getComputedStyle(desc).height
 			node.style.setProperty('--desc-height', height)
 		}
+	}
 
+	function loaded(node: HTMLElement) {
 		window.addEventListener('resize', () => {
 			setHeight(node)
 		})
@@ -28,7 +31,9 @@
 		setHeight(node)
 	}
 
-	onMount(() => {
+	let container: HTMLDivElement
+
+	onMount(async () => {
 		// If there is only one link, set it as the main header text link
 		// as-well.
 		if (href == null) {
@@ -37,10 +42,12 @@
 				href = values[0]
 			}
 		}
+
+		setHeight(container)
 	})
 </script>
 
-<div use:loaded class="card">
+<div use:loaded bind:this={container} class="card">
 	{#if imageSrc}
 		<img src={imageSrc} alt="Image of {name}" />
 	{/if}
