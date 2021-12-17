@@ -9,6 +9,8 @@
     sketches and projects onto the same page.
 -->
 <script lang="ts" context="module">
+	import type { Load } from '@sveltejs/kit'
+
 	export type Sketch = {
 		id: string
 		name: string
@@ -16,7 +18,7 @@
 		imagePath?: string
 	}
 
-	export async function load({ fetch }) {
+	export const load: Load = async ({ fetch }) => {
 		const request = await fetch('/api/sketches.json')
 
 		if (request.ok) {
