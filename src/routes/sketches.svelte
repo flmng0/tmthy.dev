@@ -40,6 +40,7 @@
 <script lang="ts">
 	import CardList from '$components/CardList.svelte'
 	import DisplayCard from '$components/DisplayCard.svelte'
+	import { siteName } from '$lib/consts'
 
 	export let sketches: Array<Sketch>
 
@@ -50,6 +51,10 @@
 		imageSrc: sketch.imagePath,
 	})
 </script>
+
+<svelte:head>
+	<title>Sketch Index | {siteName}</title>
+</svelte:head>
 
 <main>
 	<CardList>

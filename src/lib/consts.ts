@@ -3,7 +3,7 @@ import { SvelteComponent } from 'svelte'
 
 import { MoonIcon, SunIcon } from 'svelte-feather-icons'
 
-export const siteName: string = 'tmthydvs'
+export const siteName: string = 'tmthydvs.dev'
 
 interface ThemeButton {
 	name: string

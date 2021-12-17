@@ -3,6 +3,7 @@
 
 	import CardList from '$components/CardList.svelte'
 	import DisplayCard from '$components/DisplayCard.svelte'
+	import { siteName } from '$lib/consts'
 
 	type Project = {
 		links: Record<string, string>
@@ -12,6 +13,10 @@
 
 	const projects = rawProjects as Project[]
 </script>
+
+<svelte:head>
+	<title>Project Index | {siteName}</title>
+</svelte:head>
 
 <main>
 	<CardList>

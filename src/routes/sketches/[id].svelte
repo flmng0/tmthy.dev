@@ -32,6 +32,7 @@
 
 	import CodeBlock from '$components/CodeBlock.svelte'
 	import { onMount } from 'svelte'
+	import { siteName } from '$lib/consts'
 
 	export let name: string
 	export let brief: string
@@ -62,6 +63,10 @@
 		}
 	})
 </script>
+
+<svelte:head>
+	<title>{name} - Sketch | {siteName}</title>
+</svelte:head>
 
 <main>
 	<canvas id="sketch-canvas" width="800" height="800" />
