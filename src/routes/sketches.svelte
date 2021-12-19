@@ -60,16 +60,18 @@
 </svelte:head>
 
 <main>
-	<h1>Sketch Index</h1>
-	<p>
-		On this site, "sketch" is defined as a small creative coding project, that I either made for
-		fun, or are used in a project. The definition draws similarities to sketches used in art.
-		They are rough ideas, which become fully fledged after refining.
-	</p>
-	<p>
-		Listed below are sketches; some devised for use throughout the portfolio, and others as a
-		creative outlet.
-	</p>
+	<div class="text">
+		<h1>Sketch Index</h1>
+		<p>
+			On this site, "sketch" is defined as a small creative coding project, that I either made
+			for fun, or are used in a project. The definition draws similarities to sketches used in
+			art. They are rough ideas, which become fully fledged after refining.
+		</p>
+		<p>
+			Listed below are sketches; some devised for use throughout the portfolio, and others as
+			a creative outlet.
+		</p>
+	</div>
 
 	<CardList>
 		{#each sketches as sketch}
@@ -79,6 +81,9 @@
 </main>
 
 <style lang="scss">
+	.text {
+		padding: 0 2em;
+	}
 	p {
 		font-size: 1.2rem;
 		letter-spacing: 0.05em;
