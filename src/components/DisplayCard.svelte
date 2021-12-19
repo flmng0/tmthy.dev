@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, SvelteComponent } from 'svelte'
-	import { GithubIcon, GlobeIcon } from 'svelte-feather-icons'
+	import { CodeIcon, GithubIcon, GlobeIcon } from 'svelte-feather-icons'
 
 	export let href: string = null
 	export let links: Record<string, string> = null
@@ -12,6 +12,7 @@
 	const linkIcons: Record<string, typeof SvelteComponent> = {
 		github: GithubIcon,
 		web: GlobeIcon,
+		source: CodeIcon,
 	}
 
 	const setHeight = (node: HTMLElement) => {
