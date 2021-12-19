@@ -95,7 +95,6 @@
 	}
 
 	img + .text {
-		height: auto;
 		position: absolute;
 		top: calc(100% - var(--header-height) - 1em);
 
