@@ -88,14 +88,13 @@
 		&:active {
 			> img + .text {
 				top: 0;
-				max-height: 100%;
-				overflow: scroll;
 			}
 		}
 	}
 
 	img + .text {
 		position: absolute;
+
 		top: calc(100% - var(--header-height) - 1em);
 
 		transition: top 150ms ease-out;
@@ -114,11 +113,21 @@
 	.text {
 		display: block;
 
-		--vert-padding: 2em;
-		padding: 1em var(--vert-padding);
+		--vert-padding: 1em;
+		padding: var(--vert-padding) 1em;
 		background-color: var(--color-bg-secondary);
 		width: 100%;
 		height: 100%;
+
+		header,
+		p {
+			padding: 0 1em;
+		}
+
+		p {
+			max-height: calc(100% - var(--header-height) - var(--vert-padding));
+			overflow-y: auto;
+		}
 
 		header {
 			display: flex;
