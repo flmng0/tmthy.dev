@@ -16,11 +16,11 @@
 	}
 
 	const setHeight = (node: HTMLElement) => {
-		const desc = node.querySelector('.text > p')
+		const header = node.querySelector('.text > header')
 
-		if (desc) {
-			const height = getComputedStyle(desc).height
-			node.style.setProperty('--desc-height', height)
+		if (header) {
+			const height = getComputedStyle(header).height
+			node.style.setProperty('--header-height', height)
 		}
 	}
 
@@ -87,9 +87,19 @@
 		&:hover,
 		&:active {
 			> img + .text {
-				bottom: 0;
+				top: 0;
+				max-height: 100%;
+				overflow: scroll;
 			}
 		}
+	}
+
+	img + .text {
+		height: auto;
+		position: absolute;
+		top: calc(100% - var(--header-height) - 1em);
+
+		transition: top 150ms ease-out;
 	}
 
 	a:hover {
@@ -139,13 +149,5 @@
 				}
 			}
 		}
-	}
-
-	img + .text {
-		height: auto;
-		position: absolute;
-		bottom: calc(-1 * var(--desc-height, 0) - var(--vert-padding));
-
-		transition: bottom 150ms ease-out;
 	}
 </style>
