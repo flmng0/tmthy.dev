@@ -5,6 +5,7 @@
 		"baseUrl": ".",
 		"paths": {
             "$app/*": [".svelte-kit/dev/runtime/app/*", ".svelte-kit/build/runtime/app/*"],
+            "$routes/*": ["src/routes/*"],
             "$components/*": ["src/components/*"],
             "$data/*": ["src/data/*"],
 			"$lib/*": ["src/lib/*"],

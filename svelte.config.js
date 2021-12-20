@@ -1,7 +1,7 @@
-import adapter from '@sveltejs/adapter-static'
+import adapter from "@sveltejs/adapter-static";
 
-import preprocess from 'svelte-preprocess'
-import path from 'path'
+import preprocess from "svelte-preprocess";
+import path from "path";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -13,18 +13,19 @@ const config = {
 
 	kit: {
 		adapter: adapter({
-			pages: 'out',
+			pages: "out",
 		}),
-		target: 'body',
+		target: "body",
 		vite: {
 			resolve: {
 				alias: {
-					$components: path.resolve('./src/components'),
-					$data: path.resolve('./src/data'),
+					$routes: path.resolve("./src/routes"),
+					$components: path.resolve("./src/components"),
+					$data: path.resolve("./src/data"),
 				},
 			},
 		},
 	},
-}
+};
 
-export default config
+export default config;
