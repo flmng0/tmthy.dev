@@ -136,7 +136,7 @@
 >
 	{#if !outroComplete}
 		{#if !introComplete}
-			<div class="hero--intro" out:avatarOutro on:outroend={onOutroComplete}>
+			<div class="hero--intro" out:avatarOutro|local on:outroend={onOutroComplete}>
 				<AvatarIcon
 					on:introend={() => {
 						introComplete = true
