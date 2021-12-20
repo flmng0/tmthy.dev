@@ -95,13 +95,9 @@
 	img + .text {
 		position: absolute;
 
-		top: calc(100% - var(--header-height) - 1em);
+		top: calc(100% - var(--header-height) - var(--vert-padding));
 
 		transition: top 150ms ease-out;
-	}
-
-	a:hover {
-		text-decoration: none;
 	}
 
 	img {
@@ -125,6 +121,8 @@
 		}
 
 		p {
+			// Makes overflow-y scroll when the paragraph text is longer than
+			// the reamining space after the header.
 			max-height: calc(100% - var(--header-height) - var(--vert-padding));
 			overflow-y: auto;
 		}

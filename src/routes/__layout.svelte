@@ -95,6 +95,10 @@
 
 		a {
 			color: currentColor;
+
+			&:hover {
+				text-decoration: none;
+			}
 		}
 
 		body > main {
