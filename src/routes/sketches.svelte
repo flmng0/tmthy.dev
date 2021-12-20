@@ -9,40 +9,40 @@
     sketches and projects onto the same page.
 -->
 <script lang="ts" context="module">
-	import type { Load } from '@sveltejs/kit'
+	import type { Load } from "@sveltejs/kit";
 
 	export type Sketch = {
-		id: string
-		name: string
-		brief?: string
-		imagePath?: string
-	}
+		id: string;
+		name: string;
+		brief?: string;
+		imagePath?: string;
+	};
 
 	export const load: Load = async ({ fetch }) => {
-		const request = await fetch('/api/sketches.json')
+		const request = await fetch("/api/sketches.json");
 
 		if (request.ok) {
-			const data = await request.json()
+			const data = await request.json();
 			return {
 				props: {
 					...data,
 				},
-			}
+			};
 		}
 
 		return {
 			status: request.status,
-			error: new Error('failed to load sketch directory'),
-		}
-	}
+			error: new Error("failed to load sketch directory"),
+		};
+	};
 </script>
 
 <script lang="ts">
-	import CardList from '$components/CardList.svelte'
-	import DisplayCard from '$components/DisplayCard.svelte'
-	import { siteName } from '$lib/consts'
+	import CardList from "$components/CardList.svelte";
+	import DisplayCard from "$components/DisplayCard.svelte";
+	import { siteName } from "$lib/consts";
 
-	export let sketches: Array<Sketch>
+	export let sketches: Array<Sketch>;
 
 	const cardProps = (sketch: Sketch): any => ({
 		name: sketch.name,
@@ -52,7 +52,7 @@
 		links: {
 			source: `/sketches/${sketch.id}.js`,
 		},
-	})
+	});
 </script>
 
 <svelte:head>

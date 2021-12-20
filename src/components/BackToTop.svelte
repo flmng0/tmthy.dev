@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
-	import { fade } from 'svelte/transition'
-	import { ArrowUpIcon } from 'svelte-feather-icons'
+	import { onMount } from "svelte";
+	import { fade } from "svelte/transition";
+	import { ArrowUpIcon } from "svelte-feather-icons";
 
-	import { featherIconSize } from '$lib/consts'
+	import { featherIconSize } from "$lib/consts";
 
-	export let minFromTop: number = 50
-	export let duration: number = 250
+	export let minFromTop: number = 50;
+	export let duration: number = 250;
 
-	let y: number
+	let y: number;
 
 	function gotoTop() {
-		document.body.scrollIntoView()
+		document.body.scrollIntoView();
 	}
 </script>
 

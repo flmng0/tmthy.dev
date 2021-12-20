@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { MenuIcon } from 'svelte-feather-icons'
-	import type { Page } from './NavBar.svelte'
+	import { MenuIcon } from "svelte-feather-icons";
+	import type { Page } from "./NavBar.svelte";
 
-	export let pages: Page[]
+	export let pages: Page[];
 </script>
 
 <div class="mobile-nav">

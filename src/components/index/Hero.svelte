@@ -1,26 +1,26 @@
 <script lang="ts">
-	import { avatar } from '$lib/consts'
-	import type { Settings } from '$lib/disperse'
-	import { DisperseSimulation } from '$lib/disperse'
-	import { theme } from '$lib/stores'
+	import { avatar } from "$lib/consts";
+	import type { Settings } from "$lib/disperse";
+	import { DisperseSimulation } from "$lib/disperse";
+	import { theme } from "$lib/stores";
 
-	import AvatarIcon from './AvatarIcon.svelte'
-	import TextRotator from './TextRotator.svelte'
+	import AvatarIcon from "./AvatarIcon.svelte";
+	import TextRotator from "./TextRotator.svelte";
 
-	import { onMount, tick } from 'svelte'
-	import { fly, TransitionConfig } from 'svelte/transition'
-	import { fade } from 'svelte/transition'
-	import { cubicOut, quintOut } from 'svelte/easing'
+	import { onMount, tick } from "svelte";
+	import { fly, TransitionConfig } from "svelte/transition";
+	import { fade } from "svelte/transition";
+	import { cubicOut, quintOut } from "svelte/easing";
 
-	let text: HTMLParagraphElement = null
-	let headerHeight: number = 0
+	let text: HTMLParagraphElement = null;
+	let headerHeight: number = 0;
 
 	const skills: Array<string> = [
-		'Web Developer',
-		'Software Engineer',
-		'Graphical Designer',
+		"Web Developer",
+		"Software Engineer",
+		"Graphical Designer",
 		// 'Game Developer' ... Put this back when I actually release one.
-	]
+	];
 
 	const settings: Settings = {
 		minRepelDist: 100,
@@ -31,88 +31,88 @@
 
 		minConnectWidth: 2.0,
 		polygonSize: 512,
-	}
+	};
 
-	let width: number, height: number
-	const connectOpacity = 0.3
+	let width: number, height: number;
+	const connectOpacity = 0.3;
 
-	let introComplete: boolean = false
-	let outroComplete: boolean = false
-	let simulation: DisperseSimulation = null
+	let introComplete: boolean = false;
+	let outroComplete: boolean = false;
+	let simulation: DisperseSimulation = null;
 
-	let latestAnimationRequest: number = null
+	let latestAnimationRequest: number = null;
 
 	const onOutroComplete = async () => {
-		outroComplete = true
+		outroComplete = true;
 
-		await tick()
+		await tick();
 
-		const canvas: HTMLCanvasElement = document.querySelector('canvas#hero--canvas')
+		const canvas: HTMLCanvasElement = document.querySelector("canvas#hero--canvas");
 
-		simulation = new DisperseSimulation(canvas, avatar, settings)
+		simulation = new DisperseSimulation(canvas, avatar, settings);
 
 		theme.subscribe((theme) => {
 			switch (theme) {
-				case 'dark': {
-					simulation.pointStyle = '#0000'
-					simulation.connectStyle = `rgba(255, 255, 255, ${connectOpacity})`
-					break
+				case "dark": {
+					simulation.pointStyle = "#0000";
+					simulation.connectStyle = `rgba(255, 255, 255, ${connectOpacity})`;
+					break;
 				}
-				case 'light': {
-					simulation.pointStyle = '#0000'
-					simulation.connectStyle = `rgba(0, 0, 0, ${connectOpacity})`
-					break
+				case "light": {
+					simulation.pointStyle = "#0000";
+					simulation.connectStyle = `rgba(0, 0, 0, ${connectOpacity})`;
+					break;
 				}
 			}
-		})
+		});
 
-		const nav = document.querySelector('.page-nav')
-		headerHeight = nav.getBoundingClientRect().height
+		const nav = document.querySelector(".page-nav");
+		headerHeight = nav.getBoundingClientRect().height;
 
-		simulation.draw(null)
+		simulation.draw(null);
 
 		const draw: FrameRequestCallback = (t) => {
-			simulation.draw(t)
-			latestAnimationRequest = window.requestAnimationFrame(draw)
-		}
+			simulation.draw(t);
+			latestAnimationRequest = window.requestAnimationFrame(draw);
+		};
 
-		latestAnimationRequest = window.requestAnimationFrame(draw)
-	}
+		latestAnimationRequest = window.requestAnimationFrame(draw);
+	};
 
-	let avatarIntroSize: number
-	let avatarIntroRatio: number
+	let avatarIntroSize: number;
+	let avatarIntroRatio: number;
 
 	onMount(() => {
-		const nav = document.querySelector('.page-nav')
-		const navHeight = nav.getBoundingClientRect().height
+		const nav = document.querySelector(".page-nav");
+		const navHeight = nav.getBoundingClientRect().height;
 
-		width = document.body.clientWidth
-		height = window.innerHeight - navHeight
+		width = document.body.clientWidth;
+		height = window.innerHeight - navHeight;
 
-		settings.polygonSize = Math.min(512, width * 0.8, height * 0.8)
+		settings.polygonSize = Math.min(512, width * 0.8, height * 0.8);
 
-		window.addEventListener('resize', (e) => {
-			width = document.body.clientWidth
-			height = window.innerHeight - navHeight
+		window.addEventListener("resize", (e) => {
+			width = document.body.clientWidth;
+			height = window.innerHeight - navHeight;
 
 			if (simulation) {
-				simulation.settings.polygonSize = Math.min(512, width * 0.8, height * 0.8)
+				simulation.settings.polygonSize = Math.min(512, width * 0.8, height * 0.8);
 			}
-		})
+		});
 
-		avatarIntroSize = Math.min(settings.polygonSize * 1.5, width * 0.95, height * 0.95)
-		avatarIntroRatio = avatarIntroSize / settings.polygonSize
+		avatarIntroSize = Math.min(settings.polygonSize * 1.5, width * 0.95, height * 0.95);
+		avatarIntroRatio = avatarIntroSize / settings.polygonSize;
 
 		return () => {
 			if (latestAnimationRequest) {
-				window.cancelAnimationFrame(latestAnimationRequest)
+				window.cancelAnimationFrame(latestAnimationRequest);
 			}
-		}
-	})
+		};
+	});
 
 	const avatarOutro = (node: Element, params: any): TransitionConfig => {
-		const transformScale = 1.0 - 1.0 / avatarIntroRatio
-		const opacityScale = 1.0 - connectOpacity
+		const transformScale = 1.0 - 1.0 / avatarIntroRatio;
+		const opacityScale = 1.0 - connectOpacity;
 
 		// TODO: Maybe actually calculate the stroke width?
 
@@ -126,8 +126,8 @@
                 transform: scale(${1.0 - u * transformScale});
                 opacity: ${1.0 - u * opacityScale};
             `,
-		}
-	}
+		};
+	};
 </script>
 
 <div
@@ -139,7 +139,7 @@
 			<div class="hero--intro" out:avatarOutro|local on:outroend={onOutroComplete}>
 				<AvatarIcon
 					on:introend={() => {
-						introComplete = true
+						introComplete = true;
 					}}
 					stroke
 					strokeWidth="inherit"
@@ -162,11 +162,11 @@
 </div>
 
 <style lang="scss">
-	:global(body[--data-theme='dark']) .hero--intro {
+	:global(body[--data-theme="dark"]) .hero--intro {
 		color: white;
 	}
 
-	:global(body[--data-theme='light']) .hero--intro {
+	:global(body[--data-theme="light"]) .hero--intro {
 		color: black;
 	}
 

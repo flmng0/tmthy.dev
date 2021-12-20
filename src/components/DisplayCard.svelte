@@ -1,51 +1,51 @@
 <script lang="ts">
-	import { onMount, SvelteComponent } from 'svelte'
-	import { CodeIcon, GithubIcon, GlobeIcon } from 'svelte-feather-icons'
+	import { onMount, SvelteComponent } from "svelte";
+	import { CodeIcon, GithubIcon, GlobeIcon } from "svelte-feather-icons";
 
-	export let href: string = null
-	export let links: Record<string, string> = null
-	export let name: string
-	export let description: string
+	export let href: string = null;
+	export let links: Record<string, string> = null;
+	export let name: string;
+	export let description: string;
 
-	export let imageSrc: string = null
+	export let imageSrc: string = null;
 
 	const linkIcons: Record<string, typeof SvelteComponent> = {
 		github: GithubIcon,
 		web: GlobeIcon,
 		source: CodeIcon,
-	}
+	};
 
 	const setHeight = (node: HTMLElement) => {
-		const header = node.querySelector('.text > header')
+		const header = node.querySelector(".text > header");
 
 		if (header) {
-			const height = getComputedStyle(header).height
-			node.style.setProperty('--header-height', height)
+			const height = getComputedStyle(header).height;
+			node.style.setProperty("--header-height", height);
 		}
-	}
+	};
 
 	function loaded(node: HTMLElement) {
-		window.addEventListener('resize', () => {
-			setHeight(node)
-		})
+		window.addEventListener("resize", () => {
+			setHeight(node);
+		});
 
-		setHeight(node)
+		setHeight(node);
 	}
 
-	let container: HTMLDivElement
+	let container: HTMLDivElement;
 
 	onMount(async () => {
 		// If there is only one link, set it as the main header text link
 		// as-well.
 		if (href == null) {
-			const values = Object.values(links)
+			const values = Object.values(links);
 			if (values.length == 1) {
-				href = values[0]
+				href = values[0];
 			}
 		}
 
-		setHeight(container)
-	})
+		setHeight(container);
+	});
 </script>
 
 <div use:loaded bind:this={container} class="card">

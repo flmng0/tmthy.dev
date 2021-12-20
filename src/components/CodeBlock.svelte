@@ -1,19 +1,19 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
-	import { slide } from 'svelte/transition'
-	import prism from 'prismjs'
+	import { onMount } from "svelte";
+	import { slide } from "svelte/transition";
+	import prism from "prismjs";
 
-	export let dataSrc: string
-	export let language: string
+	export let dataSrc: string;
+	export let language: string;
 
-	export let height = null
+	export let height = null;
 
 	function loaded(node: HTMLElement) {
-		prism.highlightElement(node, true)
+		prism.highlightElement(node, true);
 
-		prism.hooks.add('complete', () => {
-			height = getComputedStyle(node).height
-		})
+		prism.hooks.add("complete", () => {
+			height = getComputedStyle(node).height;
+		});
 	}
 </script>
 
@@ -21,8 +21,8 @@
 
 <style global lang="scss">
 	body,
-	body[data-theme='dark'] {
-		pre[class*='language-'] {
+	body[data-theme="dark"] {
+		pre[class*="language-"] {
 			--background: #32302f;
 			--base: #d4be98;
 			--comment: #928374;
@@ -39,8 +39,8 @@
 	}
 	// This is a comment
 
-	body[data-theme='light'] {
-		pre[class*='language-'] {
+	body[data-theme="light"] {
+		pre[class*="language-"] {
 			--background: #f5f5f5;
 			--base: #654735;
 			--comment: #928374;
@@ -56,7 +56,7 @@
 		}
 	}
 
-	pre[class*='language-'] {
+	pre[class*="language-"] {
 		--important: var(--string);
 
 		overflow: auto;
@@ -64,9 +64,9 @@
 		margin: 0;
 	}
 
-	code[class*='language-'],
-	pre[class*='language-'] {
-		font-family: Fira Code, Consolas, 'Courier New', monospace;
+	code[class*="language-"],
+	pre[class*="language-"] {
+		font-family: Fira Code, Consolas, "Courier New", monospace;
 		font-size: 0.9rem;
 
 		color: var(--base);
@@ -82,8 +82,8 @@
 		hyphens: none;
 	}
 
-	:not(pre) > code[class*='language-'],
-	pre[class*='language-'] {
+	:not(pre) > code[class*="language-"],
+	pre[class*="language-"] {
 		background: var(--background);
 	}
 

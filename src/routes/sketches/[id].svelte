@@ -3,65 +3,65 @@
     and src/routes/api/sketches(/[id])?.json.ts.
 -->
 <script lang="ts" context="module">
-	import type { Load } from '@sveltejs/kit'
+	import type { Load } from "@sveltejs/kit";
 
 	export const load: Load = async ({ page, fetch }) => {
-		const { id } = page.params
+		const { id } = page.params;
 
-		const request = await fetch(`/api/sketches/${id}.json`)
+		const request = await fetch(`/api/sketches/${id}.json`);
 
 		if (request.ok) {
-			const data = await request.json()
+			const data = await request.json();
 			return {
 				props: { ...data },
-			}
+			};
 		}
 
 		return {
 			status: request.status,
-			error: new Error('failed to load sketch'),
-		}
-	}
+			error: new Error("failed to load sketch"),
+		};
+	};
 </script>
 
 <script lang="ts">
-	import { slide } from 'svelte/transition'
-	import { ArrowRightIcon, ChevronRightIcon } from 'svelte-feather-icons'
+	import { slide } from "svelte/transition";
+	import { ArrowRightIcon, ChevronRightIcon } from "svelte-feather-icons";
 
-	import { page } from '$app/stores'
+	import { page } from "$app/stores";
 
-	import CodeBlock from '$components/CodeBlock.svelte'
-	import { onMount } from 'svelte'
-	import { siteName } from '$lib/consts'
+	import CodeBlock from "$components/CodeBlock.svelte";
+	import { onMount } from "svelte";
+	import { siteName } from "$lib/consts";
 
-	export let name: string
-	export let brief: string
-	export let html: string
+	export let name: string;
+	export let brief: string;
+	export let html: string;
 
-	$: id = $page.params.id
-	$: source = `/sketches/${id}.js`
+	$: id = $page.params.id;
+	$: source = `/sketches/${id}.js`;
 
-	let showing = false
-	let container: HTMLDivElement
+	let showing = false;
+	let container: HTMLDivElement;
 
-	let sourceHeight: string
+	let sourceHeight: string;
 	$: if (sourceHeight != null) {
-		container.style.setProperty('--source-height', sourceHeight)
+		container.style.setProperty("--source-height", sourceHeight);
 	}
 
 	onMount(() => {
-		const script = document.createElement('script')
-		script.type = 'module'
+		const script = document.createElement("script");
+		script.type = "module";
 
-		const now = new Date().getTime()
-		script.src = `${source}?reloadfix=${now}`
+		const now = new Date().getTime();
+		script.src = `${source}?reloadfix=${now}`;
 
-		document.body.appendChild(script)
+		document.body.appendChild(script);
 
 		return () => {
-			document.body.removeChild(script)
-		}
-	})
+			document.body.removeChild(script);
+		};
+	});
 </script>
 
 <svelte:head>
@@ -74,7 +74,7 @@
 	<div bind:this={container} class="source-code" class:showing>
 		<button
 			on:click={() => {
-				showing = !showing
+				showing = !showing;
 			}}
 		>
 			View Source
@@ -104,7 +104,7 @@
 	}
 
 	:global(code) {
-		font-family: Fira Code, Consolas, 'Courier New', monospace;
+		font-family: Fira Code, Consolas, "Courier New", monospace;
 	}
 
 	canvas {

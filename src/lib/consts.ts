@@ -1,28 +1,28 @@
-import { Point, Triangle } from './types'
-import { SvelteComponent } from 'svelte'
+import { Point, Triangle } from "./types";
+import { SvelteComponent } from "svelte";
 
-import { MoonIcon, SunIcon } from 'svelte-feather-icons'
+import { MoonIcon, SunIcon } from "svelte-feather-icons";
 
-export const siteName: string = 'tmthydvs.dev'
+export const siteName: string = "tmthydvs.dev";
 
 interface ThemeButton {
-	name: string
-	icon: typeof SvelteComponent
+	name: string;
+	icon: typeof SvelteComponent;
 }
 
 export const themes: Array<ThemeButton> = [
-	{ name: 'dark', icon: MoonIcon },
-	{ name: 'light', icon: SunIcon },
-]
+	{ name: "dark", icon: MoonIcon },
+	{ name: "light", icon: SunIcon },
+];
 
-export const featherIconSize: string = '1.5x'
+export const featherIconSize: string = "1.5x";
 
 export const avatar: {
-	points: Array<Point>
-	lines: Array<[number, number]>
-	triangles: Array<Triangle>
-	colors: Array<string>
-	colorMap: Array<number>
+	points: Array<Point>;
+	lines: Array<[number, number]>;
+	triangles: Array<Triangle>;
+	colors: Array<string>;
+	colorMap: Array<number>;
 } = {
 	points: [
 		{
@@ -229,8 +229,8 @@ export const avatar: {
 		],
 	],
 	colors: [
-		'#282a36', // beak
-		'#f65a93', // head
+		"#282a36", // beak
+		"#f65a93", // head
 	],
 	colorMap: [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-}
+};

@@ -1,44 +1,44 @@
 <script lang="ts" context="module">
 	export type Page = {
-		name: string
-		href: string
-	}
+		name: string;
+		href: string;
+	};
 </script>
 
 <script lang="ts">
-	import { GithubIcon, MoonIcon, SunIcon } from 'svelte-feather-icons'
-	import { onMount, SvelteComponent } from 'svelte'
-	import { slide } from 'svelte/transition'
+	import { GithubIcon, MoonIcon, SunIcon } from "svelte-feather-icons";
+	import { onMount, SvelteComponent } from "svelte";
+	import { slide } from "svelte/transition";
 
-	import { featherIconSize, themes } from '$lib/consts'
-	import { theme } from '$lib/stores'
-	import MobileNav from './MobileNav.svelte'
-	import { page } from '$app/stores'
+	import { featherIconSize, themes } from "$lib/consts";
+	import { theme } from "$lib/stores";
+	import MobileNav from "./MobileNav.svelte";
+	import { page } from "$app/stores";
 
 	const pages: Page[] = [
-		{ name: 'Home', href: '/' },
-		{ name: 'Projects', href: '/projects' },
-		{ name: 'Sketches', href: '/sketches' },
-	]
+		{ name: "Home", href: "/" },
+		{ name: "Projects", href: "/projects" },
+		{ name: "Sketches", href: "/sketches" },
+	];
 
-	let currentTheme: number = 0
+	let currentTheme: number = 0;
 
 	function toggleTheme() {
-		currentTheme = (currentTheme + 1) % themes.length
-		$theme = themes[currentTheme].name
+		currentTheme = (currentTheme + 1) % themes.length;
+		$theme = themes[currentTheme].name;
 	}
 
 	onMount(() => {
-		currentTheme = themes.findIndex((item) => item.name == $theme)
+		currentTheme = themes.findIndex((item) => item.name == $theme);
 
 		theme.subscribe((theme) => {
-			document.body.setAttribute('data-theme', theme)
-		})
-	})
+			document.body.setAttribute("data-theme", theme);
+		});
+	});
 
-	let width: number
+	let width: number;
 
-	const minMobileWidth = 800
+	const minMobileWidth = 800;
 </script>
 
 <svelte:window bind:innerWidth={width} />

@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
+	import { onMount } from "svelte";
 
-	import BackToTop from '$components/BackToTop.svelte'
-	import NavBar from '$components/NavBar.svelte'
+	import BackToTop from "$components/BackToTop.svelte";
+	import NavBar from "$components/NavBar.svelte";
 
-	import { theme } from '$lib/stores'
+	import { theme } from "$lib/stores";
 
 	onMount(() => {
-		document.body.setAttribute('data-theme', $theme)
-	})
+		document.body.setAttribute("data-theme", $theme);
+	});
 </script>
 
 <NavBar />
@@ -59,7 +59,7 @@
 		}
 
 		body,
-		body[data-theme='dark'] {
+		body[data-theme="dark"] {
 			--color-main: hsl(325, 100%, 80%);
 			--color-accent: hsl(122, 91%, 21%);
 
@@ -76,7 +76,7 @@
 			}
 		}
 
-		body[data-theme='light'] {
+		body[data-theme="light"] {
 			--color-main: hsl(121, 50%, 55%);
 			--color-accent: hsl(0, 0%, 60%);
 

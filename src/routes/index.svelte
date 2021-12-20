@@ -1,14 +1,14 @@
 <script lang="ts">
-	import Hero from '$components/index/Hero.svelte'
-	import { siteName } from '$lib/consts'
-	import { onMount } from 'svelte'
-	import { quintOut } from 'svelte/easing'
-	import { fly } from 'svelte/transition'
+	import Hero from "$components/index/Hero.svelte";
+	import { siteName } from "$lib/consts";
+	import { onMount } from "svelte";
+	import { quintOut } from "svelte/easing";
+	import { fly } from "svelte/transition";
 
-	let start = null
+	let start = null;
 	onMount(() => {
-		start = {}
-	})
+		start = {};
+	});
 </script>
 
 <svelte:head>

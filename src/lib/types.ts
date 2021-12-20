@@ -1,7 +1,7 @@
-import type { SvelteComponent } from 'svelte'
+import type { SvelteComponent } from "svelte";
 
 export interface Point {
-	x: number
-	y: number
+	x: number;
+	y: number;
 }
-export type Triangle = [Point, Point, Point]
+export type Triangle = [Point, Point, Point];
