@@ -101,6 +101,11 @@
 			}
 		}
 
+		p > a,
+		li > a {
+			color: var(--color-main);
+		}
+
 		body > main {
 			width: min(100%, 60rem);
 			margin: 1em auto;
