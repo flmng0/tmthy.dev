@@ -33,6 +33,7 @@
 	import CodeBlock from "$components/CodeBlock.svelte";
 	import { onMount } from "svelte";
 	import { siteName } from "$lib/consts";
+	import Main from "$components/Main.svelte";
 
 	export let name: string;
 	export let brief: string;
@@ -68,7 +69,7 @@
 	<title>{name} - Sketch | {siteName}</title>
 </svelte:head>
 
-<main>
+<Main intro={false}>
 	<canvas id="sketch-canvas" width="800" height="800" />
 
 	<div bind:this={container} class="source-code" class:showing>
@@ -92,17 +93,9 @@
 
 		{@html html}
 	</div>
-</main>
+</Main>
 
 <style lang="scss">
-	main {
-		display: flex;
-		flex-flow: column nowrap;
-		justify-content: center;
-		gap: 1em;
-		padding: 0 1em;
-	}
-
 	:global(code) {
 		font-family: Fira Code, Consolas, "Courier New", monospace;
 	}
@@ -110,15 +103,18 @@
 	canvas {
 		user-select: none;
 
+		background: hsl(60, 30%, 94%);
+		box-shadow: 0 0 8px var(--color-shadow);
+	}
+
+	canvas,
+	.source-code {
 		display: block;
 		margin: 0 auto;
 
 		// Show full canvas when at the top of the page.
 		--visible-area: calc(0.9 * (100vh - var(--header-height) - 1rem));
 		width: min(100%, var(--visible-area));
-
-		background: hsl(60, 30%, 94%);
-		box-shadow: 0 0 8px var(--color-shadow);
 	}
 
 	.source-code {
