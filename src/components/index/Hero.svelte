@@ -1,18 +1,17 @@
 <script lang="ts">
-	import { avatar } from "$lib/consts";
-	import type { Settings } from "$lib/disperse";
-	import { DisperseSimulation } from "$lib/disperse";
-	import { theme } from "$lib/stores";
-
-	import AvatarIcon from "./AvatarIcon.svelte";
-	import TextRotator from "./TextRotator.svelte";
-
 	import { onMount, tick } from "svelte";
 	import { fly, TransitionConfig } from "svelte/transition";
 	import { fade } from "svelte/transition";
 	import { cubicOut, quintOut } from "svelte/easing";
 
-	let text: HTMLParagraphElement = null;
+	import AvatarIcon from "./AvatarIcon.svelte";
+	import TextRotator from "./TextRotator.svelte";
+
+	import { avatar } from "$lib/consts";
+	import type { Settings } from "$lib/disperse";
+	import { DisperseSimulation } from "$lib/disperse";
+	import { theme } from "$lib/stores";
+
 	let headerHeight: number = 0;
 
 	const skills: Array<string> = [
