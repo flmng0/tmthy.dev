@@ -60,7 +60,7 @@
 			cursor: pointer;
 		}
 
-		&:hover,
+		// &:hover,
 		&:focus-within {
 			nav {
 				display: flex;
