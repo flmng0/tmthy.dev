@@ -1,38 +1,38 @@
 name: cd
 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    # Triggers the workflow on push or pull request events but only for the master branch
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
 
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    runs-on: ubuntu-latest
+    # This workflow contains a single job called "build"
+    build:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
+        steps:
+            - name: Checkout
+              uses: actions/checkout@master
 
-      - name: Setup NodeJS environment
-        uses: actions/setup-node@v2.1.2
-        with:
-          node-version: 14
+            - name: Setup NodeJS environment
+              uses: actions/setup-node@v2.1.2
+              with:
+                  node-version: 14
 
-      - name: Install dependencies
-        run: yarn
+            - name: Install dependencies
+              run: yarn
 
-      - name: Generate the static site files # Into "/out"
-        run: yarn build
+            - name: Generate the static site files # Into "/out"
+              run: yarn build
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
-          cname: tmthydvs.dev
+            - name: Deploy
+              uses: peaceiris/actions-gh-pages@v3
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./out
+                  cname: tmthy.dev
