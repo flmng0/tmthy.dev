@@ -105,8 +105,8 @@
 
 	h1 {
 		font-size: 1.25rem;
-		font-weight: 400;
-		letter-spacing: 0.06em;
+		font-weight: 600;
+		letter-spacing: 0.04em;
 	}
 
 	a,
@@ -141,7 +141,7 @@
 		// Uses grid instead of flex (and justify: space-between), so that
 		// the navigation items are actually centered on the screen.
 		display: grid;
-		grid-template-columns: 1fr 2.5fr 1fr;
+		grid-template-columns: 1fr auto 1fr;
 
 		margin: 0 auto;
 
