@@ -15,14 +15,14 @@
 		source: CodeIcon,
 	};
 
-	const setHeight = (node: HTMLElement) => {
+	function setHeight(node: HTMLElement) {
 		const header = node.querySelector(".text > header");
 
 		if (header) {
 			const height = getComputedStyle(header).height;
 			node.style.setProperty("--header-height", height);
 		}
-	};
+	}
 
 	function loaded(node: HTMLElement) {
 		window.addEventListener("resize", () => {
@@ -55,7 +55,7 @@
 	<div class="text">
 		<header>
 			{#if href}
-				<a {href}>
+				<a sveltekit:prefetch={href.startsWith("/") || null} {href}>
 					<h1>{name}</h1>
 				</a>
 			{:else}
@@ -84,6 +84,7 @@
 		border-radius: 0.75em;
 		overflow: hidden;
 
+		&:focus-within,
 		&:hover,
 		&:active {
 			> img + .text {
