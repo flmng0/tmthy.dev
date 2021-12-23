@@ -143,7 +143,7 @@
 					stroke
 					strokeWidth="inherit"
 					animate
-					size="{avatarIntroSize}px"
+					size={avatarIntroSize && avatarIntroSize + "px"}
 				/>
 			</div>
 		{/if}
