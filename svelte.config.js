@@ -1,15 +1,19 @@
 import adapter from "@sveltejs/adapter-static";
 
 import preprocess from "svelte-preprocess";
+import image from "svelte-image";
 import path from "path";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	preprocess: preprocess({
-		postcss: true,
-		globalStyle: true,
-		sourceMap: true,
-	}),
+	preprocess: preprocess([
+		image(),
+		{
+			postcss: true,
+			globalStyle: true,
+			sourceMap: true,
+		},
+	]),
 
 	kit: {
 		adapter: adapter({

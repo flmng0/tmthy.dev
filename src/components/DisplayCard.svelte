@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount, SvelteComponent } from "svelte";
 	import { CodeIcon, GithubIcon, GlobeIcon } from "svelte-feather-icons";
+	import Image from "svelte-image";
 
 	export let href: string = null;
 	export let links: Record<string, string> = null;
@@ -50,7 +51,9 @@
 
 <div use:loaded bind:this={container} class="card">
 	{#if imageSrc}
-		<img src={imageSrc} alt="Image of {name}" />
+		<div class="img">
+			<Image src={imageSrc} alt="Image of {name}" />
+		</div>
 	{/if}
 	<div class="text">
 		<header>
@@ -87,13 +90,13 @@
 		&:focus-within,
 		&:hover,
 		&:active {
-			> img + .text {
+			> .img + .text {
 				top: 0;
 			}
 		}
 	}
 
-	img + .text {
+	.img + .text {
 		position: absolute;
 
 		top: calc(100% - var(--header-height) - var(--vert-padding));
@@ -101,7 +104,7 @@
 		transition: top 150ms ease-out;
 	}
 
-	img {
+	.img {
 		width: 100%;
 		margin: 0;
 		background: #f8f8f2;
