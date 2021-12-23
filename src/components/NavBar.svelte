@@ -10,9 +10,10 @@
 	import { onMount, SvelteComponent } from "svelte";
 	import { slide } from "svelte/transition";
 
-	import { featherIconSize, themes } from "$lib/consts";
-	import { theme } from "$lib/stores";
 	import MobileNav from "./MobileNav.svelte";
+
+	import { featherIconSize, themes, siteName } from "$lib/consts";
+	import { theme } from "$lib/stores";
 	import { page } from "$app/stores";
 
 	const pages: Page[] = [
@@ -47,7 +48,7 @@
 	<div class="inner">
 		<!-- Left -->
 		<section class="header-left">
-			<h1><a href="/">tmthydvs.dev</a></h1>
+			<h1><a href="/">{siteName}</a></h1>
 		</section>
 
 		<!-- Middle -->
@@ -104,6 +105,8 @@
 
 	h1 {
 		font-size: 1.25rem;
+		font-weight: 400;
+		letter-spacing: 0.06em;
 	}
 
 	a,
