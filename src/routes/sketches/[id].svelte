@@ -82,7 +82,7 @@
 			<i><ChevronRightIcon size="1x" /></i>
 		</button>
 
-		<div class="source">
+		<div class="source" aria-hidden="true">
 			<CodeBlock bind:height={sourceHeight} dataSrc={source} language="javascript" />
 		</div>
 	</div>
