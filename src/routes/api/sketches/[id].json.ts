@@ -1,4 +1,4 @@
-import marked from "marked";
+import { marked } from "marked";
 import matter from "gray-matter";
 import path from "path";
 import fs from "fs";
