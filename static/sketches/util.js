@@ -37,6 +37,11 @@ export class Vector {
 		this.y = y;
 	}
 
+	*[Symbol.iterator]() {
+		yield this.x;
+		yield this.y;
+	}
+
 	static zero() {
 		return new Vector(0, 0);
 	}
