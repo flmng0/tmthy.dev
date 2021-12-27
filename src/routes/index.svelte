@@ -20,7 +20,7 @@
 {#if start}
 	<p in:fly={{ delay: 3000, duration: 1000, easing: quintOut, x: -200 }} class="wip-text">
 		This site is currently in development, but you can follow its progress on
-		<a href="https://github.com/flmng0/flmng0.github.io">GitHub</a>.
+		<a href="https://github.com/flmng0/flmng0.github.io">GitHub</a>. This is a test.
 	</p>
 {/if}
 
