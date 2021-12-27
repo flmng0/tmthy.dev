@@ -11,8 +11,8 @@ const initialTheme = () => {
 		}
 
 		if (window.matchMedia) {
-			const match = matchMedia("preferred-color-scheme: dark)");
-			return match ? "dark" : "light";
+			const match = matchMedia("(prefers-color-scheme: dark)");
+			return match.matches === true ? "dark" : "light";
 		}
 	}
 
