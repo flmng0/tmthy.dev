@@ -1,11 +1,11 @@
 name: cd
 
 on:
-    # Triggers the workflow on push or pull request events but only for the master branch
+    # Triggers the workflow on push or pull request events but only for the "active" branch
     push:
-        branches: [current]
+        branches: [active]
     pull_request:
-        branches: [current]
+        branches: [active]
 
     # Allows you to run this workflow manually from the Actions tab
     workflow_dispatch:
