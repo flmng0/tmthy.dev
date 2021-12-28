@@ -8,6 +8,7 @@
 	let start = null;
 	onMount(() => {
 		start = {};
+		console.log("Test");
 	});
 </script>
 
