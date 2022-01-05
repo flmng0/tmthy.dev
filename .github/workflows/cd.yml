@@ -1,4 +1,4 @@
-name: cd
+name: Build and Publish
 
 on:
     # Triggers the workflow on push or pull request events but only for the "active" branch
@@ -15,20 +15,27 @@ jobs:
     build:
         runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@master
+        strategy:
+            matrix:
+                node-version: [14]
 
-            - name: Setup NodeJS environment
-              uses: actions/setup-node@v2.1.2
+        steps:
+            - uses: actions/checkout@v2
+            - uses: pnpm/actions-setup@v2.0.1
               with:
-                  node-version: 14
+                  version: 6.24.4
+
+            - name: Use NodeJS ${{ matrix.node-version }}
+              uses: actions/setup-node@v2
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "pnpm"
 
             - name: Install dependencies
-              run: yarn
+              run: pnpm install
 
-            - name: Generate the static site files # Into "/out"
-              run: yarn build
+            - name: Generate the static site files
+              run: pnpm run build
 
             - name: Deploy
               uses: peaceiris/actions-gh-pages@v3
