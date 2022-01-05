@@ -3,6 +3,17 @@
     and src/routes/api/sketches(/[id])?.json.ts.
 -->
 <script lang="ts" context="module">
+	type Context = {
+		t: number;
+		dt: number;
+		ctx: CanvasRenderingContext2D;
+		cvs: HTMLCanvasElement;
+	};
+	export interface Sketch {
+		draw(ctx: Context): undefined;
+		init(ctx: Context): undefined;
+	}
+
 	import type { Load } from "@sveltejs/kit";
 
 	export const load: Load = async ({ page, fetch }) => {
@@ -39,8 +50,61 @@
 	export let brief: string;
 	export let html: string;
 
+	let sketch: Sketch;
+
+	function getURL(relPath: string) {
+		return new URL(relPath, import.meta.url).href;
+	}
+
 	$: id = $page.params.id;
-	$: source = `/sketches/${id}.js`;
+	$: source = getURL(`../../data/sketches/${id}.js`);
+
+	function run(drawFn, options) {
+		options = options || {};
+
+		const state = {
+			t: null,
+			dt: null,
+			ctx: null,
+			cvs: null,
+		};
+
+		const tick = (t) => {
+			const ts = t / 1000;
+			state.dt = Math.min(ts - state.t, 0.1);
+			state.t = ts;
+
+			drawFn(state);
+
+			window.requestAnimationFrame(tick);
+		};
+
+		window.requestAnimationFrame((t) => {
+			const { init, cvs } = options;
+
+			state.t = t;
+			state.dt = 0;
+
+			if (cvs) {
+				state.cvs = cvs;
+			} else {
+				state.cvs = document.querySelector("#sketch-canvas");
+			}
+
+			if (state.cvs == null) {
+				console.error("No canvas to use!");
+				return;
+			}
+
+			state.ctx = state.cvs.getContext("2d");
+
+			if (init) {
+				init(state);
+			}
+
+			window.requestAnimationFrame(tick);
+		});
+	}
 
 	let showing = false;
 	let container: HTMLDivElement;
@@ -50,7 +114,11 @@
 		container.style.setProperty("--source-height", sourceHeight);
 	}
 
-	onMount(() => {
+	onMount(async () => {
+		sketch = await import(source);
+
+		run(sketch.draw, { init: sketch.init });
+
 		const script = document.createElement("script");
 		script.type = "module";
 
