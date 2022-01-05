@@ -1,5 +1,3 @@
-import { run } from "./framework.js";
-
 const modulo = (n, d) => ((n % d) + d) % d;
 
 class GridLayer {
@@ -43,58 +41,53 @@ class GridLayer {
 	}
 }
 
-// We are running as a sketch, and not a module.
-if (document.querySelector("#sketch-canvas")) {
-	const COLUMNS = 4;
-	const ITEM_COUNT = 15;
-	const layer = new GridLayer(COLUMNS);
+const COLUMNS = 4;
+const ITEM_COUNT = 15;
+const layer = new GridLayer(COLUMNS);
 
-	let columns = null;
-	const regenerate = () => {
-		const items = Array.from({ length: ITEM_COUNT }, () => Math.random()).map((height) => {
-			return {
-				height: height,
-				value: height,
-			};
-		});
+let columns = null;
+const regenerate = () => {
+	const items = Array.from({ length: ITEM_COUNT }, () => Math.random()).map((height) => {
+		return {
+			height: height,
+			value: height,
+		};
+	});
 
-		columns = layer.layout(items);
-	};
+	columns = layer.layout(items);
+};
 
-	function init({ cvs }) {
-		regenerate();
-		cvs.addEventListener(
-			"click",
-			() => {
-				regenerate();
-			},
-			true
-		);
-	}
+export function init({ cvs }) {
+	regenerate();
+	cvs.addEventListener(
+		"click",
+		() => {
+			regenerate();
+		},
+		true
+	);
+}
 
-	function draw({ ctx, cvs }) {
-		ctx.fillStyle = "lightgrey";
-		ctx.strokeStyle = "green";
-		ctx.clearRect(0, 0, cvs.width, cvs.height);
+export function draw({ ctx, cvs }) {
+	ctx.fillStyle = "lightgrey";
+	ctx.strokeStyle = "green";
+	ctx.clearRect(0, 0, cvs.width, cvs.height);
 
-		const minHeight = cvs.width / 8;
-		const maxHeight = minHeight * 2;
+	const minHeight = cvs.width / 8;
+	const maxHeight = minHeight * 2;
 
-		for (const [i, column] of columns.entries()) {
-			let x = (i * cvs.width) / COLUMNS;
-			let y = 0;
+	for (const [i, column] of columns.entries()) {
+		let x = (i * cvs.width) / COLUMNS;
+		let y = 0;
 
-			for (const item of column) {
-				const height = minHeight + item * (maxHeight - minHeight);
-				let rect = [x, y, cvs.width / COLUMNS, height];
+		for (const item of column) {
+			const height = minHeight + item * (maxHeight - minHeight);
+			let rect = [x, y, cvs.width / COLUMNS, height];
 
-				ctx.fillRect(...rect);
-				ctx.strokeRect(...rect);
+			ctx.fillRect(...rect);
+			ctx.strokeRect(...rect);
 
-				y += height;
-			}
+			y += height;
 		}
 	}
-
-	run(draw, { init });
 }
