@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	export type Context = {
+	export type State = {
 		t: number;
 		dt: number;
 		ctx: CanvasRenderingContext2D;
@@ -7,8 +7,8 @@
 	};
 
 	export interface Sketch {
-		draw(ctx: Context): undefined;
-		init?(ctx: Context): undefined;
+		draw(state: State): undefined;
+		init?(state: State): undefined;
 	}
 
 	import type { Load } from "@sveltejs/kit";
