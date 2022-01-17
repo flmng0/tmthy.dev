@@ -102,7 +102,7 @@ let originalDistances = connections.map((connection) => {
 	return d;
 });
 
-/** @type import('./framework.js').InitCallback */
+/** @type import('../../src/lib/sketch').InitCallback */
 export function init({ cvs, t }) {
 	cvs.addEventListener("mousemove", (e) => {
 		mouse = computeMousePos(e, cvs);
@@ -125,8 +125,8 @@ export function init({ cvs, t }) {
 	cvs.addEventListener("touchcancel", touchEv);
 }
 
-/** @type import('./framework.js').DrawCallback */
-export function draw({ cvs, ctx, dt, t }) {
+/** @type import('../../src/lib/sketch').DrawCallback */
+export function draw({ cvs, ctx, dt }) {
 	ctx.clearRect(0, 0, cvs.width, cvs.height);
 
 	const centerVec = new Vector(cvs.width, cvs.height)

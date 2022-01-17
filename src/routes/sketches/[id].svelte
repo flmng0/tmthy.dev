@@ -1,16 +1,5 @@
 <script lang="ts" context="module">
-	export type State = {
-		t: number;
-		dt: number;
-		ctx: CanvasRenderingContext2D;
-		cvs: HTMLCanvasElement;
-	};
-
-	export interface Sketch {
-		draw(state: State): undefined;
-		init?(state: State): undefined;
-	}
-
+	import type { Sketch } from "$lib/sketch";
 	import type { Load } from "@sveltejs/kit";
 
 	export const load: Load = async ({ page, fetch }) => {

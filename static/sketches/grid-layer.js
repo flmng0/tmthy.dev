@@ -57,6 +57,7 @@ const regenerate = () => {
 	columns = layer.layout(items);
 };
 
+/** @type import('../../src/lib/sketch').InitCallback */
 export function init({ cvs }) {
 	regenerate();
 	cvs.addEventListener(
@@ -68,6 +69,7 @@ export function init({ cvs }) {
 	);
 }
 
+/** @type import('../../src/lib/sketch').DrawCallback */
 export function draw({ ctx, cvs }) {
 	ctx.fillStyle = "lightgrey";
 	ctx.strokeStyle = "green";
