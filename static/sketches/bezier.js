@@ -126,13 +126,22 @@ export function draw({ cvs, ctx, t }) {
 	});
 	ctx.restore();
 
+	// Draw lines between control points.
+	ctx.save();
+	ctx.strokeStyle = "grey";
+	ctx.moveTo(...bezier.control[0]);
+	for (let i = 0; i < bezier.control.length; i += 1) {
+		ctx.lineTo(...bezier.control[i]);
+	}
+	ctx.stroke();
+	ctx.restore();
+
 	// Draw resulting bezier curve.
 	const s = (t % duration) / duration;
 
 	ctx.save();
 	ctx.beginPath();
 	ctx.moveTo(...bezier.control[0]);
-	let prev = bezier.control[0];
 	for (let i = 0; i <= segments; i += 1) {
 		const u = i / segments;
 		if (u > s) break;
