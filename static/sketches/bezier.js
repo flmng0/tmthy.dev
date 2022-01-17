@@ -80,12 +80,12 @@ class Bezier {
 
 const bezier = new Bezier();
 const segments = 100;
-let dirty = true;
+const duration = 2.0; // seconds
 
+/** @type import("../../src/lib/sketch").InitCallback */
 export function init({ cvs, ctx }) {
 	cvs.addEventListener("click", (e) => {
 		const pos = computeMousePos(e, cvs);
-		dirty = true;
 		bezier.add(pos);
 	});
 
@@ -100,33 +100,43 @@ export function init({ cvs, ctx }) {
 	ctx.strokeStyle = "black";
 }
 
-export function draw({ cvs, ctx }) {
-	if (!dirty) {
-		return;
-	}
-	dirty = false;
-
+/** @type import("../../src/lib/sketch").DrawCallback */
+export function draw({ cvs, ctx, t }) {
 	ctx.clearRect(0, 0, cvs.width, cvs.height);
 
 	if (bezier.control.length < 2) {
 		return;
 	}
 
-	ctx.beginPath();
 	const drawPoint = (p) => {
 		ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
 	};
-	drawPoint(bezier.control[0]);
-	drawPoint(bezier.control[bezier.control.length - 1]);
-	ctx.fill();
+	// Draw control points.
+	ctx.save();
+	bezier.control.forEach((point, i) => {
+		if (i == 0 || i == bezier.control.length - 1) {
+			ctx.fillStyle = "red";
+		} else {
+			ctx.fillStyle = "black";
+		}
+
+		ctx.beginPath();
+		drawPoint(point);
+		ctx.fill();
+	});
+	ctx.restore();
+
+	// Draw resulting bezier curve.
+	const s = (t % duration) / duration;
 
 	ctx.save();
 	ctx.beginPath();
 	ctx.moveTo(...bezier.control[0]);
 	let prev = bezier.control[0];
 	for (let i = 0; i <= segments; i += 1) {
-		const t = i / segments;
-		ctx.lineTo(...bezier.get(t));
+		const u = i / segments;
+		if (u > s) break;
+		ctx.lineTo(...bezier.get(u));
 	}
 	ctx.stroke();
 	ctx.restore();
