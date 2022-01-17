@@ -1,4 +1,4 @@
-import { computeMousePos, run, Vector } from "./framework.js";
+import { computeMousePos, Vector } from "./util.js";
 
 // Pre-calculated binomal coefficients for n in [2, 8].
 const knownCoefficients = [
@@ -82,8 +82,7 @@ const bezier = new Bezier();
 const segments = 100;
 let dirty = true;
 
-/** @type import("./framework").InitCallback */
-function init({ cvs, ctx }) {
+export function init({ cvs, ctx }) {
 	cvs.addEventListener("click", (e) => {
 		const pos = computeMousePos(e, cvs);
 		dirty = true;
@@ -101,8 +100,7 @@ function init({ cvs, ctx }) {
 	ctx.strokeStyle = "black";
 }
 
-/** @type import("./framework").DrawCallback */
-function draw({ cvs, ctx }) {
+export function draw({ cvs, ctx }) {
 	if (!dirty) {
 		return;
 	}
@@ -132,9 +130,4 @@ function draw({ cvs, ctx }) {
 	}
 	ctx.stroke();
 	ctx.restore();
-}
-
-const cvs = document.querySelector("#sketch-canvas");
-if (cvs) {
-	run(draw, { init, cvs });
 }
