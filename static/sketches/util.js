@@ -1,33 +1,4 @@
 /**
- * @typedef {Object} State
- *
- * @property {number} t - The current time in seconds since the start of the sketch.
- * @property {number} dt - The time in seconds since the last frame.
- * @property {CanvasRenderingContext2D} ctx - 2D rendering context of the canvas.
- * @property {HTMLCanvasElement} cvs - The sketch canvas.
- */
-
-/**
- * Draw-loop callback method for running a sketch.
- *
- * @callback DrawCallback
- *
- * @param {State} state - The current state of the sketch.
- *
- * @returns {undefined}
- */
-
-/**
- * Callback called once, before the sketch is run.
- *
- * @callback InitCallback
- *
- * @param {State} state - The current state of the sketch.
- *
- * @returns {undefined}
- */
-
-/**
  * @param {MouseEvent | Touch} e
  * @param {HTMLCanvasElement} cvs
  * @param {CanvasRenderingContext2D?} ctx
