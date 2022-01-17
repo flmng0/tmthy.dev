@@ -1,8 +1,16 @@
-<!-- Contents of a sketch. Include a description.
-    See https://github.com/flmng0/flmng0.github.io/blob/1e8d97ffa4be867e110949aba4d3879a4bd70fea/src/routes/sketches/%5Bid%5D.svelte
-    and src/routes/api/sketches(/[id])?.json.ts.
--->
 <script lang="ts" context="module">
+	export type State = {
+		t: number;
+		dt: number;
+		ctx: CanvasRenderingContext2D;
+		cvs: HTMLCanvasElement;
+	};
+
+	export interface Sketch {
+		draw(state: State): undefined;
+		init?(state: State): undefined;
+	}
+
 	import type { Load } from "@sveltejs/kit";
 
 	export const load: Load = async ({ page, fetch }) => {
@@ -22,16 +30,55 @@
 			error: new Error("failed to load sketch"),
 		};
 	};
+
+	// Run a given sketch with a specified canvas.
+	//
+	// Returns an object which constantly stores the latest animation request ID.
+	// This is possibly a reduncancy.
+	function runSketch(sketch: Sketch, cvs: HTMLCanvasElement): { latestRequest: number } {
+		if (sketch.draw === undefined) {
+			throw new Error("Sketch has no draw method defined...");
+		}
+
+		const state = {
+			t: undefined,
+			dt: undefined,
+			ctx: undefined,
+			cvs: undefined,
+		};
+		const output = { latestRequest: undefined };
+
+		const tick: FrameRequestCallback = (t) => {
+			const ts = t / 1000;
+			state.dt = Math.min(ts - state.t, 0.1);
+			state.t = ts;
+
+			sketch.draw(state);
+
+			output.latestRequest = window.requestAnimationFrame(tick);
+		};
+
+		output.latestRequest = window.requestAnimationFrame((t) => {
+			state.t = t;
+			state.dt = 0;
+			state.cvs = cvs;
+			state.ctx = state.cvs.getContext("2d");
+
+			sketch.init && sketch.init(state);
+
+			output.latestRequest = window.requestAnimationFrame(tick);
+		});
+
+		return output;
+	}
 </script>
 
 <script lang="ts">
-	import { slide } from "svelte/transition";
-	import { ArrowRightIcon, ChevronRightIcon } from "svelte-feather-icons";
+	import { ChevronRightIcon } from "svelte-feather-icons";
 
 	import { page } from "$app/stores";
 
 	import CodeBlock from "$components/CodeBlock.svelte";
-	import { onMount } from "svelte";
 	import { siteName } from "$lib/consts";
 	import Main from "$components/Main.svelte";
 
@@ -39,30 +86,34 @@
 	export let brief: string;
 	export let html: string;
 
-	$: id = $page.params.id;
-	$: source = `/sketches/${id}.js`;
+	let source: string;
 
-	let showing = false;
+	let sourceShowing = false;
 	let container: HTMLDivElement;
 
 	let sourceHeight: string;
-	$: if (sourceHeight != null) {
-		container.style.setProperty("--source-height", sourceHeight);
-	}
+	$: sourceHeight && container.style.setProperty("--source-height", sourceHeight);
 
-	onMount(() => {
-		const script = document.createElement("script");
-		script.type = "module";
+	function loaded(cvs: HTMLCanvasElement) {
+		const base = location.origin;
+		const path = `sketches/${$page.params.id}.js`;
+		const fix = new Date().getTime();
 
-		const now = new Date().getTime();
-		script.src = `${source}?reloadfix=${now}`;
+		source = `${base}/${path}?reloadfix=${fix}`;
 
-		document.body.appendChild(script);
+		let runOut: { latestRequest: number };
+		import(/* @vite-ignore */ source).then((s: Sketch) => {
+			runOut = runSketch(s, cvs);
+		});
 
-		return () => {
-			document.body.removeChild(script);
+		return {
+			destroy() {
+				if (runOut?.latestRequest !== undefined) {
+					window.cancelAnimationFrame(runOut.latestRequest);
+				}
+			},
 		};
-	});
+	}
 </script>
 
 <svelte:head>
@@ -70,12 +121,12 @@
 </svelte:head>
 
 <Main intro={false}>
-	<canvas id="sketch-canvas" width="800" height="800" />
+	<canvas use:loaded width="800" height="800" />
 
-	<div bind:this={container} class="source-code" class:showing>
+	<div bind:this={container} class="source-code" class:showing={sourceShowing}>
 		<button
 			on:click={() => {
-				showing = !showing;
+				sourceShowing = !sourceShowing;
 			}}
 		>
 			View Source
@@ -83,7 +134,9 @@
 		</button>
 
 		<div class="source" aria-hidden="true">
-			<CodeBlock bind:height={sourceHeight} dataSrc={source} language="javascript" />
+			{#if source}
+				<CodeBlock bind:height={sourceHeight} dataSrc={source} language="javascript" />
+			{/if}
 		</div>
 	</div>
 

@@ -1,4 +1,4 @@
-import { computeMousePos, run, Vector } from "./framework.js";
+import { computeMousePos, Vector } from "./util.js";
 
 const repelDist = 100;
 const repelDistSq = repelDist * repelDist;
@@ -103,7 +103,7 @@ let originalDistances = connections.map((connection) => {
 });
 
 /** @type import('./framework.js').InitCallback */
-function init({ cvs, t }) {
+export function init({ cvs, t }) {
 	cvs.addEventListener("mousemove", (e) => {
 		mouse = computeMousePos(e, cvs);
 	});
@@ -126,7 +126,7 @@ function init({ cvs, t }) {
 }
 
 /** @type import('./framework.js').DrawCallback */
-function draw({ cvs, ctx, dt, t }) {
+export function draw({ cvs, ctx, dt, t }) {
 	ctx.clearRect(0, 0, cvs.width, cvs.height);
 
 	const centerVec = new Vector(cvs.width, cvs.height)
@@ -154,7 +154,7 @@ function draw({ cvs, ctx, dt, t }) {
 		particle.draw(ctx);
 	}
 
-	ctx.strokeStyle = "rgba(0, 0, 0, 75%)";
+	ctx.strokeStyle = "rgba(240, 50%, 50%, 75%)";
 	// Looped after-wards so that the updated positions are used.
 	for (let i = 0; i < connections.length; i += 1) {
 		const [fromIdx, toIdx] = connections[i];
@@ -175,8 +175,4 @@ function draw({ cvs, ctx, dt, t }) {
 	}
 
 	ctx.restore();
-}
-
-if (document.querySelector("#sketch-canvas")) {
-	run(draw, { init });
 }

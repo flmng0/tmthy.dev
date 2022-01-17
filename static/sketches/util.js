@@ -28,68 +28,6 @@
  */
 
 /**
- * @typedef {Object} RunOptions
- *
- * @property {InitCallback} init - Callback to call before the start of a sketch.
- * @property {HTMLCanvasElement} cvs - Canvas to use instead of #sketch-canvas.
- */
-
-/**
- * Run a sketch, given a draw callback.
- *
- * @param {DrawCallback} drawFn - Draw callback run every tick of the gameloop
- * @param {RunOptions} options - Options for the sketch.
- *
- * @return {undefined}
- */
-export function run(drawFn, options) {
-	options = options || {};
-
-	const state = {
-		t: null,
-		dt: null,
-		ctx: null,
-		cvs: null,
-	};
-
-	const tick = (t) => {
-		const ts = t / 1000;
-		state.dt = Math.min(ts - state.t, 0.1);
-		state.t = ts;
-
-		drawFn(state);
-
-		window.requestAnimationFrame(tick);
-	};
-
-	window.requestAnimationFrame((t) => {
-		const { init, cvs } = options;
-
-		state.t = t;
-		state.dt = 0;
-
-		if (cvs) {
-			state.cvs = cvs;
-		} else {
-			state.cvs = document.querySelector("#sketch-canvas");
-		}
-
-		if (state.cvs == null) {
-			console.error("No canvas to use!");
-			return;
-		}
-
-		state.ctx = state.cvs.getContext("2d");
-
-		if (init) {
-			init(state);
-		}
-
-		window.requestAnimationFrame(tick);
-	});
-}
-
-/**
  * @param {MouseEvent | Touch} e
  * @param {HTMLCanvasElement} cvs
  * @param {CanvasRenderingContext2D?} ctx
