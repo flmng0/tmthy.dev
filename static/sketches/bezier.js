@@ -104,10 +104,6 @@ export function init({ cvs, ctx }) {
 export function draw({ cvs, ctx, t }) {
 	ctx.clearRect(0, 0, cvs.width, cvs.height);
 
-	if (bezier.control.length < 2) {
-		return;
-	}
-
 	const drawPoint = (p) => {
 		ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
 	};
@@ -125,6 +121,10 @@ export function draw({ cvs, ctx, t }) {
 		ctx.fill();
 	});
 	ctx.restore();
+
+	if (bezier.control.length < 2) {
+		return;
+	}
 
 	// Draw lines between control points.
 	ctx.save();
