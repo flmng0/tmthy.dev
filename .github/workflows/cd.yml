@@ -32,7 +32,7 @@ jobs:
                   cache: "pnpm"
 
             - name: Install dependencies
-              run: pnpm install
+              run: pnpm install --shamefully-hoist
 
             - name: Generate the static site files
               run: pnpm run build
