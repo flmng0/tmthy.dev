@@ -1,19 +1,4 @@
 <script lang="ts">
-	import { onMount } from "svelte";
-
-	import BackToTop from "$components/BackToTop.svelte";
-	import NavBar from "$components/NavBar.svelte";
-
-	import { theme } from "$lib/stores";
-	import "./global.scss";
-
-	onMount(() => {
-		document.body.setAttribute("data-theme", $theme);
-	});
+	import '@fontsource/roboto';
+	import '$lib/global.scss';
 </script>
-
-<NavBar />
-
-<BackToTop />
-
-<slot />
