@@ -31,5 +31,8 @@
 	"dependencies": {
 		"@fontsource/roboto": "^4.5.7"
 	},
+	"browserslist": [
+		"last 2 versions"
+	],
 	"type": "module"
 }
