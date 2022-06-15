@@ -4,10 +4,10 @@ export interface SketchFrontmatter {
 	screenshot?: string
 }
 
-export const sketchesDir = 'src/lib/sketches'
+export const sketchesDir = 'src/lib/data/sketches'
 
 export async function importSketch(slug: string): Promise<Sketch<unknown>> {
-	return (await import(`./sketches/${slug}.ts`)).default
+	return (await import(`./data/sketches/${slug}.ts`)).default
 }
 
 interface ContextMap {
