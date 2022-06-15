@@ -1,6 +1,6 @@
 export interface SketchFrontmatter {
-	name?: string
-	brief?: string
+	name: string
+	brief: string
 	screenshot?: string
 }
 
@@ -8,6 +8,10 @@ export const sketchesDir = 'src/lib/data/sketches'
 
 export async function importSketch(slug: string): Promise<Sketch<unknown>> {
 	return (await import(`./data/sketches/${slug}.ts`)).default
+}
+
+export async function importMarkdown(slug: string): Promise<any> {
+	return await import(`./data/sketches/${slug}.md`)
 }
 
 interface ContextMap {
