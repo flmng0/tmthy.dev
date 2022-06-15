@@ -8,13 +8,6 @@ screenshot: /screenshots/sketches/disperse.png
 
 - Mouse over/tap the polygon and watch its vertices disperse.
 
-## Source
-
-The source for this simulation resides in two places.
-
-1. The first is what's being presented in the canvas on this page. That source is statically served at [/sketches/disperse.js](/sketches/disperse.js).
-2. A cleaner, typed source, written in TypeScript, which uses a class as a simulation runner. This can be found at [src/lib/disperse.ts on GitHub](https://github.com/flmng0/flmng0.github.io/blob/main/src/lib/disperse.ts).
-
 ## About
 
 This was genuinely just created for the hero of the index page; I wanted some form of interaction.
