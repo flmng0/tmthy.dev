@@ -14,12 +14,6 @@ export async function importMarkdown(slug: string): Promise<any> {
 	return await import(`./data/sketches/${slug}.md`)
 }
 
-interface ContextMap {
-	'2d': CanvasRenderingContext2D
-	webgl: WebGLRenderingContext
-	webgl2: WebGL2RenderingContext
-}
-
 export interface Sketch<D> {
 	init(canvas: HTMLCanvasElement): D | null
 	draw?(data: D, t: number): void

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte'
 	import FeatherIcon from './FeatherIcon.svelte'
 
 	let visible: boolean = false

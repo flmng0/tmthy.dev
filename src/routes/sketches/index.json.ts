@@ -2,7 +2,6 @@ import type { RequestHandler } from './__types/index.json'
 
 import { importMarkdown, sketchesDir } from '$lib/sketch'
 import fs from 'fs/promises'
-import path from 'path'
 
 export const get: RequestHandler = async () => {
 	const mdExt = '.md'

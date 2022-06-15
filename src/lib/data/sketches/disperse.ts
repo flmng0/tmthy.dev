@@ -1,4 +1,3 @@
-import { avatar } from '$lib/consts'
 import { type Sketch, type Point, Vector } from '$lib/sketch'
 
 export interface Settings {
@@ -236,7 +235,7 @@ export const Disperse: Sketch<DisperseSimulation> = {
 		const polygonScale = 1
 
 		const pointCount = 10
-		const points = Array.from({ length: pointCount }, (v, i) => {
+		const points = Array.from({ length: pointCount }, (_, i) => {
 			const a = 2 * Math.PI * (i / pointCount)
 			const x = polygonScale * (0.5 * Math.cos(a) + 0.5)
 			const y = polygonScale * (0.5 * Math.sin(a) + 0.5)
