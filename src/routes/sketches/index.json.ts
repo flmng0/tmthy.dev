@@ -12,8 +12,6 @@ export const get: RequestHandler = async () => {
 	const sketchFutures = filtered.map(async (entry) => {
 		const slug = entry.slice(0, -mdExt.length)
 
-		const filePath = path.join(sketchesDir, entry)
-
 		const md = await importMarkdown(slug)
 
 		return {
