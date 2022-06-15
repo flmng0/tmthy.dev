@@ -1,6 +1,7 @@
 import type { RequestHandler } from './__types/index.json'
 
-import { importMarkdown, sketchesDir } from '$lib/sketch'
+import { sketchesDir } from '$lib/sketch'
+import { importMarkdown } from '$lib/load'
 import fs from 'fs/promises'
 
 export const get: RequestHandler = async () => {
@@ -11,7 +12,7 @@ export const get: RequestHandler = async () => {
 	const sketchFutures = filtered.map(async (entry) => {
 		const slug = entry.slice(0, -mdExt.length)
 
-		const md = await importMarkdown(slug)
+		const md = await importMarkdown('sketch', slug)
 
 		return {
 			slug,

@@ -10,10 +10,6 @@ export async function importSketch(slug: string): Promise<Sketch<unknown>> {
 	return (await import(`./data/sketches/${slug}.ts`)).default
 }
 
-export async function importMarkdown(slug: string): Promise<any> {
-	return await import(`./data/sketches/${slug}.md`)
-}
-
 export interface Sketch<D> {
 	init(canvas: HTMLCanvasElement): D | null
 	draw?(data: D, t: number): void

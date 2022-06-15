@@ -1,6 +1,7 @@
 import type { RequestHandler } from './__types/[slug].json'
 
-import { importMarkdown, sketchesDir } from '$lib/sketch'
+import { sketchesDir } from '$lib/sketch'
+import { importMarkdown } from '$lib/load'
 import prism from 'prismjs'
 import loadLanguages from 'prismjs/components/index.js'
 import fs from 'fs/promises'
@@ -10,7 +11,7 @@ loadLanguages('typescript')
 export const get: RequestHandler = async ({ params }) => {
 	const { slug } = params
 
-	const md = await importMarkdown(slug)
+	const md = await importMarkdown('sketch', slug)
 
 	const sourcePath = `${sketchesDir}/${slug}.ts`
 
