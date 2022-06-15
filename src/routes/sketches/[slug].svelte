@@ -13,7 +13,7 @@
 			}
 		}
 
-		const { sourcePath, markdown, source } = await response.json()
+		const { markdown, source } = await response.json()
 		const sketch = await importSketch(slug)
 
 		return {
