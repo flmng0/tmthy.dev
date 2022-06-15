@@ -1,6 +1,6 @@
 import { unified } from 'unified'
 import remarkParse from 'remark-parse'
-import remarkFrontmatter from 'remark-frontmatter'
+import remarkFrontmatter, { type Root } from 'remark-frontmatter'
 import remarkRehype from 'remark-rehype'
 import rehypePrism from 'rehype-prism-plus'
 import rehypeStringify from 'rehype-stringify'
@@ -17,14 +17,7 @@ export async function processMarkdown<F extends Record<string, any>>(
 ): Promise<{ frontmatter: F; html: string }> {
 	const file = await fs.readFile(path)
 	const tree = parser.parse(file)
-
-	if (tree.children.length === 0 || tree.children[0].type !== 'yaml') {
-		throw 'Invalid frontmatter'
-	}
-
-	const value = tree.children[0].value
-
-	const frontmatter = yaml.load(value) as F
+	const frontmatter = extractFrontmatter<F>(tree)
 
 	const html = runner.stringify(await runner.run(tree))
 
@@ -32,4 +25,22 @@ export async function processMarkdown<F extends Record<string, any>>(
 		frontmatter,
 		html,
 	}
+}
+
+export async function getFrontmatter<F extends Record<string, any>>(path: string): Promise<F> {
+	const file = await fs.readFile(path)
+	const tree = parser.parse(file)
+
+	return extractFrontmatter<F>(tree)
+}
+
+export function extractFrontmatter<F extends Record<string, any>>(tree: Root): F {
+	if (tree.children.length === 0 || tree.children[0].type !== 'yaml') {
+		throw 'Invalid frontmatter'
+	}
+
+	const value = tree.children[0].value
+
+	const frontmatter = yaml.load(value) as F
+	return frontmatter
 }
