@@ -2,7 +2,6 @@
 name: Polygon Vertex Dispersion
 brief: Dispersion simulation used for the home-page hero's interactivity. Simulate each vertex of a polygon as a particle, apply a repel force from the mouse, and a spring force to the origin.
 screenshot: /screenshots/sketches/disperse.png
-source: disperse.ts
 ---
 
 ## Instructions

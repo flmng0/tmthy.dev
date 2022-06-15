@@ -263,7 +263,7 @@ export const Disperse: Sketch<DisperseData> = {
 				returnStrength: 16.0,
 				frictionStrength: 1.2,
 				minConnectWidth: 2.0,
-				polygonSize: 600,
+				polygonSize: 400,
 			},
 		)
 
