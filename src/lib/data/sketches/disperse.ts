@@ -231,11 +231,7 @@ export class DisperseSimulation {
 	}
 }
 
-type DisperseData = {
-	simulation: DisperseSimulation
-}
-
-export const Disperse: Sketch<DisperseData> = {
+export const Disperse: Sketch<DisperseSimulation> = {
 	init(canvas) {
 		const polygonScale = 1
 
@@ -254,7 +250,7 @@ export const Disperse: Sketch<DisperseData> = {
 			[i, (i + 3) % pointCount],
 		])
 
-		const simulation = new DisperseSimulation(
+		return new DisperseSimulation(
 			canvas,
 			{ points, lines },
 			{
@@ -266,13 +262,9 @@ export const Disperse: Sketch<DisperseData> = {
 				polygonSize: 400,
 			},
 		)
-
-		return {
-			simulation,
-		}
 	},
-	draw(data, t) {
-		data.simulation.draw(t)
+	draw(sim, t) {
+		sim.draw(t)
 	},
 }
 
