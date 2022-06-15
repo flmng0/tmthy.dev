@@ -1,6 +1,8 @@
 <script lang="ts" context="module">
 	import type { Load } from './__types/[slug]'
 
+	import { importSketch } from '$lib/sketch'
+
 	export const load: Load = async ({ params, fetch }) => {
 		const { slug } = params
 
@@ -12,7 +14,7 @@
 		}
 
 		const { sourcePath, markdown, source } = await response.json()
-		const sketch = (await import(/* @vite-ignore */ `/${sourcePath}`)).default
+		const sketch = await importSketch(slug)
 
 		return {
 			status: 200,

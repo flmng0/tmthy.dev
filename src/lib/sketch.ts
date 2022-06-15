@@ -2,10 +2,13 @@ export interface SketchFrontmatter {
 	name?: string
 	brief?: string
 	screenshot?: string
-	source?: string
 }
 
-export const sketchesDir = 'src/sketches'
+export const sketchesDir = 'src/lib/sketches'
+
+export async function importSketch(slug: string): Promise<Sketch<unknown>> {
+	return (await import(`./sketches/${slug}.ts`)).default
+}
 
 interface ContextMap {
 	'2d': CanvasRenderingContext2D
@@ -13,7 +16,7 @@ interface ContextMap {
 	webgl2: WebGL2RenderingContext
 }
 
-export interface Sketch<D extends Record<string, any>> {
+export interface Sketch<D> {
 	init(canvas: HTMLCanvasElement): D | null
 	draw?(data: D, t: number): void
 }
