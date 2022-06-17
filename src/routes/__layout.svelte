@@ -3,6 +3,8 @@
 
 	// Styles
 	import '$lib/global.scss'
+
+	// Fonts
 	import '@fontsource/roboto-flex/400.css'
 	import '@fontsource/roboto-flex/variable.css'
 	import '@fontsource/fira-code/400.css'

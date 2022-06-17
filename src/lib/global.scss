@@ -53,7 +53,7 @@ body[data-theme="dark"] {
 	--col-primary-fg: hsl(0, 0%, 90%);
 	--col-secondary-fg: hsl(0, 0%, 80%);
 
-	--col-btn-bg: hsl(315, 100%, 41%);
+	--col-btn-bg: hsl(315, 82%, 51%);
 	--col-btn-fg: hsl(0, 0%, 100%);
 	--col-btn-hovered-bg: hsl(327, 68%, 77%);
 	--col-btn-hovered-fg: hsl(0, 0%, 0%);
@@ -107,4 +107,11 @@ button {
 		color: var(--col-btn-hovered-fg);
 		background-color: var(--col-btn-hovered-bg);
 	}
+}
+
+h1,h2,h3 {
+	&,h4,h5,h6 {
+		font-family: var(--font-heading);
+	}
+	font-weight: 500;
 }
