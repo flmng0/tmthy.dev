@@ -63,16 +63,38 @@
 			cancelAnimationFrame(rafIdx)
 		}
 	})
-
-	// Open callback from source Modal
-	let open: () => void
 </script>
 
-<canvas bind:this={canvas} width={800} height={800} />
+<main>
+	<canvas bind:this={canvas} width={800} height={800} />
 
-<button on:click={open}>Show Source</button>
-<Modal bind:open>
-	<!-- `class="highlight" from "$lib/prism.css" to allow for fully featured PrismJS syntax highlighting. -->
-	<pre class="highlight">{@html source}</pre>
-</Modal>
-{@html markdown}
+	<Modal>
+		<!-- `class="highlight" from "$lib/prism.css" to allow for fully featured PrismJS syntax highlighting. -->
+		<pre class="highlight">{@html source}</pre>
+
+		<button slot="button" let:open on:click={open}>Show Source</button>
+	</Modal>
+
+	<article>
+		{@html markdown}
+	</article>
+</main>
+
+<style lang="scss">
+	main {
+		display: flex;
+		flex-flow: column;
+
+		width: min(100%, 100ch);
+		margin: 0 auto;
+	}
+
+	canvas {
+		background: hsl(60, 30%, 91%);
+		margin: 2em;
+	}
+
+	button {
+		align-self: start;
+	}
+</style>

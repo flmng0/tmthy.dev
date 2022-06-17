@@ -11,7 +11,7 @@
 		document.body.style.overflow = 'hidden'
 	}
 
-	const close = () => {
+	export const close = () => {
 		visible = false
 		document.body.style.overflow = originalOverflow
 	}
@@ -25,6 +25,7 @@
 		<slot />
 	</main>
 </div>
+<slot name="button" {open} {close} />
 
 <style lang="scss">
 	.modal {
