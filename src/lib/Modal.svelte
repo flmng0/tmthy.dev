@@ -2,13 +2,18 @@
 	import FeatherIcon from './FeatherIcon.svelte'
 
 	let visible: boolean = false
+	let originalOverflow: string
 
 	export const open = () => {
 		visible = true
+
+		originalOverflow = getComputedStyle(document.body).overflow
+		document.body.style.overflow = 'hidden'
 	}
 
 	const close = () => {
 		visible = false
+		document.body.style.overflow = originalOverflow
 	}
 </script>
 
