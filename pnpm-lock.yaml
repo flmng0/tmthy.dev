@@ -1,7 +1,9 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@fontsource/roboto': ^4.5.7
+  '@fontsource/fira-code': ^4.5.10
+  '@fontsource/open-sans': ^4.5.10
+  '@fontsource/roboto-flex': ^4.5.0
   '@sveltejs/adapter-static': next
   '@sveltejs/kit': next
   '@types/feather-icons': ^4.7.0
@@ -22,7 +24,9 @@ specifiers:
   vite-plugin-markdown: ^2.0.2
 
 dependencies:
-  '@fontsource/roboto': 4.5.7
+  '@fontsource/fira-code': 4.5.10
+  '@fontsource/open-sans': 4.5.10
+  '@fontsource/roboto-flex': 4.5.0
 
 devDependencies:
   '@sveltejs/adapter-static': 1.0.0-next.34
@@ -46,8 +50,16 @@ devDependencies:
 
 packages:
 
-  /@fontsource/roboto/4.5.7:
-    resolution: {integrity: sha512-m57UMER23Mk6Drg9OjtHW1Y+0KPGyZfE5XJoPTOsLARLar6013kJj4X2HICt+iFLJqIgTahA/QAvSn9lwF1EEw==}
+  /@fontsource/fira-code/4.5.10:
+    resolution: {integrity: sha512-CF6cBJZcpuW+qxtr7JZt3kPwEHj0xWYgsRr7q3tGhkIqEmxdJ6Omvw61LEFQuRXeAwOnXBGZr42qTrO+vCzvAQ==}
+    dev: false
+
+  /@fontsource/open-sans/4.5.10:
+    resolution: {integrity: sha512-MrtTDfWb1Tu9YxVh2KaKmsKBn6O3KL/lHZS0KRKK58jgqvdwuiDt4QW4udmW4FQf0XOWgnZ+4vKUF80F3SqBAA==}
+    dev: false
+
+  /@fontsource/roboto-flex/4.5.0:
+    resolution: {integrity: sha512-4w944UkhoO+8rc/bJiSi0KLWWVfCcWGLtgjm6wsyQmSxn25zpJ6qBgSEqANin/R8k0Aou2n6R9nQTlhFOsvMkQ==}
     dev: false
 
   /@jridgewell/resolve-uri/3.0.7:

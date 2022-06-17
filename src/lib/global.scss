@@ -2,20 +2,33 @@
 	box-sizing: border-box;
 }
 
+@mixin variableFont($name, $font, $fallbacks...) {
+	#{$name}: "#{$font}", #{$fallbacks};
+
+	@supports (font-variation-settings: normal) {
+		#{$name}: "#{$font}Variable", #{$fallbacks};
+	}
+}
+
 :root {
 	font-size: 16px;
 
 	scroll-behavior: smooth;
-}
 
-@media screen and (max-width: 400px) {
-	:root {
+	@media screen and (max-width: 400px) {
 		font-size: 4vw; // (16 / 400)vw
 	}
+
+	$sans-fallbacks: system-ui, -apple-system, sans-serif;
+	@include variableFont(--fam-body, "Roboto Flex", $sans-fallbacks);
+	@include variableFont(--fam-heading, "Open Sans", $sans-fallbacks);
+
+	@include variableFont(--fam-code, "Fira Code", monospace);
 }
 
+
 body {
-	font-family: Roboto, sans-serif;
+	font-family: var(--fam-body);
 
 	margin: 0 auto;
 	padding: 0;
@@ -23,24 +36,29 @@ body {
 
 	line-height: 1.5;
 
-	background-color: var(--color-bg-primary);
-	color: var(--color-fg-primary);
+	background-color: var(--col-primary-bg);
+	color: var(--col-primary-fg);
 
 	transition: background-color var(--transition);
 }
 
 body,
 body[data-theme="dark"] {
-	--color-main: hsl(325, 100%, 80%);
-	--color-accent: hsl(122, 91%, 21%);
+	--col-main: hsl(325, 100%, 80%);
+	--col-accent: hsl(122, 91%, 21%);
 
-	--color-bg-primary: hsl(0, 0%, 10%);
-	--color-bg-secondary: hsl(0, 0%, 20%);
+	--col-primary-bg: hsl(0, 0%, 10%);
+	--col-secondary-bg: hsl(0, 0%, 20%);
 
-	--color-fg-primary: hsl(0, 0%, 90%);
-	--color-fg-secondary: hsl(0, 0%, 80%);
+	--col-primary-fg: hsl(0, 0%, 90%);
+	--col-secondary-fg: hsl(0, 0%, 80%);
 
-	--color-shadow: hsla(0, 0%, 0%, 100%);
+	--col-btn-bg: hsl(315, 100%, 41%);
+	--col-btn-fg: hsl(0, 0%, 100%);
+	--col-btn-hovered-bg: hsl(327, 68%, 77%);
+	--col-btn-hovered-fg: hsl(0, 0%, 0%);
+
+	--col-shadow: hsla(0, 0%, 0%, 100%);
 
 	::selection {
 		background-color: hsl(325, 45%, 60%);
@@ -48,16 +66,19 @@ body[data-theme="dark"] {
 }
 
 body[data-theme="light"] {
-	--color-main: hsl(121, 50%, 55%);
-	--color-accent: hsl(0, 0%, 60%);
+	--col-main: hsl(121, 50%, 55%);
+	--col-accent: hsl(0, 0%, 60%);
 
-	--color-bg-primary: hsl(0, 0%, 90%);
-	--color-bg-secondary: hsl(0, 0%, 80%);
+	--col-primary-bg: hsl(0, 0%, 90%);
+	--col-secondary-bg: hsl(0, 0%, 80%);
 
-	--color-fg-primary: hsl(0, 0%, 10%);
-	--color-fg-secondary: hsl(0, 0%, 20%);
+	--col-primary-fg: hsl(0, 0%, 10%);
+	--col-secondary-fg: hsl(0, 0%, 20%);
 
-	--color-shadow: hsla(0, 0%, 15%, 30%);
+	--col-btn-bg: hsl(214, 41%, 93%);
+	--col-btn-fg: hsl(0, 0%, 10%);
+
+	--col-shadow: hsla(0, 0%, 15%, 30%);
 
 	::selection {
 		background-color: hsl(121, 32%, 71%);
@@ -69,5 +90,21 @@ a {
 
 	&:hover {
 		text-decoration: none;
+	}
+}
+
+button {
+	all: unset;
+	display: inline-block;
+	background-color: var(--col-btn-bg);
+	color: var(--col-btn-fg);
+	padding: 1em;
+	user-select: none;
+	cursor: pointer;
+
+	&:hover,
+	&:focus-within {
+		color: var(--col-btn-hovered-fg);
+		background-color: var(--col-btn-hovered-bg);
 	}
 }
