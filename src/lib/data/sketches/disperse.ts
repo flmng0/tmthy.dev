@@ -1,4 +1,4 @@
-import { type Sketch, type Point, Vector } from '$lib/sketch'
+import { type Sketch, type Point, Vector, computePointPos } from '$lib/sketch'
 
 export interface Settings {
 	minRepelDist: number
@@ -89,19 +89,6 @@ class Particle {
 export interface DispersePolygon {
 	points: Array<Point>
 	lines: Array<number[]>
-}
-
-function computePointPos(
-	point: { clientX: number; clientY: number },
-	cvs: HTMLCanvasElement,
-): Point {
-	const rect = cvs.getBoundingClientRect()
-	const scaleX = cvs.width / rect.width
-	const scaleY = cvs.height / rect.height
-	const x = point.clientX - rect.left
-	const y = point.clientY - rect.top
-
-	return { x: x * scaleX, y: y * scaleY }
 }
 
 export class DisperseSimulation {

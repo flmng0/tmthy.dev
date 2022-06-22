@@ -4,6 +4,19 @@ export interface SketchDetails {
 	screenshot?: string
 }
 
+export function computePointPos(
+	point: { clientX: number; clientY: number },
+	cvs: HTMLCanvasElement,
+): Point {
+	const rect = cvs.getBoundingClientRect()
+	const scaleX = cvs.width / rect.width
+	const scaleY = cvs.height / rect.height
+	const x = point.clientX - rect.left
+	const y = point.clientY - rect.top
+
+	return { x: x * scaleX, y: y * scaleY }
+}
+
 export const sketchesDir = 'src/lib/data/sketches'
 
 export type CancelCallback = () => void
