@@ -23,5 +23,6 @@
 	main {
 		width: min(80ch, 100%);
 		margin: 0 auto;
+		padding: 2em;
 	}
 </style>

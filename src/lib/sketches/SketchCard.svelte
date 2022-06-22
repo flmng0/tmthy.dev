@@ -61,10 +61,12 @@
 	</div>
 
 	<div class="description">
-		<a class="sketch" href="/sketches/{slug}">
-			<h2>{details.name}</h2>
-		</a>
-		<p>{details.brief}</p>
+		<div class="inner">
+			<a class="sketch" href="/sketches/{slug}">
+				<h2>{details.name}</h2>
+			</a>
+			<p>{details.brief}</p>
+		</div>
 	</div>
 </div>
 
@@ -106,8 +108,8 @@
 		}
 	}
 
-	.description {
-		background-color: #000;
+	.description .inner {
+		background-color: var(--col-secondary-bg);
 		padding: 1em;
 	}
 
@@ -127,25 +129,27 @@
 			transform: translateY(-$headerHeight);
 
 			&:hover {
-				box-shadow: 0 0 4px rgba(0, 0, 0, 50%);
+				filter: drop-shadow(0 0 8px rgba(0, 0, 0, 90%));
 			}
 
-			$sharedTransition: box-shadow 250ms;
+			@supports not (clip-path: polygon(0 0)) {
+				.inner {
+					transition: max-height 500ms;
+					max-height: $headerHeight;
+				}
 
-			@supports not (clip-path: polygon()) {
-				transition: $sharedTransition, max-height 500ms;
-				max-height: $headerHeight;
-
-				&:hover {
+				&:hover .inner {
 					max-height: var(--height, 500px);
 				}
 			}
 
-			@supports (clip-path: polygon()) {
-				transition: $sharedTransition, clip-path 500ms;
-				clip-path: polygon(0 0, 100% 0, 100% $headerHeight, 0 $headerHeight);
+			@supports (clip-path: polygon(0 0)) {
+				.inner {
+					transition: clip-path 500ms;
+					clip-path: polygon(0 0, 100% 0, 100% $headerHeight, 0 $headerHeight);
+				}
 
-				&:hover {
+				&:hover .inner {
 					clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
 				}
 			}

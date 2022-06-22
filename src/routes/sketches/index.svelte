@@ -37,7 +37,11 @@
 <style lang="scss">
 	.sketches {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 30ch), 1fr));
 		gap: 2em;
+	}
+
+	.sketches > :global(.sketch-card):first-of-type {
+		grid-column: 1/-1;
 	}
 </style>
