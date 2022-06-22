@@ -31,7 +31,7 @@
 	import Modal from '$lib/Modal.svelte'
 	import '$lib/prism.css'
 
-	import type { Sketch } from '$lib/sketch'
+	import { runSketch, type Sketch } from '$lib/sketch'
 	import { onMount } from 'svelte'
 
 	// Sketch object to run the sketch
@@ -44,20 +44,10 @@
 	let canvas: HTMLCanvasElement
 
 	onMount(() => {
-		const data = sketch.init(canvas)
-
-		let rafIdx: number
-		const tick = (t: number) => {
-			sketch.draw?.(data, t)
-			rafIdx = requestAnimationFrame(tick)
-		}
-
-		if (sketch.draw !== null) {
-			rafIdx = requestAnimationFrame(tick)
-		}
+		const [cancel] = runSketch(sketch, canvas)
 
 		return () => {
-			cancelAnimationFrame(rafIdx)
+			cancel()
 		}
 	})
 </script>
