@@ -13,7 +13,6 @@
 		'/projects': 'Projects',
 		'/contact': 'Contact',
 	}
-	const count = Object.keys(pages).length
 
 	let theme = 'dark'
 	const toggleTheme = () => {
@@ -79,7 +78,7 @@
 
 <nav class:hidden style:--hue-offset="{$hueOffset}deg" style:--max-delay="{totalDuration}ms">
 	<section class="page-links">
-		{#each Object.entries(pages) as [link, name], i}
+		{#each Object.entries(pages) as [link, name]}
 			{@const href = $page.url.pathname === link ? '#' : link}
 
 			<a {href} use:horizontalDelay>{name}</a>
@@ -99,7 +98,7 @@
 	}
 
 	header {
-		background: var(--color-shadow);
+		background: var(--col-shadow);
 		padding: 0.5em;
 		font-size: 1.2em;
 		text-align: center;
@@ -108,6 +107,8 @@
 	nav {
 		position: sticky;
 		top: 0;
+
+		z-index: 10;
 
 		padding: 1em 1.5em;
 		font-size: 1rem;
@@ -141,7 +142,7 @@
 			content: '';
 			position: absolute;
 			inset: 0;
-			background-color: var(--color-shadow);
+			background-color: var(--col-shadow);
 
 			z-index: -1;
 		}
