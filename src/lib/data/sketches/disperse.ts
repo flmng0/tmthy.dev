@@ -96,10 +96,12 @@ function computePointPos(
 	cvs: HTMLCanvasElement,
 ): Point {
 	const rect = cvs.getBoundingClientRect()
+	const scaleX = cvs.width / rect.width
+	const scaleY = cvs.height / rect.height
 	const x = point.clientX - rect.left
 	const y = point.clientY - rect.top
 
-	return { x: x, y: y }
+	return { x: x * scaleX, y: y * scaleY }
 }
 
 export class DisperseSimulation {
@@ -249,7 +251,7 @@ export const Disperse: Sketch<DisperseSimulation> = {
 			[i, (i + 3) % pointCount],
 		])
 
-		return new DisperseSimulation(
+		const sim = new DisperseSimulation(
 			canvas,
 			{ points, lines },
 			{
@@ -261,6 +263,9 @@ export const Disperse: Sketch<DisperseSimulation> = {
 				polygonSize: 400,
 			},
 		)
+		sim.connectStyle = 'black'
+
+		return sim
 	},
 	draw(sim, t) {
 		sim.draw(t)

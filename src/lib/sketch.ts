@@ -1,4 +1,4 @@
-export interface SketchFrontmatter {
+export interface SketchDetails {
 	name: string
 	brief: string
 	screenshot?: string
@@ -6,12 +6,46 @@ export interface SketchFrontmatter {
 
 export const sketchesDir = 'src/lib/data/sketches'
 
+export type CancelCallback = () => void
+export type PauseCallback = (paused: boolean) => void
+
+export function runSketch<D>(
+	sketch: Sketch<D>,
+	canvas: HTMLCanvasElement,
+): [CancelCallback, PauseCallback] {
+	const data = sketch.init(canvas)
+
+	let rafIdx: number
+	const tick = (t: number) => {
+		sketch.draw!(data!, t)
+		rafIdx = requestAnimationFrame(tick)
+	}
+
+	if (sketch.draw !== null) {
+		rafIdx = requestAnimationFrame(tick)
+	}
+
+	const cancel = () => {
+		cancelAnimationFrame(rafIdx)
+	}
+
+	const setPaused = (paused: boolean) => {
+		if (paused) {
+			cancelAnimationFrame(rafIdx)
+			return
+		}
+		rafIdx = requestAnimationFrame(tick)
+	}
+
+	return [cancel, setPaused]
+}
+
 export async function importSketch(slug: string): Promise<Sketch<unknown>> {
 	return (await import(`./data/sketches/${slug}.ts`)).default
 }
 
 export interface Sketch<D> {
-	init(canvas: HTMLCanvasElement): D | null
+	init(canvas: HTMLCanvasElement): D
 	draw?(data: D, t: number): void
 }
 

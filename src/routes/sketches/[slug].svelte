@@ -45,9 +45,6 @@
 
 	onMount(() => {
 		const data = sketch.init(canvas)
-		if (data === null) {
-			return
-		}
 
 		let rafIdx: number
 		const tick = (t: number) => {
