@@ -15,4 +15,13 @@
 
 <Header />
 
-<slot />
+<main>
+	<slot />
+</main>
+
+<style lang="scss">
+	main {
+		width: min(80ch, 100%);
+		margin: 0 auto;
+	}
+</style>
