@@ -81,6 +81,8 @@
 		aspect-ratio: 1;
 		background-color: #f8f8f2;
 
+		overflow: hidden;
+
 		&.paused,
 		&.running {
 			img {
@@ -97,7 +99,7 @@
 		}
 
 		& > * {
-			transition: 1s ease-in;
+			transition: 500ms ease-in;
 			position: absolute;
 			inset: 0;
 			width: 100%;
@@ -109,23 +111,42 @@
 		padding: 1em;
 	}
 
-	@supports (clip-path: polygon()) {
-		@media (hover: hover) {
-			.description {
-				position: absolute;
-				top: 100%;
-				overflow: hidden;
-				transition: box-shadow 250ms, clip-path 500ms;
+	@media (hover: hover) {
+		.sketch-card:not(:hover) .img > * {
+			filter: blur(2px);
+		}
 
-				z-index: 1;
+		.description {
+			position: absolute;
+			top: 100%;
+			overflow: hidden;
 
-				$headerHeight: 5em;
-				transform: translateY(-$headerHeight);
+			z-index: 1;
+
+			$headerHeight: 5em;
+			transform: translateY(-$headerHeight);
+
+			&:hover {
+				box-shadow: 0 0 4px rgba(0, 0, 0, 50%);
+			}
+
+			$sharedTransition: box-shadow 250ms;
+
+			@supports not (clip-path: polygon()) {
+				transition: $sharedTransition, max-height 500ms;
+				max-height: $headerHeight;
+
+				&:hover {
+					max-height: var(--height, 500px);
+				}
+			}
+
+			@supports (clip-path: polygon()) {
+				transition: $sharedTransition, clip-path 500ms;
 				clip-path: polygon(0 0, 100% 0, 100% $headerHeight, 0 $headerHeight);
 
 				&:hover {
 					clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-					box-shadow: 0 0 4px rgba(0, 0, 0, 50%);
 				}
 			}
 		}
