@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import type { SketchFrontmatter } from '$lib/sketch'
+	import type { SketchDetails } from '$lib/sketch'
 
 	import type { Load } from './__types/index'
 
@@ -20,24 +20,24 @@
 			},
 		}
 	}
-
-	interface SketchInfo extends SketchFrontmatter {
-		slug: string
-	}
 </script>
 
 <script lang="ts">
-	export let sketches: SketchInfo[]
+	import SketchCard from '$lib/sketches/SketchCard.svelte'
+
+	export let sketches: Record<string, SketchDetails>
 </script>
 
 <nav class="sketches">
-	{#each sketches as sketch}
-		<a class="sketch" href="/sketches/{sketch.slug}">
-			{#if sketch.screenshot}
-				<img src={sketch.screenshot} alt="Screen shot of {sketch.name} sketch" />
-			{/if}
-			<h2>{sketch.name}</h2>
-			<p>{sketch.brief}</p>
-		</a>
+	{#each Object.entries(sketches) as [slug, details]}
+		<SketchCard {slug} {details} />
 	{/each}
 </nav>
+
+<style lang="scss">
+	.sketches {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
+		gap: 2em;
+	}
+</style>

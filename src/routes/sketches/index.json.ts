@@ -14,13 +14,10 @@ export const get: RequestHandler = async () => {
 
 		const md = await importMarkdown('sketch', slug)
 
-		return {
-			slug,
-			...md.attributes,
-		}
+		return [slug, md.attributes]
 	})
 
-	const sketches = await Promise.all(sketchFutures)
+	const sketches = Object.fromEntries(await Promise.all(sketchFutures))
 
 	return {
 		body: {
