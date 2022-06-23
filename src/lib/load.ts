@@ -1,9 +1,7 @@
+import type { SketchDetails } from './sketch'
+
 interface AttributeMap {
-	sketch: {
-		name: string
-		brief: string
-		screenshot?: string
-	}
+	sketch: SketchDetails
 }
 
 // Generic type AK stands for *A*ttributeMap *K*ey.
