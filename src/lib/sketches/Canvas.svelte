@@ -24,3 +24,10 @@
 </script>
 
 <canvas bind:this={canvas} width={800} height={800} />
+
+<style>
+	canvas {
+		width: 100%;
+		height: 100%;
+	}
+</style>
