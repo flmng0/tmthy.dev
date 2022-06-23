@@ -8,15 +8,16 @@
 		type SketchDetails,
 	} from '$lib/sketch'
 	import { onDestroy } from 'svelte'
+	import Canvas from './Canvas.svelte'
 
 	export let slug: string
 	export let details: SketchDetails
 
-	let sketch: Sketch<unknown> | null = null
 	let state: 'waiting' | 'loading' | 'running' | 'paused' = 'waiting'
 
 	let canvas: HTMLCanvasElement
-	let cancel: CancelCallback
+
+	let sketch: Promise<Sketch<unknown>> | null = null
 	let pause: PauseCallback
 
 	const startLoading = () => {
@@ -24,10 +25,9 @@
 
 		state = 'loading'
 
-		importSketch(slug).then((s) => {
-			sketch = s
+		sketch = importSketch(slug).then((s) => {
 			state = 'running'
-			;[cancel, pause] = runSketch(sketch, canvas)
+			return s
 		})
 	}
 
@@ -44,10 +44,6 @@
 		pause(true)
 		state = 'paused'
 	}
-
-	onDestroy(() => {
-		cancel?.()
-	})
 </script>
 
 <div class="sketch-card" on:mouseenter={entered} on:mouseleave={left}>
@@ -55,8 +51,10 @@
 		{#if details.screenshot}
 			<img src={details.screenshot} alt="Screenshot of {details.name}" />
 		{/if}
-		{#if state !== 'waiting'}
-			<canvas bind:this={canvas} width={800} height={800} />
+		{#if sketch !== null}
+			{#await sketch then sketch}
+				<Canvas {sketch} bind:pause />
+			{/await}
 		{/if}
 	</div>
 
@@ -75,6 +73,7 @@
 		position: relative;
 		display: flex;
 		flex-flow: column nowrap;
+		overflow: hidden;
 	}
 
 	.img {
@@ -91,16 +90,16 @@
 				opacity: 0;
 			}
 
-			canvas {
+			:global(canvas) {
 				opacity: 1;
 			}
 		}
 
-		canvas {
+		:global(canvas) {
 			opacity: 0;
 		}
 
-		& > * {
+		& > :global(*) {
 			transition: 500ms ease-in;
 			position: absolute;
 			inset: 0;
