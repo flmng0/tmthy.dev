@@ -86,6 +86,7 @@ export interface Data {
 	bezier: Bezier
 	segments: number
 	duration: number
+	drawnText: boolean
 }
 
 export const sketch: Sketch<Data> = {
@@ -114,9 +115,33 @@ export const sketch: Sketch<Data> = {
 			bezier,
 			segments: 100,
 			duration: 2.0,
+			drawnText: false,
 		}
 	},
-	draw({ cvs, ctx, bezier, segments, duration }, t) {
+	draw(data, t) {
+		const { cvs, ctx, bezier, segments, duration, drawnText } = data
+
+		if (bezier.control.length === 0) {
+			if (drawnText) return
+
+			ctx.save()
+			ctx.fillStyle = 'black'
+
+			const style = getComputedStyle(cvs)
+			ctx.font = style.font
+
+			const msg = 'Click anywhere to your first point.'
+			const metrics = ctx.measureText(msg)
+			const x = (cvs.width - metrics.width) / 2
+			const y = cvs.height / 2
+
+			ctx.fillText(msg, x, y)
+			ctx.restore()
+
+			data.drawnText = true
+			return
+		}
+
 		ctx.clearRect(0, 0, cvs.width, cvs.height)
 
 		const drawPoint = (p: Point) => {

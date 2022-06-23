@@ -77,6 +77,7 @@
 	}
 
 	canvas {
+		font-size: 24px;
 		background: hsl(60, 30%, 91%);
 		margin: 2em;
 	}
