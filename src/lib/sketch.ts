@@ -1,7 +1,7 @@
 export interface SketchDetails {
 	name: string
 	brief: string
-	screenshot?: string
+	screenshot: string
 }
 
 export function computePointPos(
