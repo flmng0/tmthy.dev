@@ -5,6 +5,7 @@
 
 	import { onDestroy } from 'svelte'
 	import { fade } from 'svelte/transition'
+	import { cubicInOut } from 'svelte/easing'
 
 	export let slug: string
 	export let details: SketchDetails
@@ -29,14 +30,23 @@
 	const left = () => {
 		pause(true)
 	}
+
+	const transitionOptions = {
+		duration: 500,
+		easing: cubicInOut,
+	}
 </script>
 
 <div class="sketch-card" on:mouseenter={entered} on:mouseleave={left}>
 	<div class="img">
 		{#if sketch === null}
-			<img src={details.screenshot} alt="Screenshot of {details.name}" out:fade />
+			<img
+				src={details.screenshot}
+				alt="Screenshot of {details.name}"
+				out:fade={transitionOptions}
+			/>
 		{:else}
-			<div class="canvas-container" in:fade>
+			<div class="canvas-container" in:fade={transitionOptions}>
 				<Canvas {sketch} bind:pause />
 			</div>
 		{/if}
