@@ -1,7 +1,7 @@
 import type { RequestHandler } from './__types/index.json'
 
-import { sketchesDir } from '$lib/sketch'
-import { importMarkdown } from '$lib/load'
+import { sketchesDir } from '$lib/data/sketch'
+import { importMarkdown } from '$lib/data'
 import fs from 'fs/promises'
 
 export const get: RequestHandler = async () => {

@@ -1,7 +1,7 @@
 import type { RequestHandler } from './__types/[slug].json'
 
-import { sketchesDir } from '$lib/sketch'
-import { importMarkdown } from '$lib/load'
+import { sketchesDir } from '$lib/data/sketch'
+import { importMarkdown } from '$lib/data'
 import prism from 'prismjs'
 import loadLanguages from 'prismjs/components/index.js'
 import fs from 'fs/promises'

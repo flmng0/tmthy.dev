@@ -1,4 +1,4 @@
-import type { Point, Triangle } from './sketch'
+import type { Point, Triangle } from './data/sketch'
 
 export const siteName: string = 'tmthy.dev'
 

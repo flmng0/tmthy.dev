@@ -1,4 +1,4 @@
-import { type Sketch, type Point, Vector, computePointPos } from '$lib/sketch'
+import { type Sketch, type Point, Vector, computePointPos } from '$lib/data/sketch'
 
 export interface Settings {
 	minRepelDist: number

@@ -22,9 +22,9 @@ export async function importMarkdown<K extends keyof AttributeMap>(
 	type: K,
 	slug: string,
 ): Promise<Markdown<K>> {
-	return await import(`./data/sketches/${slug}.md`)
+	return await import(`./sketches/${slug}.md`)
 }
 
 export async function importSketch(slug: string): Promise<Sketch<unknown>> {
-	return (await import(`./data/sketches/${slug}.ts`)).default
+	return (await import(`./sketches/${slug}.ts`)).default
 }
