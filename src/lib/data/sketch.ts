@@ -53,10 +53,6 @@ export function runSketch<D>(
 	return [cancel, setPaused]
 }
 
-export async function importSketch(slug: string): Promise<Sketch<unknown>> {
-	return (await import(`./data/sketches/${slug}.ts`)).default
-}
-
 export interface Sketch<D> {
 	init(canvas: HTMLCanvasElement): D
 	draw?(data: D, t: number): void

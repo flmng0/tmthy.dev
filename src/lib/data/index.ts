@@ -1,4 +1,4 @@
-import type { SketchDetails } from './sketch'
+import type { Sketch, SketchDetails } from './sketch'
 
 interface AttributeMap {
 	sketch: SketchDetails
@@ -23,4 +23,8 @@ export async function importMarkdown<K extends keyof AttributeMap>(
 	slug: string,
 ): Promise<Markdown<K>> {
 	return await import(`./data/sketches/${slug}.md`)
+}
+
+export async function importSketch(slug: string): Promise<Sketch<unknown>> {
+	return (await import(`./data/sketches/${slug}.ts`)).default
 }

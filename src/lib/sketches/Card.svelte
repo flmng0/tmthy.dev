@@ -1,11 +1,6 @@
 <script lang="ts">
-	import {
-		importSketch,
-		type CancelCallback,
-		type PauseCallback,
-		type Sketch,
-		type SketchDetails,
-	} from '$lib/sketch'
+	import { importSketch } from '$lib/data'
+	import type { CancelCallback, PauseCallback, Sketch, SketchDetails } from '$lib/data/sketch'
 	import Canvas from './Canvas.svelte'
 
 	import { onDestroy } from 'svelte'

@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	import type { Load } from './__types/[slug]'
 
-	import { importSketch } from '$lib/sketch'
+	import { importSketch } from '$lib/data'
 
 	export const load: Load = async ({ params, fetch }) => {
 		const { slug } = params
@@ -31,7 +31,7 @@
 	import Modal from '$lib/Modal.svelte'
 	import '$lib/prism.css'
 
-	import { runSketch, type Sketch } from '$lib/sketch'
+	import { runSketch, type Sketch } from '$lib/data/sketch'
 	import { onMount } from 'svelte'
 
 	// Sketch object to run the sketch

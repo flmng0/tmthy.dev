@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { SketchDetails } from '$lib/sketch'
+	import type { SketchDetails } from '$lib/data/sketch'
 
 	import Card from '$lib/sketches/Card.svelte'
 

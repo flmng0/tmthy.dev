@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import type { SketchDetails } from '$lib/sketch'
+	import type { SketchDetails } from '$lib/data/sketch'
 
 	import type { Load } from './__types/index'
 
