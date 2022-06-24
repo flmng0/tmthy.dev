@@ -31,29 +31,20 @@
 	import Modal from '$lib/Modal.svelte'
 	import '$lib/prism.css'
 
-	import { runSketch, type Sketch } from '$lib/data/sketch'
+	import type { Sketch } from '$lib/data/sketch'
 	import { onMount } from 'svelte'
+	import SketchCanvas from '$lib/sketches/Canvas.svelte'
 
 	// Sketch object to run the sketch
-	export let sketch: Sketch<any>
+	export let sketch: Sketch<unknown>
 	// Compiled HTML of the sketch's Markdown
 	export let markdown: string
 	// Source text of the sketch
 	export let source: string
-
-	let canvas: HTMLCanvasElement
-
-	onMount(() => {
-		const [cancel] = runSketch(sketch, canvas)
-
-		return () => {
-			cancel()
-		}
-	})
 </script>
 
 <main>
-	<canvas bind:this={canvas} width={800} height={800} />
+	<SketchCanvas {sketch} />
 
 	<Modal>
 		<!-- `class="highlight" from "$lib/prism.css" to allow for fully featured PrismJS syntax highlighting. -->
@@ -74,12 +65,6 @@
 
 		width: min(100%, 100ch);
 		margin: 0 auto;
-	}
-
-	canvas {
-		font-size: 24px;
-		background: hsl(60, 30%, 91%);
-		margin: 2em;
 	}
 
 	button {

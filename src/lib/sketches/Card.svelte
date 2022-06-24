@@ -72,7 +72,7 @@
 		position: relative;
 		width: 100%;
 		aspect-ratio: 1;
-		background-color: #f8f8f2;
+		background-color: hsl(60, 30%, 91%);
 
 		overflow: hidden;
 

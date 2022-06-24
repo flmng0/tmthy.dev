@@ -30,5 +30,8 @@
 	canvas {
 		width: 100%;
 		height: 100%;
+
+		font-size: 24px;
+		background: hsl(60, 30%, 91%);
 	}
 </style>
