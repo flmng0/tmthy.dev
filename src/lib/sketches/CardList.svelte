@@ -1,14 +1,14 @@
 <script lang="ts">
 	import type { SketchDetails } from '$lib/sketch'
 
-	import SketchCard from '$lib/sketches/Card.svelte'
+	import Card from '$lib/sketches/Card.svelte'
 
 	export let sketches: Record<string, SketchDetails>
 </script>
 
 <nav class="sketches">
 	{#each Object.entries(sketches) as [slug, details]}
-		<SketchCard {slug} {details} />
+		<Card {slug} {details} />
 	{/each}
 </nav>
 
