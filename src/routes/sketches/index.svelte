@@ -28,4 +28,19 @@
 	export let sketches: Record<string, SketchDetails>
 </script>
 
-<SketchCardList {sketches} />
+<header>
+	<h1>Sketches</h1>
+	<p>Creative coding projects, or small projects that don't need their own GitHub page.</p>
+	<p><em>Hover over a sketch to preview</em></p>
+</header>
+
+<main>
+	<SketchCardList {sketches} />
+</main>
+
+<style lang="scss">
+	em {
+		font-weight: 500;
+		color: var(--col-main);
+	}
+</style>
