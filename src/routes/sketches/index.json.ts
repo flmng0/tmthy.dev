@@ -4,7 +4,7 @@ import { sketchesDir } from '$lib/data/sketch'
 import { importMarkdown } from '$lib/data'
 import fs from 'fs/promises'
 
-export const get: RequestHandler = async () => {
+export const GET: RequestHandler = async () => {
 	const mdExt = '.md'
 	const allFiles = await fs.readdir(sketchesDir)
 	const filtered = allFiles.filter((entry) => entry.endsWith(mdExt))
