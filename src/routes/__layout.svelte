@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Header from '$lib/Header.svelte'
+	import SiteNav from '$lib/SiteNav.svelte'
 
 	// Styles
 	import '$lib/global.scss'
@@ -13,14 +13,14 @@
 	import '@fontsource/open-sans/variable.css'
 </script>
 
-<Header />
+<SiteNav />
 
-<main>
+<article>
 	<slot />
-</main>
+</article>
 
 <style lang="scss">
-	main {
+	article {
 		width: min(80ch, 100%);
 		margin: 0 auto;
 		padding: 2em;
