@@ -20,6 +20,8 @@
 	}
 
 	const entered = () => {
+		if (!hasScreenshot) return
+
 		if (sketch === null) {
 			startLoading()
 		} else {
@@ -28,6 +30,8 @@
 	}
 
 	const left = () => {
+		if (!hasScreenshot) return
+
 		pause(true)
 	}
 
@@ -35,22 +39,31 @@
 		duration: 500,
 		easing: cubicInOut,
 	}
+
+	$: hasScreenshot = !!details.screenshot
 </script>
 
-<div class="sketch-card" on:mouseenter={entered} on:mouseleave={left}>
-	<div class="img">
-		{#if sketch === null}
-			<img
-				src={details.screenshot}
-				alt="Screenshot of {details.name}"
-				out:fade={transitionOptions}
-			/>
-		{:else}
-			<div class="canvas-container" in:fade={transitionOptions}>
-				<Canvas {sketch} bind:pause />
-			</div>
-		{/if}
-	</div>
+<div
+	class="sketch-card"
+	class:with-image={hasScreenshot}
+	on:mouseenter={entered}
+	on:mouseleave={left}
+>
+	{#if hasScreenshot}
+		<div class="img">
+			{#if sketch === null}
+				<img
+					src={details.screenshot}
+					alt="Screenshot of {details.name}"
+					out:fade={transitionOptions}
+				/>
+			{:else}
+				<div class="canvas-container" in:fade={transitionOptions}>
+					<Canvas {sketch} bind:pause />
+				</div>
+			{/if}
+		</div>
+	{/if}
 
 	<div class="description">
 		<a href="/sketches/{slug}">
@@ -95,6 +108,11 @@
 		}
 
 		.description {
+			height: 100%;
+		}
+
+		.with-image .description {
+			height: auto;
 			position: absolute;
 			bottom: 0;
 
