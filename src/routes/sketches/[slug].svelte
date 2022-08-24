@@ -41,7 +41,7 @@
 	// Source text of the sketch
 	export let source: string
 
-	let sketch = importSketch(slug)
+	$: sketch = importSketch(slug)
 </script>
 
 <main>
