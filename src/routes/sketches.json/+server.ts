@@ -1,8 +1,9 @@
-import type { RequestHandler } from './__types/index.json'
+import type { RequestHandler } from './$types'
 
 import { sketchesDir } from '$lib/data/sketch'
 import { importMarkdown } from '$lib/data'
 import fs from 'fs/promises'
+import { json } from '@sveltejs/kit'
 
 export const GET: RequestHandler = async () => {
 	const mdExt = '.md'
@@ -19,9 +20,7 @@ export const GET: RequestHandler = async () => {
 
 	const sketches = Object.fromEntries(await Promise.all(sketchFutures))
 
-	return {
-		body: {
-			sketches,
-		},
-	}
+	return json({
+		sketches,
+	})
 }

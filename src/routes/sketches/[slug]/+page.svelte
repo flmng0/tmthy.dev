@@ -1,45 +1,22 @@
-<script lang="ts" context="module">
-	import type { Load } from './__types/[slug]'
-
-	import { importSketch } from '$lib/data'
-
-	export const load: Load = async ({ params, fetch }) => {
-		const { slug } = params
-
-		const response = await fetch(`/sketches/${slug}.json`)
-		if (!response.ok) {
-			return {
-				status: response.status,
-			}
-		}
-
-		const { markdown, source } = await response.json()
-
-		return {
-			status: 200,
-			props: {
-				slug,
-				markdown,
-				source,
-			},
-		}
-	}
-</script>
-
 <script lang="ts">
+	import type { PageData } from './$types'
+
+	import { onMount } from 'svelte'
+
 	import Modal from '$lib/Modal.svelte'
 	import '$lib/prism.css'
 
+	import { importSketch } from '$lib/data'
 	import type { Sketch } from '$lib/data/sketch'
-	import { onMount } from 'svelte'
 	import SketchCanvas from '$lib/sketches/Canvas.svelte'
 
-	// Sketch name
-	export let slug: string
-	// Compiled HTML of the sketch's Markdown
-	export let markdown: string
-	// Source text of the sketch
-	export let source: string
+	export let data: PageData
+
+	const {
+		slug, // Sketch name
+		markdown, // Compiled HTML of the sketch's Markdown
+		source, // Source text of the sketch
+	} = data
 
 	$: sketch = importSketch(slug)
 </script>

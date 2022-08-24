@@ -1,4 +1,6 @@
-import type { RequestHandler } from './__types/[slug].json'
+import type { RequestHandler } from './$types'
+
+import { json } from '@sveltejs/kit'
 
 import { sketchesDir } from '$lib/data/sketch'
 import { importMarkdown } from '$lib/data'
@@ -18,12 +20,10 @@ export const GET: RequestHandler = async ({ params }) => {
 	const raw = (await fs.readFile(sourcePath)).toString()
 	const source = prism.highlight(raw, prism.languages['ts'], 'ts')
 
-	return {
-		body: {
-			sourcePath,
-			markdown: md.html,
-			toc: md.toc,
-			source,
-		},
-	}
+	return json({
+		sourcePath,
+		markdown: md.html,
+		toc: md.toc,
+		source,
+	})
 }
