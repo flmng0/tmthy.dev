@@ -6,7 +6,8 @@
 	import { fade } from 'svelte/transition'
 	import Hero from '$lib/home/Hero.svelte'
 	import { displays } from '$lib/home/icons'
-	import Navigation from '$lib/home/Navigation.svelte'
+	import Links from '$lib/home/Links.svelte'
+	import ThemeButton from '$lib/ThemeButton.svelte'
 
 	const keys = Object.keys(displays)
 	let index = 0
@@ -48,7 +49,15 @@
 <svelte:window on:resize={setSize} />
 
 <header in:fade={{ delay: 500, duration: 1000 }} use:rotateDisplays>
-	<Navigation />
+	<nav>
+		<section class="links">
+			<Links />
+		</section>
+
+		<section class="buttons">
+			<ThemeButton />
+		</section>
+	</nav>
 	<section class="icon">
 		<Hero bind:icon={display.icon} size={iconSize} />
 	</section>
@@ -88,8 +97,6 @@
 			$bg: var(--col-hero-bg, #0008);
 			background-color: $bg;
 
-			text-shadow: 0 0 0.2em #000;
-
 			width: max-content;
 			left: 50%;
 			top: 50%;
@@ -106,6 +113,35 @@
 
 		.white {
 			color: var(--col-primary-fg);
+		}
+	}
+
+	nav {
+		z-index: 2;
+
+		font-size: 1.2em;
+
+		position: absolute;
+
+		width: 100%;
+
+		.links,
+		.buttons {
+			padding: 1em;
+		}
+
+		.links {
+			display: flex;
+			flex-flow: row;
+			gap: 1em;
+			justify-content: center;
+		}
+
+		.buttons {
+			position: absolute;
+
+			top: 0;
+			right: 0;
 		}
 	}
 </style>

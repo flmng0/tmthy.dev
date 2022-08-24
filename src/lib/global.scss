@@ -50,7 +50,7 @@ body[data-theme='dark'] {
 	--col-secondary-bg: hsl(0, 0%, 20%);
 
 	--col-primary-fg: hsl(0, 0%, 90%);
-	--col-secondary-fg: hsl(0, 0%, 55%);
+	--col-secondary-fg: hsl(0, 0%, 45%);
 
 	--col-btn-bg: hsl(315, 85%, 56%);
 	--col-btn-fg: hsl(0, 0%, 100%);
@@ -74,12 +74,12 @@ body[data-theme='light'] {
 	--col-secondary-bg: hsl(0, 0%, 80%);
 
 	--col-primary-fg: hsl(0, 0%, 10%);
-	--col-secondary-fg: hsl(0, 0%, 20%);
+	--col-secondary-fg: hsl(0, 0%, 30%);
 
 	--col-btn-bg: hsl(214, 41%, 93%);
 	--col-btn-fg: hsl(0, 0%, 10%);
 
-	--col-hero-bg: hsla(0, 0%, 0%, 15%);
+	--col-hero-bg: rgba(255, 255, 255, 30%);
 
 	--col-shadow: hsla(0, 0%, 15%, 30%);
 

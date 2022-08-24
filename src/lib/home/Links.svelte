@@ -21,38 +21,20 @@
 	})
 </script>
 
-<nav class="home-nav">
-	{#key intro}
-		{#each pages as [href, name], i}
-			<a {href} in:fly={flyParams(i)} class="unstyled">{name}</a>
-		{/each}
-	{/key}
-</nav>
+{#key intro}
+	{#each pages as [href, name], i}
+		<a {href} in:fly={flyParams(i)} class="unstyled">{name}</a>
+	{/each}
+{/key}
 
 <style lang="scss">
-	.home-nav {
-		display: flex;
-		flex-flow: row;
-		gap: 1em;
+	a {
+		text-decoration: none;
+		border-bottom: 2px solid var(--col-secondary-fg);
 
-		font-size: 1.2em;
-		padding: 1em 0;
-
-		position: absolute;
-
-		width: 100%;
-		justify-content: center;
-
-		z-index: 2;
-
-		a {
-			text-decoration: none;
-			border-bottom: 2px solid var(--col-secondary-bg);
-
-			&:hover,
-			&:focus-within {
-				border-bottom-color: currentColor;
-			}
+		&:hover,
+		&:focus-within {
+			border-bottom-color: currentColor;
 		}
 	}
 </style>

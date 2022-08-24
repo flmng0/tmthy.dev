@@ -12,7 +12,7 @@
 	let currentTime: number
 	let transitionTime: number
 
-	$: strokeStyle = $theme === 'dark' ? '#ddd' : '#333'
+	$: strokeStyle = $theme === 'dark' ? '#ddd' : '#666'
 
 	const transitionDuration = 500
 	const halfDuration = transitionDuration / 2
