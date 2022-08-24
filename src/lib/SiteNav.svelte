@@ -5,21 +5,13 @@
 	import { sineIn } from 'svelte/easing'
 	import { tweened } from 'svelte/motion'
 
-	import FeatherIcon from './FeatherIcon.svelte'
+	import FeatherIcon from '$lib/FeatherIcon.svelte'
 
-	export let openMargin = 50
+	import { pages } from '$lib/site'
+	import ThemeButton from '$lib/ThemeButton.svelte'
+	import { makeHorizontalDelay } from '$lib/actions'
 
-	const pages = {
-		'/': 'Home',
-		'/sketches': 'Sketches',
-		'/projects': 'Projects',
-		'/contact': 'Contact',
-	}
-
-	let theme = 'dark'
-	const toggleTheme = () => {
-		theme = theme === 'dark' ? 'light' : 'dark'
-	}
+	export let openMargin: number | null = 50
 
 	const hueOffset = tweened(0, {
 		duration: 500,
@@ -30,7 +22,9 @@
 
 	let hidden: boolean = false
 
-	$: {
+	$: if (openMargin === null) {
+		hidden = false
+	} else {
 		const dy = scrollY - lastScroll
 
 		hidden = scrollY > openMargin && dy >= 0
@@ -39,33 +33,10 @@
 
 	$: $hueOffset = hidden ? 180 : 0
 
-	let totalDuration = 0
-	const delayScale = 400
-	let delayQueue: HTMLElement[] = []
+	let totalDuration: number
 
-	function horizontalDelay(elem: HTMLElement) {
-		const rect = elem.getBoundingClientRect()
-
-		// Pre-sorting
-		const i = delayQueue.findIndex((item) => item.getBoundingClientRect().left > rect.left)
-		if (i === -1) {
-			delayQueue = [...delayQueue, elem]
-		} else {
-			delayQueue = [...delayQueue.slice(0, i), elem, ...delayQueue.slice(i)]
-		}
-	}
-
-	onMount(() => {
-		const easing = sineIn
-		const delay = (t: number) => easing(t) * delayScale
-
-		delayQueue.forEach((elem, i) => {
-			const t = i / delayQueue.length
-
-			elem.style.setProperty('--delay', delay(t) + 'ms')
-		})
-
-		totalDuration = delay(delayQueue.length)
+	const horizontalDelay = makeHorizontalDelay((duration) => {
+		totalDuration = duration
 	})
 </script>
 
@@ -81,17 +52,13 @@
 	</section>
 
 	<section class="buttons">
-		<button use:horizontalDelay on:click={toggleTheme}>
-			<FeatherIcon key={theme === 'dark' ? 'sun' : 'moon'} width="1.3em" height="1.3em" />
-		</button>
+		<span use:horizontalDelay>
+			<ThemeButton />
+		</span>
 	</section>
 </nav>
 
 <style lang="scss">
-	button {
-		all: unset;
-	}
-
 	nav {
 		position: sticky;
 		top: 0;
