@@ -14,12 +14,11 @@
 		}
 
 		const { markdown, source } = await response.json()
-		const sketch = await importSketch(slug)
 
 		return {
 			status: 200,
 			props: {
-				sketch,
+				slug,
 				markdown,
 				source,
 			},
@@ -35,16 +34,22 @@
 	import { onMount } from 'svelte'
 	import SketchCanvas from '$lib/sketches/Canvas.svelte'
 
-	// Sketch object to run the sketch
-	export let sketch: Sketch<unknown>
+	// Sketch name
+	export let slug: string
 	// Compiled HTML of the sketch's Markdown
 	export let markdown: string
 	// Source text of the sketch
 	export let source: string
+
+	let sketch = importSketch(slug)
 </script>
 
 <main>
-	<SketchCanvas {sketch} />
+	{#await sketch}
+		<div class="skeleton" />
+	{:then sketch}
+		<SketchCanvas {sketch} />
+	{/await}
 
 	<Modal>
 		<!-- `class="highlight" from "$lib/prism.css" to allow for fully featured PrismJS syntax highlighting. -->
@@ -60,14 +65,52 @@
 
 <style lang="scss">
 	main {
-		display: flex;
-		flex-flow: column;
+		display: grid;
+		grid-auto-flow: row;
+		grid-template-columns: min(80ch, 100%) 1fr;
 
 		width: min(100%, 100ch);
 		margin: 0 auto;
+
+		> * {
+			grid-column: 1;
+		}
 	}
 
 	button {
 		align-self: start;
+	}
+
+	@keyframes spin {
+		from {
+			transform: rotate(45deg);
+		}
+		to {
+			transform: rotate(405deg);
+		}
+	}
+
+	.skeleton {
+		width: min(100%, 100ch);
+		aspect-ratio: 1;
+		margin: 0 auto;
+
+		background-color: rgb(233, 233, 233);
+
+		display: grid;
+		place-items: center;
+
+		&::after {
+			content: '';
+			width: 10%;
+			aspect-ratio: 1;
+			border: 1em solid rgb(212, 212, 212);
+			border-bottom-color: rgb(190, 190, 190);
+			opacity: 0.5;
+
+			border-radius: 50%;
+
+			animation: spin 500ms ease-in-out infinite;
+		}
 	}
 </style>

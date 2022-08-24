@@ -8,7 +8,7 @@ import fs from 'fs/promises'
 
 loadLanguages('typescript')
 
-export const get: RequestHandler = async ({ params }) => {
+export const GET: RequestHandler = async ({ params }) => {
 	const { slug } = params
 
 	const md = await importMarkdown('sketch', slug)
@@ -22,6 +22,7 @@ export const get: RequestHandler = async ({ params }) => {
 		body: {
 			sourcePath,
 			markdown: md.html,
+			toc: md.toc,
 			source,
 		},
 	}
