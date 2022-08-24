@@ -130,7 +130,7 @@ export const sketch: Sketch<Data> = {
 			const style = getComputedStyle(cvs)
 			ctx.font = style.font
 
-			const msg = 'Click anywhere to your first point.'
+			const msg = 'Click anywhere to place a point.'
 			const metrics = ctx.measureText(msg)
 			const x = (cvs.width - metrics.width) / 2
 			const y = cvs.height / 2
