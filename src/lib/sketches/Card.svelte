@@ -1,16 +1,13 @@
 <script lang="ts">
 	import { importSketch } from '$lib/data'
-	import type { CancelCallback, PauseCallback, Sketch, SketchDetails } from '$lib/data/sketch'
+	import type { PauseCallback, Sketch, SketchDetails } from '$lib/data/sketch'
 	import Canvas from './Canvas.svelte'
 
-	import { onDestroy } from 'svelte'
 	import { fade } from 'svelte/transition'
 	import { cubicInOut } from 'svelte/easing'
 
 	export let slug: string
 	export let details: SketchDetails
-
-	let canvas: HTMLCanvasElement
 
 	let sketch: Sketch<unknown> | null = null
 	let pause: PauseCallback
@@ -25,14 +22,14 @@
 		if (sketch === null) {
 			startLoading()
 		} else {
-			pause(false)
+			pause?.(false)
 		}
 	}
 
 	const left = () => {
 		if (!hasScreenshot) return
 
-		pause(true)
+		pause?.(true)
 	}
 
 	const transitionOptions = {

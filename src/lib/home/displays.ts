@@ -1,6 +1,6 @@
 import type { ProcessedIcon } from '$lib/data/sketches/hero-icon'
 
-interface Display {
+export interface Display {
 	text: string | null
 	icon: ProcessedIcon
 }
@@ -304,3 +304,5 @@ export const displays: Record<string, Display> = {
 		},
 	},
 }
+
+export default displays

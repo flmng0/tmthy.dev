@@ -1,8 +1,7 @@
 <script lang="ts">
-	import type { SketchDetails } from '$lib/data/sketch'
+	import type { PageData } from './$types'
 
 	import SketchCardList from '$lib/sketches/CardList.svelte'
-	import type { PageData } from './$types'
 
 	export let data: PageData
 

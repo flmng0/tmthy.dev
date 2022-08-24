@@ -1,7 +1,6 @@
-import type { SketchDetails } from '$lib/data/sketch'
-import { error } from '@sveltejs/kit'
-
 import type { PageLoad } from './$types'
+
+import { error } from '@sveltejs/kit'
 
 export const load: PageLoad = async ({ fetch }) => {
 	const response = await fetch(`/sketches.json`)

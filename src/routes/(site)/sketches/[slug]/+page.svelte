@@ -1,13 +1,10 @@
 <script lang="ts">
 	import type { PageData } from './$types'
 
-	import { onMount } from 'svelte'
-
 	import Modal from '$lib/Modal.svelte'
 	import '$lib/prism.css'
 
 	import { importSketch } from '$lib/data'
-	import type { Sketch } from '$lib/data/sketch'
 	import SketchCanvas from '$lib/sketches/Canvas.svelte'
 
 	export let data: PageData

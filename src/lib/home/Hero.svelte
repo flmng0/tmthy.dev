@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { canvasToClientSize } from '$lib/actions'
 
-	import { Vector } from '$lib/data/sketch'
 	import { theme } from '$lib/stores'
 
 	import { DynamicIconSimulation, type ProcessedIcon } from '$lib/data/sketches/hero-icon'

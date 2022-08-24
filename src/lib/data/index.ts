@@ -19,7 +19,6 @@ export interface Markdown<AK extends keyof AttributeMap> {
 }
 
 export async function importMarkdown<K extends keyof AttributeMap>(
-	type: K,
 	slug: string,
 ): Promise<Markdown<K>> {
 	return await import(`./sketches/${slug}.md`)

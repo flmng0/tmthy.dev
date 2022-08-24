@@ -3,10 +3,6 @@ import { sineIn } from 'svelte/easing'
 
 export function canvasToClientSize(cvs: HTMLCanvasElement) {
 	const resize = () => {
-		const style = getComputedStyle(cvs)
-		const width = style.width.slice(0, -2)
-		const height = style.height.slice(0, -2)
-
 		cvs.width = cvs.clientWidth
 		cvs.height = cvs.clientHeight
 	}

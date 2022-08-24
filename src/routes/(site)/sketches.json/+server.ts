@@ -1,9 +1,11 @@
 import type { RequestHandler } from './$types'
 
+import { json } from '@sveltejs/kit'
+
 import { sketchesDir } from '$lib/data/sketch'
 import { importMarkdown } from '$lib/data'
+
 import fs from 'fs/promises'
-import { json } from '@sveltejs/kit'
 
 export const GET: RequestHandler = async () => {
 	const mdExt = '.md'
@@ -13,7 +15,7 @@ export const GET: RequestHandler = async () => {
 	const sketchFutures = filtered.map(async (entry) => {
 		const slug = entry.slice(0, -mdExt.length)
 
-		const md = await importMarkdown('sketch', slug)
+		const md = await importMarkdown<'sketch'>(slug)
 
 		return [slug, md.attributes]
 	})

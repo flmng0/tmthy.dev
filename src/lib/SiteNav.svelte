@@ -1,11 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 
-	import { onMount } from 'svelte'
 	import { sineIn } from 'svelte/easing'
 	import { tweened } from 'svelte/motion'
-
-	import FeatherIcon from '$lib/FeatherIcon.svelte'
 
 	import { pages } from '$lib/site'
 	import ThemeButton from '$lib/ThemeButton.svelte'

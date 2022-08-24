@@ -1,6 +1,6 @@
 import { Vector } from '../sketch'
 import type { Point, Sketch } from '../sketch'
-import { displays } from '$lib/home/icons'
+import displays from '$lib/home/displays'
 
 class Particle {
 	pos: Vector

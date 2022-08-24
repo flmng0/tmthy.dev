@@ -1,4 +1,4 @@
-import { writable, type Writable } from 'svelte/store'
+import { writable } from 'svelte/store'
 
 function getInitialTheme(storageKey: string) {
 	if (typeof window === 'undefined') {

@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { makeHorizontalDelay } from '$lib/actions'
 	import { pages as allPages } from '$lib/site'
 
 	import { onMount } from 'svelte'
-	import { sineIn } from 'svelte/easing'
 	import { fly } from 'svelte/transition'
 
 	const pages = Object.entries(allPages).filter(([route]) => route !== '/')

@@ -4,6 +4,7 @@ import { json } from '@sveltejs/kit'
 
 import { sketchesDir } from '$lib/data/sketch'
 import { importMarkdown } from '$lib/data'
+
 import prism from 'prismjs'
 import loadLanguages from 'prismjs/components/index.js'
 import fs from 'fs/promises'
@@ -13,7 +14,7 @@ loadLanguages('typescript')
 export const GET: RequestHandler = async ({ params }) => {
 	const { slug } = params
 
-	const md = await importMarkdown('sketch', slug)
+	const md = await importMarkdown<'sketch'>(slug)
 
 	const sourcePath = `${sketchesDir}/${slug}.ts`
 

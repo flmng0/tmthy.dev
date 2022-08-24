@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { browser } from '$app/env'
-	import TextRotator from '$lib/TextRotator.svelte'
-
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
-	import Hero from '$lib/home/Hero.svelte'
-	import { displays } from '$lib/home/icons'
-	import Links from '$lib/home/Links.svelte'
+
+	import TextRotator from '$lib/TextRotator.svelte'
 	import ThemeButton from '$lib/ThemeButton.svelte'
+
+	import Hero from '$lib/home/Hero.svelte'
+	import displays from '$lib/home/displays'
+	import Links from '$lib/home/Links.svelte'
 
 	const keys = Object.keys(displays)
 	let index = 0
@@ -21,7 +21,7 @@
 
 	let iconSize = 400
 
-	function rotateDisplays(node: HTMLElement) {
+	function rotateDisplays(_node: HTMLElement) {
 		setInterval(() => {
 			if (index == keys.length - 1) {
 				index = 1
