@@ -1,11 +1,11 @@
+import fs from 'fs/promises'
+
 import type { RequestHandler } from './$types'
 
 import { json } from '@sveltejs/kit'
 
-import { sketchesDir } from '$lib/data/sketch'
 import { importMarkdown } from '$lib/data'
-
-import fs from 'fs/promises'
+import { sketchesDir } from '$lib/data/sketch'
 
 export const GET: RequestHandler = async () => {
 	const mdExt = '.md'

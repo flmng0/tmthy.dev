@@ -2,9 +2,8 @@
 	import type { PageData } from './$types'
 
 	import Modal from '$lib/Modal.svelte'
-	import '$lib/prism.css'
-
 	import { importSketch } from '$lib/data'
+	import '$lib/prism.css'
 	import SketchCanvas from '$lib/sketches/Canvas.svelte'
 
 	export let data: PageData

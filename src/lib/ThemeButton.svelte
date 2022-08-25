@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { theme } from '$lib/stores'
 	import FeatherIcon from './FeatherIcon.svelte'
+
+	import { theme } from '$lib/stores'
 
 	const toggleTheme = () => {
 		theme.update((t) => (t === 'dark' ? 'light' : 'dark'))

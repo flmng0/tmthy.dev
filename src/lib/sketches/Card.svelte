@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { importSketch } from '$lib/data'
-	import type { PauseCallback, Sketch, SketchDetails } from '$lib/data/sketch'
 	import Canvas from './Canvas.svelte'
 
-	import { fade } from 'svelte/transition'
 	import { cubicInOut } from 'svelte/easing'
+	import { fade } from 'svelte/transition'
+
+	import { importSketch } from '$lib/data'
+	import type { PauseCallback, Sketch, SketchDetails } from '$lib/data/sketch'
 
 	export let slug: string
 	export let details: SketchDetails

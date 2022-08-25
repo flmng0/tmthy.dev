@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { runSketch, type PauseCallback, type Sketch } from '$lib/data/sketch'
-
 	import { onMount } from 'svelte'
+
+	import { type PauseCallback, type Sketch, runSketch } from '$lib/data/sketch'
 
 	export let sketch: Sketch<unknown>
 

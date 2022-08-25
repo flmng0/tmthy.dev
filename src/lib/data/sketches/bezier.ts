@@ -1,4 +1,4 @@
-import { computePointPos, Vector, type Point, type Sketch } from '$lib/data/sketch'
+import { type Point, type Sketch, Vector, computePointPos } from '$lib/data/sketch'
 
 // Pre-calculated binomal coefficients for n in [2, 8].
 const knownCoefficients = [

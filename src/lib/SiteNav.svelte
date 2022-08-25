@@ -4,9 +4,9 @@
 	import { sineIn } from 'svelte/easing'
 	import { tweened } from 'svelte/motion'
 
-	import { pages } from '$lib/site'
 	import ThemeButton from '$lib/ThemeButton.svelte'
 	import { makeHorizontalDelay } from '$lib/actions'
+	import { pages } from '$lib/site'
 
 	export let openMargin: number | null = 50
 

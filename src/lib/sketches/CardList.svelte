@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { SketchDetails } from '$lib/data/sketch'
-
 	import Card from '$lib/sketches/Card.svelte'
 
 	export let sketches: Record<string, SketchDetails>

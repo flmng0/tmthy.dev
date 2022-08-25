@@ -1,4 +1,5 @@
 import { onMount } from 'svelte'
+
 import { sineIn } from 'svelte/easing'
 
 export function canvasToClientSize(cvs: HTMLCanvasElement) {

@@ -1,10 +1,9 @@
+import prism from 'prismjs'
+import loadLanguages from 'prismjs/components/index.js'
 import { defineConfig } from 'vite'
+import * as md from 'vite-plugin-markdown'
 
 import { sveltekit } from '@sveltejs/kit/vite'
-
-import * as md from 'vite-plugin-markdown'
-import loadLanguages from 'prismjs/components/index.js'
-import prism from 'prismjs'
 
 /** @type {md.PluginOptions} */
 const mdOptions = {

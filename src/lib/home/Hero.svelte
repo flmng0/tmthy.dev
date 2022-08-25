@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { canvasToClientSize } from '$lib/actions'
-
-	import { theme } from '$lib/stores'
-
 	import { DynamicIconSimulation, type ProcessedIcon } from '$lib/data/sketches/hero-icon'
+	import { theme } from '$lib/stores'
 
 	export let size: number
 	export let icon: ProcessedIcon

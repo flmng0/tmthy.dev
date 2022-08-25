@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { pages as allPages } from '$lib/site'
-
 	import { onMount } from 'svelte'
+
 	import { fly } from 'svelte/transition'
+
+	import { pages as allPages } from '$lib/site'
 
 	const pages = Object.entries(allPages).filter(([route]) => route !== '/')
 

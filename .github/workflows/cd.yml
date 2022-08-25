@@ -1,45 +1,45 @@
 name: Build and Publish
 
 on:
-    # Triggers the workflow on push or pull request events but only for the "active" branch
-    push:
-        branches: [active]
-    pull_request:
-        branches: [active]
+  # Triggers the workflow on push or pull request events but only for the "active" branch
+  push:
+    branches: [active]
+  pull_request:
+    branches: [active]
 
-    # Allows you to run this workflow manually from the Actions tab
-    workflow_dispatch:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
-    # This workflow contains a single job called "build"
-    build:
-        runs-on: ubuntu-latest
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: ubuntu-latest
 
-        strategy:
-            matrix:
-                node-version: [14]
+    strategy:
+      matrix:
+        node-version: [14]
 
-        steps:
-            - uses: actions/checkout@v2
-            - uses: pnpm/action-setup@v2.0.1
-              with:
-                  version: 6.24.4
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.24.4
 
-            - name: Use NodeJS ${{ matrix.node-version }}
-              uses: actions/setup-node@v2
-              with:
-                  node-version: ${{ matrix.node-version }}
-                  cache: "pnpm"
+      - name: Use NodeJS ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
 
-            - name: Install dependencies
-              run: pnpm install --shamefully-hoist
+      - name: Install dependencies
+        run: pnpm install --shamefully-hoist
 
-            - name: Generate the static site files
-              run: pnpm run build
+      - name: Generate the static site files
+        run: pnpm run build
 
-            - name: Deploy
-              uses: peaceiris/actions-gh-pages@v3
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  publish_dir: ./out
-                  cname: tmthy.dev
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          cname: tmthy.dev

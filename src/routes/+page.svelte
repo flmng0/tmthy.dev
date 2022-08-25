@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
+
 	import { fade } from 'svelte/transition'
 
 	import TextRotator from '$lib/TextRotator.svelte'
 	import ThemeButton from '$lib/ThemeButton.svelte'
-
 	import Hero from '$lib/home/Hero.svelte'
-	import displays from '$lib/home/displays'
 	import Links from '$lib/home/Links.svelte'
+	import displays from '$lib/home/displays'
 
 	const keys = Object.keys(displays)
 	let index = 0
