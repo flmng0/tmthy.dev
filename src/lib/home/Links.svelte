@@ -8,9 +8,10 @@
 	const pages = Object.entries(allPages).filter(([route]) => route !== '/')
 
 	const delayFactor = 120
+	const initialDelay = 500
 	const flyParams = (i: number) => ({
 		x: -100,
-		delay: i * delayFactor,
+		delay: initialDelay + (pages.length - i) * delayFactor,
 		duration: 300,
 	})
 
