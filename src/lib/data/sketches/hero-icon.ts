@@ -64,14 +64,19 @@ export class DynamicIconSimulation {
 
 		this.currentIcon = startIcon
 
-		this.particles = this.currentIcon.points.map(() => this.randomPolarParticle(0.5))
+		this.particles = this.currentIcon.points.map(() => this.randomPolarParticle(0.75, 1.25))
 
 		this.lastUpdate = 0
 	}
 
-	randomPolarParticle(maxRadius: number) {
-		const newPoint = polarPoint(Math.random() * Math.PI * 2, Math.random() * maxRadius)
-		const newParticle = new Particle(newPoint)
+	randomPolarParticle(minRadius: number, maxRadius: number) {
+		const radius = minRadius + (maxRadius - minRadius) * Math.random()
+		const newPoint = polarPoint(Math.random() * Math.PI * 2, radius)
+		const centered = {
+			x: newPoint.x + 0.5,
+			y: newPoint.y + 0.5,
+		}
+		const newParticle = new Particle(centered)
 
 		return newParticle
 	}
@@ -91,7 +96,9 @@ export class DynamicIconSimulation {
 			if (current.length < next.length) {
 				const diff = next.length - current.length
 
-				const newParticles = Array.from({ length: diff }, () => this.randomPolarParticle(0.5))
+				const newParticles = Array.from({ length: diff }, () =>
+					this.randomPolarParticle(0.75, 1.25),
+				)
 				this.particles.push(...newParticles)
 			} else if (current.length > next.length) {
 				this.particles = this.particles.slice(0, next.length)
