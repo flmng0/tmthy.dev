@@ -6,7 +6,8 @@
 
 	import ThemeButton from '$lib/ThemeButton.svelte'
 	import { makeHorizontalDelay } from '$lib/actions'
-	import { pages } from '$lib/site'
+	import site from '$lib/site'
+	import Logo from './Logo.svelte'
 
 	export let openMargin: number | null = 50
 
@@ -30,18 +31,31 @@
 
 	$: $hueOffset = hidden ? 180 : 0
 
-	let totalDuration: number
+	const totalDuration = 400
 
-	const horizontalDelay = makeHorizontalDelay((duration) => {
-		totalDuration = duration
-	})
+	const horizontalDelay = makeHorizontalDelay(totalDuration)
+
+	$: console.log('Duration', totalDuration)
 </script>
 
 <svelte:window bind:scrollY />
 
-<nav class:hidden style:--hue-offset="{$hueOffset}deg" style:--max-delay="{totalDuration}ms">
+<nav
+	class="site-nav"
+	class:hidden
+	style:--hue-offset="{$hueOffset}deg"
+	style:--max-delay="{totalDuration}ms"
+>
+	<section class="home-link">
+		<a href="/" use:horizontalDelay>
+			<div class="logo">
+				<Logo />
+			</div>
+		</a>
+	</section>
+
 	<section class="page-links">
-		{#each Object.entries(pages) as [link, name]}
+		{#each Object.entries(site.pages) as [link, name]}
 			{@const href = $page.url.pathname === link ? '#' : link}
 
 			<a {href} use:horizontalDelay>{name}</a>
@@ -62,13 +76,14 @@
 
 		z-index: 10;
 
-		padding: 1em 1.5em;
-		font-size: 1rem;
+		padding: 1em 0.9em;
 
-		display: flex;
-		flex-flow: row nowrap;
-		justify-content: space-between;
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		gap: 0.5em;
 		align-items: center;
+
+		filter: drop-shadow(0 0 4px var(--col-shadow));
 
 		overflow: hidden;
 
@@ -88,25 +103,23 @@
 			transition-delay: var(--delay);
 			transform: translateY(0);
 			opacity: 1;
+			display: block;
 		}
 
 		&::after {
 			content: '';
 			position: absolute;
 			inset: 0;
-			background-color: var(--col-shadow);
+			background-color: var(--col-primary-bg);
 
 			z-index: -1;
-		}
-
-		&::after {
 			transition: transform 100ms ease-in;
 			transform: translateY(0);
 		}
 
 		&.hidden {
 			&::after,
-			& > section > * {
+			> section > * {
 				transform: translateY(-100%);
 			}
 
@@ -119,20 +132,16 @@
 		}
 	}
 
+	.home-link > a {
+		border-bottom: unset;
+	}
+	.logo {
+		height: 2.5em;
+	}
+
 	.page-links {
 		display: flex;
 		flex-flow: row nowrap;
-		gap: 0.7em;
-
-		a {
-			text-decoration: none;
-			font-weight: 300;
-			font-size: 1em;
-
-			&[href='#'] {
-				font-weight: 400;
-				text-decoration: underline;
-			}
-		}
+		gap: 0.4em;
 	}
 </style>

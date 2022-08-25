@@ -57,7 +57,7 @@ body[data-theme='dark'] {
 	--col-btn-hovered-bg: hsl(327, 68%, 77%);
 	--col-btn-hovered-fg: hsl(0, 0%, 0%);
 
-	--col-hero-bg: hsla(0, 0%, 0%, 50%);
+	--col-hero-bg: hsla(0, 0%, 0%, 0%);
 
 	--col-shadow: hsla(0, 0%, 0%, 100%);
 
@@ -123,4 +123,26 @@ h3 {
 		font-family: var(--font-heading);
 	}
 	font-weight: 500;
+}
+
+.site-nav {
+	font-size: 1.2rem;
+
+	a {
+		text-decoration: none;
+		border-bottom: 2px solid var(--col-secondary-bg);
+
+		padding-inline: 0.05em;
+		font-weight: 300;
+
+		&:hover,
+		&:focus-within,
+		&[href='#'] {
+			border-bottom-color: currentColor;
+		}
+
+		&[href='#'] {
+			font-weight: 600;
+		}
+	}
 }

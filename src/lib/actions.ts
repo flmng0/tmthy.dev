@@ -15,10 +15,7 @@ export function canvasToClientSize(cvs: HTMLCanvasElement) {
 	})
 }
 
-export function makeHorizontalDelay(
-	getDuration?: (totalDuration: number) => void,
-): (elem: HTMLElement) => void {
-	const delayScale = 400
+export function makeHorizontalDelay(totalDuration: number): (elem: HTMLElement) => void {
 	let delayQueue: HTMLElement[] = []
 
 	const inner = (elem: HTMLElement) => {
@@ -35,16 +32,13 @@ export function makeHorizontalDelay(
 
 	onMount(() => {
 		const easing = sineIn
-		const delay = (t: number) => easing(t) * delayScale
+		const delay = (t: number) => easing(t) * totalDuration
 
 		delayQueue.forEach((elem, i) => {
 			const t = i / delayQueue.length
 
 			elem.style.setProperty('--delay', delay(t) + 'ms')
 		})
-
-		const totalDuration = delay(delayQueue.length)
-		getDuration?.(totalDuration)
 	})
 
 	return inner

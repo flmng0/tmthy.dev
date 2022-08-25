@@ -12,8 +12,15 @@
 	<FeatherIcon key={$theme === 'dark' ? 'sun' : 'moon'} width="1.3em" height="1.3em" />
 </button>
 
-<style>
+<style lang="scss">
 	.theme {
 		all: unset;
+		cursor: pointer;
+
+		color: var(--col-primary-fg);
+
+		&:hover {
+			color: var(--col-secondary-fg);
+		}
 	}
 </style>

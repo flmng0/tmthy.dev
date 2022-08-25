@@ -8,7 +8,7 @@
 	import Hero from '$lib/home/Hero.svelte'
 	import Links from '$lib/home/Links.svelte'
 	import displays from '$lib/home/displays'
-	import { name } from '$lib/site'
+	import site from '$lib/site'
 
 	const keys = Object.keys(displays)
 	let index = 0
@@ -50,7 +50,7 @@
 <svelte:window on:resize={setSize} />
 
 <svelte:head>
-	<title>Home | {name}</title>
+	<title>Home | {site.name}</title>
 </svelte:head>
 
 <header in:fade={{ delay: 500, duration: 1000 }} use:rotateDisplays>
@@ -74,7 +74,6 @@
 
 <style lang="scss">
 	header {
-		background: var(--col-shadow);
 		font-size: 1rem;
 
 		width: 100vw;
@@ -128,7 +127,10 @@
 
 		position: absolute;
 
-		width: 100%;
+		width: min(80ch, 100%);
+
+		left: 50%;
+		transform: translateX(-50%);
 
 		.links,
 		.buttons {
@@ -147,6 +149,12 @@
 
 			top: 0;
 			right: 0;
+		}
+	}
+
+	@media only screen and (max-width: 40rem) {
+		nav .links {
+			justify-content: start;
 		}
 	}
 </style>

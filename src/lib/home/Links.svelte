@@ -3,9 +3,9 @@
 
 	import { fly } from 'svelte/transition'
 
-	import { pages as allPages } from '$lib/site'
+	import site from '$lib/site'
 
-	const pages = Object.entries(allPages).filter(([route]) => route !== '/')
+	const pages = Object.entries(site.pages).filter(([route]) => route !== '/')
 
 	const delayFactor = 120
 	const initialDelay = 500
