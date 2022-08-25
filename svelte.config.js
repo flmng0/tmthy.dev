@@ -1,35 +1,22 @@
-import adapter from "@sveltejs/adapter-static";
+import autoprefixer from 'autoprefixer'
+import preprocess from 'svelte-preprocess'
 
-import preprocess from "svelte-preprocess";
-import image from "svelte-image";
-import path from "path";
+import adapter from '@sveltejs/adapter-netlify'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	preprocess: preprocess([
-		image(),
-		{
-			postcss: true,
-			globalStyle: true,
-			sourceMap: true,
+	preprocess: preprocess({
+		postcss: {
+			plugins: [autoprefixer],
 		},
-	]),
+	}),
 
 	kit: {
-		adapter: adapter({
-			pages: "out",
-		}),
-		target: "body",
-		vite: {
-			resolve: {
-				alias: {
-					$routes: path.resolve("./src/routes"),
-					$components: path.resolve("./src/components"),
-					$data: path.resolve("./src/data"),
-				},
-			},
+		adapter: adapter(),
+		prerender: {
+			default: true,
 		},
 	},
-};
+}
 
-export default config;
+export default config

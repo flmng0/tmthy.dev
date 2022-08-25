@@ -1,28 +1,21 @@
-import { writable } from "svelte/store";
+import { writable } from 'svelte/store'
 
-const themeKey = "theme";
-const initialTheme = () => {
-	if (typeof window !== "undefined") {
-		if (window.localStorage) {
-			const stored = localStorage.getItem(themeKey);
-			if (stored) {
-				return stored;
-			}
-		}
-
-		if (window.matchMedia) {
-			const match = matchMedia("(prefers-color-scheme: dark)");
-			return match.matches === true ? "dark" : "light";
-		}
+function getInitialTheme(storageKey: string) {
+	if (typeof window === 'undefined') {
+		return 'dark'
 	}
 
-	return "dark";
-};
+	const stored = window.localStorage?.getItem(storageKey)
+	if (stored !== null) return stored
 
-export const theme = writable(initialTheme());
+	const match = matchMedia('(prefers-color-scheme: dark)')
+	return match.matches === true ? 'dark' : 'light'
+}
+
+export const theme = writable(getInitialTheme('theme'))
 
 theme.subscribe((theme) => {
-	if (typeof window !== "undefined" && window.localStorage) {
-		localStorage.setItem(themeKey, theme);
-	}
-});
+	if (typeof window !== 'undefined') window.localStorage?.setItem('theme', theme)
+
+	if (typeof document !== 'undefined') document.body.setAttribute('data-theme', theme)
+})

@@ -1,5 +1,8 @@
 .DS_Store
 node_modules
+/build
 /.svelte-kit
-/out
-/sketch-preview.html
+/package
+.env
+.env.*
+!.env.example

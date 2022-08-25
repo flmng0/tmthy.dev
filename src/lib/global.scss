@@ -1,0 +1,126 @@
+* {
+	box-sizing: border-box;
+}
+
+@mixin variableFont($name, $font, $fallbacks...) {
+	#{$name}: '#{$font}', #{$fallbacks};
+
+	@supports (font-variation-settings: normal) {
+		#{$name}: '#{$font}Variable', #{$fallbacks};
+	}
+}
+
+:root {
+	font-size: 16px;
+
+	scroll-behavior: smooth;
+
+	@media screen and (max-width: 400px) {
+		font-size: 4vw; // (16 / 400)vw
+	}
+
+	$sans-fallbacks: system-ui, -apple-system, sans-serif;
+	@include variableFont(--fam-heading, 'Roboto Flex', $sans-fallbacks);
+	@include variableFont(--fam-body, 'Open Sans', $sans-fallbacks);
+
+	@include variableFont(--fam-code, 'Fira Code', monospace);
+}
+
+body {
+	font-family: var(--fam-body);
+
+	margin: 0 auto;
+	padding: 0;
+	overflow-x: hidden;
+
+	line-height: 1.5;
+
+	background-color: var(--col-primary-bg);
+	color: var(--col-primary-fg);
+
+	transition: background-color var(--transition);
+}
+
+body,
+body[data-theme='dark'] {
+	--col-main: hsl(325, 100%, 80%);
+	--col-accent: hsl(122, 91%, 21%);
+
+	--col-primary-bg: hsl(0, 0%, 10%);
+	--col-secondary-bg: hsl(0, 0%, 20%);
+
+	--col-primary-fg: hsl(0, 0%, 90%);
+	--col-secondary-fg: hsl(0, 0%, 45%);
+
+	--col-btn-bg: hsl(315, 85%, 56%);
+	--col-btn-fg: hsl(0, 0%, 100%);
+	--col-btn-hovered-bg: hsl(327, 68%, 77%);
+	--col-btn-hovered-fg: hsl(0, 0%, 0%);
+
+	--col-hero-bg: hsla(0, 0%, 0%, 50%);
+
+	--col-shadow: hsla(0, 0%, 0%, 100%);
+
+	::selection {
+		background-color: hsl(325, 45%, 60%);
+	}
+}
+
+body[data-theme='light'] {
+	--col-main: hsl(121, 50%, 55%);
+	--col-accent: hsl(0, 0%, 60%);
+
+	--col-primary-bg: hsl(0, 0%, 90%);
+	--col-secondary-bg: hsl(0, 0%, 80%);
+
+	--col-primary-fg: hsl(0, 0%, 10%);
+	--col-secondary-fg: hsl(0, 0%, 30%);
+
+	--col-btn-bg: hsl(214, 41%, 93%);
+	--col-btn-fg: hsl(0, 0%, 10%);
+
+	--col-hero-bg: rgba(255, 255, 255, 30%);
+
+	--col-shadow: hsla(0, 0%, 15%, 30%);
+
+	::selection {
+		background-color: hsl(121, 32%, 71%);
+	}
+}
+
+a {
+	color: currentColor;
+
+	&:hover {
+		text-decoration: none;
+	}
+}
+
+button {
+	all: unset;
+	display: inline-block;
+	background-color: var(--col-btn-bg);
+	color: var(--col-btn-fg);
+	padding: 1em;
+	user-select: none;
+	text-align: center;
+	cursor: pointer;
+
+	&:hover,
+	&:focus-within {
+		color: var(--col-btn-hovered-fg);
+		background-color: var(--col-btn-hovered-bg);
+	}
+}
+
+h1,
+h2,
+h3 {
+	&,
+	h4,
+	h5,
+	h6 {
+		font-family: var(--font-heading);
+	}
+	font-weight: 500;
+}
