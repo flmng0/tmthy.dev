@@ -8,6 +8,7 @@
 	import Hero from '$lib/home/Hero.svelte'
 	import Links from '$lib/home/Links.svelte'
 	import displays from '$lib/home/displays'
+	import { name } from '$lib/site'
 
 	const keys = Object.keys(displays)
 	let index = 0
@@ -47,6 +48,10 @@
 </script>
 
 <svelte:window on:resize={setSize} />
+
+<svelte:head>
+	<title>Home | {name}</title>
+</svelte:head>
 
 <header in:fade={{ delay: 500, duration: 1000 }} use:rotateDisplays>
 	<nav>

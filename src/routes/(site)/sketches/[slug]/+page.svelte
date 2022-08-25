@@ -5,17 +5,23 @@
 	import { importSketch } from '$lib/data'
 	import '$lib/prism.css'
 	import SketchCanvas from '$lib/sketches/Canvas.svelte'
+	import { name } from '$lib/site'
 
 	export let data: PageData
 
 	const {
 		slug, // Sketch name
-		markdown, // Compiled HTML of the sketch's Markdown
+		html, // Compiled HTML of the sketch's Markdown
 		source, // Source text of the sketch
+		attributes, // Generic markdown frontmatter attributes
 	} = data
 
 	$: sketch = importSketch(slug)
 </script>
+
+<svelte:head>
+	<title>{attributes.name} | Sketches | {name}</title>
+</svelte:head>
 
 <main>
 	{#await sketch}
@@ -32,7 +38,7 @@
 	</Modal>
 
 	<article>
-		{@html markdown}
+		{@html html}
 	</article>
 </main>
 

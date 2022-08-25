@@ -23,8 +23,7 @@ export const GET: RequestHandler = async ({ params }) => {
 
 	return json({
 		sourcePath,
-		markdown: md.html,
-		toc: md.toc,
 		source,
+		...md,
 	})
 }

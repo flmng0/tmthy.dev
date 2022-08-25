@@ -2,11 +2,16 @@
 	import type { PageData } from './$types'
 
 	import SketchCardList from '$lib/sketches/CardList.svelte'
+	import { name } from '$lib/site'
 
 	export let data: PageData
 
 	const { sketches } = data
 </script>
+
+<svelte:head>
+	<title>Sketches | {name}</title>
+</svelte:head>
 
 <header>
 	<h1>Sketches</h1>

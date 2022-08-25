@@ -10,11 +10,10 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		throw error(response.status, `Failed to load sketch \`${slug}\`}`)
 	}
 
-	const { markdown, source } = await response.json()
+	const data = await response.json()
 
 	return {
 		slug,
-		markdown,
-		source,
-	}
+		...data,
+	} //= await response.json()
 }
