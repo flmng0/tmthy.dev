@@ -1,8 +1,8 @@
 <script lang="ts">
-	import SiteNav from '$lib/SiteNav.svelte'
+	import Navigation from '$lib/Navigation.svelte'
 </script>
 
-<SiteNav />
+<Navigation />
 
 <article>
 	<slot />
