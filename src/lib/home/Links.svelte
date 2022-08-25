@@ -31,6 +31,8 @@
 		text-decoration: none;
 		border-bottom: 2px solid var(--col-secondary-fg);
 
+		padding-inline: 0.2em;
+
 		&:hover,
 		&:focus-within {
 			border-bottom-color: currentColor;
