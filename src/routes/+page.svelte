@@ -17,18 +17,34 @@
 	let display = displays[key]
 	$: display = displays[key]
 
-	const rotateInterval = 5000
+	const rotateInterval = 4500
 
 	let iconSize = 400
 
-	function rotateDisplays(_node: HTMLElement) {
-		setInterval(() => {
-			if (index == keys.length - 1) {
-				index = 1
-			} else {
-				index = (index + 1) % keys.length
+	function rotateDisplays(node: HTMLElement) {
+		let timeout: number
+
+		const resetTimeout = () => {
+			window.clearTimeout(timeout)
+			timeout = window.setTimeout(() => {
+				rotate()
+			}, rotateInterval)
+		}
+
+		const rotate = () => {
+			index = 1 + (index % (keys.length - 1))
+
+			resetTimeout()
+		}
+
+		window.addEventListener('keypress', (e) => {
+			const target = e.target as Element
+			if (e.key === ' ' && target.contains(node)) {
+				rotate()
 			}
-		}, rotateInterval)
+		})
+
+		resetTimeout()
 	}
 
 	const setSize = () => {
