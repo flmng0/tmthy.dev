@@ -130,7 +130,7 @@ export const displays: Record<string, Display> = {
 		},
 	},
 	code: {
-		text: 'Software Engineer',
+		text: 'Web Developer',
 		icon: {
 			points: [
 				{
@@ -180,7 +180,7 @@ export const displays: Record<string, Display> = {
 		},
 	},
 	controller: {
-		text: 'Game Developer',
+		text: 'Hobbyist Gamedev',
 		icon: {
 			points: [
 				{
