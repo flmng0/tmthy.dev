@@ -3,7 +3,6 @@
 
 	import { sineIn } from 'svelte/easing'
 	import { tweened } from 'svelte/motion'
-	import { fly } from 'svelte/transition'
 
 	import ThemeButton from '$lib/ThemeButton.svelte'
 	import { makeHorizontalDelay } from '$lib/actions'
@@ -20,14 +19,17 @@
 	let lastScroll: number = 0
 	let scrollY: number
 
-	let hidden: boolean = false
+	let hidden: boolean = true
 
-	$: {
+	const checkHidden = (scrollY: number) => {
+		if (scrollY === undefined) return
 		const dy = scrollY - lastScroll
 
 		hidden = scrollY > openMargin && dy >= 0
 		lastScroll = scrollY
 	}
+
+	$: checkHidden(scrollY)
 
 	$: $hueOffset = hidden ? 180 : 0
 
@@ -37,19 +39,8 @@
 
 	const pages = Object.entries(site.pages)
 
-	const delayFactor = 120
-	const initialDelay = 100
-	const flyParams = (i: number) => ({
-		y: -100,
-		delay: initialDelay + i * delayFactor,
-		duration: 300,
-	})
-
 	$: home = $page.url.pathname === '/'
 	$: homeLink = home ? '#' : '/'
-
-	let intro = {}
-	onMount(() => (intro = {}))
 </script>
 
 <svelte:window bind:scrollY />
@@ -63,7 +54,7 @@
 >
 	<div class="inner">
 		<section class="home-link">
-			<a href={homeLink} use:horizontalDelay>
+			<a href={homeLink} class="has-delay" use:horizontalDelay>
 				<div class="logo">
 					<Logo />
 				</div>
@@ -71,17 +62,15 @@
 		</section>
 
 		<section class="page-links">
-			{#key intro}
-				{#each pages as [link, name], i}
-					{@const href = $page.url.pathname === link ? '#' : link}
+			{#each pages as [link, name], i}
+				{@const href = $page.url.pathname === link ? '#' : link}
 
-					<a {href} in:fly={flyParams(i)} use:horizontalDelay>{name}</a>
-				{/each}
-			{/key}
+				<a {href} class="has-delay" use:horizontalDelay>{name}</a>
+			{/each}
 		</section>
 
 		<section class="buttons">
-			<span use:horizontalDelay>
+			<span class="has-delay" use:horizontalDelay>
 				<ThemeButton />
 			</span>
 		</section>
@@ -123,7 +112,7 @@
 
 		overflow: hidden;
 
-		section > * {
+		.has-delay {
 			transition: transform 70ms ease-out, opacity 50ms linear;
 			transition-delay: var(--delay);
 			transform: translateY(0);
@@ -133,14 +122,14 @@
 
 		&.hidden {
 			&::after,
-			section > * {
+			.has-delay {
 				transform: translateY(-100%);
 			}
 
 			&::after {
 				transition-delay: var(--max-delay);
 			}
-			section > * {
+			.has-delay {
 				opacity: 0;
 			}
 		}
