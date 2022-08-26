@@ -182,13 +182,9 @@
 			font-weight: 400;
 
 			&:hover,
-			&:focus-within {
-				color: var(--col-main);
-			}
-
-			&:hover,
 			&:focus-within,
 			&[href='#'] {
+				color: var(--col-main);
 				border-bottom-color: currentColor;
 			}
 		}
