@@ -1,4 +1,5 @@
 ---
+date: 2022-08-24
 name: Home Hero Icon
 brief: Animated icon for the home page's hero. Connected points in a mesh, that transitions to another mesh every 5s.
 ---

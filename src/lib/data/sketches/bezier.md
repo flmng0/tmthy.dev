@@ -1,4 +1,5 @@
 ---
+date: 2022-07-22
 name: Bezier Curves
 brief: Experimenting with a custom Bezier curve implementation, with a variable amount of control points.
 screenshot: /screenshots/sketches/bezier.png

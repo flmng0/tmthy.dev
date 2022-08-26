@@ -1,4 +1,5 @@
 export interface SketchDetails {
+	date: string
 	name: string
 	brief: string
 	screenshot: string
