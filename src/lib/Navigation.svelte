@@ -169,11 +169,9 @@
 		display: flex;
 		flex-flow: row;
 		gap: 1em;
-		justify-content: center;
+		justify-content: start;
+		margin-inline: 0.2em;
 
-		@media screen and (max-width: 40rem) {
-			justify-content: start;
-		}
 		a {
 			text-decoration: none;
 			border-bottom: 2px solid var(--col-secondary-bg);
