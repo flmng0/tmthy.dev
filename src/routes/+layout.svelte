@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Navigation from '$lib/Navigation.svelte'
 	// Styles
 	import '@fontsource/fira-code/400.css'
 	import '@fontsource/fira-code/variable.css'
@@ -11,4 +12,5 @@
 	import '$lib/global.scss'
 </script>
 
+<Navigation />
 <slot />

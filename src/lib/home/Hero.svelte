@@ -9,7 +9,7 @@
 	let currentTime: number
 	let transitionTime: number
 
-	$: strokeStyle = $theme === 'dark' ? '#ddd' : '#666'
+	$: strokeStyle = $theme === 'dark' ? '#555' : '#bbb'
 
 	const transitionDuration = 500
 	const halfDuration = transitionDuration / 2
@@ -68,7 +68,7 @@
 
 				const dt = t - transitionTime
 				if (dt < transitionDuration) {
-					// Distance til half-way of
+					// Distance til half-way of the next transition
 					const dm = Math.abs(dt - halfDuration) / halfDuration
 
 					ctx.lineWidth = Math.max(minWidth, width * dm)

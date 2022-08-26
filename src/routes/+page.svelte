@@ -6,7 +6,6 @@
 	import TextRotator from '$lib/TextRotator.svelte'
 	import ThemeButton from '$lib/ThemeButton.svelte'
 	import Hero from '$lib/home/Hero.svelte'
-	import Links from '$lib/home/Links.svelte'
 	import displays from '$lib/home/displays'
 	import site from '$lib/site'
 
@@ -53,16 +52,7 @@
 	<title>Home | {site.name}</title>
 </svelte:head>
 
-<header in:fade={{ delay: 500, duration: 1000 }} use:rotateDisplays>
-	<nav>
-		<section class="links">
-			<Links />
-		</section>
-
-		<section class="buttons">
-			<ThemeButton />
-		</section>
-	</nav>
+<header use:rotateDisplays>
 	<section class="icon">
 		<Hero bind:icon={display.icon} size={iconSize} />
 	</section>
@@ -74,6 +64,7 @@
 
 <style lang="scss">
 	header {
+		background-color: var(--col-header-bg);
 		font-size: 1rem;
 
 		width: 100vw;
@@ -98,9 +89,6 @@
 
 			z-index: 1;
 
-			$bg: var(--col-hero-bg, #0008);
-			background-color: $bg;
-
 			width: max-content;
 			left: 50%;
 			top: 50%;
@@ -111,50 +99,11 @@
 				display: block;
 				position: absolute;
 				inset: 0;
-				box-shadow: 0 0 0 100vmax $bg;
 			}
 		}
 
 		.white {
 			color: var(--col-primary-fg);
-		}
-	}
-
-	nav {
-		z-index: 2;
-
-		font-size: 1.2em;
-
-		position: absolute;
-
-		width: min(80ch, 100%);
-
-		left: 50%;
-		transform: translateX(-50%);
-
-		.links,
-		.buttons {
-			padding: 1em;
-		}
-
-		.links {
-			display: flex;
-			flex-flow: row;
-			gap: 1em;
-			justify-content: center;
-		}
-
-		.buttons {
-			position: absolute;
-
-			top: 0;
-			right: 0;
-		}
-	}
-
-	@media only screen and (max-width: 40rem) {
-		nav .links {
-			justify-content: start;
 		}
 	}
 </style>

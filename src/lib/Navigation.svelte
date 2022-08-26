@@ -3,13 +3,15 @@
 
 	import { sineIn } from 'svelte/easing'
 	import { tweened } from 'svelte/motion'
+	import { fly } from 'svelte/transition'
 
 	import ThemeButton from '$lib/ThemeButton.svelte'
 	import { makeHorizontalDelay } from '$lib/actions'
 	import site from '$lib/site'
 	import Logo from './Logo.svelte'
+	import { onMount } from 'svelte'
 
-	export let openMargin: number | null = 50
+	const openMargin = 50
 
 	const hueOffset = tweened(0, {
 		duration: 500,
@@ -20,9 +22,7 @@
 
 	let hidden: boolean = false
 
-	$: if (openMargin === null) {
-		hidden = false
-	} else {
+	$: {
 		const dy = scrollY - lastScroll
 
 		hidden = scrollY > openMargin && dy >= 0
@@ -35,38 +35,57 @@
 
 	const horizontalDelay = makeHorizontalDelay(totalDuration)
 
-	$: console.log('Duration', totalDuration)
+	const pages = Object.entries(site.pages)
+
+	const delayFactor = 120
+	const initialDelay = 100
+	const flyParams = (i: number) => ({
+		y: -100,
+		delay: initialDelay + i * delayFactor,
+		duration: 300,
+	})
+
+	$: home = $page.url.pathname === '/'
+	$: homeLink = home ? '#' : '/'
+
+	let intro = {}
+	onMount(() => (intro = {}))
 </script>
 
 <svelte:window bind:scrollY />
 
 <nav
 	class="site-nav"
+	class:home
 	class:hidden
 	style:--hue-offset="{$hueOffset}deg"
 	style:--max-delay="{totalDuration}ms"
 >
-	<section class="home-link">
-		<a href="/" use:horizontalDelay>
-			<div class="logo">
-				<Logo />
-			</div>
-		</a>
-	</section>
+	<div class="inner">
+		<section class="home-link">
+			<a href={homeLink} use:horizontalDelay>
+				<div class="logo">
+					<Logo />
+				</div>
+			</a>
+		</section>
 
-	<section class="page-links">
-		{#each Object.entries(site.pages) as [link, name]}
-			{@const href = $page.url.pathname === link ? '#' : link}
+		<section class="page-links">
+			{#key intro}
+				{#each pages as [link, name], i}
+					{@const href = $page.url.pathname === link ? '#' : link}
 
-			<a {href} use:horizontalDelay>{name}</a>
-		{/each}
-	</section>
+					<a {href} in:fly={flyParams(i)} use:horizontalDelay>{name}</a>
+				{/each}
+			{/key}
+		</section>
 
-	<section class="buttons">
-		<span use:horizontalDelay>
-			<ThemeButton />
-		</span>
-	</section>
+		<section class="buttons">
+			<span use:horizontalDelay>
+				<ThemeButton />
+			</span>
+		</section>
+	</div>
 </nav>
 
 <style lang="scss">
@@ -76,17 +95,18 @@
 
 		z-index: 10;
 
-		padding: 1em 0.9em;
+		width: 100%;
 
-		display: grid;
-		grid-template-columns: auto 1fr auto;
-		gap: 0.5em;
-		align-items: center;
+		&::after {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background-color: var(--col-header-bg);
 
-		filter: drop-shadow(0 0 4px var(--col-shadow));
-
-		overflow: hidden;
-
+			z-index: -1;
+			transition: transform 100ms ease-in;
+			transform: translateY(0);
+		}
 		$border-size: 2;
 		border-image: linear-gradient(
 				to bottom right,
@@ -98,7 +118,12 @@
 		border-top-width: $border-size * 1px;
 		border-top-style: solid;
 
-		> section > * {
+		filter: drop-shadow(0 -2px 8px var(--col-shadow));
+		transition: filter 200ms ease-in;
+
+		overflow: hidden;
+
+		section > * {
 			transition: transform 70ms ease-out, opacity 50ms linear;
 			transition-delay: var(--delay);
 			transform: translateY(0);
@@ -106,42 +131,75 @@
 			display: block;
 		}
 
-		&::after {
-			content: '';
-			position: absolute;
-			inset: 0;
-			background-color: var(--col-primary-bg);
-
-			z-index: -1;
-			transition: transform 100ms ease-in;
-			transform: translateY(0);
-		}
-
 		&.hidden {
 			&::after,
-			> section > * {
+			section > * {
 				transform: translateY(-100%);
 			}
 
 			&::after {
 				transition-delay: var(--max-delay);
 			}
-			> section > * {
+			section > * {
 				opacity: 0;
 			}
 		}
+
+		&.home {
+			position: absolute;
+			filter: unset;
+		}
 	}
 
-	.home-link > a {
-		border-bottom: unset;
-	}
-	.logo {
-		height: 2.5em;
+	.inner {
+		font-size: 1.1rem;
+		padding: 1em 0.9em;
+
+		display: grid;
+
+		grid-template-columns: auto 1fr auto;
+		gap: 0.5em;
+		align-items: center;
+
+		width: min(80ch, 100%);
+		margin: 0 auto;
 	}
 
 	.page-links {
 		display: flex;
-		flex-flow: row nowrap;
-		gap: 0.4em;
+		flex-flow: row;
+		gap: 1em;
+		justify-content: center;
+
+		@media screen and (max-width: 40rem) {
+			justify-content: start;
+		}
+		a {
+			text-decoration: none;
+			border-bottom: 2px solid var(--col-secondary-bg);
+
+			padding-inline: 0.05em;
+			font-weight: 400;
+
+			&:hover,
+			&:focus-within {
+				color: var(--col-main);
+			}
+
+			&:hover,
+			&:focus-within,
+			&[href='#'] {
+				border-bottom-color: currentColor;
+			}
+		}
+	}
+
+	.home-link {
+		> a {
+			border-bottom: unset;
+		}
+		.logo {
+			height: 2.5em;
+		}
 	}
 </style>
