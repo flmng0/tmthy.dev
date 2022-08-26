@@ -154,6 +154,15 @@
 		margin: 0 auto;
 	}
 
+	.home-link a,
+	.page-links a {
+		&:hover,
+		&:focus-within,
+		&[href='#'] {
+			color: var(--col-main);
+		}
+	}
+
 	.page-links {
 		display: flex;
 		flex-flow: row;
@@ -171,7 +180,6 @@
 			&:hover,
 			&:focus-within,
 			&[href='#'] {
-				color: var(--col-main);
 				border-bottom-color: currentColor;
 			}
 		}
