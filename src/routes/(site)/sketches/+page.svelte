@@ -2,7 +2,7 @@
 	import type { PageData } from './$types'
 
 	import SketchCardList from '$lib/sketches/CardList.svelte'
-	import { name } from '$lib/site'
+	import site from '$lib/site'
 
 	export let data: PageData
 
@@ -10,7 +10,7 @@
 </script>
 
 <svelte:head>
-	<title>Sketches | {name}</title>
+	<title>Sketches | {site.name}</title>
 </svelte:head>
 
 <header>

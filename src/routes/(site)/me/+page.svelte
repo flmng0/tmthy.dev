@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { name } from '$lib/site'
+	import site from '$lib/site'
 </script>
 
 <svelte:head>
-	<title>About Me | {name}</title>
+	<title>About Me | {site.name}</title>
 </svelte:head>
 
 <h1>About Me</h1>

@@ -6,9 +6,8 @@
 	import TextRotator from '$lib/TextRotator.svelte'
 	import ThemeButton from '$lib/ThemeButton.svelte'
 	import Hero from '$lib/home/Hero.svelte'
-	import Links from '$lib/home/Links.svelte'
 	import displays from '$lib/home/displays'
-	import { name } from '$lib/site'
+	import site from '$lib/site'
 
 	const keys = Object.keys(displays)
 	let index = 0
@@ -18,18 +17,34 @@
 	let display = displays[key]
 	$: display = displays[key]
 
-	const rotateInterval = 5000
+	const rotateInterval = 4500
 
 	let iconSize = 400
 
-	function rotateDisplays(_node: HTMLElement) {
-		setInterval(() => {
-			if (index == keys.length - 1) {
-				index = 1
-			} else {
-				index = (index + 1) % keys.length
+	function rotateDisplays(node: HTMLElement) {
+		let timeout: number
+
+		const resetTimeout = () => {
+			window.clearTimeout(timeout)
+			timeout = window.setTimeout(() => {
+				rotate()
+			}, rotateInterval)
+		}
+
+		const rotate = () => {
+			index = 1 + (index % (keys.length - 1))
+
+			resetTimeout()
+		}
+
+		window.addEventListener('keypress', (e) => {
+			const target = e.target as Element
+			if (e.key === ' ' && target.contains(node)) {
+				rotate()
 			}
-		}, rotateInterval)
+		})
+
+		resetTimeout()
 	}
 
 	const setSize = () => {
@@ -50,19 +65,10 @@
 <svelte:window on:resize={setSize} />
 
 <svelte:head>
-	<title>Home | {name}</title>
+	<title>Home | {site.name}</title>
 </svelte:head>
 
-<header in:fade={{ delay: 500, duration: 1000 }} use:rotateDisplays>
-	<nav>
-		<section class="links">
-			<Links />
-		</section>
-
-		<section class="buttons">
-			<ThemeButton />
-		</section>
-	</nav>
+<header use:rotateDisplays>
 	<section class="icon">
 		<Hero bind:icon={display.icon} size={iconSize} />
 	</section>
@@ -74,7 +80,7 @@
 
 <style lang="scss">
 	header {
-		background: var(--col-shadow);
+		background-color: var(--col-header-bg);
 		font-size: 1rem;
 
 		width: 100vw;
@@ -99,9 +105,6 @@
 
 			z-index: 1;
 
-			$bg: var(--col-hero-bg, #0008);
-			background-color: $bg;
-
 			width: max-content;
 			left: 50%;
 			top: 50%;
@@ -112,41 +115,11 @@
 				display: block;
 				position: absolute;
 				inset: 0;
-				box-shadow: 0 0 0 100vmax $bg;
 			}
 		}
 
 		.white {
 			color: var(--col-primary-fg);
-		}
-	}
-
-	nav {
-		z-index: 2;
-
-		font-size: 1.2em;
-
-		position: absolute;
-
-		width: 100%;
-
-		.links,
-		.buttons {
-			padding: 1em;
-		}
-
-		.links {
-			display: flex;
-			flex-flow: row;
-			gap: 1em;
-			justify-content: center;
-		}
-
-		.buttons {
-			position: absolute;
-
-			top: 0;
-			right: 0;
 		}
 	}
 </style>

@@ -5,7 +5,7 @@
 	import { importSketch } from '$lib/data'
 	import '$lib/prism.css'
 	import SketchCanvas from '$lib/sketches/Canvas.svelte'
-	import { name } from '$lib/site'
+	import site from '$lib/site'
 
 	export let data: PageData
 
@@ -20,7 +20,7 @@
 </script>
 
 <svelte:head>
-	<title>{attributes.name} | Sketches | {name}</title>
+	<title>{attributes.name} | Sketches | {site.name}</title>
 </svelte:head>
 
 <main>

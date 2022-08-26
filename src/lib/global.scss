@@ -46,18 +46,18 @@ body[data-theme='dark'] {
 	--col-main: hsl(325, 100%, 80%);
 	--col-accent: hsl(122, 91%, 21%);
 
-	--col-primary-bg: hsl(0, 0%, 10%);
+	--col-primary-bg: hsl(320, 5%, 14%);
 	--col-secondary-bg: hsl(0, 0%, 20%);
 
 	--col-primary-fg: hsl(0, 0%, 90%);
 	--col-secondary-fg: hsl(0, 0%, 45%);
 
+	--col-header-bg: hsl(0, 0%, 10%);
+
 	--col-btn-bg: hsl(315, 85%, 56%);
 	--col-btn-fg: hsl(0, 0%, 100%);
 	--col-btn-hovered-bg: hsl(327, 68%, 77%);
 	--col-btn-hovered-fg: hsl(0, 0%, 0%);
-
-	--col-hero-bg: hsla(0, 0%, 0%, 50%);
 
 	--col-shadow: hsla(0, 0%, 0%, 100%);
 
@@ -76,10 +76,12 @@ body[data-theme='light'] {
 	--col-primary-fg: hsl(0, 0%, 10%);
 	--col-secondary-fg: hsl(0, 0%, 30%);
 
+	--col-header-bg: hsl(121, 5%, 95%);
+
 	--col-btn-bg: hsl(214, 41%, 93%);
 	--col-btn-fg: hsl(0, 0%, 10%);
-
-	--col-hero-bg: rgba(255, 255, 255, 30%);
+	--col-btn-hovered-bg: hsl(214, 100%, 88%);
+	--col-btn-hovered-fg: hsl(0, 0%, 18%);
 
 	--col-shadow: hsla(0, 0%, 15%, 30%);
 
