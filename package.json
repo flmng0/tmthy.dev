@@ -1,44 +1,26 @@
 {
 	"name": "tmthy.dev",
-	"version": "0.1.1",
+	"type": "module",
+	"version": "0.0.1",
 	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
-		"package": "svelte-kit package",
-		"preview": "vite preview",
-		"check": "svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
-		"lint": "prettier --check --plugin-search-dir=. .",
-		"format": "prettier --write --plugin-search-dir=. ."
-	},
-	"devDependencies": {
-		"@sveltejs/adapter-netlify": "1.0.0-next.72",
-		"@sveltejs/kit": "next",
-		"@types/feather-icons": "^4.7.0",
-		"@types/js-yaml": "^4.0.5",
-		"@types/prismjs": "^1.26.0",
-		"autoprefixer": "^10.4.8",
-		"feather-icons": "^4.29.0",
-		"postcss": "^8.4.16",
-		"prettier": "^2.7.1",
-		"prettier-plugin-svelte": "^2.7.0",
-		"prismjs": "^1.29.0",
-		"sass": "^1.54.5",
-		"svelte": "^3.49.0",
-		"svelte-check": "^2.8.1",
-		"svelte-preprocess": "^4.10.7",
-		"tslib": "^2.4.0",
-		"typescript": "~4.6.4",
-		"vite": "^3.0.9",
-		"vite-plugin-markdown": "^2.1.0"
+		"dev": "astro dev",
+		"start": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro"
 	},
 	"dependencies": {
-		"@fontsource/fira-code": "^4.5.11",
-		"@fontsource/open-sans": "^4.5.11",
-		"@fontsource/roboto-flex": "^4.5.1"
+		"@astrojs/svelte": "^2.0.2",
+		"@astrojs/tailwind": "^3.0.1",
+		"astro": "^2.0.16",
+		"svelte": "^3.54.0",
+		"tailwindcss": "^3.0.24"
 	},
-	"browserslist": [
-		"last 2 versions"
-	],
-	"type": "module"
+	"devDependencies": {
+		"@tailwindcss/typography": "^0.5.9",
+		"prettier": "^2.8.4",
+		"prettier-plugin-astro": "^0.8.0",
+		"prettier-plugin-svelte": "^2.9.0",
+		"prettier-plugin-tailwindcss": "^0.2.4"
+	}
 }

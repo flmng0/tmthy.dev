@@ -1,0 +1,16 @@
+---
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+    sketch: CollectionEntry<'sketches'>
+}
+
+const { sketch } = Astro.props
+---
+
+<article class="rounded-md border bg-white px-5 py-4 shadow-sm">
+    <hgroup>
+        <h2 class="mb-3 text-xl">{sketch.data.name}</h2>
+        <p class="font-light italic text-gray-600">{sketch.data.brief}</p>
+    </hgroup>
+</article>

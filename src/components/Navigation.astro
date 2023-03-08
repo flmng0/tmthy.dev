@@ -1,0 +1,40 @@
+---
+const pages: {
+    href: string
+    name: string
+}[] = [
+    { href: '/', name: 'Home' },
+    { href: '/sketches', name: 'Sketches' },
+    { href: '/blog', name: 'Blog' },
+]
+---
+
+<nav class="flex h-16 items-center justify-around">
+    <ul class="links">
+        {
+            pages.map(({ href, name }) => (
+                <li aria-current={Astro.url.pathname === href}>
+                    <a {href}>{name}</a>
+                </li>
+            ))
+        }
+    </ul>
+</nav>
+
+<style>
+    .links {
+        @apply flex h-full justify-center gap-4;
+    }
+
+    .links li {
+        @apply h-full border-b-2 border-zinc-300 px-2;
+    }
+
+    .links li[aria-current] {
+        @apply border-zinc-500;
+    }
+
+    .links li a {
+        @apply flex h-full flex-col justify-end pb-3;
+    }
+</style>

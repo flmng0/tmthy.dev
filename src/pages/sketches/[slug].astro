@@ -1,0 +1,49 @@
+---
+import SketchCanvas from '@components/SketchCanvas.svelte'
+import Layout from '@layouts/Layout.astro'
+import { CollectionEntry, getCollection } from 'astro:content'
+
+interface Props {
+    sketch: CollectionEntry<'sketches'>
+}
+
+export async function getStaticPaths() {
+    const sketches = await getCollection('sketches')
+
+    return sketches.map((sketch) => {
+        return {
+            params: { slug: sketch.slug },
+            props: { sketch },
+        }
+    })
+}
+
+const { slug } = Astro.params
+const { sketch } = Astro.props
+const { Content, headings } = await sketch.render()
+---
+
+<Layout title={`${sketch.data.name} | Sketches`}>
+    <figure class="mx-auto w-min border shadow-sm transition-shadow focus-within:shadow-lg focus-within:outline outline-1 outline-sky-200">
+        <SketchCanvas client:load {slug} />
+    </figure>
+    <article class="prose mx-auto my-8">
+            <hgroup>
+                <h1>{sketch.data.name}</h1>
+                <p>{sketch.data.brief}</p>
+            </hgroup>
+
+        <nav>
+            <h3>Contents</h3>
+            <ul class="list-disc">
+                {headings.map((h) => (
+                    <li>
+                        <a href=`#${h.slug}`>{h.text}</a>
+                    </li>
+                ))}
+            </ul>
+        </nav>
+
+            <Content />
+    </article>
+</Layout>
