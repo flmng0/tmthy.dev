@@ -1,5 +1,5 @@
 import { Vector } from './math'
-import type { DrawFunction, InitFunction } from './types'
+import type { Sketch } from './types'
 
 const knownCoefficients = [
     [1, 1],
@@ -73,62 +73,68 @@ class Bezier {
 const bezier = new Bezier()
 const segments = 100
 
-export const init = ((canvas) => {
-    canvas.addEventListener('click', (e) => {
-        // TODO: Fix it for when client width != canvas width
-        const control = new Vector(e.offsetX, e.offsetY)
-        bezier.add(control)
-    })
+const sketch: Sketch = {
+    type: '2d',
 
-    canvas.addEventListener('keydown', (e) => {
-        e.preventDefault()
-        if (e.key === ' ') {
-            bezier.reset()
+    init(canvas) {
+        canvas.addEventListener('click', (e) => {
+            // TODO: Fix it for when client width != canvas width
+            const control = new Vector(e.offsetX, e.offsetY)
+            bezier.add(control)
+        })
+
+        canvas.addEventListener('keydown', (e) => {
+            e.preventDefault()
+            if (e.key === ' ') {
+                bezier.reset()
+            }
+        })
+    },
+
+    draw(ctx) {
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+        ctx.fillStyle = 'black'
+
+        const drawPoint = (p: { x: number; y: number }, r?: number) => {
+            ctx.beginPath()
+            ctx.arc(p.x, p.y, r ?? 2.5, 0, Math.PI * 2)
+            ctx.fill()
         }
-    })
-}) satisfies InitFunction
 
-export const draw = ((ctx) => {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-    ctx.fillStyle = 'black'
+        // Draw the control points.
+        for (const point of bezier.controls) {
+            drawPoint(point)
+        }
 
-    const drawPoint = (p: { x: number; y: number }, r?: number) => {
+        if (bezier.controls.length < 2) return
+
+        // Draw the lines connecting the control points
+        ctx.strokeStyle = 'black'
         ctx.beginPath()
-        ctx.arc(p.x, p.y, r ?? 2.5, 0, Math.PI * 2)
-        ctx.fill()
-    }
+        const start = bezier.controls[0]
+        ctx.moveTo(start.x, start.y)
 
-    // Draw the control points.
-    for (const point of bezier.controls) {
-        drawPoint(point)
-    }
+        for (const point of bezier.controls) {
+            ctx.lineTo(point.x, point.y)
+        }
 
-    if (bezier.controls.length < 2) return
+        ctx.stroke()
 
-    // Draw the lines connecting the control points
-    ctx.strokeStyle = 'black'
-    ctx.beginPath()
-    const start = bezier.controls[0]
-    ctx.moveTo(start.x, start.y)
+        // Draw the curve
+        ctx.resetTransform()
+        ctx.beginPath()
 
-    for (const point of bezier.controls) {
-        ctx.lineTo(point.x, point.y)
-    }
+        ctx.strokeStyle = 'red'
+        ctx.moveTo(start.x, start.y)
 
-    ctx.stroke()
+        for (let i = 1; i <= segments; i += 1) {
+            const t = i / segments
+            const point = bezier.get(t)
 
-    // Draw the curve
-    ctx.resetTransform()
-    ctx.beginPath()
+            ctx.lineTo(point.x, point.y)
+        }
+        ctx.stroke()
+    },
+}
 
-    ctx.strokeStyle = 'red'
-    ctx.moveTo(start.x, start.y)
-
-    for (let i = 1; i <= segments; i += 1) {
-        const t = i / segments
-        const point = bezier.get(t)
-
-        ctx.lineTo(point.x, point.y)
-    }
-    ctx.stroke()
-}) satisfies DrawFunction
+export default sketch

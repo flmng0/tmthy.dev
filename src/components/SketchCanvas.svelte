@@ -1,19 +1,26 @@
 <script lang="ts">
+    import type { ControlConfig, Sketch } from '@sketches/types'
     import { onMount } from 'svelte'
+    import SketchControls from './SketchControls.svelte'
 
     export let slug: string
 
     let canvas: HTMLCanvasElement
+    let controls: ControlConfig[]
 
     onMount(async () => {
-        const sketch = await import(`../sketches/${slug}.ts`)
+        const mod = await import(`../sketches/${slug}.ts`)
+        const sketch = mod.default as Sketch
 
-        if (sketch.init !== undefined) {
-            sketch.init(canvas)
+        const ctx = canvas.getContext(sketch.type)! as any
+
+        if (sketch.controls !== undefined) {
+            controls = sketch.controls
         }
 
-        const ctxType = sketch.ctxType ?? '2d'
-        const ctx = canvas.getContext(ctxType)
+        if (sketch.init !== undefined) {
+            sketch.init(ctx)
+        }
 
         let lastRequest: number
         const tick = (t: DOMHighResTimeStamp) => {
@@ -28,3 +35,6 @@
 </script>
 
 <canvas width="600" height="600" tabindex="0" bind:this={canvas} />
+{#if controls}
+    <SketchControls {controls} />
+{/if}
