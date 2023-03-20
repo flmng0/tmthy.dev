@@ -76,14 +76,14 @@ const segments = 100
 const sketch: Sketch = {
     type: '2d',
 
-    init(canvas) {
-        canvas.addEventListener('click', (e) => {
+    init(ctx) {
+        ctx.canvas.addEventListener('click', (e) => {
             // TODO: Fix it for when client width != canvas width
             const control = new Vector(e.offsetX, e.offsetY)
             bezier.add(control)
         })
 
-        canvas.addEventListener('keydown', (e) => {
+        ctx.canvas.addEventListener('keydown', (e) => {
             e.preventDefault()
             if (e.key === ' ') {
                 bezier.reset()

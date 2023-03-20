@@ -1,5 +1,5 @@
 ---
-import SketchCanvas from '@components/SketchCanvas.svelte'
+import SketchCanvas from '@components/SketchCanvas'
 import Layout from '@layouts/Layout.astro'
 import { CollectionEntry, getCollection } from 'astro:content'
 
@@ -18,7 +18,7 @@ export async function getStaticPaths() {
     })
 }
 
-const { slug } = Astro.params
+const slug = Astro.params.slug!
 const { sketch } = Astro.props
 const { Content, headings } = await sketch.render()
 ---
