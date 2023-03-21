@@ -24,16 +24,10 @@ const { Content, headings } = await sketch.render()
 ---
 
 <Layout title={`${sketch.data.name} | Sketches`}>
-    <figure class="mx-auto w-min border shadow-sm transition-shadow focus-within:shadow-lg focus-within:outline outline-1 outline-sky-200">
+    <article class="mx-auto w-fit px-6 my-8 grid gap-x-6 gap-y-8 lg:grid-cols-[1fr_auto]">
         <SketchCanvas client:load {slug} />
-    </figure>
-    <article class="prose mx-auto my-8">
-            <hgroup>
-                <h1>{sketch.data.name}</h1>
-                <p>{sketch.data.brief}</p>
-            </hgroup>
 
-        <nav>
+        <nav class="prose card lg:order-1 lg:sticky top-20">
             <h3>Contents</h3>
             <ul class="list-disc">
                 {headings.map((h) => (
@@ -44,6 +38,23 @@ const { Content, headings } = await sketch.render()
             </ul>
         </nav>
 
+        <main class="prose">
+            <hgroup>
+                <h1>{sketch.data.name}</h1>
+                <p>{sketch.data.brief}</p>
+            </hgroup>
+
+
             <Content />
+            <Content />
+            <Content />
+        </main>
     </article>
 </Layout>
+
+<style is:global>
+    .card {
+        @apply px-6 py-8 shadow-sm border self-start;
+    }
+</style>
+<!-- <figure class="mx-auto w-min border shadow-sm transition-shadow focus-within:shadow-lg focus-within:outline outline-1 outline-sky-200"> <SketchCanvas client:load {slug} /> </figure> -->

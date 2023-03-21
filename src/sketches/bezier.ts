@@ -72,9 +72,18 @@ class Bezier {
 
 const bezier = new Bezier()
 const segments = 100
+let animate = false
 
 const sketch: Sketch = {
     type: '2d',
+
+    controls: [
+        {
+            type: 'toggle',
+            name: 'Animate Drawing?',
+            onUpdate: (v) => (animate = v),
+        },
+    ],
 
     init(ctx) {
         ctx.canvas.addEventListener('click', (e) => {
@@ -91,7 +100,7 @@ const sketch: Sketch = {
         })
     },
 
-    draw(ctx) {
+    draw(ctx, t) {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
         ctx.fillStyle = 'black'
 
@@ -127,7 +136,10 @@ const sketch: Sketch = {
         ctx.strokeStyle = 'red'
         ctx.moveTo(start.x, start.y)
 
-        for (let i = 1; i <= segments; i += 1) {
+        const u = (t / 2000) % 1.0
+        const count = animate ? u * segments : segments
+
+        for (let i = 1; i <= count; i += 1) {
             const t = i / segments
             const point = bezier.get(t)
 
