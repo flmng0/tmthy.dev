@@ -2,6 +2,7 @@
 import SketchCanvas from '@components/SketchCanvas'
 import Layout from '@layouts/Layout.astro'
 import { CollectionEntry, getCollection } from 'astro:content'
+import 'katex/dist/katex.min.css'
 
 interface Props {
     sketch: CollectionEntry<'sketches'>
@@ -49,9 +50,9 @@ const { Content, headings } = await sketch.render()
     </article>
 </Layout>
 
-<style is:global>
-    .card {
+<style>
+    article :global(.card) {
         @apply px-6 py-8 shadow-sm border self-start;
     }
 </style>
-<!-- <figure class="mx-auto w-min border shadow-sm transition-shadow focus-within:shadow-lg focus-within:outline outline-1 outline-sky-200"> <SketchCanvas client:load {slug} /> </figure> -->
+
