@@ -14,15 +14,15 @@ export interface ControlTypeRegistry {
     }
 }
 
-export interface ControlCommon<
-    CType extends ControlType,
-    Entry extends ControlTypeRegistry[CType] = ControlTypeRegistry[CType]
-> {
+export type ControlValue<CType extends ControlType> = ControlTypeRegistry[CType]['valueType']
+export type ControlOptions<CType extends ControlType> = ControlTypeRegistry[CType]['options']
+
+export interface ControlCommon<CType extends ControlType> {
     name: string
     // TODO: Add this?
     // default: ValueType,
-    onUpdate: (value: Entry['valueType']) => void
-    options?: Partial<Entry['options']>
+    onUpdate: (value: ControlValue<CType>) => void
+    options?: Partial<ControlOptions<CType>>
 }
 
 export type ControlType = keyof ControlTypeRegistry

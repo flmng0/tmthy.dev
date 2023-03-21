@@ -1,12 +1,15 @@
-import type { ControlConfig } from '@sketches/types'
+import type { ControlConfig, ControlType, ControlValue } from '@sketches/types'
 import { createEffect, createSignal, Match, Switch } from 'solid-js'
 
-export default function SketchControl(props: { config: ControlConfig }) {
+export default function SketchControl<CType extends ControlType = ControlType>(props: {
+    config: ControlConfig<CType>
+}) {
     const { config } = props
 
-    const [value, setValue] = createSignal(config.type === 'toggle' ? false : 0)
+    const [value, setValue] = createSignal<ControlValue<CType>>(
+        config.type === 'toggle' ? false : 0
+    )
     createEffect(() => {
-        // @ts-ignore
         config.onUpdate(value())
     })
 
@@ -22,7 +25,7 @@ export default function SketchControl(props: { config: ControlConfig }) {
     const inputClasses = 'self-end'
 
     return (
-        <label class="flex w-full flex-row justify-between gap-6">
+        <label class="flex w-full cursor-pointer flex-row justify-between gap-6">
             <span class="whitespace-nowrap">{config.name}</span>
             <Switch
                 fallback={
