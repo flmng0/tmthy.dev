@@ -1,12 +1,12 @@
 ---
 interface Props {
-    pages: { href: string, name: string }[]
+    pages: { href: string; name: string }[]
 }
 
 const { pages } = Astro.props
 ---
 
-<nav class="flex h-16 items-center justify-around">
+<nav class="flex h-16 items-center justify-around bg-gray-200">
     <ul class="links">
         {
             pages.map(({ href, name }) => (
