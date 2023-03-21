@@ -5,3 +5,6 @@ brief: Implementation of Julia Sets drawn onto a canvas.
 ---
 
 
+$$
+A = \frac{1}{2}
+$$
