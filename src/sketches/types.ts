@@ -14,22 +14,22 @@ export interface ControlTypeRegistry {
     }
 }
 
-export interface ControlCommon<ValueType, OptionsType> {
+export interface ControlCommon<
+    CType extends ControlType,
+    Entry extends ControlTypeRegistry[CType] = ControlTypeRegistry[CType]
+> {
     name: string
     // TODO: Add this?
     // default: ValueType,
-    onUpdate: (value: ValueType) => void
-    options?: Partial<OptionsType>
+    onUpdate: (value: Entry['valueType']) => void
+    options?: Partial<Entry['options']>
 }
 
 export type ControlType = keyof ControlTypeRegistry
 
 // It's simplified but I still think it could be simpler...
 export type ControlConfig<CType extends ControlType = ControlType> = {
-    [key in ControlType]: { type: key } & ControlCommon<
-        ControlTypeRegistry[key]['valueType'],
-        ControlTypeRegistry[key]['options']
-    >
+    [key in ControlType]: { type: key } & ControlCommon<key>
 }[CType]
 
 export interface ContextTypeMap {
