@@ -1,6 +1,6 @@
 ---
 date: 2023-03-13
-name: Julia Set Generator
+name: Julia Set Visualiser
 brief: Implementation of the Julia set drawn onto a canvas.
 ---
 
