@@ -7,19 +7,19 @@ const sketches = await getCollection('sketches')
 ---
 
 <Layout title="Sketches">
-    <main class="container mx-auto space-y-4 px-5">
-        <hgroup>
-            <h1 class="text-2xl">Sketches</h1>
+    <main class="container mx-auto w-full max-w-prose space-y-4 px-5">
+        <hgroup class="prose">
+            <h1>Sketches</h1>
             <p>
                 Collection of coding "sketches". These are un-refined projects made for
                 experimentation and, most of the time, fun.
             </p>
         </hgroup>
 
-        <ul class="grid grid-cols-2 gap-4 lg:grid-cols-3">
+        <ul class="flex flex-row flex-wrap gap-4">
             {
                 sketches.map((sketch) => (
-                    <li>
+                    <li class="flex-1 basis-48">
                         <a href={`/sketches/${sketch.slug}`}>
                             <SketchCard {sketch} />
                         </a>
