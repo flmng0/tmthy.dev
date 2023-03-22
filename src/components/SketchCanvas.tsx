@@ -42,7 +42,7 @@ export default function SketchCanvas(props: { slug: string }) {
     onCleanup(() => cancelAnimationFrame(lastRequest))
 
     return (
-        <header class="relative flex aspect-square w-full flex-col gap-y-4 self-start border shadow-sm outline-1 outline-sky-200 transition-shadow focus-within:shadow-lg focus-within:outline xl:sticky xl:top-24">
+        <header class="relative flex aspect-square w-full flex-col gap-y-4 self-start border shadow-sm outline-1 outline-sky-200 transition-shadow focus-within:shadow-lg focus-within:outline lg:sticky lg:top-24">
             <canvas ref={canvas!} width="600" height="600" tabindex="0" class="h-full w-full" />
 
             <Show when={controls()?.length}>
