@@ -1,4 +1,4 @@
-import { Vector } from './math'
+import { scalePoint, Vector } from './math'
 import type { Sketch } from './types'
 
 const knownCoefficients = [
@@ -88,7 +88,8 @@ const sketch: Sketch = {
     init(ctx) {
         ctx.canvas.addEventListener('click', (e) => {
             // TODO: Fix it for when client width != canvas width
-            const control = new Vector(e.offsetX, e.offsetY)
+            const scaled = scalePoint(e, ctx.canvas)
+            const control = Vector.fromPoint(scaled)
             bezier.add(control)
         })
 

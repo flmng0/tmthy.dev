@@ -35,22 +35,25 @@ export default function SketchCanvas(props: { slug: string }) {
 
     onCleanup(() => cancelAnimationFrame(lastRequest))
 
+    // <div class="border shadow-sm outline-1 outline-sky-200 transition-shadow focus-within:shadow-lg focus-within:outline">
+    // </div>
     return (
-        <header class="flex flex-col gap-y-4">
-            <div class="w-min border shadow-sm outline-1 outline-sky-200 transition-shadow focus-within:shadow-lg focus-within:outline">
-                <canvas ref={canvas!} width="600" height="600" tabindex="0" />
-            </div>
+        <header class="relative flex aspect-square w-full flex-col gap-y-4 self-start border shadow-sm outline-1 outline-sky-200 transition-shadow focus-within:shadow-lg focus-within:outline xl:sticky xl:top-24">
+            <canvas ref={canvas!} width="600" height="600" tabindex="0" class="h-full w-full" />
+
             <Show when={controls()?.length}>
-                <ul class="card min-w-32 flex w-full flex-col gap-4">
-                    <h3 class="text-xl font-medium">Sketch Settings</h3>
-                    <For each={controls()!}>
-                        {(config) => (
-                            <li class="px-4">
-                                <SketchControl config={config} />
-                            </li>
-                        )}
-                    </For>
-                </ul>
+                <details class="card absolute top-0 right-0 space-y-4 px-5 py-3">
+                    <summary class="cursor-pointer text-lg font-medium">Settings</summary>
+                    <ul class="space-y-4">
+                        <For each={controls()!}>
+                            {(config) => (
+                                <li class="px-4">
+                                    <SketchControl config={config} />
+                                </li>
+                            )}
+                        </For>
+                    </ul>
+                </details>
             </Show>
         </header>
     )
