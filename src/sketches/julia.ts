@@ -63,6 +63,8 @@ function makeShader(gl: WebGL2RenderingContext, type: number, src: string): WebG
 let c_loc: WebGLUniformLocation
 let s_loc: WebGLUniformLocation
 
+let frame = 0
+
 const sketch: Sketch = {
     type: 'webgl2',
 
@@ -112,6 +114,11 @@ const sketch: Sketch = {
     },
 
     draw(gl, t) {
+        // Skip every second frame (performance kinda)
+        if (frame++ % 2 == 0) {
+            return
+        }
+
         const theta = (t / 2000) % (Math.PI * 2)
 
         c.x = Math.cos(theta) * mag
