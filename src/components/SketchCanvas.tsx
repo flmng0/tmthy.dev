@@ -25,18 +25,22 @@ export default function SketchCanvas(props: { slug: string }) {
             setControls(sketch.controls)
         }
 
+        let start: DOMHighResTimeStamp
+
         const tick = (t: DOMHighResTimeStamp) => {
-            sketch.draw(ctx, t)
+            sketch.draw(ctx, t - start)
             lastRequest = requestAnimationFrame(tick)
         }
 
-        lastRequest = requestAnimationFrame(tick)
+        sketch.draw(ctx, 0)
+        lastRequest = requestAnimationFrame((t) => {
+            start = t
+            tick(t)
+        })
     })
 
     onCleanup(() => cancelAnimationFrame(lastRequest))
 
-    // <div class="border shadow-sm outline-1 outline-sky-200 transition-shadow focus-within:shadow-lg focus-within:outline">
-    // </div>
     return (
         <header class="relative flex aspect-square w-full flex-col gap-y-4 self-start border shadow-sm outline-1 outline-sky-200 transition-shadow focus-within:shadow-lg focus-within:outline xl:sticky xl:top-24">
             <canvas ref={canvas!} width="600" height="600" tabindex="0" class="h-full w-full" />
