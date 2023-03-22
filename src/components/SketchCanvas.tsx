@@ -2,6 +2,9 @@ import type { ControlConfig, Sketch } from '@sketches/types'
 import { createSignal, For, onCleanup, onMount, Show } from 'solid-js'
 import SketchControl from './SketchControl'
 
+// TODO: Implement pause and resume functionality.
+//       Maybe pause on blur?
+
 export default function SketchCanvas(props: { slug: string }) {
     let canvas: HTMLCanvasElement
     let lastRequest: number
@@ -33,7 +36,7 @@ export default function SketchCanvas(props: { slug: string }) {
     onCleanup(() => cancelAnimationFrame(lastRequest))
 
     return (
-        <>
+        <header class="flex flex-col gap-y-4">
             <div class="w-min border shadow-sm outline-1 outline-sky-200 transition-shadow focus-within:shadow-lg focus-within:outline">
                 <canvas ref={canvas!} width="600" height="600" tabindex="0" />
             </div>
@@ -49,6 +52,6 @@ export default function SketchCanvas(props: { slug: string }) {
                     </For>
                 </ul>
             </Show>
-        </>
+        </header>
     )
 }

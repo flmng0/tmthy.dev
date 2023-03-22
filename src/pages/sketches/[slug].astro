@@ -25,27 +25,29 @@ const { Content, headings } = await sketch.render()
 ---
 
 <Layout title={`${sketch.data.name} | Sketches`}>
-    <article class="mx-auto w-fit px-6 my-8 grid gap-x-6 gap-y-8 lg:grid-cols-[1fr_auto]">
+    <article class="mx-auto w-fit px-6 my-8 gap-y-8 gap-x-8 flex flex-row flex-wrap justify-center">
         <SketchCanvas client:load {slug} />
 
-        <nav class="prose card lg:order-1 lg:sticky top-20">
-            <h3>Contents</h3>
-            <ul class="list-disc">
-                {headings.map((h) => (
-                    <li>
-                        <a href=`#${h.slug}`>{h.text}</a>
-                    </li>
-                ))}
-            </ul>
-        </nav>
+        <main class="space-y-6">
+            <nav class="prose card">
+                <h3>Contents</h3>
+                <ul class="list-disc">
+                    {headings.map(({slug, text, depth}) => (
+                        <li class="toc" style=`--depth: ${depth - 2}`>
+                            <a href=`#${slug}`>{text}</a>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
 
-        <main class="prose">
-            <hgroup>
-                <h1>{sketch.data.name}</h1>
-                <p>{sketch.data.brief}</p>
-            </hgroup>
+            <div class="prose">
+                <hgroup>
+                    <h1>{sketch.data.name}</h1>
+                    <p>{sketch.data.brief}</p>
+                </hgroup>
 
-            <Content />
+                <Content />
+            </div>
         </main>
     </article>
 </Layout>
@@ -53,6 +55,10 @@ const { Content, headings } = await sketch.render()
 <style>
     article :global(.card) {
         @apply px-6 py-8 shadow-sm border self-start;
+    }
+
+    li.toc {
+        margin-left: calc(1.25em * var(--depth));
     }
 </style>
 
