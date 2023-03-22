@@ -1,0 +1,47 @@
+---
+import SocialLink from '@components/SocialLink.astro'
+import Layout from '@layouts/Layout.astro'
+
+const socials: {
+    href: string
+    title: string
+}[] = [
+    {
+        href: 'https://github.com/flmng0',
+        title: 'GitHub',
+    },
+]
+---
+
+<Layout title="Home">
+    <main class="prose-a:text-sky-60 container prose mx-auto space-y-8">
+        <section>
+            <h1>Hello! I'm Timothy Davis</h1>
+            <p>
+                This website is under active development, I only started (re)developing it on the
+                7th of March 2023.
+            </p>
+            <p>
+                I created this website as a place to store all of my little projects, and to
+                distract myself from work.
+            </p>
+            <p>
+                Eventually this will be a fully fledged portfolio. As you could probably tell, that
+                is not the case yet.
+            </p>
+        </section>
+
+        <section>
+            <strong>
+                I would recommend the <a href="/sketches">sketches</a> page to see some toy projects.
+            </strong>
+        </section>
+
+        <section>
+            <h2>Some Social Links</h2>
+            <nav class="not-prose mt-2 flex gap-2">
+                {socials.map((social) => <SocialLink {...social} />)}
+            </nav>
+        </section>
+    </main>
+</Layout>

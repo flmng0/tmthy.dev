@@ -1,0 +1,65 @@
+---
+import SketchCanvas from '@components/SketchCanvas'
+import Layout from '@layouts/Layout.astro'
+import { CollectionEntry, getCollection } from 'astro:content'
+import 'katex/dist/katex.min.css'
+
+interface Props {
+    sketch: CollectionEntry<'sketches'>
+}
+
+export async function getStaticPaths() {
+    const sketches = await getCollection('sketches')
+
+    return sketches.map((sketch) => {
+        return {
+            params: { slug: sketch.slug },
+            props: { sketch },
+        }
+    })
+}
+
+const slug = Astro.params.slug!
+const { sketch } = Astro.props
+const { Content, headings } = await sketch.render()
+---
+
+<Layout title={`${sketch.data.name} | Sketches`}>
+    <article class="mx-auto my-8 grid w-fit grid-cols-1 gap-y-8 gap-x-8 px-6 lg:grid-cols-2">
+        <SketchCanvas client:load {slug} />
+
+        <main class="space-y-6">
+            <nav class="card prose px-6 py-8">
+                <h3>Contents</h3>
+                <ul class="list-disc">
+                    {
+                        headings.map((h) => (
+                            <li class="toc" style={`--depth:${h.depth - 2}`}>
+                                <a href={`#${h.slug}`}>{h.text}</a>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </nav>
+
+            <div class="prose">
+                <hgroup>
+                    <h1>{sketch.data.name}</h1>
+                    <p>{sketch.data.brief}</p>
+                </hgroup>
+
+                <Content />
+            </div>
+        </main>
+    </article>
+</Layout>
+
+<style>
+    article :global(.card) {
+        @apply self-start border bg-white shadow-sm;
+    }
+
+    li.toc {
+        margin-left: calc(1.25em * var(--depth));
+    }
+</style>
