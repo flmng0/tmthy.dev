@@ -1,32 +1,23 @@
 ---
 import SketchCanvas from '@components/SketchCanvas'
 import Layout from '@layouts/Layout.astro'
-import { CollectionEntry, getCollection } from 'astro:content'
+import { getEntryBySlug } from 'astro:content'
 import 'katex/dist/katex.min.css'
 
-interface Props {
-    sketch: CollectionEntry<'sketches'>
+const { slug } = Astro.params
+
+const sketch = await getEntryBySlug('sketches', slug!)
+
+if (sketch === undefined) {
+    return Astro.redirect('/404')
 }
 
-export async function getStaticPaths() {
-    const sketches = await getCollection('sketches')
-
-    return sketches.map((sketch) => {
-        return {
-            params: { slug: sketch.slug },
-            props: { sketch },
-        }
-    })
-}
-
-const slug = Astro.params.slug!
-const { sketch } = Astro.props
 const { Content, headings } = await sketch.render()
 ---
 
 <Layout title={`${sketch.data.name} | Sketches`}>
     <article class="mx-auto my-8 grid w-fit grid-cols-1 gap-y-8 gap-x-8 px-6 lg:grid-cols-2">
-        <SketchCanvas client:load {slug} />
+        <SketchCanvas client:load slug={slug!} />
 
         <main class="space-y-6">
             <nav class="card prose px-6 py-8">
