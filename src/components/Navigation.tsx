@@ -61,7 +61,7 @@ export default function Navigation() {
             class="w-full bg-gray-200 transition-transform"
             classList={{ '-translate-y-full delay-[500ms]': hidden() }}
         >
-            <ul class="mx-auto flex w-full max-w-prose flex-row gap-4">
+            <ul class="mx-auto flex w-full max-w-2xl flex-row gap-4 px-8">
                 <For each={pages}>
                     {({ href, name }) => (
                         <li
