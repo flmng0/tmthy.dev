@@ -1,3 +1,4 @@
+import Logo from './Logo'
 import { createEffect, createSignal, For, onMount } from 'solid-js'
 
 export const pages: {
@@ -12,6 +13,8 @@ export const pages: {
 export default function Navigation() {
     const [enabled, setEnabled] = createSignal(false)
     const [hidden, setHidden] = createSignal(false)
+
+    const classList = () => ({ '-translate-y-full': hidden() })
 
     const hiddenMargin = 50
     const totalDuration = 500
@@ -58,17 +61,24 @@ export default function Navigation() {
     return (
         <nav
             ref={container!}
-            class="w-full bg-gray-200 transition-transform"
-            classList={{ '-translate-y-full delay-[500ms]': hidden() }}
+            class="w-full bg-gray-200 shadow-md transition"
+            classList={{ '-translate-y-full delay-[500ms] shadow-none': hidden() }}
         >
-            <ul class="mx-auto flex w-full max-w-2xl flex-row gap-4 px-8">
+            <ul class="mx-auto flex h-full w-full max-w-2xl flex-row flex-nowrap gap-4 px-8">
+                <li
+                    class="grid items-center px-2 transition-transform"
+                    classList={classList()}
+                    data-delay
+                >
+                    <a href="/">
+                        <div class="h-10">
+                            <Logo />
+                        </div>
+                    </a>
+                </li>
                 <For each={pages}>
                     {({ href, name }) => (
-                        <li
-                            class="inline-block py-5 transition-transform"
-                            classList={{ '-translate-y-full': hidden() }}
-                            data-delay
-                        >
+                        <li class="py-5 transition-transform" classList={classList()} data-delay>
                             <a href={href}>{name}</a>
                         </li>
                     )}
