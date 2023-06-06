@@ -1,6 +1,6 @@
 ---
 date: 2023-03-13
-name: Julia Set Visualiser
+name: Julia Set Visualisation
 brief: Implementation of the Julia set drawn onto a canvas.
 ---
 
