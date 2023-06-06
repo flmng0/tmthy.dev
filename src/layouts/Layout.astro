@@ -1,5 +1,5 @@
 ---
-import Navigation from '@components/Navigation.astro'
+import Navigation from '@components/Navigation'
 
 export interface Props {
     title: string
@@ -19,7 +19,7 @@ const { title } = Astro.props
     </head>
     <body>
         <header class="sticky top-0 z-50 mb-8">
-            <Navigation />
+            <Navigation client:media="(max-width: 768px)" />
         </header>
         <slot />
     </body>
