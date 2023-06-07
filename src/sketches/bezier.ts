@@ -102,7 +102,9 @@ const sketch: Sketch = {
     },
 
     draw(ctx, t) {
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+        ctx.fillStyle = '#fafafa'
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+        // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
         ctx.fillStyle = 'black'
 
         const drawPoint = (p: { x: number; y: number }, r?: number) => {

@@ -61,7 +61,7 @@ export default function Navigation() {
     return (
         <nav
             ref={container!}
-            class="w-full bg-gray-200 shadow-md transition"
+            class="w-full bg-flamingo-100 pb-1 shadow-md transition dark:bg-flamingo-900 dark:shadow-lg"
             classList={{ '-translate-y-full delay-[500ms] shadow-none': hidden() }}
         >
             <ul class="mx-auto flex h-full w-full max-w-2xl flex-row flex-nowrap gap-4 px-8">
