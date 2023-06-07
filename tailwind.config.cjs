@@ -1,17 +1,64 @@
-const colors = require('tailwindcss/colors')
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
     theme: {
         colors: {
-            white: colors.white,
-            black: "#252224",
-            gray: colors.gray,
-            pink: "#FFB3DF",
-            green: "#53C655"
+            flamingo: {
+                DEFAULT: '#262226',
+                50: '#E8E6E8',
+                100: '#DDDADE',
+                200: '#C8C1C8',
+                300: '#B2A9B2',
+                400: '#9C919D',
+                500: '#867987',
+                600: '#6E636F',
+                700: '#564D56',
+                800: '#3E383E',
+                900: '#262226',
+                950: '#171517',
+            },
+            white: '#E8E6E8',
         },
-        extend: {},
+        extend: {
+            typography: ({ theme }) => ({
+                DEFAULT: {
+                    css: {
+                        '--tw-prose-body': theme('colors.flamingo[800]'),
+                        '--tw-prose-headings': theme('colors.flamingo[900]'),
+                        '--tw-prose-lead': theme('colors.flamingo[700]'),
+                        '--tw-prose-links': theme('colors.flamingo[700]'),
+                        '--tw-prose-bold': theme('colors.flamingo[900]'),
+                        '--tw-prose-counters': theme('colors.flamingo[600]'),
+                        '--tw-prose-bullets': theme('colors.flamingo[400]'),
+                        '--tw-prose-hr': theme('colors.flamingo[300]'),
+                        '--tw-prose-quotes': theme('colors.flamingo[900]'),
+                        '--tw-prose-quote-borders': theme('colors.flamingo[300]'),
+                        '--tw-prose-captions': theme('colors.flamingo[700]'),
+                        '--tw-prose-code': theme('colors.flamingo[900]'),
+                        '--tw-prose-pre-code': theme('colors.flamingo[100]'),
+                        '--tw-prose-pre-bg': theme('colors.flamingo[900]'),
+                        '--tw-prose-th-borders': theme('colors.flamingo[300]'),
+                        '--tw-prose-td-borders': theme('colors.flamingo[200]'),
+                        '--tw-prose-invert-body': theme('colors.flamingo[200]'),
+                        '--tw-prose-invert-headings': theme('colors.flamingo[50]'),
+                        '--tw-prose-invert-lead': theme('colors.flamingo[300]'),
+                        '--tw-prose-invert-links': theme('colors.flamingo[50]'),
+                        '--tw-prose-invert-bold': theme('colors.flamingo[50]'),
+                        '--tw-prose-invert-counters': theme('colors.flamingo[400]'),
+                        '--tw-prose-invert-bullets': theme('colors.flamingo[600]'),
+                        '--tw-prose-invert-hr': theme('colors.flamingo[700]'),
+                        '--tw-prose-invert-quotes': theme('colors.flamingo[100]'),
+                        '--tw-prose-invert-quote-borders': theme('colors.flamingo[700]'),
+                        '--tw-prose-invert-captions': theme('colors.flamingo[400]'),
+                        '--tw-prose-invert-code': theme('colors.flamingo[50]'),
+                        '--tw-prose-invert-pre-code': theme('colors.flamingo[300]'),
+                        '--tw-prose-invert-pre-bg': 'rgb(0 0 0 / 50%)',
+                        '--tw-prose-invert-th-borders': theme('colors.flamingo[600]'),
+                        '--tw-prose-invert-td-borders': theme('colors.flamingo[700]'),
+                    },
+                },
+            }),
+        },
     },
     plugins: [require('@tailwindcss/typography')],
 }

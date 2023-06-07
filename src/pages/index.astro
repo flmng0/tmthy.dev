@@ -1,6 +1,6 @@
 ---
 import SocialLink from '@components/SocialLink.astro'
-import Layout from '@layouts/Layout.astro'
+import RootLayout from '@layouts/RootLayout.astro'
 
 const socials: {
     href: string
@@ -13,10 +13,10 @@ const socials: {
 ]
 ---
 
-<Layout title="Home">
-    <main class="prose-a:text-sky-60 container prose mx-auto space-y-8 px-5">
+<RootLayout title="Home">
+    <main class="container prose dark:prose-invert mx-auto space-y-8 px-5">
         <section>
-            <h1>Hello! I'm Timothy Davis</h1>
+            <h1 class="text-primary">Hello! I'm Timothy Davis</h1>
             <p>
                 This website is under active development, I only started (re)developing it on the
                 7th of March 2023.
@@ -44,4 +44,4 @@ const socials: {
             </nav>
         </section>
     </main>
-</Layout>
+</RootLayout>
