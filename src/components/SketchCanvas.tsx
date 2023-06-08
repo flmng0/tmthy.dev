@@ -5,7 +5,7 @@ import SketchControl from './SketchControl'
 // TODO: Implement pause and resume functionality.
 //       Maybe pause on blur?
 
-export default function SketchCanvas(props: { slug: string }) {
+export default function SketchCanvas(props: { slug: string; background?: string }) {
     let canvas: HTMLCanvasElement
     let lastRequest: number
 
@@ -42,7 +42,11 @@ export default function SketchCanvas(props: { slug: string }) {
     onCleanup(() => cancelAnimationFrame(lastRequest))
 
     return (
-        <header class="relative flex aspect-square w-full flex-col gap-y-4 self-start border bg-flamingo-200 shadow-sm outline-2 outline-flamingo-200 transition-shadow focus-within:shadow-lg focus-within:outline dark:border-flamingo-900 dark:bg-flamingo-900 dark:outline-flamingo-900 lg:sticky lg:top-24">
+        <header
+            style={{ 'background-color': props.background }}
+            classList={{ 'bg-flamingo-950': props.background == null }}
+            class="relative flex aspect-square w-full flex-col gap-y-4 self-start shadow-sm outline-2 outline-flamingo-300 transition-shadow focus-within:shadow-lg focus-within:outline lg:sticky lg:top-24"
+        >
             <canvas ref={canvas!} width="600" height="600" tabindex="0" class="h-full w-full" />
 
             <Show when={controls()?.length}>

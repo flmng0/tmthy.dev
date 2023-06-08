@@ -12,6 +12,7 @@ const sketches = defineCollection({
         // tags: z.enum(['bevy', 'simulation', 'art']).array(),
         source: z.string().optional(),
         screenshot: z.string().optional(),
+        canvasBackground: z.string().optional(),
     }),
 })
 

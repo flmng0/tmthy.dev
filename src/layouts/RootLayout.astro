@@ -1,4 +1,6 @@
 ---
+import './global.css'
+
 export interface Props {
     title: string
 }
@@ -16,7 +18,7 @@ const { title } = Astro.props
         <title>{title} | tmthy.dev</title>
     </head>
 
-    <body class="bg-flamingo-50 text-flamingo-900 dark:bg-flamingo-800 dark:text-flamingo-50">
+    <body class="min-h-screen bg-flamingo-900 text-flamingo-50">
         <slot />
     </body>
 </html>

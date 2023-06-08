@@ -1,47 +1,105 @@
 ---
-import SocialLink from '@components/SocialLink.astro'
+import { Icon } from 'astro-icon'
+import Logo from '@components/Logo'
 import RootLayout from '@layouts/RootLayout.astro'
+
+import { pages } from '@components/Navigation'
 
 const socials: {
     href: string
     title: string
+    icon: string
 }[] = [
     {
         href: 'https://github.com/flmng0',
         title: 'GitHub',
+        icon: 'mdi:github',
     },
+    {
+        href: 'https://www.linkedin.com/in/timothy-davis-bb749b209/',
+        title: 'LinkedIn',
+        icon: 'mdi:linkedin',
+    },
+    { href: 'mailto:tmthydvs@gmail.com', title: 'Email', icon: 'mdi:email' },
 ]
 ---
 
 <RootLayout title="Home">
-    <main class="container prose dark:prose-invert mx-auto space-y-8 px-5">
-        <section>
-            <h1 class="text-primary">Hello! I'm Timothy Davis</h1>
-            <p>
-                This website is under active development, I only started (re)developing it on the
-                7th of March 2023.
-            </p>
-            <p>
-                I created this website as a place to store all of my little projects, and to
-                distract myself from work.
-            </p>
-            <p>
-                Eventually this will be a fully fledged portfolio. As you could probably tell, that
-                is not the case yet.
-            </p>
-        </section>
+    <div class="flex min-h-screen flex-col place-items-center py-9">
+        <main class="container prose flex-grow space-y-8 px-5 prose-hr:my-4">
+            <section>
+                <h1 class="mb-0 leading-relaxed">
+                    Hello! I'm <span class="feature-text">Timothy Davis</span>
+                </h1>
 
-        <section>
-            <strong>
-                I would recommend the <a href="/sketches">sketches</a> page to see some toy projects.
-            </strong>
-        </section>
+                <nav aria-label="site links" class="flex flex-row gap-2">
+                    {
+                        pages
+                            .filter(({ href }) => href !== '/')
+                            .map(({ href, name }) => (
+                                <a
+                                    href={href}
+                                    class="not-prose px-1 text-lg font-normal text-white underline hover:text-flamingo-200"
+                                >
+                                    {name}
+                                </a>
+                            ))
+                    }
+                </nav>
 
-        <section>
-            <h2>Some Social Links</h2>
-            <nav class="not-prose mt-2 flex gap-2">
-                {socials.map((social) => <SocialLink {...social} />)}
-            </nav>
-        </section>
-    </main>
+                <hr />
+
+                <p>
+                    This website is under active development, I only started (re)developing it on
+                    the 7th of March 2023.
+                </p>
+                <p>
+                    I created this website as a place to store all of my little projects, and to
+                    distract myself from work.
+                </p>
+                <p>
+                    Eventually this will be a fully fledged portfolio. As you could probably tell,
+                    that is not the case yet.
+                </p>
+            </section>
+        </main>
+
+        <nav aria-label="social links" class="flex flex-shrink flex-row gap-3">
+            {
+                socials.map(({ href, icon, title }) => {
+                    return (
+                        <a
+                            href={href}
+                            aria-labelledby="span"
+                            class="flex flex-row gap-2 rounded-md bg-flamingo-950 px-3 py-2"
+                        >
+                            <Icon name={icon} class="w-6" />
+                            <span>{title}</span>
+                        </a>
+                    )
+                })
+            }
+        </nav>
+    </div>
+
+    <figure
+        class="fixed bottom-0 right-0 -z-50 origin-center -translate-y-12 scale-125 text-flamingo-800"
+    >
+        <Logo />
+    </figure>
 </RootLayout>
+
+<style scoped>
+    .feature-text {
+        @apply whitespace-nowrap bg-flamingo-800 tracking-wide text-fuchsia;
+    }
+
+    .feature-text::selection {
+        @apply bg-flamingo-900 text-fuchsia;
+    }
+
+    .feature-text,
+    .feature-text::selection {
+        @apply px-4 py-1;
+    }
+</style>
