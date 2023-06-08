@@ -19,6 +19,9 @@
         "tailwindcss": "^3.2.7"
     },
     "devDependencies": {
+        "@iconify-icons/mdi": "^1.2.46",
+        "@iconify/types": "^2.0.0",
+        "@solid-primitives/tween": "^1.2.6",
         "@tailwindcss/typography": "^0.5.9",
         "prettier": "^2.8.6",
         "prettier-plugin-astro": "^0.8.0",

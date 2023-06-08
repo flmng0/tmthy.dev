@@ -1,5 +1,6 @@
 import Logo from './Logo'
 import { createEffect, createSignal, For, onMount } from 'solid-js'
+import createTween from '@solid-primitives/tween'
 
 export const pages: {
     href: string
@@ -14,10 +15,13 @@ export default function Navigation() {
     const [enabled, setEnabled] = createSignal(false)
     const [hidden, setHidden] = createSignal(false)
 
-    const classList = () => ({ '-translate-y-full': hidden() })
+    const commonClassList = () => ({ '-translate-y-full': hidden() })
 
     const hiddenMargin = 50
     const totalDuration = 500
+
+    const borderHue = () => (hidden() ? 100 : 310)
+    const tweenedHue = createTween(borderHue, { duration: 1000 })
 
     let container: HTMLUListElement
 
@@ -28,7 +32,9 @@ export default function Navigation() {
     })
 
     onMount(() => {
-        const mql = window.matchMedia('(max-width: 768px)')
+        const mql = window.matchMedia(
+            '(max-width: 768px) and (prefers-reduced-motion: no-preference)'
+        )
 
         setEnabled(mql.matches)
 
@@ -53,21 +59,22 @@ export default function Navigation() {
 
             const e = elem as HTMLElement
             e.style.transitionDelay = `${t * totalDuration}ms`
-
-            console.debug(e)
         })
     })
 
     return (
         <nav
             ref={container!}
-            class="w-full bg-gray-200 shadow-md transition"
-            classList={{ '-translate-y-full delay-[500ms] shadow-none': hidden() }}
+            style={{ 'border-color': `hsl(${tweenedHue()}, 100%, 50%)` }}
+            class="w-full border-b-2 bg-flamingo-950 pb-1 shadow-lg transition-transform"
+            classList={{
+                '-translate-y-[calc(100%-2px)] delay-[500ms] motion-safe:shadow-none': hidden(),
+            }}
         >
             <ul class="mx-auto flex h-full w-full max-w-2xl flex-row flex-nowrap gap-4 px-8">
                 <li
                     class="grid items-center px-2 transition-transform"
-                    classList={classList()}
+                    classList={commonClassList()}
                     data-delay
                 >
                     <a href="/">
@@ -78,8 +85,17 @@ export default function Navigation() {
                 </li>
                 <For each={pages}>
                     {({ href, name }) => (
-                        <li class="py-5 transition-transform" classList={classList()} data-delay>
-                            <a href={href}>{name}</a>
+                        <li
+                            class="py-5 transition-transform"
+                            classList={commonClassList()}
+                            data-delay
+                        >
+                            <a
+                                class="text-lg font-normal text-white underline hover:text-flamingo-200"
+                                href={href}
+                            >
+                                {name}
+                            </a>
                         </li>
                     )}
                 </For>

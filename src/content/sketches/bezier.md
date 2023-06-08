@@ -2,6 +2,7 @@
 date: 2023-03-07
 name: Bezier Curves
 brief: Experimenting with a custom Bezier curve implementation, with a variable amount of control points.
+canvasBackground: '#fefefe'
 ---
 
 ## Instructions
