@@ -2,6 +2,6 @@
     @apply bg-flamingo-700 text-flamingo-200;
 }
 
-*{
-    @apply focus:ring focus:ring-flamingo-400 focus:outline-none;
+nav a:focus-within {
+    @apply ring ring-flamingo-400 outline-none;
 }
