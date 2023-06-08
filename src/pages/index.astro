@@ -1,5 +1,4 @@
 ---
-import { Icon } from 'astro-icon'
 import Logo from '@components/Logo'
 import RootLayout from '@layouts/RootLayout.astro'
 
@@ -13,14 +12,14 @@ const socials: {
     {
         href: 'https://github.com/flmng0',
         title: 'GitHub',
-        icon: 'mdi:github',
+        icon: 'github',
     },
     {
         href: 'https://www.linkedin.com/in/timothy-davis-bb749b209/',
         title: 'LinkedIn',
-        icon: 'mdi:linkedin',
+        icon: 'linkedin',
     },
-    { href: 'mailto:tmthydvs@gmail.com', title: 'Email', icon: 'mdi:email' },
+    { href: 'mailto:tmthydvs@gmail.com', title: 'Email', icon: 'email' },
 ]
 ---
 
@@ -73,7 +72,7 @@ const socials: {
                             aria-labelledby="span"
                             class="flex flex-row gap-2 rounded-md bg-flamingo-950 px-3 py-2"
                         >
-                            <Icon name={icon} class="w-6" />
+                            <iconify-icon icon="mdi:github" class="w-6 text-white" />
                             <span>{title}</span>
                         </a>
                     )
