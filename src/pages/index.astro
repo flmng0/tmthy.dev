@@ -30,7 +30,7 @@ const socials: {
 ---
 
 <RootLayout title="Home">
-    <div class="flex min-h-screen flex-col place-items-center py-9">
+    <div class="wrapper flex flex-col place-items-center py-9">
         <main class="container prose flex-grow space-y-8 px-5 prose-hr:my-4">
             <section>
                 <h1 class="mb-0 leading-relaxed">
@@ -87,14 +87,17 @@ const socials: {
         </nav>
     </div>
 
-    <figure
-        class="fixed bottom-0 right-0 -z-50 origin-center -translate-y-12 scale-125 text-flamingo-800"
-    >
+    <figure class="fixed right-0 -z-50 origin-bottom -translate-y-56 scale-125 text-flamingo-800">
         <Logo />
     </figure>
 </RootLayout>
 
 <style scoped>
+    .wrapper {
+        min-height: 100vh;
+        min-height: 100svh;
+    }
+
     .feature-text {
         @apply whitespace-nowrap bg-flamingo-800 tracking-wide text-fuchsia;
     }
