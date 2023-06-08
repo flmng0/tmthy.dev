@@ -24,15 +24,18 @@ dependencies:
     version: 3.2.7(postcss@8.4.21)
 
 devDependencies:
+  '@iconify-icons/mdi':
+    specifier: ^1.2.46
+    version: 1.2.46
+  '@iconify/types':
+    specifier: ^2.0.0
+    version: 2.0.0
   '@solid-primitives/tween':
     specifier: ^1.2.6
     version: 1.2.6(solid-js@1.6.15)
   '@tailwindcss/typography':
     specifier: ^0.5.9
     version: 0.5.9(tailwindcss@3.2.7)
-  iconify-icon:
-    specifier: ^1.0.7
-    version: 1.0.7
   prettier:
     specifier: ^2.8.6
     version: 2.8.6
@@ -620,6 +623,12 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /@iconify-icons/mdi@1.2.46:
+    resolution: {integrity: sha512-/8se1J8YqupamWqyTejcX6zIrWgZQ8A5+7hWhHXcJD5Rc5OteEM2nuEq2NI29loAs/W9JZP4mH38uz6w2CETkw==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
 
   /@iconify/types@2.0.0:
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -1643,12 +1652,6 @@ packages:
     resolution: {integrity: sha512-rQLskxnM/5OCldHo+wNXbpVgDn5A17CUoKX+7Sokwaknlq7CdSnphy0W39GU8dw59XiCXmFXDg4fRuckQRKewQ==}
     engines: {node: '>=12.20.0'}
     dev: false
-
-  /iconify-icon@1.0.7:
-    resolution: {integrity: sha512-MxaO3Jhf3f5ymPWGHR9x74f90TNKcq1D+B2iGucGhVtqAgbC9EtM06kKiTGH2CKELNnexckwhrA3/+OpT4HKFw==}
-    dependencies:
-      '@iconify/types': 2.0.0
-    dev: true
 
   /ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}

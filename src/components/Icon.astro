@@ -1,0 +1,9 @@
+---
+import type { IconifyIcon } from '@iconify/types'
+
+interface Props extends IconifyIcon {}
+
+const { body, width, height } = Astro.props
+---
+
+<svg set:html={body} width={width} height={height} />
