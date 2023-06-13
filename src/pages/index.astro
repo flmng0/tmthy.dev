@@ -30,7 +30,7 @@ const socials: {
 ---
 
 <RootLayout title="Home">
-    <div class="flex min-h-screen flex-col place-items-center bg-flamingo-950 py-9">
+    <div class="wrapper flex flex-col place-items-center bg-flamingo-950 py-9">
         <main class="container prose flex-grow space-y-8 px-5 prose-hr:my-4">
             <section>
                 <h1 class="mb-5 leading-relaxed">
@@ -96,6 +96,11 @@ const socials: {
 </RootLayout>
 
 <style scoped>
+    .wrapper {
+        min-height: 100vh;
+        min-height: 100svh;
+    }
+
     .feature-text {
         @apply whitespace-nowrap bg-flamingo-800 tracking-wide text-fuchsia;
     }
