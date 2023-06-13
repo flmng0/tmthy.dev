@@ -30,8 +30,8 @@ const socials: {
 ---
 
 <RootLayout title="Home">
-    <div class="wrapper flex flex-col place-items-center bg-flamingo-950 py-9">
-        <main class="container prose flex-grow space-y-8 px-5 prose-hr:my-4">
+    <div class="wrapper -z-50 flex flex-col place-items-center bg-flamingo-950 py-9">
+        <main class="container prose z-10 flex-grow space-y-8 px-5 prose-hr:my-4">
             <section>
                 <h1 class="mb-5 leading-relaxed">
                     Hello! I'm <span class="feature-text">Timothy Davis</span>
@@ -70,7 +70,7 @@ const socials: {
             </section>
         </main>
 
-        <footer>
+        <footer class="z-10">
             <nav aria-label="site links" class="flex flex-row gap-2">
                 {
                     pages
@@ -86,11 +86,13 @@ const socials: {
                 }
             </nav>
         </footer>
-    </div>
 
-    <figure class="fixed right-0 -z-50 origin-bottom -translate-y-56 scale-125 text-flamingo-800">
-        <Logo />
-    </figure>
+        <figure
+            class="pointer-events-none fixed right-0 bottom-0 origin-bottom translate-y-16 scale-125 text-flamingo-800"
+        >
+            <Logo />
+        </figure>
+    </div>
 </RootLayout>
 
 <style scoped>
