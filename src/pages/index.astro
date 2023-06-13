@@ -30,28 +30,29 @@ const socials: {
 ---
 
 <RootLayout title="Home">
-    <div class="flex min-h-screen flex-col place-items-center py-9">
+    <div class="flex min-h-screen flex-col place-items-center bg-flamingo-950 py-9">
         <main class="container prose flex-grow space-y-8 px-5 prose-hr:my-4">
             <section>
-                <h1 class="mb-0 leading-relaxed">
+                <h1 class="mb-5 leading-relaxed">
                     Hello! I'm <span class="feature-text">Timothy Davis</span>
                 </h1>
 
-                <nav aria-label="site links" class="flex flex-row gap-2">
+                <nav aria-label="social links" class="not-prose flex flex-shrink flex-row gap-3">
                     {
-                        pages
-                            .filter(({ href }) => href !== '/')
-                            .map(({ href, name }) => (
+                        socials.map(({ href, icon, title }) => {
+                            return (
                                 <a
                                     href={href}
-                                    class="not-prose px-1 text-lg font-normal text-white underline hover:text-flamingo-200"
+                                    aria-labelledby="span"
+                                    class="flex flex-row gap-2 rounded-md bg-flamingo-900 px-3 py-2"
                                 >
-                                    {name}
+                                    <Icon {...icon} />
+                                    <span>{title}</span>
                                 </a>
-                            ))
+                            )
+                        })
                     }
                 </nav>
-
                 <hr />
 
                 <p>
@@ -69,22 +70,22 @@ const socials: {
             </section>
         </main>
 
-        <nav aria-label="social links" class="flex flex-shrink flex-row gap-3">
-            {
-                socials.map(({ href, icon, title }) => {
-                    return (
-                        <a
-                            href={href}
-                            aria-labelledby="span"
-                            class="flex flex-row gap-2 rounded-md bg-flamingo-950 px-3 py-2"
-                        >
-                            <Icon {...icon} />
-                            <span>{title}</span>
-                        </a>
-                    )
-                })
-            }
-        </nav>
+        <footer>
+            <nav aria-label="site links" class="flex flex-row gap-2">
+                {
+                    pages
+                        .filter(({ href }) => href !== '/')
+                        .map(({ href, name }) => (
+                            <a
+                                href={href}
+                                class="not-prose px-1 text-lg font-normal text-white underline hover:text-flamingo-200"
+                            >
+                                {name}
+                            </a>
+                        ))
+                }
+            </nav>
+        </footer>
     </div>
 
     <figure
