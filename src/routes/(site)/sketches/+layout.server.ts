@@ -1,5 +1,5 @@
 import fs from 'fs/promises'
-import { baseDir, getData } from '$lib/data'
+import { baseDir, getData } from '$lib/server/data'
 import type { LayoutServerLoad } from './$types';
 
 export const prerender = true;
