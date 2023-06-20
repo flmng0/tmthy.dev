@@ -1,13 +1,15 @@
-import { unified, type Processor } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkToC from 'remark-toc'
-import remarkMath from 'remark-math'
-import remarkStringify from 'remark-stringify'
-import remarkFrontmatter from 'remark-frontmatter'
-import remarkRehype from 'remark-rehype'
 import rehypeShiki from '@leafac/rehype-shiki'
+import withToC, { type Toc } from '@stefanprobst/remark-extract-toc'
 import rehypeKaTeX from 'rehype-katex'
 import rehypeStringify from 'rehype-stringify'
+import remarkFrontmatter from 'remark-frontmatter'
+import remarkMath from 'remark-math'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import withSlugs from 'remark-slug'
+import remarkStringify from 'remark-stringify'
+import { unified, type Processor } from 'unified'
+import withMatter from './matter'
 
 import shiki from 'shiki'
 
@@ -17,15 +19,17 @@ let parser: Processor
 
 async function getParser() {
     const highlighter = await shiki.getHighlighter({
-        theme: 'monokai',
+        theme: 'github-dark',
     })
 
     return unified()
         .use(remarkParse)
-        .use(remarkToC)
         .use(remarkMath)
         .use(remarkStringify)
         .use(remarkFrontmatter, ['yaml'])
+        .use(withMatter)
+        .use(withSlugs)
+        .use(withToC)
         .use(remarkRehype)
         .use(rehypeShiki, {
             highlighter,
@@ -34,7 +38,13 @@ async function getParser() {
         .use(rehypeStringify)
 }
 
-export async function compile(path: string) {
+export interface CompiledMarkdown {
+    data: any
+    body: string
+    toc: Toc
+}
+
+export async function compile(path: string): Promise<CompiledMarkdown> {
     if (parser === undefined) {
         parser = await getParser()
     }
@@ -42,7 +52,9 @@ export async function compile(path: string) {
     const file = await fs.readFile(path)
     const result = await parser.process(file)
 
-    console.debug(result)
-
-    return String(result)
+    return {
+        data: result.data.matter,
+        toc: result.data.toc || [],
+        body: String(result),
+    }
 }

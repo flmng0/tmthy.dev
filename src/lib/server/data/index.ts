@@ -1,7 +1,9 @@
-import type z from 'zod'
-import { collections } from './schema'
+import type { Toc } from '@stefanprobst/remark-extract-toc'
+import fs from 'fs/promises'
 import path from 'path'
+import type z from 'zod'
 import { compile } from './markdown'
+import { collections } from './schema'
 
 export type Collections = typeof collections
 export type CollectionProperties<K extends keyof Collections> = z.infer<Collections[K]>
@@ -15,18 +17,30 @@ export interface CollectionData<K extends keyof Collections> {
     properties: CollectionProperties<K>
     body: string
     slug: string
+    toc: Toc
 }
 
 export async function getAllData<K extends keyof Collections>(
     collection: K
 ): Promise<CollectionData<K>[]> {
-    return []
+    const entries = await fs.readdir(baseDir(collection))
+
+    const mdFiles = entries.filter((entry) => entry.endsWith('.md'))
+
+    const futures = mdFiles.map(async (entry) => {
+        const slug = entry.slice(0, -'.md'.length)
+        const data = await getData(collection, slug)
+
+        return data
+    })
+
+    return await Promise.all(futures)
 }
 
 export async function getData<K extends keyof Collections>(
     collection: K,
     slug: string
-): Promise<Partial<CollectionData<K>>> {
+): Promise<CollectionData<K>> {
     const schema = collections[collection]
 
     const base = baseDir(collection)
@@ -34,12 +48,16 @@ export async function getData<K extends keyof Collections>(
 
     const compiled = await compile(sourcePath)
 
-    // const properties = (await schema.parseAsync(mdModule.attributes)) as CollectionProperties<K>
-    // const body = mdModule.html
+    const properties = await schema.parseAsync(compiled.data)
+    const toc = compiled.toc
+
+    const body = compiled.body
 
     return {
         slug,
-        body: compiled,
+        properties,
+        body,
+        toc,
     }
 }
 
