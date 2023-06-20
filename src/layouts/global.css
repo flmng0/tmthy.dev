@@ -1,7 +1,0 @@
-::selection {
-    @apply bg-flamingo-700 text-flamingo-200;
-}
-
-nav a:focus-within {
-    @apply ring ring-flamingo-400 outline-none;
-}
