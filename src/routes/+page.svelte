@@ -26,7 +26,7 @@
     <title>Home | tmthy.dev</title>
 </svelte:head>
 
-<div class="wrapper -z-50 flex flex-col place-items-center bg-flamingo-950 py-9">
+<div class="wrapper -z-50 flex flex-col place-items-center bg-flamingo-900 py-9">
     <main class="container prose z-10 flex-grow space-y-8 px-5 prose-hr:my-4">
         <section>
             <h1 class="mb-5 leading-relaxed">
@@ -41,7 +41,7 @@
                     <a
                         {href}
                         aria-label={title}
-                        class="flex flex-row flex-nowrap items-center gap-1 whitespace-nowrap rounded-md bg-flamingo-900 px-3 py-2"
+                        class="flex flex-row flex-nowrap items-center gap-1 whitespace-nowrap rounded-md bg-flamingo-950 px-3 py-2"
                     >
                         <svelte:component this={icon} />
                         {title}

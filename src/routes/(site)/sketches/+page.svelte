@@ -10,7 +10,7 @@
     <title>Sketches | tmthy.dev</title>
 </svelte:head>
 
-<main class="container mx-auto w-full max-w-prose space-y-4 px-5">
+<main class="container mx-auto w-full max-w-screen-md space-y-4 px-5">
     <hgroup class="prose">
         <h1>Sketches</h1>
         <p>
@@ -21,7 +21,7 @@
 
     <ul class="flex flex-row flex-wrap gap-4">
         {#each data.sketches as sketch}
-            <li class="flex-1 basis-48">
+            <li class="flex-1 basis-56">
                 <a href="/sketches/{sketch.slug}">
                     <Card {sketch} />
                 </a>

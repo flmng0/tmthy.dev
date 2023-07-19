@@ -51,7 +51,7 @@
         </button>
     </header>
 
-    <main class="space-y-6">
+    <main class="space-y-12">
         <nav class="card prose px-6 py-8">
             <h3>Contents</h3>
             <ul class="list-disc">
@@ -76,7 +76,7 @@
 
 <style lang="postcss">
     article :global(.card) {
-        @apply self-start bg-flamingo-950 shadow-sm;
+        @apply self-start rounded-md border border-flamingo-800 bg-flamingo-900 shadow-lg;
     }
 
     li.toc {

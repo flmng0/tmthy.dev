@@ -7,7 +7,7 @@
 </script>
 
 <article
-    class="rounded-md bg-flamingo-950 px-6 py-4 text-flamingo-100 shadow-sm ring-flamingo-800 hover:ring"
+    class="rounded-md border border-flamingo-800 bg-flamingo-900 px-6 py-4 text-flamingo-100 shadow-lg ring-flamingo-800 hover:ring"
 >
     <hgroup>
         <h2 class="mb-3 text-xl">{name}</h2>
