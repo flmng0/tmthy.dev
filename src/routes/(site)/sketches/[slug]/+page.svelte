@@ -29,10 +29,7 @@
     <title>{sketch.properties.name} | Sketches</title>
 </svelte:head>
 
-<dialog
-    bind:this={sourceCodeDialog}
-    class="source-code z-10 overflow-auto p-0 backdrop:bg-flamingo-950/25"
->
+<dialog bind:this={sourceCodeDialog} class="z-10 overflow-auto p-0 backdrop:bg-flamingo-950/25">
     <div class="fixed inset-0 -z-10" on:pointerup={() => closeSourceCode()} />
     <button
         class="fixed right-4 top-4 z-20 grid aspect-square w-12 place-items-center bg-flamingo-800 text-white"
@@ -48,9 +45,9 @@
 <article class="mx-auto my-8 grid w-fit grid-cols-1 gap-x-8 gap-y-8 px-6 lg:grid-cols-2">
     <header class="flex flex-col self-start lg:sticky lg:top-24">
         <Canvas sketch={data.module} />
-        <button class="bg-flamingo-800 px-6 py-4 text-white" on:click={() => showSourceCode()}
-            >Show Source Code</button
-        >
+        <button class="bg-flamingo-800 px-6 py-4 text-white" on:click={() => showSourceCode()}>
+            Show Source Code
+        </button>
     </header>
 
     <main class="space-y-6">

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { ControlConfig } from '$lib/sketches'
+    import type { ControlConfig } from '$lib/sketch'
     import { writable } from 'svelte/store'
 
     export let state: any | undefined
