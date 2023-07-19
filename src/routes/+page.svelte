@@ -1,22 +1,23 @@
 <script>
     import Logo from '$lib/Logo.svelte'
     import { pages } from '$lib/site'
+    import * as icons from '$lib/icons'
 
     const socials = [
         {
             href: 'https://github.com/flmng0',
             title: 'GitHub',
-            icon: 'mdi:github',
+            icon: icons.MdiGitHub,
         },
         {
             href: 'https://www.linkedin.com/in/timothy-davis-bb749b209/',
             title: 'LinkedIn',
-            icon: 'mdi:linkedin',
+            icon: icons.MdiLinkedIn,
         },
         {
             href: 'mailto:tmthydvs@gmail.com',
             title: 'Email',
-            icon: 'mdi:email',
+            icon: icons.MdiEmail,
         },
     ]
 </script>
@@ -40,9 +41,9 @@
                     <a
                         {href}
                         aria-label={title}
-                        class="whitespace-nowrap rounded-md bg-flamingo-900 px-3 py-2"
+                        class="flex flex-row flex-nowrap items-center gap-1 whitespace-nowrap rounded-md bg-flamingo-900 px-3 py-2"
                     >
-                        <iconify-icon class="font-md" inline {icon} />
+                        <svelte:component this={icon} />
                         {title}
                     </a>
                 {/each}

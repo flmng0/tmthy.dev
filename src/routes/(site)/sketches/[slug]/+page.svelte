@@ -3,6 +3,7 @@
     import type { PageData } from './$types'
     import 'katex/dist/katex.min.css'
     import { onMount } from 'svelte'
+    import { MdiClose } from '$lib/icons'
 
     export let data: PageData
 
@@ -35,7 +36,7 @@
         class="fixed right-4 top-4 z-20 grid aspect-square w-12 place-items-center bg-flamingo-800 text-white"
         on:click={() => closeSourceCode()}
     >
-        <iconify-icon icon="mdi:close" />
+        <MdiClose />
     </button>
     <article class="min-w-max px-4 py-3" style:background-color={data.sourceCodeBackground}>
         {@html data.sourceCode}
