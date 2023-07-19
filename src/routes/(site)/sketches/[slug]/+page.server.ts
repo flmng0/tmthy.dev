@@ -1,5 +1,9 @@
 import { error } from '@sveltejs/kit'
 import type { PageServerLoad } from './$types'
+import {
+    getBackgroundColor as getSourceCodeBackground,
+    highlightSketchSource,
+} from '$lib/server/data/source'
 
 export const load = (async ({ params, parent }) => {
     const parentData = await parent()
@@ -13,5 +17,7 @@ export const load = (async ({ params, parent }) => {
 
     return {
         sketch,
+        sourceCode: highlightSketchSource(slug),
+        sourceCodeBackground: getSourceCodeBackground(),
     }
 }) satisfies PageServerLoad

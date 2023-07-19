@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte'
     import Control from './Control.svelte'
-    import type { Sketch } from '$lib/sketches'
+    import type { Sketch } from '$lib/sketch'
 
     export let sketch: Sketch
 
@@ -33,7 +33,7 @@
 </script>
 
 <div
-    class="relative flex aspect-square w-full flex-col gap-y-4 self-start shadow-sm outline-2 outline-flamingo-300 transition-shadow focus-within:shadow-lg focus-within:outline lg:sticky lg:top-24"
+    class="relative flex aspect-square w-full flex-col gap-y-4 shadow-sm outline-2 outline-flamingo-300 transition-shadow focus-within:shadow-lg focus-within:outline"
 >
     <canvas width="600" height="600" tabindex="0" class="h-full w-full" bind:this={canvas} />
 

@@ -5,6 +5,8 @@ import type z from 'zod'
 import { compile } from './markdown'
 import { collections } from './schema'
 
+import shiki from 'shiki'
+
 export type Collections = typeof collections
 export type CollectionProperties<K extends keyof Collections> = z.infer<Collections[K]>
 
@@ -64,3 +66,8 @@ export async function getData<K extends keyof Collections>(
 export function baseDir<K extends keyof Collections>(collection: K) {
     return `src/data/${collection}`
 }
+
+export const highlighterPromise = shiki.getHighlighter({
+    theme: 'github-dark',
+    langs: ['typescript', 'javascript', 'rust', 'python', 'py'],
+})

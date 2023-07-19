@@ -11,16 +11,13 @@ import remarkStringify from 'remark-stringify'
 import { unified, type Processor } from 'unified'
 import withMatter from './matter'
 
-import shiki from 'shiki'
-
 import fs from 'fs/promises'
+import { highlighterPromise } from '.'
 
 let parser: Processor
 
 async function getParser() {
-    const highlighter = await shiki.getHighlighter({
-        theme: 'github-dark',
-    })
+    const highlighter = await highlighterPromise
 
     return unified()
         .use(remarkParse)
