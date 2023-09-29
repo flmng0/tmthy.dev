@@ -10,6 +10,8 @@
     "mdsvex": "^0.11.0",
     "prettier": "^2.8.0",
     "prettier-plugin-svelte": "^2.10.1",
+    "rehype-katex-svelte": "^1.2.0",
+    "remark-math": "3.0.0",
     "svelte": "^4.0.5",
     "svelte-check": "^3.4.3",
     "typescript": "^5.0.0",
@@ -25,5 +27,8 @@
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
     "format": "prettier --plugin-search-dir . --write ."
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "katex": "^0.16.8"
+  }
 }

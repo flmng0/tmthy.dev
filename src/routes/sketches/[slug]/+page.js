@@ -1,12 +1,14 @@
-import { getHtml, getSource } from '$lib/sketch';
+import { getWriteup, getSource } from '$lib/sketch';
 
 /** @type {import("./$types").PageLoad} */
 export async function load({ params }) {
-	const content = getHtml(params.slug);
-	const scriptSrc = getSource(params.slug);
+	const slug = params.slug;
+	const writeup = getWriteup(slug);
+	const scriptSrc = getSource(slug);
 
 	return {
-		content,
+		slug,
+		writeup,
 		scriptSrc
 	};
 }
