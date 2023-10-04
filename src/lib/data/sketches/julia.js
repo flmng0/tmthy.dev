@@ -1,5 +1,3 @@
-import { startSketch } from './common.js';
-
 const ITERATIONS = 400;
 const R = 2;
 
@@ -134,4 +132,4 @@ const sketch = {
 	}
 };
 
-startSketch(sketch);
+export default sketch;
