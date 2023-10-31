@@ -1,0 +1,77 @@
+@import "open-props/style";
+
+:root {
+  /* Fonts */
+  --font-heading: Schibsted Grotesk, ui-serif, serif;
+  --font-body:Noto Sans, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, sans-serif;
+  --font-display: "Lobster", display, cursive, serif;
+
+  /* Colors */
+  --text-light: #2a0923;
+  --text-alt-light: #6c5668;
+  --background-light: #fdf7fc;
+  --primary-light: #e29dd4;
+  --secondary-light: #910d77;
+  --accent-light: #277c9f;
+
+  --text-dark: #eef9ed;
+  --text-alt-dark: #a7b8a5;
+  --background-dark: #170c18;
+  --primary-dark: #0d310c;
+  --secondary-dark: #73d172;
+  --accent-dark: #cf73d3;
+}
+
+@media (prefers-color-scheme: dark) or (prefers-color-scheme: no-preference) {
+  :root {
+    --text: var(--text-dark);
+    --text-alt: var(--text-alt-dark);
+    --background: var(--background-dark);
+    --primary: var(--primary-dark);
+    --secondary: var(--secondary-dark);
+    --accent: var(--accent-dark);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --text: var(--text-dark);
+    --text-alt: var(--text-alt-dark);
+    --background: var(--background-dark);
+    --primary: var(--primary-dark);
+    --secondary: var(--secondary-dark);
+    --accent: var(--accent-dark);
+  }
+}
+
+.dark {
+  --text: var(--text-dark);
+  --text-alt: var(--text-alt-dark);
+  --background: var(--background-dark);
+  --primary: var(--primary-dark);
+  --secondary: var(--secondary-dark);
+  --accent: var(--accent-dark);
+}
+
+.light {
+  --text: var(--text-light);
+  --text-alt: var(--text-alt-light);
+  --background: var(--background-light);
+  --primary: var(--primary-light);
+  --secondary: var(--secondary-light);
+  --accent: var(--accent-light);
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
