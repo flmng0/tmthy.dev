@@ -3,24 +3,26 @@ import { Icon } from "astro-icon";
 ---
 
 <header>
-  <input type="checkbox" id="navbar-open">
-  <label for="navbar-open">
-    <div class="indicator"></div>
-  </label>
+  <div class="container">
+    <input type="checkbox" id="navbar-open" />
+    <label for="navbar-open">
+      <div class="indicator"></div>
+    </label>
 
-  <h2>
-    <a href="/"> tmthy.dev</a>
-  </h2>
+    <h2>
+      <a href="/"> tmthy.dev</a>
+    </h2>
 
-  <nav>
+    <nav>
       <a href="/blog">Blog</a>
       <a href="/projects">Projects</a>
       <a href="/resume">Resume</a>
-  </nav>
+    </nav>
 
-  <button>
-    <Icon name="mdi:brightness"></Icon>
-  </button>
+    <button>
+      <Icon name="mdi:brightness" />
+    </button>
+  </div>
 </header>
 
 <style>
@@ -28,13 +30,17 @@ import { Icon } from "astro-icon";
     position: sticky;
     top: 0;
 
-    display: flex;
-    flex-flow: row nowrap;
-    gap: var(--size-fluid-2);
-
-    align-items: center;
     padding-inline: var(--size-fluid-3);
     padding-block: var(--size-6);
+  }
+
+  .container {
+    position: relative;
+    overflow-x: hidden;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: var(--size-fluid-2);
   }
 
   h2 {
@@ -77,6 +83,7 @@ import { Icon } from "astro-icon";
   @media (max-width: 850px) {
     header {
       background-color: var(--background);
+      border-bottom: thin solid var(--text-alt);
     }
 
     label {
@@ -113,7 +120,7 @@ import { Icon } from "astro-icon";
 
     .indicator::before,
     .indicator::after {
-      content: '';
+      content: "";
       position: absolute;
 
       transition-property: background-color, transform, top, bottom;
@@ -136,24 +143,25 @@ import { Icon } from "astro-icon";
     }
 
     input:checked + label > .indicator::after {
-        bottom: 0;
-        transform: rotate(-135deg);
+      bottom: 0;
+      transform: rotate(-135deg);
     }
 
     input:checked + label > .indicator::before {
-        top: 0;
-        transform: rotate(135deg);
+      top: 0;
+      transform: rotate(135deg);
     }
 
     nav {
       position: absolute;
-      left: var(--size-8);
-      height: 100%;
+      left: var(--size-4);
 
       flex-wrap: nowrap;
 
       width: 0px;
-      transition: width .25s linear;
+      height: 100%;
+
+      transition: width 0.25s linear;
       overflow: hidden;
 
       background: var(--background);
