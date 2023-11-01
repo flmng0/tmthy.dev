@@ -2,42 +2,39 @@
 import { Icon } from "astro-icon";
 ---
 
-
 <header>
+  <input type="checkbox" id="navbar-open">
+  <label for="navbar-open">
+    <div class="indicator"></div>
+  </label>
+
   <h2>
     <a href="/"> tmthy.dev</a>
   </h2>
+
   <nav>
-    <a href="/blog">Blog</a>
-    <a href="/projects">Projects</a>
-    <a href="/resume">Resume</a>
+      <a href="/blog">Blog</a>
+      <a href="/projects">Projects</a>
+      <a href="/resume">Resume</a>
   </nav>
 
   <button>
     <Icon name="mdi:brightness"></Icon>
   </button>
-
-  <aside>
-    <a class="btn btn-icon btn-accent" href="https://github.com/flmng0">
-      <Icon name="mdi:github"></Icon>
-      <span>GitHub</span>
-    </a>
-
-    <a class="btn btn-icon btn-accent" href="https://www.linkedin.com/in/timothy-davis-bb749b209">
-      <Icon name="mdi:linkedin"></Icon>
-      <span>LinkedIn</span>
-    </a>
-  </aside>
 </header>
 
 <style>
   header {
+    position: sticky;
+    top: 0;
+
     display: flex;
     flex-flow: row nowrap;
     gap: var(--size-fluid-2);
 
     align-items: center;
     padding-inline: var(--size-fluid-3);
+    padding-block: var(--size-6);
   }
 
   h2 {
@@ -48,21 +45,20 @@ import { Icon } from "astro-icon";
   nav {
     display: flex;
     flex-flow: row norwap;
+    align-items: center;
     gap: var(--size-fluid-1);
 
     color: var(--text-alt);
 
     flex-grow: 1;
-  }
 
-  nav > a:hover {
-    color: var(--text);
-  }
-
-  aside {
     display: flex;
     flex-flow: row wrap;
-    gap: var(--size-2);
+    gap: var(--size-3);
+  }
+
+  nav a:hover {
+    color: var(--text);
   }
 
   button {
@@ -71,5 +67,108 @@ import { Icon } from "astro-icon";
 
   button:hover {
     color: var(--text);
+  }
+
+  input,
+  label {
+    display: none;
+  }
+
+  @media (max-width: 850px) {
+    header {
+      background-color: var(--background);
+    }
+
+    label {
+      --thickness: 2px;
+      --gap: 8px;
+
+      cursor: pointer;
+
+      display: grid;
+      place-items: center;
+      width: 1em;
+      height: 1em;
+    }
+
+    .indicator {
+      position: relative;
+
+      transition-duration: 100ms;
+      transition-property: background-color;
+      transition-delay: 200ms;
+    }
+
+    .indicator,
+    .indicator::before,
+    .indicator::after {
+      width: 100%;
+      height: var(--thickness);
+      border-radius: var(--thickness);
+
+      background-color: currentColor;
+
+      transition-timing-function: ease-in;
+    }
+
+    .indicator::before,
+    .indicator::after {
+      content: '';
+      position: absolute;
+
+      transition-property: background-color, transform, top, bottom;
+      transition-duration: 250ms;
+      transform-origin: center;
+      left: 0;
+    }
+
+    .indicator::before {
+      top: calc(-1 * var(--gap) + var(--thickness));
+    }
+
+    .indicator::after {
+      bottom: calc(-1 * var(--gap) + var(--thickness));
+    }
+
+    input:checked + label > .indicator {
+      background-color: transparent;
+      transition-delay: 0s;
+    }
+
+    input:checked + label > .indicator::after {
+        bottom: 0;
+        transform: rotate(-135deg);
+    }
+
+    input:checked + label > .indicator::before {
+        top: 0;
+        transform: rotate(135deg);
+    }
+
+    nav {
+      position: absolute;
+      left: var(--size-8);
+      height: 100%;
+
+      flex-wrap: nowrap;
+
+      width: 0px;
+      transition: width .25s linear;
+      overflow: hidden;
+
+      background: var(--background);
+    }
+
+    nav > :first-child {
+      padding-left: 1em;
+    }
+
+    h2 {
+      flex-grow: 1;
+    }
+
+    input:checked ~ nav {
+      width: 850px;
+    }
   }
 </style>

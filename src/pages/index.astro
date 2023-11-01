@@ -1,4 +1,6 @@
 ---
+import { Icon } from "astro-icon";
+
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 ---
@@ -18,6 +20,21 @@ import PostCard from "../components/PostCard.astro";
         I am a software developer, with a heart for web design, and an itch to
         learn more.
       </p>
+
+      <nav>
+        <a class="btn btn-icon btn-accent" href="https://github.com/flmng0">
+          <Icon name="mdi:github" />
+          <span>GitHub</span>
+        </a>
+
+        <a
+          class="btn btn-icon btn-accent"
+          href="https://www.linkedin.com/in/timothy-davis-bb749b209"
+        >
+          <Icon name="mdi:linkedin" />
+          <span>LinkedIn</span>
+        </a>
+      </nav>
     </main>
 
     <aside>
@@ -50,7 +67,11 @@ import PostCard from "../components/PostCard.astro";
     flex-basis: 35ch;
   }
 
-  main > h1 {
+  main nav {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: end;
+    gap: var(--size-2);
   }
 
   main > h1 > strong {
@@ -62,5 +83,6 @@ import PostCard from "../components/PostCard.astro";
     color: var(--text-alt);
     padding-inline-start: var(--size-4);
     font-size: var(--font-size-1);
+    margin-bottom: var(--size-2);
   }
 </style>
