@@ -1,17 +1,66 @@
 ---
-  import BaseLayout from "../layouts/BaseLayout.astro"
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
 ---
 
-<BaseLayout title="Home" description="Portfolio of Timothy Davis. Software developer, with a passion for web design, and a need to always be learning!">
-  <main>
-    <h1>
-      Hello, my name is
-      <br />
-      <strong class="text-accent">Timothy Davis</strong>
-    </h1>
+<BaseLayout
+  title="Home"
+  description="Portfolio of Timothy Davis. Software developer, with a passion for web design, and a need to always be learning!"
+>
+  <div class="container">
+    <main>
+      <h1>
+        Hello, my name is
+        <strong>Timothy Davis</strong>
+      </h1>
 
-    <p>
-      I am a software developer, with a heart for web design, and an itch to learn more.
-    </p>
-  </main>
+      <p>
+        I am a software developer, with a heart for web design, and an itch to
+        learn more.
+      </p>
+    </main>
+
+    <aside>
+      <figure>
+        <figcaption>Featured Post</figcaption>
+        <PostCard
+          title="Project Name"
+          description="Some descriptive text for the given project... hopefully nice and long."
+        />
+      </figure>
+    </aside>
+  </div>
 </BaseLayout>
+
+<style>
+  .container {
+    display: flex;
+    flex-flow: row wrap;
+    width: min(100%, var(--size-xl));
+    padding: var(--size-fluid-3);
+    margin: 0 auto;
+
+    align-items: center;
+    height: 100%;
+    gap: var(--size-fluid-5);
+  }
+
+  .container > * {
+    flex-grow: 1;
+    flex-basis: 35ch;
+  }
+
+  main > h1 {
+  }
+
+  main > h1 > strong {
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  figcaption {
+    color: var(--text-alt);
+    padding-inline-start: var(--size-4);
+    font-size: var(--font-size-1);
+  }
+</style>

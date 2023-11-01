@@ -1,0 +1,75 @@
+---
+import { Icon } from "astro-icon";
+---
+
+
+<header>
+  <h2>
+    <a href="/"> tmthy.dev</a>
+  </h2>
+  <nav>
+    <a href="/blog">Blog</a>
+    <a href="/projects">Projects</a>
+    <a href="/resume">Resume</a>
+  </nav>
+
+  <button>
+    <Icon name="mdi:brightness"></Icon>
+  </button>
+
+  <aside>
+    <a class="btn btn-icon btn-accent" href="https://github.com/flmng0">
+      <Icon name="mdi:github"></Icon>
+      <span>GitHub</span>
+    </a>
+
+    <a class="btn btn-icon btn-accent" href="https://www.linkedin.com/in/timothy-davis-bb749b209">
+      <Icon name="mdi:linkedin"></Icon>
+      <span>LinkedIn</span>
+    </a>
+  </aside>
+</header>
+
+<style>
+  header {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: var(--size-fluid-2);
+
+    align-items: center;
+    padding-inline: var(--size-fluid-3);
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    color: var(--accent);
+  }
+
+  nav {
+    display: flex;
+    flex-flow: row norwap;
+    gap: var(--size-fluid-1);
+
+    color: var(--text-alt);
+
+    flex-grow: 1;
+  }
+
+  nav > a:hover {
+    color: var(--text);
+  }
+
+  aside {
+    display: flex;
+    flex-flow: row wrap;
+    gap: var(--size-2);
+  }
+
+  button {
+    color: var(--text-alt);
+  }
+
+  button:hover {
+    color: var(--text);
+  }
+</style>

@@ -3,7 +3,8 @@
 :root {
   /* Fonts */
   --font-heading: Schibsted Grotesk, ui-serif, serif;
-  --font-body:Noto Sans, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, sans-serif;
+  --font-body: Noto Sans, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+    Cantarell, sans-serif;
   --font-display: "Lobster", display, cursive, serif;
 
   /* Colors */
@@ -62,8 +63,27 @@
   --accent: var(--accent-light);
 }
 
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
 body {
   font-family: var(--font-body);
+  background: var(--background);
+  color: var(--text);
+
+  margin: 0;
+  font-size: var(--font-size-fluid-1);
+
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 
 h1,
@@ -73,5 +93,64 @@ h4,
 h5,
 h6 {
   font-family: var(--font-heading);
+  font-weight: 500;
 }
 
+h1 {
+  font-size: var(--font-size-fluid-3);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+h2 {
+  font-size: var(--font-size-fluid-2);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+h3 {
+  line-height: 1.1;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+[astro-icon] {
+  width: 1.5em;
+}
+
+button {
+  all: unset;
+  color: inherit;
+  cursor: pointer;
+}
+
+.btn {
+  font-size: var(--font-size-1);
+  padding: var(--size-3) var(--size-5);
+  border-radius: var(--size-fluid-1);
+  vertical-align: center;
+}
+
+.btn-icon {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: var(--size-2);
+}
+
+.btn-primary {
+  color: var(--text);
+  background: var(--primary);
+}
+
+.btn-secondary {
+  color: var(--background);
+  background: var(--secondary);
+}
+
+.btn-accent {
+  color: var(--background);
+  background: var(--accent);
+}
