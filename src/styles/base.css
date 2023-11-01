@@ -21,6 +21,8 @@
   --primary-dark: #0d310c;
   --secondary-dark: #73d172;
   --accent-dark: #cf73d3;
+
+  --size-content: 65ch;
 }
 
 @media (prefers-color-scheme: dark) or (prefers-color-scheme: no-preference) {
