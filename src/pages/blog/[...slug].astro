@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("blog");
@@ -11,7 +13,85 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const data = entry.data;
+const { Content, headings } = await entry.render();
 ---
 
-<Content />
+<BaseLayout title={data.name + " | Blog"} description={data.brief}>
+  <header class="banner">
+    <Image src={data.cover} alt={data.coverAlt} />
+  </header>
+  <article>
+    <header>
+      <h1>{data.name}</h1>
+      <p>{data.brief}</p>
+
+      <nav class="toc">
+        <h2>Table of Contents</h2>
+        <!-- TODO: Add table of contents, and make it responsive (stack vertically on mobile) -->
+        <ul>
+          {
+            headings.map(({ slug, text }) => (
+              <li>
+                <a href={`#${slug}`}>{text}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <Content />
+    </main>
+  </article>
+</BaseLayout>
+
+<style>
+  article {
+    width: min(100%, var(--size-content));
+    padding: var(--size-fluid-2);
+    margin-inline: auto;
+  }
+
+  article > header {
+    border: thin solid var(--text-alt);
+    padding: var(--size-fluid-3);
+
+    background: var(--background);
+
+    transform: translateY(calc(-0.5 * var(--size-content-1)));
+  }
+
+  article > header > p {
+    color: var(--text-alt);
+  }
+
+  .toc {
+    padding-top: var(--size-fluid-3);
+    padding-inline: var(--size-fluid-2);
+  }
+
+  .toc ul {
+    list-style: none;
+    padding-left: unset;
+  }
+
+  .toc li:not(:last-child) {
+    margin-bottom: var(--size-fluid-2);
+  }
+
+  .toc a {
+    text-decoration: underline;
+  }
+
+  .toc a:hover {
+    color: var(--text-alt);
+  }
+
+  .banner img {
+    width: 100%;
+    height: var(--size-content-1);
+    object-fit: cover;
+  }
+</style>

@@ -1,0 +1,30 @@
+---
+import { getCollection } from "astro:content";
+import BlogCard from "../../components/BlogCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const blogEntries = await getCollection("blog");
+---
+
+<BaseLayout
+  title="Blog Posts"
+  description="Index of blog posts written by Timothy Davis"
+>
+  <h1>Blog Posts</h1>
+  <nav>
+    {blogEntries.map((entry) => <BlogCard post={entry} />)}
+  </nav>
+</BaseLayout>
+
+<style>
+  h1 {
+    margin-block: var(--size-8) var(--size-4);
+    text-align: center;
+  }
+  nav {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    padding-inline: var(--size-fluid-3);
+  }
+</style>
