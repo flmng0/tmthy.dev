@@ -17,12 +17,12 @@
     "@fontsource/noto-sans": "^5.0.17",
     "@fontsource/schibsted-grotesk": "^5.0.17",
     "astro": "^3.4.0",
+    "astro-icon": "^0.8.1",
     "open-props": "^1.6.10",
     "svelte": "^4.0.0",
     "typescript": "^5.2.2"
   },
   "devDependencies": {
-    "astro-icon": "^0.8.1",
     "prettier": "^3.0.3",
     "prettier-plugin-astro": "^0.12.1"
   }

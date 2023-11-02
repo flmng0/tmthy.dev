@@ -18,7 +18,7 @@ import ThemeSwap from "../components/ThemeSwap.svelte";
     <nav>
       <a href="/blog">Blog</a>
       <a href="/projects">Projects</a>
-      <a href="/resume">Resume</a>
+      <a href="/me">About Me</a>
     </nav>
 
     <ThemeSwap client:load>
@@ -68,6 +68,9 @@ import ThemeSwap from "../components/ThemeSwap.svelte";
     gap: var(--size-3);
   }
 
+  nav a {
+    color: currentColor;
+  }
   nav a:hover {
     color: var(--text);
   }

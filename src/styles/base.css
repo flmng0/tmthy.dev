@@ -121,7 +121,18 @@ h3 {
 
 a {
   text-decoration: none;
-  color: inherit;
+  color: var(--accent);
+}
+
+p {
+  line-height: 1.4;
+}
+
+figcaption {
+  text-align: center;
+  font-size: var(--font-size-2);
+  color: var(--text-alt);
+  padding-inline: var(--size-2);
 }
 
 [astro-icon] {
