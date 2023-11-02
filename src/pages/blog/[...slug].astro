@@ -1,0 +1,117 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { dateString } from "../../util";
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection("blog");
+
+  return blogEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const data = entry.data;
+const { Content, headings } = await entry.render();
+
+const published = dateString(data.date);
+---
+
+<BaseLayout title={data.name + " | Blog"} description={data.brief}>
+  <header class="banner">
+    <Image src={data.cover} alt={data.coverAlt} />
+  </header>
+  <article>
+    <header>
+      <h1>{data.name}</h1>
+      <p>{data.brief}</p>
+
+      <nav class="toc">
+        <h2>Table of Contents</h2>
+        <ul>
+          {
+            headings.map(({ slug, text }) => (
+              <li>
+                <a href={`#${slug}`}>{text}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <span class="published">
+        {published}
+      </span>
+    </header>
+
+    <main class="prose">
+      <Content />
+    </main>
+  </article>
+</BaseLayout>
+
+<style>
+  article {
+    width: min(100%, var(--size-content));
+    padding: var(--size-fluid-2);
+    margin-inline: auto;
+  }
+
+  article > header {
+    border: thin solid var(--text-alt);
+    padding: var(--size-fluid-3);
+
+    background: var(--background);
+
+    transform: translateY(calc(-0.5 * var(--size-content-1)));
+  }
+
+  article > header > p {
+    color: var(--text-alt);
+  }
+
+  article > main :global(a) {
+    color: var(--accent);
+  }
+  article > main :global(a):hover {
+    filter: saturate(50%) brightness(110%);
+  }
+
+  .published {
+    display: block;
+    text-align: right;
+    font-size: var(--font-size-2);
+    color: var(--text-alt);
+  }
+
+  .toc {
+    padding-top: var(--size-fluid-3);
+    padding-inline: var(--size-fluid-2);
+  }
+
+  .toc ul {
+    list-style: none;
+    padding-left: unset;
+  }
+
+  .toc li:not(:last-child) {
+    margin-bottom: var(--size-fluid-2);
+  }
+
+  .toc a {
+    text-decoration: underline;
+  }
+
+  .toc a:hover {
+    color: var(--text-alt);
+  }
+
+  .banner img {
+    width: 100%;
+    height: var(--size-content-1);
+    object-fit: cover;
+  }
+</style>

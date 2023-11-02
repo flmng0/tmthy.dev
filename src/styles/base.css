@@ -1,0 +1,180 @@
+@import "open-props/style";
+
+:root {
+  /* Fonts */
+  --font-heading: Schibsted Grotesk, ui-serif, serif;
+  --font-body: Noto Sans, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu,
+    Cantarell, sans-serif;
+  --font-display: "Lobster", display, cursive, serif;
+
+  /* Colors */
+  --text-light: #2a0923;
+  --text-alt-light: #6c5668;
+  --background-light: #fdf7fc;
+  --primary-light: #e29dd4;
+  --secondary-light: #910d77;
+  --accent-light: #277c9f;
+
+  --text-dark: #eef9ed;
+  --text-alt-dark: #a7b8a5;
+  --background-dark: #170c18;
+  --primary-dark: #0d310c;
+  --secondary-dark: #73d172;
+  --accent-dark: #cf73d3;
+
+  --size-content: 65ch;
+}
+
+@media (prefers-color-scheme: dark) or (prefers-color-scheme: no-preference) {
+  :root {
+    --text: var(--text-dark);
+    --text-alt: var(--text-alt-dark);
+    --background: var(--background-dark);
+    --primary: var(--primary-dark);
+    --secondary: var(--secondary-dark);
+    --accent: var(--accent-dark);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --text: var(--text-dark);
+    --text-alt: var(--text-alt-dark);
+    --background: var(--background-dark);
+    --primary: var(--primary-dark);
+    --secondary: var(--secondary-dark);
+    --accent: var(--accent-dark);
+  }
+}
+
+[data-theme="dark"] {
+  --text: var(--text-dark);
+  --text-alt: var(--text-alt-dark);
+  --background: var(--background-dark);
+  --primary: var(--primary-dark);
+  --secondary: var(--secondary-dark);
+  --accent: var(--accent-dark);
+}
+
+[data-theme="light"] {
+  --text: var(--text-light);
+  --text-alt: var(--text-alt-light);
+  --background: var(--background-light);
+  --primary: var(--primary-light);
+  --secondary: var(--secondary-light);
+  --accent: var(--accent-light);
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--background);
+  color: var(--text);
+
+  margin: 0;
+  font-size: var(--font-size-fluid-1);
+
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  margin: unset;
+}
+
+.prose :is(h1, h2, h3, h4, h5, h6) {
+  margin: revert;
+}
+
+h1 {
+  font-size: var(--font-size-fluid-3);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+h2 {
+  font-size: var(--font-size-fluid-2);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+h3 {
+  line-height: 1.1;
+}
+
+a {
+  text-decoration: none;
+  color: var(--accent);
+}
+
+p {
+  line-height: 1.4;
+}
+
+figcaption {
+  text-align: center;
+  font-size: var(--font-size-2);
+  color: var(--text-alt);
+  padding-inline: var(--size-2);
+}
+
+[astro-icon] {
+  width: 1.5em;
+}
+
+button {
+  all: unset;
+  color: inherit;
+  cursor: pointer;
+}
+
+.btn {
+  font-size: var(--font-size-1);
+  padding: var(--size-3) var(--size-5);
+  border-radius: var(--size-fluid-1);
+  vertical-align: center;
+}
+
+.btn:hover,
+.btn:focus,
+.btn:focus-within {
+  filter: saturate(50%) brightness(110%);
+}
+
+.btn-icon {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: var(--size-2);
+}
+
+.btn-primary {
+  color: var(--text);
+  background: var(--primary);
+}
+
+.btn-secondary {
+  color: var(--background);
+  background: var(--secondary);
+}
+
+.btn-accent {
+  color: var(--background);
+  background: var(--accent);
+}

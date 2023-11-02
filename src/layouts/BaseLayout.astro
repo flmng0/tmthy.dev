@@ -1,0 +1,55 @@
+---
+import "@fontsource/lobster/400.css";
+import "@fontsource/noto-sans/400.css";
+import "@fontsource/schibsted-grotesk/700.css";
+import "@fontsource/schibsted-grotesk/600.css";
+import "@fontsource/schibsted-grotesk/500.css";
+
+import "../styles/base.css";
+
+import BaseHeader from "../components/BaseHeader.astro";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+
+    <script is:inline>
+    const root = document.documentElement;
+
+    const getTheme = () => {
+      if (typeof localStorage !== "undefined") {
+        const stored = localStorage.getItem("theme");
+        if (stored) return stored;
+      }
+
+      const match = matchMedia("(prefers-color-scheme: dark)");
+      return match.matches === true ? "dark" : "light";
+    };
+
+    const initialTheme = getTheme();
+    root.setAttribute("data-theme", initialTheme);
+    </script>
+
+    <slot name="head" />
+
+    <title>{title} | tmthy.dev</title>
+  </head>
+  <body>
+    <BaseHeader />
+    <div>
+      <slot />
+    </div>
+  </body>
+</html>

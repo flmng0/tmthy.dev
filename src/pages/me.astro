@@ -1,0 +1,93 @@
+---
+import { Image } from "astro:assets";
+
+import { Icon } from "astro-icon";
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import excellence from "../assets/digital-excellence.jpg";
+
+const webTechs = [
+  { name: "Svelte", icon: "devicon:svelte", href: "https://svelte.dev/" },
+  { name: "Astro", icon: "devicon:astro", href: "https://astro.build" },
+  { name: "Go", icon: "devicon:go", href: "https://go.dev/" },
+  {
+    name: "Tailwind",
+    icon: "devicon:tailwindcss",
+    href: "https://tailwindcss.com/",
+  },
+];
+---
+
+<BaseLayout
+  title="About Me"
+  description="Information about Timothy Davis, a software developer in the Northern Territory of Australia"
+>
+  <main>
+    <h1>Who Am I?</h1>
+
+    <p>
+      I'm <a href="/">Timothy Davis</a>. I wasn't lying to you on the home page.
+      I'm a software developer from the Northern Territory, Australia.
+    </p>
+    <p>
+      Web development is my current passion when it comes to software, but I
+      have a long history of hobby game development; with specific interest in
+      graphics and rendering.
+    </p>
+    <figure class="excellence">
+      <Image
+        src={excellence}
+        alt="Timothy Davis with Damien Charles at the NT Digital Excellence Awards 2020"
+      />
+      <figcaption>
+        Me standing with Damien Charles (NEC Australia Regional Manager, NT),
+        receiving the STEM student of the year award in 2020.
+      </figcaption>
+    </figure>
+    <p>
+      Whilst I don't have much professional experience, specifically in software
+      development, I've always strived to learn what I can in my spare time.
+    </p>
+    <p>
+      At the moment, my favourite web technologies at the moment are {
+        webTechs.map(({ name, icon, href }, i) => {
+          const sep = i < webTechs.length - 2 ? ", " : " and ";
+          return (
+            <>
+              <a href={href}>{name}</a>
+              {i < webTechs.length - 1 && sep}
+            </>
+          );
+        })
+      }.
+    </p>
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    width: min(100%, var(--size-content));
+    margin: var(--size-8) auto;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  a {
+    color: var(--accent);
+  }
+
+  .excellence {
+    max-width: 50%;
+    float: right;
+  }
+
+  p {
+  }
+
+  .excellence img {
+    max-width: 100%;
+    height: auto;
+  }
+</style>

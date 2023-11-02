@@ -1,55 +1,29 @@
 {
-    "name": "tmthy.dev",
-    "version": "0.0.1",
-    "private": true,
-    "scripts": {
-        "dev": "vite dev",
-        "build": "vite build",
-        "preview": "vite preview",
-        "check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
-        "check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
-        "lint": "prettier --plugin-search-dir . --check . && eslint .",
-        "format": "prettier --plugin-search-dir . --write ."
-    },
-    "devDependencies": {
-        "@leafac/rehype-shiki": "^2.2.1",
-        "@stefanprobst/remark-extract-toc": "^2.2.0",
-        "@sveltejs/adapter-cloudflare": "^2.3.0",
-        "@sveltejs/kit": "^1.5.0",
-        "@tailwindcss/typography": "^0.5.9",
-        "@types/node": "^20.3.1",
-        "autoprefixer": "^10.4.14",
-        "eslint": "^8.28.0",
-        "eslint-config-prettier": "^8.5.0",
-        "eslint-plugin-prettier": "^4.2.1",
-        "eslint-plugin-svelte": "^2.26.0",
-        "iconify-icon": "^1.0.7",
-        "postcss": "^8.4.23",
-        "postcss-load-config": "^4.0.1",
-        "prettier": "^2.8.0",
-        "prettier-plugin-svelte": "^2.8.1",
-        "prettier-plugin-tailwindcss": "^0.3.0",
-        "rehype-katex": "^6.0.3",
-        "rehype-stringify": "^9.0.3",
-        "remark-frontmatter": "^4.0.1",
-        "remark-math": "^5.1.1",
-        "remark-parse": "^10.0.2",
-        "remark-rehype": "^10.1.0",
-        "remark-slug": "^7.0.1",
-        "remark-stringify": "^10.0.3",
-        "shiki": "^0.11.1",
-        "svelte": "^3.54.0",
-        "svelte-check": "^3.0.1",
-        "svelte-preprocess": "^5.0.3",
-        "tailwindcss": "^3.3.1",
-        "typescript": "^5.0.2",
-        "unified": "^10.1.2",
-        "vfile-matter": "^5.0.0",
-        "vite": "^4.3.0",
-        "zod": "^3.21.4"
-    },
-    "type": "module",
-    "dependencies": {
-        "katex": "^0.16.7"
-    }
+  "name": "",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.3.0",
+    "@astrojs/mdx": "^1.1.3",
+    "@astrojs/svelte": "^4.0.3",
+    "@fontsource/lobster": "^5.0.17",
+    "@fontsource/noto-sans": "^5.0.17",
+    "@fontsource/schibsted-grotesk": "^5.0.17",
+    "astro": "^3.4.0",
+    "astro-icon": "^0.8.1",
+    "open-props": "^1.6.10",
+    "svelte": "^4.0.0",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.3",
+    "prettier-plugin-astro": "^0.12.1"
+  }
 }
