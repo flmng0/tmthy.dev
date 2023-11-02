@@ -1,68 +1,14 @@
 ---
-import { Icon } from "astro-icon";
+import { getEntry } from "astro:content";
+import BlogCard from "./BlogCard.astro";
 
 interface Props {
-  title: string;
-  description: string;
-
-  image?: string;
+  slug: string;
 }
 
-const { title, description, image } = Astro.props;
+const { slug } = Astro.props;
+
+const post = (await getEntry("blog", slug))!;
 ---
 
-<article>
-  <div class="image">
-    {image && <img src={image} alt={ `Screenshot of ${title}` } />}
-  </div>
-
-  <aside>
-    <h3>{title}</h3>
-    <p>{description}</p>
-    <nav>
-      <a class="btn btn-icon btn-primary" href="#">
-        <Icon name="mdi:github"></Icon>
-        <span>Source</span>
-      </a>
-      <a class="btn btn-icon btn-secondary" href="#">
-        <Icon name="mdi:link"></Icon>
-        <span>Visit</span>
-      </a>
-    </nav>
-  </aside>
-</article>
-
-<style>
-article {
-  display: flex;
-  flex-flow: column nowrap;
-  gap: var(--size-6);
-
-  width: 100%;
-  height: 100%;
-  border-radius: var(--size-fluid-1);
-
-  outline: thin solid var(--text-alt);
-  padding: var(--size-fluid-2) var(--size-fluid-2);
-}
-
-aside {
-  display: flex;
-  flex-flow: column nowrap;
-}
-
-nav {
-  display: flex;
-  flex-flow: row wrap;
-  gap: var(--size-4);
-  align-self: end;
-}
-
-.image::before {
-  content: '';
-  display: block;
-  width: 100%;
-  min-height: var(--size-content-1);
-  background-image: linear-gradient(to bottom right, var(--accent), var(--primary));
-}
-</style>
+<BlogCard post={post} />
