@@ -2,62 +2,51 @@
   import { onMount } from "svelte";
   import { writable } from "svelte/store";
 
-  const THEME_KEY = "theme";
+  const theme = writable<string>(undefined);
 
-  function getMediaPreference() {
-    if (typeof window === "undefined") {
-      return "";
-    }
-
-    const stored = window.localStorage?.getItem(THEME_KEY);
-    if (stored !== null) {
-      return stored;
-    }
-
-    if (typeof document !== "undefined") {
-      const dataTheme = document.body.getAttribute("data-theme");
-      if (dataTheme !== null) {
-        return dataTheme;
-      }
-    }
-
-    const match = matchMedia("(prefers-color-scheme: dark)");
-    return match.matches === true ? "dark" : "light";
-  }
-
-  const initialState = getMediaPreference();
-  const theme = writable(initialState);
+  onMount(() => {
+    $theme = document.documentElement.getAttribute("data-theme")!;
+  });
 
   theme.subscribe((theme) => {
+    if (theme === undefined) return;
+
     if (typeof window !== "undefined") {
-      window.localStorage?.setItem(THEME_KEY, theme);
+      window.localStorage?.setItem("theme", theme);
     }
 
     if (typeof document !== "undefined") {
-      document.body.setAttribute("data-theme", theme);
-      document.cookie = "theme=" + theme;
+      document.documentElement.setAttribute("data-theme", theme);
     }
   });
 </script>
 
-<button
-  class="dark-toggle btn"
-  class:btn-secondary={$theme === "dark"}
-  on:click={() => ($theme = "dark")}
->
-  <slot name="dark" />
-</button>
-<button
-  class="light-toggle btn"
-  class:btn-secondary={$theme === "light"}
-  on:click={() => ($theme = "light")}
->
-  <slot name="light" />
-</button>
+<div class="theme-swapper">
+  <button
+    class="dark-toggle btn"
+    class:btn-secondary={$theme === "dark"}
+    on:click={() => ($theme = "dark")}
+  >
+    <slot name="dark" />
+  </button>
+  <button
+    class="light-toggle btn"
+    class:btn-secondary={$theme === "light"}
+    on:click={() => ($theme = "light")}
+  >
+    <slot name="light" />
+  </button>
+</div>
 
 <style>
-  button {
+  .theme-swapper > button {
     aspect-ratio: 1;
     padding: var(--size-3);
+  }
+
+  .theme-swapper {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: var(--size-1);
   }
 </style>

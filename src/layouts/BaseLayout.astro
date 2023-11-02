@@ -12,10 +12,9 @@ import BaseHeader from "../components/BaseHeader.astro";
 interface Props {
   title: string;
   description: string;
-  theme?: string;
 }
 
-const { title, description, theme } = Astro.props;
+const { title, description } = Astro.props;
 ---
 
 <html lang="en">
@@ -26,11 +25,28 @@ const { title, description, theme } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
 
+    <script is:inline>
+    const root = document.documentElement;
+
+    const getTheme = () => {
+      if (typeof localStorage !== "undefined") {
+        const stored = localStorage.getItem("theme");
+        if (stored) return stored;
+      }
+
+      const match = matchMedia("(prefers-color-scheme: dark)");
+      return match.matches === true ? "dark" : "light";
+    };
+
+    const initialTheme = getTheme();
+    root.setAttribute("data-theme", initialTheme);
+    </script>
+
     <slot name="head" />
 
     <title>{title} | tmthy.dev</title>
   </head>
-  <body data-theme={theme}>
+  <body>
     <BaseHeader />
     <div>
       <slot />

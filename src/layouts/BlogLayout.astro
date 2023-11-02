@@ -1,10 +1,5 @@
 ---
-import type { CollectionSchema } from "astro:content";
 import BaseLayout from "./BaseLayout.astro";
-
-interface Props {
-  frontmatter: CollectionSchema<"blog">;
-}
 
 const { frontmatter } = Astro.props;
 ---
