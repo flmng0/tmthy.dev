@@ -47,7 +47,7 @@
   }
 }
 
-.dark {
+[data-theme="dark"] {
   --text: var(--text-dark);
   --text-alt: var(--text-alt-dark);
   --background: var(--background-dark);
@@ -56,7 +56,7 @@
   --accent: var(--accent-dark);
 }
 
-.light {
+[data-theme="light"] {
   --text: var(--text-light);
   --text-alt: var(--text-alt-light);
   --background: var(--background-light);

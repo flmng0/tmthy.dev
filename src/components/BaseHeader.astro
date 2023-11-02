@@ -1,5 +1,7 @@
 ---
 import { Icon } from "astro-icon";
+
+import ThemeSwap from "../components/ThemeSwap.svelte";
 ---
 
 <header>
@@ -19,9 +21,10 @@ import { Icon } from "astro-icon";
       <a href="/resume">Resume</a>
     </nav>
 
-    <button>
-      <Icon name="mdi:brightness" />
-    </button>
+    <ThemeSwap client:load>
+      <i slot="light"><Icon name="carbon:sun" /></i>
+      <i slot="dark"><Icon name="carbon:moon" /></i>
+    </ThemeSwap>
   </div>
 </header>
 

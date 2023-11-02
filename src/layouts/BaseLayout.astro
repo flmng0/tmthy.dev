@@ -12,9 +12,10 @@ import BaseHeader from "../components/BaseHeader.astro";
 interface Props {
   title: string;
   description: string;
+  theme?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, theme } = Astro.props;
 ---
 
 <html lang="en">
@@ -29,7 +30,7 @@ const { title, description } = Astro.props;
 
     <title>{title} | tmthy.dev</title>
   </head>
-  <body>
+  <body data-theme={theme}>
     <BaseHeader />
     <div>
       <slot />
