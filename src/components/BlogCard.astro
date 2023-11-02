@@ -2,6 +2,8 @@
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 
+import { dateString } from "../util.ts";
+
 interface Props {
   post: CollectionEntry<"blog">;
 }
@@ -9,19 +11,15 @@ interface Props {
 const { post } = Astro.props;
 const data = post.data;
 
-const published = data.date.toLocaleDateString(
-  "en-au",
-  {
-    weekday: "long",
-    year: "numeric",
-    month: "short",
-    day: "numeric"
-  }
-)
+const published = dateString(data.date);
 ---
 
 <a href={`/blog/${post.slug}`} class="blog-card">
-  <Image src={data.cover} alt={data.coverAlt} widths={[540, 720, data.cover.width]}/>
+  <Image
+    src={data.cover}
+    alt={data.coverAlt}
+    widths={[540, 720, data.cover.width]}
+  />
 
   <div class="details">
     <h2>{data.name}</h2>

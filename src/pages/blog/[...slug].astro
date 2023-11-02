@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { dateString } from "../../util";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("blog");
@@ -15,6 +16,8 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const data = entry.data;
 const { Content, headings } = await entry.render();
+
+const published = dateString(data.date);
 ---
 
 <BaseLayout title={data.name + " | Blog"} description={data.brief}>
@@ -28,7 +31,6 @@ const { Content, headings } = await entry.render();
 
       <nav class="toc">
         <h2>Table of Contents</h2>
-        <!-- TODO: Add table of contents, and make it responsive (stack vertically on mobile) -->
         <ul>
           {
             headings.map(({ slug, text }) => (
@@ -39,9 +41,13 @@ const { Content, headings } = await entry.render();
           }
         </ul>
       </nav>
+
+      <span class="published">
+        {published}
+      </span>
     </header>
 
-    <main>
+    <main class="prose">
       <Content />
     </main>
   </article>
@@ -64,6 +70,20 @@ const { Content, headings } = await entry.render();
   }
 
   article > header > p {
+    color: var(--text-alt);
+  }
+
+  article > main :global(a) {
+    color: var(--accent);
+  }
+  article > main :global(a):hover {
+    filter: saturate(50%) brightness(110%);
+  }
+
+  .published {
+    display: block;
+    text-align: right;
+    font-size: var(--font-size-2);
     color: var(--text-alt);
   }
 
