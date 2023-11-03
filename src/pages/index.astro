@@ -1,0 +1,85 @@
+---
+import { Icon } from "astro-icon";
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FeaturedCard from "../components/FeaturedCard.astro";
+---
+
+<BaseLayout
+  title="Home"
+  description="Portfolio of Timothy Davis. Software developer, with a passion for web design, and a need to always be learning!"
+>
+  <div class="container">
+    <main>
+      <h1>
+        Hello, my name is
+        <strong>Timothy Davis</strong>
+      </h1>
+
+      <p>
+        I am a software developer, with a heart for web design, and an itch to
+        learn more.
+      </p>
+
+      <nav>
+        <a class="btn btn-icon btn-accent" href="https://github.com/flmng0">
+          <Icon name="mdi:github" />
+          <span>GitHub</span>
+        </a>
+
+        <a
+          class="btn btn-icon btn-accent"
+          href="https://www.linkedin.com/in/timothy-davis-bb749b209"
+        >
+          <Icon name="mdi:linkedin" />
+          <span>LinkedIn</span>
+        </a>
+      </nav>
+    </main>
+
+    <aside>
+      <figure>
+        <figcaption>Featured Post</figcaption>
+        <FeaturedCard slug="keyboard" />
+      </figure>
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  .container {
+    display: flex;
+    flex-flow: row wrap;
+    width: min(100%, var(--size-xl));
+    padding: var(--size-fluid-3);
+    margin: 0 auto;
+
+    align-items: center;
+    height: 100%;
+    gap: var(--size-fluid-5);
+  }
+
+  .container > * {
+    flex-grow: 1;
+    flex-basis: 35ch;
+  }
+
+  main nav {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: end;
+    gap: var(--size-2);
+  }
+
+  main > h1 > strong {
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  figcaption {
+    color: var(--text-alt);
+    padding-inline-start: var(--size-4);
+    font-size: var(--font-size-1);
+    margin-bottom: var(--size-2);
+  }
+</style>

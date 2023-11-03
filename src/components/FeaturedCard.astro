@@ -1,0 +1,14 @@
+---
+import { getEntry } from "astro:content";
+import BlogCard from "./BlogCard.astro";
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+
+const post = (await getEntry("blog", slug))!;
+---
+
+<BlogCard post={post} />
