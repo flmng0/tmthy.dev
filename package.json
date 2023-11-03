@@ -16,11 +16,14 @@
     "@fontsource/lobster": "^5.0.17",
     "@fontsource/noto-sans": "^5.0.17",
     "@fontsource/schibsted-grotesk": "^5.0.17",
+    "@iconify-json/carbon": "^1.1.21",
+    "@iconify-json/devicon": "^1.1.19",
+    "@iconify-json/mdi": "^1.1.55",
     "astro": "^3.4.0",
-    "astro-icon": "^0.8.1",
     "open-props": "^1.6.10",
     "svelte": "^4.0.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "unplugin-icons": "^0.17.3"
   },
   "devDependencies": {
     "prettier": "^3.0.3",

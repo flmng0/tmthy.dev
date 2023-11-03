@@ -1,18 +1,21 @@
 ---
 import { Image } from "astro:assets";
 
-import { Icon } from "astro-icon";
+import SvelteIcon from "~icons/devicon/svelte";
+import AstroIcon from "~icons/devicon/astro";
+import GoIcon from "~icons/devicon/go";
+import TailwindIcon from "~icons/devicon/tailwindcss";
 
 import BaseLayout from "../layouts/BaseLayout.astro";
 import excellence from "../assets/digital-excellence.jpg";
 
 const webTechs = [
-  { name: "Svelte", icon: "devicon:svelte", href: "https://svelte.dev/" },
-  { name: "Astro", icon: "devicon:astro", href: "https://astro.build" },
-  { name: "Go", icon: "devicon:go", href: "https://go.dev/" },
+  { name: "Svelte", icon: SvelteIcon, href: "https://svelte.dev/" },
+  { name: "Astro", icon: AstroIcon, href: "https://astro.build" },
+  { name: "Go", icon: GoIcon, href: "https://go.dev/" },
   {
     name: "Tailwind",
-    icon: "devicon:tailwindcss",
+    icon: TailwindIcon,
     href: "https://tailwindcss.com/",
   },
 ];
@@ -37,11 +40,11 @@ const webTechs = [
     <figure class="excellence">
       <Image
         src={excellence}
-        alt="Timothy Davis with Damien Charles at the NT Digital Excellence Awards 2020"
+        alt="Timothy Davis receiving the 2020 STEM Student of the year award from Damien Charles"
       />
       <figcaption>
-        Me standing with Damien Charles (NEC Australia Regional Manager, NT),
-        receiving the STEM student of the year award in 2020.
+        Me (right) receiving the 2020 STEM Student of the year award from Damien
+        Charles (NEC NT Regional Manager).
       </figcaption>
     </figure>
     <p>
@@ -50,11 +53,14 @@ const webTechs = [
     </p>
     <p>
       At the moment, my favourite web technologies at the moment are {
-        webTechs.map(({ name, icon, href }, i) => {
+        webTechs.map(({ name, icon: Icon, href }, i) => {
           const sep = i < webTechs.length - 2 ? ", " : " and ";
           return (
             <>
-              <a href={href}>{name}</a>
+              <a href={href} class="tech">
+                <Icon />
+                <span>{name}</span>
+              </a>
               {i < webTechs.length - 1 && sep}
             </>
           );
@@ -78,12 +84,21 @@ const webTechs = [
     color: var(--accent);
   }
 
+  .tech {
+    vertical-align: -0.15em;
+    display: inline-flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    padding: var(--size-1);
+    border-radius: var(--size-1);
+    gap: var(--size-1);
+    background-color: var(--background-light);
+    color: var(--accent-light);
+  }
+
   .excellence {
     max-width: 50%;
     float: right;
-  }
-
-  p {
   }
 
   .excellence img {

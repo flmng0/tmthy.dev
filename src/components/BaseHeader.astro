@@ -1,5 +1,6 @@
 ---
-import { Icon } from "astro-icon";
+import LightIcon from "~icons/carbon/sun";
+import DarkIcon from "~icons/carbon/moon";
 
 import ThemeSwap from "../components/ThemeSwap.svelte";
 ---
@@ -22,8 +23,8 @@ import ThemeSwap from "../components/ThemeSwap.svelte";
     </nav>
 
     <ThemeSwap client:load>
-      <i slot="light"><Icon name="carbon:sun" /></i>
-      <i slot="dark"><Icon name="carbon:moon" /></i>
+      <i slot="light"><LightIcon /></i>
+      <i slot="dark"><DarkIcon /></i>
     </ThemeSwap>
   </div>
 </header>
@@ -37,6 +38,10 @@ import ThemeSwap from "../components/ThemeSwap.svelte";
 
     padding-inline: var(--size-fluid-3);
     padding-block: var(--size-6);
+  }
+
+  i {
+    font-size: 1.5em;
   }
 
   .container {

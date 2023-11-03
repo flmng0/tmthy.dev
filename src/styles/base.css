@@ -124,6 +124,10 @@ a {
   color: var(--accent);
 }
 
+a:hover {
+  filter: saturate(50%) brightness(110%);
+}
+
 p {
   line-height: 1.4;
 }
@@ -133,10 +137,6 @@ figcaption {
   font-size: var(--font-size-2);
   color: var(--text-alt);
   padding-inline: var(--size-2);
-}
-
-[astro-icon] {
-  width: 1.5em;
 }
 
 button {
