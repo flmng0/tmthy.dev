@@ -1,0 +1,106 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import GitHubIcon from "~icons/mdi/github";
+import WriteupIcon from "~icons/mdi/fountain-pen-tip";
+import LinkIcon from "~icons/mdi/link";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+const data = project.data;
+---
+
+<div class="project-card">
+  <div class="details">
+    <h2>{data.name}</h2>
+    <p>{data.brief}</p>
+  </div>
+
+  <nav class="links">
+    {
+      data.writeup && (
+        <a class="btn btn-icon btn-secondary" href={data.writeup}>
+          <WriteupIcon />
+          <span>Read Post</span>
+        </a>
+      )
+    }
+
+    {
+      data.link && (
+        <a class="btn btn-icon btn-secondary" href={data.link}>
+          <LinkIcon />
+          <span>Visit</span>
+        </a>
+      )
+    }
+
+    {
+      data.source && (
+        <a class="btn btn-icon btn-primary" href={data.source}>
+          <GitHubIcon />
+          <span>Source</span>
+        </a>
+      )
+    }
+  </nav>
+</div>
+
+<style>
+  .project-card {
+    display: grid;
+
+    color: var(--text);
+
+    padding: var(--size-fluid-2);
+    border: thin solid var(--text-alt);
+    gap: var(--size-4);
+
+    width: min(100%, var(--size-content));
+  }
+
+  .project-card:hover {
+    filter: unset;
+  }
+
+  @media (max-width: 768px) {
+    .project-card {
+      grid-template-rows: auto auto;
+      grid-template-columns: auto;
+    }
+  }
+
+  .project-card > * {
+    flex-basis: var(--size-content-1);
+  }
+
+  .project-card > img {
+    max-width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+  .links {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    justify-self: end;
+    gap: var(--size-2);
+    margin: 0 0 0 auto;
+  }
+
+  .details {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .details > span {
+    color: var(--text-alt);
+    font-size: var(--font-size-2);
+    justify-self: end;
+  }
+</style>
