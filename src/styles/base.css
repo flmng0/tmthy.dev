@@ -124,6 +124,10 @@ a {
   color: var(--accent);
 }
 
+a:hover {
+  filter: saturate(50%) brightness(110%);
+}
+
 p {
   line-height: 1.4;
 }
@@ -135,8 +139,10 @@ figcaption {
   padding-inline: var(--size-2);
 }
 
-[astro-icon] {
-  width: 1.5em;
+.content {
+  width: min(100%, var(--size-content));
+  margin: var(--size-8) auto;
+  padding-inline: var(--size-fluid-3);
 }
 
 button {
