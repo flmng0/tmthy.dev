@@ -1,30 +1,48 @@
 ---
+import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+
+const entries = await getCollection("projects");
 ---
 
 <BaseLayout
   title="Projects"
   description="Index of projects created by Timothy Davis"
 >
-  <main>
-    <h1>Projects</h1>
+  <h1>Projects</h1>
+  <main class="content">
+    <p>Collection of projects made by yours truly.</p>
     <p>
-      Content coming soon! The biggest projects I do are for work, so I can't
-      show them off here.
+      Unfortunately, most of my big projects have been done as a part of work,
+      and can't be shown here. Listed below are the ones I can show.
     </p>
-    <p>
-      You're looking at one of my best ones right now though: this portfolio!
-    </p>
+
+    <ul>
+      {
+        entries.map((entry) => (
+          <li>
+            <ProjectCard project={entry} />
+          </li>
+        ))
+      }
+    </ul>
   </main>
 </BaseLayout>
 
 <style>
-  main {
-    margin: var(--size-8) auto;
-    width: min(100%, var(--size-content));
-  }
-
   h1 {
     text-align: center;
+  }
+
+  ul {
+    display: flex;
+    flex-flow: column;
+    align-items: stretch;
+    gap: var(--size-fluid-2);
+    margin-top: var(--size-8);
+    padding-left: unset;
+    list-style: none;
+    padding-inline: var(--size-fluid-3);
   }
 </style>

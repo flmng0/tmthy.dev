@@ -1,29 +1,27 @@
 import { z, defineCollection, type SchemaContext } from "astro:content";
 
-const common = ({ image }: SchemaContext) => ({
-  date: z.coerce.date(),
-  name: z.string(),
-  brief: z.string(),
-  cover: image(),
-  coverAlt: z.string(),
-});
-
 const blogCollection = defineCollection({
   type: "content",
-  schema: (ctx) =>
+  schema: ({ image }) =>
     z.object({
-      ...common(ctx),
+      name: z.string(),
+      brief: z.string(),
+      date: z.coerce.date(),
+      cover: image(),
+      coverAlt: z.string(),
     }),
 });
 
 const projectsCollection = defineCollection({
-  type: "content",
-  schema: (ctx) =>
-    z.object({
-      ...common(ctx),
-      data: z.any(),
-      type: z.enum(["sketch", "website", "misc"]),
-    }),
+  type: "data",
+  schema: z.object({
+    name: z.string(),
+    brief: z.string(),
+    thumbnail: z.string().optional(),
+    writeup: z.string().optional(),
+    source: z.string().optional(),
+    link: z.string().optional(),
+  }),
 });
 
 export const collections = {
