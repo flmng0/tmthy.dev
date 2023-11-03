@@ -18,7 +18,8 @@ const published = dateString(data.date);
   <Image
     src={data.cover}
     alt={data.coverAlt}
-    widths={[540, 720, data.cover.width]}
+    widths={[540, 720]}
+    sizes="(min-width: 768px) 50vw, 100vw"
   />
 
   <div class="details">

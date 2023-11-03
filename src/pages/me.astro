@@ -25,7 +25,7 @@ const webTechs = [
   title="About Me"
   description="Information about Timothy Davis, a software developer in the Northern Territory of Australia"
 >
-  <main>
+  <main class="content">
     <h1>Who Am I?</h1>
 
     <p>
@@ -41,6 +41,8 @@ const webTechs = [
       <Image
         src={excellence}
         alt="Timothy Davis receiving the 2020 STEM Student of the year award from Damien Charles"
+        widths={[540, 720, 900, excellence.width]}
+        sizes="(min-width: 768px) 50vw, 100vw"
       />
       <figcaption>
         Me (right) receiving the 2020 STEM Student of the year award from Damien
@@ -71,11 +73,6 @@ const webTechs = [
 </BaseLayout>
 
 <style>
-  main {
-    width: min(100%, var(--size-content));
-    margin: var(--size-8) auto;
-  }
-
   h1 {
     text-align: center;
   }
@@ -98,7 +95,15 @@ const webTechs = [
   }
 
   .excellence img {
-    max-width: 100%;
+    width: 100%;
     height: auto;
+  }
+
+  @media (max-width: 768px) {
+    .excellence {
+      float: unset;
+      max-width: 100%;
+      padding-inline: var(--size-fluid-1);
+    }
   }
 </style>

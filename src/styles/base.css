@@ -139,6 +139,12 @@ figcaption {
   padding-inline: var(--size-2);
 }
 
+.content {
+  width: min(100%, var(--size-content));
+  margin: var(--size-8) auto;
+  padding-inline: var(--size-fluid-3);
+}
+
 button {
   all: unset;
   color: inherit;

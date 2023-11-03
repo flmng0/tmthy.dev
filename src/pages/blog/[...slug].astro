@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { Picture } from "astro:assets";
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { dateString } from "../../util";
@@ -22,7 +22,11 @@ const published = dateString(data.date);
 
 <BaseLayout title={data.name + " | Blog"} description={data.brief}>
   <header class="banner">
-    <Image src={data.cover} alt={data.coverAlt} />
+    <Picture
+      src={data.cover}
+      alt={data.coverAlt}
+      widths={[540, 720, 1440, data.cover.width]}
+    />
   </header>
   <article>
     <header>
@@ -109,9 +113,19 @@ const published = dateString(data.date);
     color: var(--text-alt);
   }
 
-  .banner img {
+  .banner {
+    background-image: linear-gradient(
+      to bottom right,
+      var(--accent),
+      var(--primary)
+    );
     width: 100%;
     height: var(--size-content-1);
+  }
+
+  .banner img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
   }
 </style>
