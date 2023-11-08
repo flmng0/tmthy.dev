@@ -20,7 +20,11 @@
     "@iconify-json/devicon": "^1.1.19",
     "@iconify-json/mdi": "^1.1.55",
     "astro": "^3.4.0",
+    "katex": "^0.16.9",
     "open-props": "^1.6.10",
+    "rehype-katex": "^7.0.0",
+    "remark-math": "^5.1.1",
+    "sharp": "^0.32.6",
     "svelte": "^4.0.0",
     "typescript": "^5.2.2",
     "unplugin-icons": "^0.17.3"

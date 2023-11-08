@@ -1,0 +1,31 @@
+---
+import { getCollection } from "astro:content";
+import "katex/dist/katex.min.css";
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SketchCanvas from "../../components/SketchCanvas.svelte";
+
+export async function getStaticPaths() {
+  const sketchEntries = await getCollection("sketches");
+
+  return sketchEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const data = entry.data;
+
+const { Content } = await entry.render();
+---
+
+<BaseLayout title={data.name + " | Sketches"} description={data.brief}>
+  <header>
+    <SketchCanvas client:load slug={entry.slug} background={data.background} />
+  </header>
+
+  <main class="content">
+    <Content />
+  </main>
+</BaseLayout>
