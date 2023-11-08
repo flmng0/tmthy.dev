@@ -5,8 +5,18 @@ import Icons from "unplugin-icons/vite";
 import svelte from "@astrojs/svelte";
 import mdx from "@astrojs/mdx";
 
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+
 // https://astro.build/config
 export default defineConfig({
+  integrations: [
+    svelte(),
+    mdx({
+      remarkPlugins: [remarkMath],
+      rehypePlugins: [rehypeKatex],
+    }),
+  ],
   vite: {
     plugins: [
       Icons({
@@ -53,5 +63,4 @@ export default defineConfig({
       }),
     ],
   },
-  integrations: [svelte(), mdx()],
 });
