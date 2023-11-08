@@ -21,19 +21,50 @@ const { Content } = await entry.render();
 ---
 
 <BaseLayout title={data.name + " | Sketches"} description={data.brief}>
-  <header>
-    <SketchCanvas client:load slug={entry.slug} background={data.background} />
-  </header>
+  <article class="content">
+    <header>
+      <SketchCanvas
+        client:load
+        slug={entry.slug}
+        background={data.background}
+      />
+    </header>
 
-  <main class="content">
-    <Content />
-  </main>
+    <main>
+      <Content />
+    </main>
+  </article>
 </BaseLayout>
 
 <style>
+  article {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-inline: auto;
+    width: fit-content;
+    gap: var(--size-fluid-2);
+  }
+
   header {
+    align-self: start;
+    position: sticky;
+    top: var(--size-12);
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  main {
+    width: min(100%, var(--size-content));
+  }
+
+  @media (max-width: 1024px) {
+    article {
+      grid-template-columns: 1fr;
+    }
+
+    header {
+      position: revert;
+    }
   }
 </style>
