@@ -11,13 +11,15 @@
   --text-light: #2a0923;
   --text-alt-light: #6c5668;
   --background-light: #fdf7fc;
+  --background-alt-light: #fefbfe;
   --primary-light: #e29dd4;
   --secondary-light: #910d77;
   --accent-light: #277c9f;
 
   --text-dark: #eef9ed;
   --text-alt-dark: #a7b8a5;
-  --background-dark: #170c18;
+  --background-dark: #262226;
+  --background-alt-dark: #1b161b;
   --primary-dark: #0d310c;
   --secondary-dark: #73d172;
   --accent-dark: #cf73d3;
@@ -30,6 +32,7 @@
     --text: var(--text-dark);
     --text-alt: var(--text-alt-dark);
     --background: var(--background-dark);
+    --background-alt: var(--background-alt-dark);
     --primary: var(--primary-dark);
     --secondary: var(--secondary-dark);
     --accent: var(--accent-dark);
@@ -38,12 +41,13 @@
 
 @media (prefers-color-scheme: light) {
   :root {
-    --text: var(--text-dark);
-    --text-alt: var(--text-alt-dark);
-    --background: var(--background-dark);
-    --primary: var(--primary-dark);
-    --secondary: var(--secondary-dark);
-    --accent: var(--accent-dark);
+    --text: var(--text-light);
+    --text-alt: var(--text-alt-light);
+    --background: var(--background-light);
+    --background-alt: var(--background-alt-light);
+    --primary: var(--primary-light);
+    --secondary: var(--secondary-light);
+    --accent: var(--accent-light);
   }
 }
 
@@ -51,6 +55,7 @@
   --text: var(--text-dark);
   --text-alt: var(--text-alt-dark);
   --background: var(--background-dark);
+  --background-alt: var(--background-alt-dark);
   --primary: var(--primary-dark);
   --secondary: var(--secondary-dark);
   --accent: var(--accent-dark);
@@ -60,6 +65,7 @@
   --text: var(--text-light);
   --text-alt: var(--text-alt-light);
   --background: var(--background-light);
+  --background-alt: var(--background-alt-light);
   --primary: var(--primary-light);
   --secondary: var(--secondary-light);
   --accent: var(--accent-light);
@@ -73,7 +79,19 @@
 
 html,
 body {
-  height: 100%;
+  height: auto;
+  min-height: 100vh;
+  min-height: 100lvh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-size: cover;
+  shape-margin: .75rem;
+  font-style: italic;
 }
 
 body {
