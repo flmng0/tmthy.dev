@@ -30,3 +30,11 @@
 </script>
 
 <canvas width={768} height={768} style:background bind:this={canvas} />
+
+<style>
+  canvas {
+    object-fit: contain;
+    max-width: 100%;
+    height: auto;
+  }
+</style>
