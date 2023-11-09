@@ -16,6 +16,8 @@
   --secondary-light: #910d77;
   --accent-light: #277c9f;
 
+  /* --shadow-light:  */
+
   --text-dark: #eef9ed;
   --text-alt-dark: #a7b8a5;
   --background-dark: #262226;
@@ -118,7 +120,12 @@ h6 {
 }
 
 .prose :is(h1, h2, h3, h4, h5, h6) {
-  margin: revert;
+  margin-block-start: 1.2em;
+}
+
+.prose p {
+  line-height: 2em;
+  margin-block-end: 1.8em;
 }
 
 h1 {
