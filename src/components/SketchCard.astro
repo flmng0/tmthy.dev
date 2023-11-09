@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  sketch: CollectionEntry<"sketches">;
+}
+
+const { sketch } = Astro.props;
+const data = sketch.data;
+---
+
+<a href={`/sketches/${sketch.slug}`} class="sketch-card">
+  <!-- TODO: Implement live preview for this -->
+
+  <div class="details">
+    <h2>{data.name}</h2>
+    <p>{data.brief}</p>
+  </div>
+</a>
+
+<style>
+  .sketch-card {
+    color: var(--text);
+    background-color: var(--background-alt);
+
+    padding: var(--size-fluid-2);
+    border: thin solid var(--text-alt);
+    gap: var(--size-4);
+
+    width: min(100%, var(--size-content));
+  }
+
+  .sketch-card:hover {
+    filter: unset;
+  }
+</style>

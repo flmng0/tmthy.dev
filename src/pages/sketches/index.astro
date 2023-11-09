@@ -1,10 +1,37 @@
 ---
+import { getCollection } from "astro:content";
+
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import SketchCard from "../../components/SketchCard.astro";
+
+const sketchEntries = await getCollection("sketches");
 ---
 
 <BaseLayout
   title="Sketches"
   description="Index of creative coding projects created by Timothy Davis"
 >
-  <h1>TODO</h1>
+  <h1>Sketches</h1>
+
+  <nav>
+    {sketchEntries.map((entry) => <SketchCard sketch={entry} />)}
+  </nav>
 </BaseLayout>
+
+<style>
+  h1 {
+    margin-block: var(--size-8) var(--size-4);
+    text-align: center;
+  }
+  nav {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(100%, var(--size-content-1)), 1fr)
+    );
+    padding-inline: var(--size-fluid-3);
+
+    margin-inline: auto;
+    gap: var(--size-fluid-2);
+  }
+</style>
