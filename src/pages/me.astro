@@ -26,55 +26,238 @@ const webTechs = [
   description="Information about Timothy Davis, a software developer in the Northern Territory of Australia"
 >
   <main class="content">
-    <h1>Who Am I?</h1>
+    <section id="who-i-am">
+      <h1>Who Am I?</h1>
 
-    <p>
-      I'm <a href="/">Timothy Davis</a>. I wasn't lying to you on the home page.
-      I'm a software developer from the Northern Territory, Australia.
-    </p>
-    <p>
-      Web development is my current passion when it comes to software, but I
-      have a long history of hobby game development; with specific interest in
-      graphics and rendering.
-    </p>
-    <figure class="excellence">
-      <Image
-        src={excellence}
-        alt="Timothy Davis receiving the 2020 STEM Student of the year award from Damien Charles"
-        widths={[540, 720, 900, excellence.width]}
-        sizes="(min-width: 768px) 50vw, 100vw"
-      />
-      <figcaption>
-        Me (right) receiving the 2020 STEM Student of the year award from Damien
-        Charles (NEC NT Regional Manager).
-      </figcaption>
-    </figure>
-    <p>
-      Whilst I don't have much professional experience, specifically in software
-      development, I've always strived to learn what I can in my spare time.
-    </p>
-    <p>
-      At the moment, my favourite web technologies at the moment are {
-        webTechs.map(({ name, icon: Icon, href }, i) => {
-          const sep = i < webTechs.length - 2 ? ", " : " and ";
-          return (
-            <>
-              <a href={href} class="tech">
-                <Icon />
-                <span>{name}</span>
-              </a>
-              {i < webTechs.length - 1 && sep}
-            </>
-          );
-        })
-      }.
-    </p>
+      <p>
+        I'm <a href="/">Timothy Davis</a>. I wasn't lying to you on the home
+        page. I'm a software developer from the Northern Territory, Australia.
+      </p>
+      <p>
+        Web development is my current passion when it comes to software, but I
+        have a long history of hobby game development; with specific interest in
+        graphics and rendering.
+      </p>
+      <figure class="excellence">
+        <Image
+          src={excellence}
+          alt="Timothy Davis receiving the 2020 STEM Student of the year award from Damien Charles"
+          widths={[540, 720, 900, excellence.width]}
+          sizes="(min-width: 768px) 50vw, 100vw"
+        />
+        <figcaption>
+          Me (right) receiving the 2020 STEM Student of the year award from
+          Damien Charles (NEC NT Regional Manager).
+        </figcaption>
+      </figure>
+      <p>
+        Whilst I don't have much professional experience, specifically in
+        software development, I've always strived to learn what I can in my
+        spare time.
+      </p>
+      <p>
+        At the moment, my favourite web technologies at the moment are {
+          webTechs.map(({ name, icon: Icon, href }, i) => {
+            const sep = i < webTechs.length - 2 ? ", " : " and ";
+            return (
+              <>
+                <a href={href} class="tech">
+                  <Icon />
+                  <span>{name}</span>
+                </a>
+                {i < webTechs.length - 1 && sep}
+              </>
+            );
+          })
+        }.
+      </p>
+    </section>
+
+    <section id="what-ive-done">
+      <h2>Where Are My Qualifications?</h2>
+
+      <p>That's a great question. I have an easy answer and a hard answer.</p>
+
+      <p>
+        The easy answer is that there isn't much. I did a Certificate III in
+        Information Technology in 2021, and have been working full-time ever
+        since.
+      </p>
+
+      <p>The hard answer has a story.</p>
+    </section>
+
+    <section id="short-history">
+      <h2>Too Long; Didn't Read</h2>
+
+      <p>
+        To give you the short version: I have been actively honing my skills in
+        software development for over twelve years at this point, and want to
+        make the leap to work professionally.
+      </p>
+
+      <p>
+        From game development, to web design, to fat clients, and now back to
+        the web (this time including back-end), I have had a long journey of
+        programming.
+      </p>
+
+      <p>
+        Even after all this time, I still am very passionate about the field.
+      </p>
+
+      <p>
+        If you, the reader, are hiring a software developer, maybe consider this
+        motor-mouth for your next round of hiring.
+      </p>
+    </section>
+
+    <section id="history">
+      <h2>The Hard Answer (History of Learning)</h2>
+
+      <p>
+        Exposure to technology began at a young age. My mum worked in the air
+        force, herself working in Information and Technology. She was frequently
+        asked to go overseas for work trips.
+      </p>
+
+      <p>
+        After going on one of these work trips, she returned with two sets of
+        <a href="https://www.lego.com/en-au/themes/mindstorms"
+          >Lego Mindstorms</a
+        >. I was around 9 years old at the time. It didn't take much
+        encouragement for me to start tinkering with these for the next month or
+        two.
+      </p>
+
+      <p>
+        By the time that I'd exhausted all of the tutorials that came with the
+        Lego Mindstorms, I was hooked. I loved that I could drag and drop
+        something on the screen, and see it come to fruition in from of my eyes.
+        I was hooked.
+      </p>
+
+      <p>
+        I was still a child of course, so I played a lot of video games. I
+        wanted to know, could I maybe make my own game like this? That's when my
+        teachers introduced me to <a href="https://scratch.mit.edu">Scratch</a>.
+      </p>
+
+      <p>
+        After a bit of playing around in Scratch, I found myself dissatisfied. I
+        wanted to be able to do more. I took to YouTube, I was going to find
+        out.
+      </p>
+
+      <p>
+        Through YouTube I discovered, and completed, <a
+          href="https://youtube.com/playlist?list=PL-2t7SM0vDfcIedoMIghzzgQqZq45jYGv"
+          >ForeignGuyMike's Java 2D Platformer Tutorial</a
+        >.
+      </p>
+
+      <p>
+        I thought I figured it out. I knew exactly what I wanted to do with my
+        future! "I want to make games!" I thought to myself. What I didn't
+        realise at the time, is that I just liked making... stuff.
+      </p>
+
+      <p>
+        I kept on making my own little games for a while. I got <em>really</em>
+         good at making platformers. What sucked though, was that I couldn't
+        show my friends any of my progress. I wanted to know if there was a
+        better way, so I kept searching for more platforming tutorials.
+      </p>
+
+      <p>
+        In this search, I discovered <a href="https://eloquentjavascript.net/"
+          >Eloquent JavaScript</a
+        >. More substantially, I discovered web development.
+      </p>
+
+      <p>
+        When I was around 11, I figured out that I do just like making things. I
+        wanted to release my creativity into the world, so I made a portfolio.
+      </p>
+
+      <p>
+        The portfolio I made was with just HTML and CSS. It was just some static
+        files on my laptop at home. I had no idea what I was doing. That
+        realisation hurt. I didn't know what a server was, or content
+        transformations, or frontend frameworks. (See <a
+          href="https://en.wikipedia.org/wiki/Dunning%E2%80%93Kruger_effect"
+          >the Dunning Kruger Effect</a
+        >)
+      </p>
+
+      <p>
+        Slightly disheartened, I took a break. It wasn't until there was a
+        talent competition in my home-room class, about six months later, that I
+        started to get back into it.
+      </p>
+
+      <p>
+        I had never done a talent contest before. I thought hard about what I
+        was good at, and at some point I remembered game development. Games are
+        fun, so I'll make one of those.
+      </p>
+
+      <p>
+        After about a week, I completed a <a href="https://www.crossyroad.com/"
+          >Crossy Roads</a
+        > clone in Scratch. I didn't know it at the time, but that was the spark
+        which ignited the bonfire of passion for game development again.
+      </p>
+
+      <p>
+        Due to that silly little Crossy Roads clone, I was suddenly motivated to
+        learn about game development again. I spent easily the next 6 years
+        solely focused on this.
+      </p>
+
+      <p>
+        I am still passionate about game development, but I have my heart in new
+        places now. I won't extend this ramble any further, but I was back to
+        enjoying Web Design.
+      </p>
+
+      <p>
+        During the last years of my school, I continued to develop fat clients
+        and websites, trying to learn everything I could.
+      </p>
+
+      <p>
+        Over the past twelve years, I learned everything I could about
+        development, and I got a job working in Tech Support in the meantime.
+      </p>
+
+      <p>
+        This story is incomplete, and I have many years of my passion-bonfire to
+        burn still. Whatever happens from here on out, will probably become some
+        post on this website.
+      </p>
+
+      <p>
+        Thanks for reading my rambling. If you're hiring, maybe consider this
+        motor-mouth for your next software developer?
+      </p>
+    </section>
   </main>
 </BaseLayout>
 
 <style>
-  h1 {
+  h1,
+  h2 {
     text-align: center;
+    margin: revert;
+  }
+
+  h2 {
+    clear: both;
+  }
+
+  hr {
+    color: var(--text-alt);
   }
 
   a {

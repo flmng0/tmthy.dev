@@ -1,6 +1,6 @@
-import { z, defineCollection, type SchemaContext } from "astro:content";
+import { z, defineCollection } from "astro:content";
 
-const blogCollection = defineCollection({
+const blog = defineCollection({
   type: "content",
   schema: ({ image }) =>
     z.object({
@@ -12,7 +12,7 @@ const blogCollection = defineCollection({
     }),
 });
 
-const projectsCollection = defineCollection({
+const projects = defineCollection({
   type: "data",
   schema: z.object({
     name: z.string(),
@@ -24,7 +24,18 @@ const projectsCollection = defineCollection({
   }),
 });
 
+const sketches = defineCollection({
+  type: "content",
+  schema: z.object({
+    name: z.string(),
+    brief: z.string(),
+    date: z.coerce.date(),
+    background: z.string().optional(),
+  }),
+});
+
 export const collections = {
-  blog: blogCollection,
-  projects: projectsCollection,
+  blog,
+  projects,
+  sketches,
 };
