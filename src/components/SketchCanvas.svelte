@@ -34,7 +34,7 @@
 <style>
   canvas {
     object-fit: contain;
-    max-width: 100%;
+    width: 100%;
     height: auto;
   }
 </style>
