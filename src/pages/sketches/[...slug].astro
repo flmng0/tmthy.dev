@@ -22,9 +22,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const data = entry.data;
 
-const sketchPath = new URL(`../../sketches/${entry.slug}.ts`, import.meta.url)
-  .pathname;
-const sketchCode = await readFile(sketchPath, "utf-8");
+const sketchCode = await import(`../../sketches/${entry.slug}.ts?raw`).then(s => s.default);
 
 const { Content } = await entry.render();
 ---
@@ -63,6 +61,7 @@ const { Content } = await entry.render();
     grid-template-columns: 1fr 1fr;
     margin-inline: auto;
     width: fit-content;
+    max-width: calc(2 * var(--size-content));
     gap: var(--size-fluid-2);
   }
 
@@ -70,6 +69,7 @@ const { Content } = await entry.render();
     margin: 0;
     padding: var(--size-fluid-2);
     border-radius: var(--radius-3);
+    width: min(80ch, 100%);
   }
 
   header {

@@ -19,12 +19,12 @@
 
 <style>
   dialog {
-    overflow: auto;
     z-index: 9999;
-    padding: 0;
+    /* margin: var(--size-fluid-1); */
     background: transparent;
     border: none;
-    max-width: 80ch;
+    width: fit-content;
+    max-width: 100%;
   }
 
   dialog > div {
