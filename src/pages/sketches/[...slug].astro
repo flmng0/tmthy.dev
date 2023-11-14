@@ -2,8 +2,12 @@
 import { getCollection } from "astro:content";
 import "katex/dist/katex.min.css";
 
+import CloseIcon from "~icons/mdi/close";
+
+import { Code } from "astro:components";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SketchCanvas from "../../components/SketchCanvas.svelte";
+import Modal from "../../components/Modal.svelte";
 
 export async function getStaticPaths() {
   const sketchEntries = await getCollection("sketches");
@@ -17,20 +21,31 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const data = entry.data;
 
+const sketchCode = await import(`../../sketches/${entry.slug}.ts?raw`).then(
+  (s) => s.default,
+);
+
 const { Content } = await entry.render();
 ---
 
 <BaseLayout title={data.name + " | Sketches"} description={data.brief}>
-  <article class="content">
+  <Modal id="showSketch" client:load>
+    <Code code={sketchCode} lang="ts" />
+    <CloseIcon slot="close-button" />
+  </Modal>
+
+  <article>
     <header>
       <SketchCanvas
         client:load
         slug={entry.slug}
         background={data.background || null}
       />
+
+      <button onclick="window.showSketch.showModal()">Show Source Code</button>
     </header>
 
-    <main>
+    <main class="content">
       <hgroup>
         <h1>{data.name}</h1>
         <p>{data.brief}</p>
@@ -45,26 +60,37 @@ const { Content } = await entry.render();
   article {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    align-items: center;
     margin-inline: auto;
-    width: fit-content;
     gap: var(--size-fluid-2);
+
+    max-width: 120ch;
+  }
+
+  :global(#showSketch pre) {
+    margin: 0;
+    padding: var(--size-fluid-2);
+    border-radius: var(--radius-3);
+    width: min(80ch, 100%);
   }
 
   header {
     align-self: start;
     position: sticky;
     top: var(--size-12);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 100%;
+    padding-block: var(--size-8);
+  }
+
+  header > button {
+    background-color: var(--background-alt);
+    padding-block: var(--size-fluid-2);
+    text-align: center;
+    width: 100%;
   }
 
   hgroup {
     margin-block-end: var(--size-fluid-6);
-  }
-
-  main {
-    width: min(100%, var(--size-content));
   }
 
   main :global(pre) {
@@ -79,6 +105,7 @@ const { Content } = await entry.render();
 
     header {
       position: revert;
+      padding-inline: var(--size-fluid-3);
     }
   }
 </style>

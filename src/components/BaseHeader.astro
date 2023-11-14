@@ -5,7 +5,7 @@ import DarkIcon from "~icons/carbon/moon";
 import ThemeSwap from "../components/ThemeSwap.svelte";
 ---
 
-<header>
+<header id="siteHeader">
   <div class="container">
     <input type="checkbox" id="navbar-open" />
     <label for="navbar-open">
@@ -30,19 +30,45 @@ import ThemeSwap from "../components/ThemeSwap.svelte";
   </div>
 </header>
 
+<script>
+  const siteHeader = document.getElementById("siteHeader")!;
+  const SCROLL_MARGIN = 50;
+
+  function checkScroll() {
+    if (window.scrollY > SCROLL_MARGIN) {
+      siteHeader.classList.add("scrolled");
+    } else {
+      siteHeader.classList.remove("scrolled");
+    }
+  }
+
+  window.addEventListener("scroll", checkScroll);
+  window.addEventListener("load", checkScroll);
+</script>
+
 <style>
   header {
     position: sticky;
-    background: var(--background);
     top: 0;
     z-index: 999;
 
+    background-color: var(--background);
     padding-inline: var(--size-fluid-3);
-    padding-block: var(--size-6);
+    padding-block: var(--size-4);
+
+    --_shadow: rgb(var(--shadow-rgb) / 0);
+    box-shadow: 0 -2px 8px 1px var(--_shadow);
+
+    transition: box-shadow 50ms ease-in;
+  }
+
+  header.scrolled {
+    --_shadow: var(--shadow);
   }
 
   i {
     font-size: 1.5em;
+    aspect-ratio: 1;
   }
 
   .container {
@@ -52,6 +78,8 @@ import ThemeSwap from "../components/ThemeSwap.svelte";
     flex-flow: row nowrap;
     align-items: center;
     gap: var(--size-fluid-2);
+    max-width: var(--size-content);
+    margin-inline: auto;
   }
 
   h2 {
@@ -95,11 +123,6 @@ import ThemeSwap from "../components/ThemeSwap.svelte";
   }
 
   @media (max-width: 850px) {
-    header {
-      background-color: var(--background);
-      border-bottom: thin solid var(--text-alt);
-    }
-
     label {
       --thickness: 2px;
       --gap: 8px;

@@ -22,18 +22,10 @@
 </script>
 
 <div class="theme-swapper">
-  <button
-    class="dark-toggle btn"
-    class:btn-secondary={$theme === "dark"}
-    on:click={() => ($theme = "dark")}
-  >
+  <button class="dark-toggle btn" on:click={() => ($theme = "dark")}>
     <slot name="dark" />
   </button>
-  <button
-    class="light-toggle btn"
-    class:btn-secondary={$theme === "light"}
-    on:click={() => ($theme = "light")}
-  >
+  <button class="light-toggle btn" on:click={() => ($theme = "light")}>
     <slot name="light" />
   </button>
 </div>
@@ -48,5 +40,11 @@
     display: flex;
     flex-flow: row nowrap;
     gap: var(--size-1);
+  }
+
+  :global([data-theme="dark"]) .dark-toggle,
+  :global([data-theme="light"]) .light-toggle {
+    color: var(--background);
+    background: var(--secondary);
   }
 </style>
