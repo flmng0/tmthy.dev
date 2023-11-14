@@ -8,7 +8,7 @@
 </script>
 
 <dialog bind:this={modalElem} {id}>
-  <div on:click={close} aria-hidden="true" />
+  <div class="backdrop" on:click={close} aria-hidden="true" />
 
   <slot />
 
@@ -20,14 +20,22 @@
 <style>
   dialog {
     z-index: 9999;
-    /* margin: var(--size-fluid-1); */
     background: transparent;
     border: none;
-    width: fit-content;
-    max-width: 100%;
+    min-width: 100vw;
+    min-width: 100lvw;
+    max-height: 100%;
+    margin: 0;
+    padding: var(--size-4);
   }
 
-  dialog > div {
+  dialog[open] {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+  }
+
+  .backdrop {
     position: fixed;
     inset: 0;
     z-index: -10;
@@ -38,8 +46,12 @@
 
   dialog > button {
     position: fixed;
-    right: var(--size-4);
-    top: var(--size-4);
+    right: var(--size-6);
+    top: var(--size-6);
+
+    aspect-ratio: 1;
+    background-color: var(--background-dark);
+    padding: var(--size-2);
 
     z-index: 20;
 

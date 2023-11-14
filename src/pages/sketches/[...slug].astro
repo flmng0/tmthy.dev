@@ -22,18 +22,20 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const data = entry.data;
 
-const sketchCode = await import(`../../sketches/${entry.slug}.ts?raw`).then(s => s.default);
+const sketchCode = await import(`../../sketches/${entry.slug}.ts?raw`).then(
+  (s) => s.default,
+);
 
 const { Content } = await entry.render();
 ---
 
 <BaseLayout title={data.name + " | Sketches"} description={data.brief}>
-  <article class="content">
-    <Modal id="showSketch" client:load>
-      <Code code={sketchCode} lang="ts" />
-      <CloseIcon slot="close-button" />
-    </Modal>
+  <Modal id="showSketch" client:load>
+    <Code code={sketchCode} lang="ts" />
+    <CloseIcon slot="close-button" />
+  </Modal>
 
+  <article>
     <header>
       <SketchCanvas
         client:load
@@ -44,7 +46,7 @@ const { Content } = await entry.render();
       <button onclick="window.showSketch.showModal()">Show Source Code</button>
     </header>
 
-    <main>
+    <main class="content">
       <hgroup>
         <h1>{data.name}</h1>
         <p>{data.brief}</p>
@@ -59,10 +61,11 @@ const { Content } = await entry.render();
   article {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    align-items: center;
     margin-inline: auto;
-    width: fit-content;
-    max-width: calc(2 * var(--size-content));
     gap: var(--size-fluid-2);
+
+    max-width: 120ch;
   }
 
   :global(#showSketch pre) {
@@ -77,24 +80,18 @@ const { Content } = await entry.render();
     position: sticky;
     top: var(--size-12);
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    padding-block: var(--size-8);
   }
 
   header > button {
     background-color: var(--background-alt);
-    width: 100%;
     padding-block: var(--size-fluid-2);
     text-align: center;
+    width: 100%;
   }
 
   hgroup {
     margin-block-end: var(--size-fluid-6);
-  }
-
-  main {
-    width: min(100%, var(--size-content));
   }
 
   main :global(pre) {
@@ -109,6 +106,7 @@ const { Content } = await entry.render();
 
     header {
       position: revert;
+      padding-inline: var(--size-fluid-3);
     }
   }
 </style>
