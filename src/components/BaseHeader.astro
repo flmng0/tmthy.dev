@@ -34,13 +34,16 @@ import ThemeSwap from "../components/ThemeSwap.svelte";
   const siteHeader = document.getElementById("siteHeader")!;
   const SCROLL_MARGIN = 50;
 
-  window.addEventListener("scroll", () => {
+  function checkScroll() {
     if (window.scrollY > SCROLL_MARGIN) {
       siteHeader.classList.add("scrolled");
     } else {
       siteHeader.classList.remove("scrolled");
     }
-  });
+  }
+
+  window.addEventListener("scroll", checkScroll);
+  window.addEventListener("load", checkScroll);
 </script>
 
 <style>
@@ -49,28 +52,23 @@ import ThemeSwap from "../components/ThemeSwap.svelte";
     top: 0;
     z-index: 999;
 
+    background-color: var(--background);
     padding-inline: var(--size-fluid-3);
-    padding-block: var(--size-6);
-  }
-  header::before {
-    content: "";
-    transition: opacity 50ms ease-in;
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    background-image: linear-gradient(
-      to bottom,
-      rgb(0 0 0 / 0.7),
-      rgb(0 0 0 / 0)
-    );
+    padding-block: var(--size-4);
+
+    --_shadow: rgb(var(--shadow-rgb) / 0);
+    box-shadow: 0 -2px 8px 1px var(--_shadow);
+
+    transition: box-shadow 50ms ease-in;
   }
 
-  header.scrolled::before {
-    opacity: 1;
+  header.scrolled {
+    --_shadow: var(--shadow);
   }
 
   i {
     font-size: 1.5em;
+    aspect-ratio: 1;
   }
 
   .container {
@@ -80,6 +78,8 @@ import ThemeSwap from "../components/ThemeSwap.svelte";
     flex-flow: row nowrap;
     align-items: center;
     gap: var(--size-fluid-2);
+    max-width: var(--size-content);
+    margin-inline: auto;
   }
 
   h2 {
