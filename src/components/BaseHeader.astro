@@ -5,7 +5,7 @@ import DarkIcon from "~icons/carbon/moon";
 import ThemeSwap from "../components/ThemeSwap.svelte";
 ---
 
-<header>
+<header id="siteHeader">
   <div class="container">
     <input type="checkbox" id="navbar-open" />
     <label for="navbar-open">
@@ -30,15 +30,43 @@ import ThemeSwap from "../components/ThemeSwap.svelte";
   </div>
 </header>
 
+<script>
+  const siteHeader = document.getElementById("siteHeader")!;
+  const SCROLL_MARGIN = 50;
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > SCROLL_MARGIN) {
+      siteHeader.classList.add("scrolled");
+    } else {
+      siteHeader.classList.remove("scrolled");
+    }
+  });
+</script>
+
 <style>
   header {
     position: sticky;
-    background: var(--background);
     top: 0;
     z-index: 999;
 
     padding-inline: var(--size-fluid-3);
     padding-block: var(--size-6);
+  }
+  header::before {
+    content: "";
+    transition: opacity 50ms ease-in;
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background-image: linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0.7),
+      rgb(0 0 0 / 0)
+    );
+  }
+
+  header.scrolled::before {
+    opacity: 1;
   }
 
   i {
@@ -95,11 +123,6 @@ import ThemeSwap from "../components/ThemeSwap.svelte";
   }
 
   @media (max-width: 850px) {
-    header {
-      background-color: var(--background);
-      border-bottom: thin solid var(--text-alt);
-    }
-
     label {
       --thickness: 2px;
       --gap: 8px;
