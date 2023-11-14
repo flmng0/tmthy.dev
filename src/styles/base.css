@@ -92,7 +92,7 @@ img {
   vertical-align: middle;
   background-repeat: no-repeat;
   background-size: cover;
-  shape-margin: .75rem;
+  shape-margin: 0.75rem;
   font-style: italic;
 }
 
