@@ -28,6 +28,7 @@ const sketches = defineCollection({
   type: "content",
   schema: z.object({
     name: z.string(),
+    appName: z.string(),
     brief: z.string(),
     date: z.coerce.date(),
     background: z.string().optional(),

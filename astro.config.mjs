@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 
+import elmPlugin from "vite-plugin-elm";
 import Icons from "unplugin-icons/vite";
 
 import svelte from "@astrojs/svelte";
@@ -17,6 +18,7 @@ export default defineConfig({
   },
   vite: {
     plugins: [
+      elmPlugin(),
       Icons({
         customCollections: {
           custom: {

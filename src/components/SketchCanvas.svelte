@@ -2,34 +2,21 @@
   import { onMount } from "svelte";
   import type { Sketch } from "../sketches/common";
 
-  export let slug: string;
+  export let appName: string;
   export let background: string | null;
-  // export let index: boolean;
 
-  let canvas: HTMLCanvasElement;
+  let sketchRoot: HTMLDivElement;
 
   onMount(async () => {
-    const sketch = await import(`../sketches/${slug}.ts`).then(
-      (s) => s.default as Sketch
-    );
+    const { Elm } = await import(`../../sketches/${appName}.elm`);
 
-    const state = sketch.init(canvas);
-    let lastT = 0;
-
-    const tick = (t: number) => {
-      sketch.draw(state, t - lastT);
-
-      window.requestAnimationFrame(tick);
-    };
-
-    window.requestAnimationFrame((t) => {
-      lastT = t;
-      tick(t);
-    });
+    Elm[appName].init({
+      node: sketchRoot
+    })
   });
 </script>
 
-<canvas width={768} height={768} style:background bind:this={canvas} />
+<div id="sketchRoot" bind:this={sketchRoot}></div>
 
 <style>
   canvas {

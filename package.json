@@ -20,6 +20,7 @@
     "@iconify-json/devicon": "^1.1.44",
     "@iconify-json/mdi": "^1.1.67",
     "astro": "^4.11.3",
+    "elm": "0.19.1-6",
     "open-props": "^1.7.4",
     "rehype-mathjax": "^5.0.0",
     "remark-math": "^6.0.0",
@@ -27,7 +28,8 @@
     "sharp": "^0.32.6",
     "svelte": "^4.2.18",
     "typescript": "^5.5.2",
-    "unplugin-icons": "^0.17.4"
+    "unplugin-icons": "^0.17.4",
+    "vite-plugin-elm": "^3.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.14.9",
