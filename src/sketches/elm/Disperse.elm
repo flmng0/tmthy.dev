@@ -4,11 +4,22 @@ import Sketch
 import Debug
 
 main =
-  Sketch.run { init = 0, update = update, draw = draw }
+  Sketch.run { init = init, update = update, draw = draw }
+
+init =
+  { x = 0
+  , y = 0
+  }
 
 update t _ =
-  t
+  let
+    theta = t / pi
+  in
+  { x = (toFloat Sketch.width / 2) + 100 * cos theta
+  , y = (toFloat Sketch.height / 2) + 100 * sin (2 * theta)
+  }
 
-draw _ =
-  [ (Sketch.rect 30 10 20 20 |> Sketch.withFill "red")
+draw { x, y } =
+  [ (Sketch.clear "grey")
+  , (Sketch.rect x y 20 20 |> Sketch.withFill "red")
   ]

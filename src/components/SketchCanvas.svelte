@@ -16,15 +16,15 @@
 
     let canvas, context;
 
-    let lastT;
+    let firstT;
 
     function tick(t) {
-      if (t === undefined) {
-        lastT = t;
-        t = 0.0;
+      t /= 1000;
+      if (firstT === undefined) {
+        firstT = t;
       }
 
-      app.ports.tick.send(t);
+      app.ports.tick.send(t - firstT);
       requestAnimationFrame(tick);
     }
 
@@ -37,36 +37,39 @@
       }
     );
 
+    const shapeHandlers = {
+      rect(args) {
+        context.fillRect(...args);
+
+        if (context.strokeWidth > 0.0) {
+          context.strokeRect(...args);
+        }
+      },
+
+      line(args) {
+        const [x1, y1, x2, y2] = args;
+
+        context.moveTo(x1, y1);
+        context.lineTo(x2, y2);
+      }
+    }
+
     function applyCommand(cmd) {
-      // context.save()
-      const oldFill = context.fillStyle;
-      const oldStroke = context.strokeStyle;
-      const oldStrokeWidth = context.strokeWidth;
+      context.save();
 
       context.fillStyle = cmd.fillColor;
       context.strokeStyle = cmd.strokeColor;
       context.strokeWidth = cmd.strokeWidth;
 
-      switch (cmd.shape.type) {
-        case "line":
-          break;
+      const handler = shapeHandlers[cmd.shape.type];
+      handler(cmd.shape.arguments);
 
-        case "rect":
-          console.log(cmd);
-          context.fillRect(...cmd.shape.arguments);
-          if (context.strokeWidth > 0.0) {
-            context.strokeRect(...cmd.shape.arguments);
-          }
-          break;
-      }
-
-      context.fillStyle = oldFill;
-      context.strokeStyle = oldStroke;
-      context.strokeWidth = oldStrokeWidth;
+      context.restore();
     }
 
     app.ports.submitFrame.subscribe(
       (drawCommands) => {
+        context.clearRect(0, 0, canvas.width, canvas.height);
         drawCommands.forEach(applyCommand);
       }
     )

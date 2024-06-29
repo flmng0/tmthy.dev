@@ -14,6 +14,22 @@ port started : String -> Cmd msg
 port submitFrame : E.Value -> Cmd msg
 port tick : (Float -> msg) -> Sub msg
 
+-- type alias State =
+--   { width : Int
+--   , height : Int
+--   , mouse : MouseState
+--   , keyboard : KeyboardState
+--   }
+--
+-- type alias MouseState =
+--   { x : Float
+--   , y : Float
+--   , buttons : Int
+--   }
+
+-- This is here just so that the project builds.
+main =
+  H.text "How are you seeing this?"
 
 type Shape
   = Line Float Float Float Float
@@ -46,6 +62,15 @@ drawShape s =
     , strokeWidth = 0.0
     , strokeColor = "grey"
     , fillColor = "black"
+    }
+
+clear : String -> DrawCmd
+clear color =
+  DrawCmd
+    { shape = Rect 0 0 (toFloat width) (toFloat height)
+    , strokeWidth = 0.0
+    , strokeColor = "transparent"
+    , fillColor = color
     }
 
 line : Float -> Float -> Float -> Float -> DrawCmd
