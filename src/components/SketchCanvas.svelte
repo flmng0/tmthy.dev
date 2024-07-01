@@ -3,7 +3,9 @@
   import type { Sketch } from "../sketches/common";
 
   export let appName: string;
-  export let background: string | null;
+
+  // Will be used for when loading in future.
+  //export let background: string | null;
 
   let sketchRoot: HTMLDivElement;
 
@@ -37,6 +39,15 @@
       }
     );
 
+    function pathWrapper(draw) {
+      context.beginPath();
+
+      draw();
+
+      context.fill();
+      context.stroke();
+    }
+
     const shapeHandlers = {
       rect(args) {
         context.fillRect(...args);
@@ -49,8 +60,18 @@
       line(args) {
         const [x1, y1, x2, y2] = args;
 
-        context.moveTo(x1, y1);
-        context.lineTo(x2, y2);
+        pathWrapper(() => {
+          context.moveTo(x1, y1);
+          context.lineTo(x2, y2);
+        })
+      },
+
+      circle(args) {
+        const [x, y, r] = args;
+
+        pathWrapper(() => {
+          context.arc(x, y, r, 0, Math.PI * 2);
+        })
       }
     }
 
@@ -78,11 +99,3 @@
 
 <div id="sketchRoot" bind:this={sketchRoot}></div>
 
-<style>
-  canvas {
-    object-fit: contain;
-    aspect-ratio: 1;
-    height: auto;
-    width: 100%;
-  }
-</style>

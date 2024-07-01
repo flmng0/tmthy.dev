@@ -1,6 +1,6 @@
 module Disperse exposing (main)
 
-import Sketch
+import Sketch exposing (..)
 import Debug
 
 main =
@@ -15,11 +15,12 @@ update t _ =
   let
     theta = t / pi
   in
-  { x = (toFloat Sketch.width / 2) + 100 * cos theta
-  , y = (toFloat Sketch.height / 2) + 100 * sin (2 * theta)
+  { x = 100 * cos theta
+  , y = 100 * sin (2 * theta)
   }
 
 draw { x, y } =
-  [ (Sketch.clear "grey")
-  , (Sketch.rect x y 20 20 |> Sketch.withFill "red")
+  [ clear "grey"
+  , rect x y 20 20 |> withFill "red" |> center
+  , circle -x -y 20 |> withFill "blue" |> center
   ]

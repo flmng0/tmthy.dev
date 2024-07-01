@@ -34,6 +34,7 @@ main =
 type Shape
   = Line Float Float Float Float
   | Rect Float Float Float Float
+  | Circle Float Float Float
 
 type alias DrawCmdInner =
   { shape : Shape
@@ -74,12 +75,16 @@ clear color =
     }
 
 line : Float -> Float -> Float -> Float -> DrawCmd
-line x1 y1 x2 y2 =
+line x1 y1 x2 y2 = 
   drawShape (Line x1 y1 x2 y2)
 
 rect : Float -> Float -> Float -> Float -> DrawCmd
 rect x y w h =
   drawShape (Rect x y w h)
+
+circle : Float -> Float -> Float -> DrawCmd
+circle x y r =
+  drawShape (Circle x y r)
 
 withFill : String -> DrawCmd -> DrawCmd
 withFill f dc =
@@ -101,6 +106,34 @@ withStrokeWidth : Float -> DrawCmd -> DrawCmd
 withStrokeWidth w dc =
   let i = inner dc in
   DrawCmd { i | strokeWidth = w }
+
+center : DrawCmd -> DrawCmd
+center dc =
+  let 
+    i = inner dc
+    middle = { x = toFloat width / 2, y = toFloat height / 2 }
+    makeCenter x y = (middle.x + x , middle.y + y) 
+
+    newShape = case i.shape of
+      Line x1 y1 x2 y2 ->
+        let 
+            (nx1, ny1) = makeCenter x1 y1
+            (nx2, ny2) = makeCenter x2 y2
+        in
+        Line nx1 ny1 nx2 ny2
+
+      Rect x y w h ->
+        let (nx, ny) = makeCenter x y in
+        Rect nx ny w h
+
+      Circle x y r ->
+        let (nx, ny) = makeCenter x y in
+        Circle nx ny r
+
+  in
+  DrawCmd { i | shape = newShape }
+
+
 
 inner : DrawCmd -> DrawCmdInner
 inner dc =
@@ -160,6 +193,9 @@ encodeShape s =
 
         Rect x y w h ->
           ( "rect" , [x, y, w, h] )
+
+        Circle x y r ->
+          ( "circle" , [x, y, r] )
   in
   E.object
     [ ( "type", E.string type_ )
