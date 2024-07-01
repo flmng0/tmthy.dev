@@ -27,17 +27,14 @@ port tick : (Float -> msg) -> Sub msg
 --   , buttons : Int
 --   }
 
--- This is here just so that the project builds.
-main =
-  H.text "How are you seeing this?"
-
 type Shape
-  = Line Float Float Float Float
-  | Rect Float Float Float Float
-  | Circle Float Float Float
+  = Line Float Float
+  | Rect Float Float
+  | Circle Float
 
 type alias DrawCmdInner =
   { shape : Shape
+  , position : { x : Float , y : Float }
   , strokeWidth : Float
   , strokeColor : String
   , fillColor : String
@@ -60,6 +57,7 @@ drawShape : Shape -> DrawCmd
 drawShape s =
   DrawCmd
     { shape = s
+    , position = { x = 0.0, y = 0.0 }
     , strokeWidth = 0.0
     , strokeColor = "grey"
     , fillColor = "black"
@@ -68,7 +66,8 @@ drawShape s =
 clear : String -> DrawCmd
 clear color =
   DrawCmd
-    { shape = Rect 0 0 (toFloat width) (toFloat height)
+    { shape = Rect (toFloat width) (toFloat height)
+    , position = { x = 0.0 , y = 0.0 }
     , strokeWidth = 0.0
     , strokeColor = "transparent"
     , fillColor = color
@@ -76,15 +75,19 @@ clear color =
 
 line : Float -> Float -> Float -> Float -> DrawCmd
 line x1 y1 x2 y2 = 
-  drawShape (Line x1 y1 x2 y2)
+  let
+      dx = x2 - x1
+      dy = y2 - y1
+  in
+  drawShape (Line dx dy) |> move x1 y1
 
-rect : Float -> Float -> Float -> Float -> DrawCmd
-rect x y w h =
-  drawShape (Rect x y w h)
+rect : Float -> Float -> DrawCmd
+rect w h =
+  drawShape (Rect w h)
 
-circle : Float -> Float -> Float -> DrawCmd
-circle x y r =
-  drawShape (Circle x y r)
+circle : Float -> DrawCmd
+circle r =
+  drawShape (Circle r)
 
 withFill : String -> DrawCmd -> DrawCmd
 withFill f dc =
@@ -107,33 +110,18 @@ withStrokeWidth w dc =
   let i = inner dc in
   DrawCmd { i | strokeWidth = w }
 
-center : DrawCmd -> DrawCmd
-center dc =
-  let 
-    i = inner dc
-    middle = { x = toFloat width / 2, y = toFloat height / 2 }
-    makeCenter x y = (middle.x + x , middle.y + y) 
-
-    newShape = case i.shape of
-      Line x1 y1 x2 y2 ->
-        let 
-            (nx1, ny1) = makeCenter x1 y1
-            (nx2, ny2) = makeCenter x2 y2
-        in
-        Line nx1 ny1 nx2 ny2
-
-      Rect x y w h ->
-        let (nx, ny) = makeCenter x y in
-        Rect nx ny w h
-
-      Circle x y r ->
-        let (nx, ny) = makeCenter x y in
-        Circle nx ny r
-
+move : Float -> Float -> DrawCmd -> DrawCmd
+move dx dy dc =
+  let
+      i = inner dc
+      x = i.position.x + dx
+      y = i.position.y + dy
+      p = { x = x, y = y }
   in
-  DrawCmd { i | shape = newShape }
+  DrawCmd { i | position = p }
 
-
+center : DrawCmd -> DrawCmd
+center = move (toFloat width / 2) (toFloat height / 2)
 
 inner : DrawCmd -> DrawCmdInner
 inner dc =
@@ -175,27 +163,35 @@ encodeDrawCmdAll cmds =
 
 encodeDrawCmd : DrawCmd -> E.Value
 encodeDrawCmd cmd =
-  let c = inner cmd in
+  let i = inner cmd in
   E.object
-    [ ( "shape", encodeShape c.shape )
-    , ( "strokeWidth", E.float c.strokeWidth )
-    , ( "strokeColor", E.string c.strokeColor )
-    , ( "fillColor", E.string c.fillColor )
+    [ ( "shape", encodeShape i )
+    , ( "strokeWidth", E.float i.strokeWidth )
+    , ( "strokeColor", E.string i.strokeColor )
+    , ( "fillColor", E.string i.fillColor )
     ]
 
-encodeShape : Shape -> E.Value
-encodeShape s =
+encodeShape : DrawCmdInner -> E.Value
+encodeShape i =
   let
-    (type_, arguments) =
-      case s of
-        Line x1 y1 x2 y2 ->
-          ( "line" , [x1, y1, x2, y2] )
+      s = i.shape
+      x = i.position.x
+      y = i.position.y
 
-        Rect x y w h ->
-          ( "rect" , [x, y, w, h] )
+      (type_, arguments) =
+        case s of
+          Line dx dy ->
+            let
+                x2 = x + dx
+                y2 = y + dy
+            in
+            ( "line" , [x, y, x2, y2] )
 
-        Circle x y r ->
-          ( "circle" , [x, y, r] )
+          Rect w h ->
+            ( "rect" , [x, y, w, h] )
+
+          Circle r ->
+            ( "circle" , [x, y, r] )
   in
   E.object
     [ ( "type", E.string type_ )
@@ -215,3 +211,8 @@ height = 600
 
 canvasId : String
 canvasId = "sketch-cvs"
+
+-- This is here just so that the project builds.
+main =
+  H.text "How are you seeing this?"
+

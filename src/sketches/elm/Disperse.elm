@@ -13,14 +13,14 @@ init =
 
 update t _ =
   let
-    theta = t / pi
+    theta = 2 * t / pi
   in
-  { x = 100 * cos theta
-  , y = 100 * sin (2 * theta)
+  { x = 150 * cos theta
+  , y = 50 * sin (2 * theta)
   }
 
 draw { x, y } =
-  [ clear "grey"
-  , rect x y 20 20 |> withFill "red" |> center
-  , circle -x -y 20 |> withFill "blue" |> center
+  [ clear "#111"
+  , rect 20 20 |> withFill "#282a36" |> withStroke "#eee" 1.0 |> center |> move x y
+  , circle 20 |> withFill "rebeccapurple" |> center |> move -x -y
   ]
