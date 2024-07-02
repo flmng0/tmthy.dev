@@ -3,7 +3,9 @@ port module Sketch exposing (..)
 import Browser
 import Browser.Events
 import Html as H
-import Html.Attributes as A
+import Html.Attributes as HA
+import Html.Events as HE
+import Json.Decode as D
 import Json.Encode as E
 import Time
 
@@ -23,7 +25,8 @@ type alias State =
     , width : Int
     , height : Int
     , mouse : MouseState
-    , keyboard : KeyboardState
+
+    -- , keyboard : KeyboardState
     }
 
 
@@ -62,10 +65,7 @@ type alias Config model =
 
 type Message
     = Tick Float
-
-
-
--- | Resize
+    | MouseMoved ( Float, Float )
 
 
 drawShape : Shape -> DrawCmd
@@ -176,11 +176,27 @@ inner dc =
             i
 
 
-run : Config model -> Program () model Message
+run : Config model -> Program () ( State, model ) Message
 run config =
     let
+        mouse : MouseState
+        mouse =
+            { x = 0
+            , y = 0
+            , buttons = 0
+            }
+
+        state : State
+        state =
+            { t = 0
+            , dt = 0
+            , width = width
+            , height = height
+            , mouse = mouse
+            }
+
         init _ =
-            ( config.init, started canvasId )
+            ( ( state, config.init ), started canvasId )
     in
     Browser.element
         { init = init
@@ -190,12 +206,32 @@ run config =
         }
 
 
-view : model -> H.Html msg
+onMouseMove : (( Float, Float ) -> msg) -> H.Attribute msg
+onMouseMove tagger =
+    HE.on "mousemove" (D.map tagger offsetPosition)
+
+
+offsetPosition : D.Decoder ( Float, Float )
+offsetPosition =
+    D.map2 Tuple.pair
+        (D.field "offsetX" D.float)
+        (D.field "offsetY" D.float)
+
+
+view : a -> H.Html Message
 view _ =
-    H.canvas [ A.class "sketch-canvas", A.id canvasId, A.width width, A.height height ] []
+    H.canvas
+        [ HA.class "sketch-canvas"
+        , HA.id canvasId
+        , HA.width width
+        , HA.height height
+        , onMouseMove MouseMoved
+        ]
+        []
 
 
-update config msg model =
+update : Config model -> Message -> ( State, model ) -> ( ( State, model ), Cmd Message )
+update config msg ( state, model ) =
     case msg of
         Tick t ->
             let
@@ -205,7 +241,17 @@ update config msg model =
                 cmds =
                     config.draw newModel |> encodeDrawCmdAll
             in
-            ( newModel, submitFrame cmds )
+            ( ( state, newModel ), submitFrame cmds )
+
+        MouseMoved ( x, y ) ->
+            let
+                mouse =
+                    state.mouse
+
+                newState =
+                    { state | mouse = { mouse | x = x, y = y } }
+            in
+            ( ( newState, model ), Cmd.none )
 
 
 encodeDrawCmdAll : List DrawCmd -> E.Value
