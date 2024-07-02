@@ -7,20 +7,30 @@ main =
   Sketch.run { init = init, update = update, draw = draw }
 
 init =
-  { x = 0
-  , y = 0
-  }
-
-update t _ =
-  let
-    theta = 2 * t / pi
+  let 
+    aux n i points =
+      if i == n then points
+      else
+        let
+          theta = (toFloat i / toFloat n) * pi * 2
+          x = cos theta
+          y = sin theta
+          point = (x, y)
+        in
+        aux n (i + 1) (point :: points)
   in
-  { x = 150 * cos theta
-  , y = 50 * sin (2 * theta)
-  }
+  aux 10 0 []
+  
+update _ model = model
 
-draw { x, y } =
-  [ clear "#111"
-  , rect 20 20 |> withFill "#282a36" |> withStroke "#eee" 1.0 |> center |> move x y
-  , circle 20 |> withFill "rebeccapurple" |> center |> move -x -y
-  ]
+draw points =
+  let 
+      drawPoint (x, y) = 
+        circle 5 
+        |> withFill "#fff" 
+        |> center 
+        |> move (100 * x) (100 * y) 
+
+      drawPoints = List.map drawPoint points
+  in
+  clear "#111" :: drawPoints

@@ -146,7 +146,7 @@ run config =
 
 view : model -> H.Html msg
 view _ =
-  H.canvas [ A.id canvasId, A.width width, A.height height ] []
+  H.canvas [ A.class "sketch-canvas", A.id canvasId, A.width width, A.height height ] []
 
 update config msg model =
   case msg of

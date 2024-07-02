@@ -29,7 +29,7 @@ const { Content } = await entry.render();
 
 <BaseLayout title={data.name + " | Sketches"} description={data.brief}>
   <Modal id="showSketch" client:load>
-    <Code code={sketchCode} lang="ts" />
+    <Code code={sketchCode} lang="elm" />
     <CloseIcon slot="close-button" />
   </Modal>
 
@@ -76,9 +76,10 @@ const { Content } = await entry.render();
   header {
     align-self: start;
     position: sticky;
-    top: var(--size-12);
+    --top: var(--size-8);
+    top: calc(var(--top) + var(--size-4));
     width: 100%;
-    padding-block: var(--size-8);
+    padding-block: var(--top);
   }
 
   header > button {

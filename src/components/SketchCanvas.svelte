@@ -3,9 +3,7 @@
   import type { Sketch } from "../sketches/common";
 
   export let appName: string;
-
-  // Will be used for when loading in future.
-  //export let background: string | null;
+  export let background: string | null;
 
   let sketchRoot: HTMLDivElement;
 
@@ -13,7 +11,7 @@
     const { Elm } = await import(`../sketches/elm/${appName}.elm`);
 
     const app = Elm[appName].init({
-      node: sketchRoot
+      node: sketchRoot,
     });
 
     let canvas, context;
@@ -97,5 +95,25 @@
   });
 </script>
 
-<div id="sketchRoot" bind:this={sketchRoot}></div>
+<div class="sketch-wrapper">
+  <div bind:this={sketchRoot}></div>
+</div>
+
+<style>
+  .sketch-wrapper {
+    aspect-ratio: 1;
+    width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+
+    position: relative;
+  }
+ 
+  .sketch-wrapper > :global(*),
+  .sketch-wrapper :global(.sketch-canvas) {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+</style>
 
