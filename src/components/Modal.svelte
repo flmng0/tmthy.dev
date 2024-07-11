@@ -1,5 +1,6 @@
 <script lang="ts">
-  export let id: string;
+  let {id}: { id: string } = $props();
+
   let modalElem: HTMLDialogElement;
 
   function close() {
@@ -8,11 +9,11 @@
 </script>
 
 <dialog bind:this={modalElem} {id}>
-  <div class="backdrop" on:click={close} aria-hidden="true" />
+  <div class="backdrop" onclick={close} aria-hidden="true" />
 
   <slot />
 
-  <button on:click={close}>
+  <button onclick={close}>
     <slot name="close-button" />
   </button>
 </dialog>

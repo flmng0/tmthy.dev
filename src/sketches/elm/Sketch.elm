@@ -7,10 +7,8 @@ import Html.Attributes as HA
 import Html.Events as HE
 import Json.Decode as D
 import Json.Encode as E
+import Platform
 import Time
-
-
-port started : String -> Cmd msg
 
 
 port submitFrame : E.Value -> Cmd msg
@@ -19,14 +17,15 @@ port submitFrame : E.Value -> Cmd msg
 port tick : (Float -> msg) -> Sub msg
 
 
+port mouseMove : (( Float, Float ) -> msg) -> Sub msg
+
+
 type alias State =
     { t : Float
     , dt : Float
     , width : Int
     , height : Int
-    , mouse : MouseState
-
-    -- , keyboard : KeyboardState
+    , mouse : MouseState -- TODO: keyboard : KeyboardState
     }
 
 
@@ -58,7 +57,7 @@ type DrawCmd
 
 type alias Config model =
     { init : model
-    , update : Float -> model -> model
+    , update : State -> model -> model
     , draw : model -> List DrawCmd
     }
 
@@ -74,7 +73,7 @@ drawShape s =
         { shape = s
         , position = { x = 0.0, y = 0.0 }
         , strokeWidth = 0.0
-        , strokeColor = "grey"
+        , strokeColor = "transparent"
         , fillColor = "black"
         }
 
@@ -176,58 +175,29 @@ inner dc =
             i
 
 
-run : Config model -> Program () ( State, model ) Message
+run : Config model -> Program Float ( State, model ) Message
 run config =
     let
         mouse : MouseState
         mouse =
-            { x = 0
-            , y = 0
+            { x = 0.0
+            , y = 0.0
             , buttons = 0
             }
 
-        state : State
-        state =
-            { t = 0
-            , dt = 0
-            , width = width
-            , height = height
+        state : Float -> State
+        state t =
+            { t = t
+            , dt = 0.0
+            , width = 600
+            , height = 600
             , mouse = mouse
             }
 
-        init _ =
-            ( ( state, config.init ), started canvasId )
+        init t =
+            ( ( state t, config.init ), Cmd.none )
     in
-    Browser.element
-        { init = init
-        , view = view
-        , update = update config
-        , subscriptions = subscriptions
-        }
-
-
-onMouseMove : (( Float, Float ) -> msg) -> H.Attribute msg
-onMouseMove tagger =
-    HE.on "mousemove" (D.map tagger offsetPosition)
-
-
-offsetPosition : D.Decoder ( Float, Float )
-offsetPosition =
-    D.map2 Tuple.pair
-        (D.field "offsetX" D.float)
-        (D.field "offsetY" D.float)
-
-
-view : a -> H.Html Message
-view _ =
-    H.canvas
-        [ HA.class "sketch-canvas"
-        , HA.id canvasId
-        , HA.width width
-        , HA.height height
-        , onMouseMove MouseMoved
-        ]
-        []
+    Platform.worker { init = init, update = update config, subscriptions = subscriptions }
 
 
 update : Config model -> Message -> ( State, model ) -> ( ( State, model ), Cmd Message )
@@ -235,21 +205,27 @@ update config msg ( state, model ) =
     case msg of
         Tick t ->
             let
+                newState =
+                    { state | t = t, dt = t - state.t }
+
                 newModel =
-                    config.update t model
+                    config.update newState model
 
                 cmds =
                     config.draw newModel |> encodeDrawCmdAll
             in
-            ( ( state, newModel ), submitFrame cmds )
+            ( ( newState, newModel ), submitFrame cmds )
 
         MouseMoved ( x, y ) ->
             let
                 mouse =
                     state.mouse
 
+                newMouse =
+                    { mouse | x = x, y = y }
+
                 newState =
-                    { state | mouse = { mouse | x = x, y = y } }
+                    { state | mouse = newMouse }
             in
             ( ( newState, model ), Cmd.none )
 
@@ -274,19 +250,13 @@ encodeDrawCmd cmd =
 
 
 encodeShape : DrawCmdInner -> E.Value
-encodeShape i =
+encodeShape { shape, position } =
     let
-        s =
-            i.shape
-
-        x =
-            i.position.x
-
-        y =
-            i.position.y
+        { x, y } =
+            position
 
         ( type_, arguments ) =
-            case s of
+            case shape of
                 Line dx dy ->
                     let
                         x2 =
@@ -311,7 +281,7 @@ encodeShape i =
 
 subscriptions : model -> Sub Message
 subscriptions _ =
-    tick Tick
+    Sub.batch [ tick Tick, mouseMove MouseMoved ]
 
 
 width : Int
@@ -324,9 +294,16 @@ height =
     600
 
 
-canvasId : String
-canvasId =
-    "sketch-cvs"
+onMouseMove : (( Float, Float ) -> msg) -> H.Attribute msg
+onMouseMove tagger =
+    HE.on "mousemove" (D.map tagger offsetPosition)
+
+
+offsetPosition : D.Decoder ( Float, Float )
+offsetPosition =
+    D.map2 Tuple.pair
+        (D.field "offsetX" D.float)
+        (D.field "offsetY" D.float)
 
 
 

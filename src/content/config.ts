@@ -28,7 +28,8 @@ const sketches = defineCollection({
   type: "content",
   schema: z.object({
     name: z.string(),
-    appName: z.string(),
+    sourceId: z.string(),
+    type: z.enum(["elm", "shader"]),
     brief: z.string(),
     date: z.coerce.date(),
     background: z.string().optional(),
