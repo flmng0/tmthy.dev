@@ -12,8 +12,7 @@ main =
 type alias Particle =
     { origin : Vec2
     , position : Vec2
-    , velocity : Vec2
-    , acceleration : Vec2
+    , oldPosition : Vec2
     }
 
 
@@ -22,47 +21,16 @@ zero =
     V2.vec2 0 0
 
 
-returnStrength : Float
-returnStrength =
-    20.0
-
-
-frictionStrength : Float
-frictionStrength =
-    1.0
-
-
-particle : Vec2 -> Particle
-particle o =
-    { origin = o, position = o, velocity = zero, acceleration = zero }
-
-
-applyForce : Vec2 -> Particle -> Particle
-applyForce f p =
-    { p | acceleration = V2.add f p.acceleration }
-
-
-applyReturnForce : Particle -> Particle
-applyReturnForce p =
-    let
-        rf =
-            V2.sub p.origin p.position |> V2.scale returnStrength
-    in
-    applyForce rf p
-
-
-applyFriction : Particle -> Particle
-applyFriction p =
-    let
-        ff =
-            p.velocity |> V2.negate |> V2.scale frictionStrength
-    in
-    applyForce ff p
+particle pos =
+    { origin = pos
+    , position = pos
+    , oldPosition = pos
+    }
 
 
 minRepelDistance : Float
 minRepelDistance =
-    50.0
+    100.0
 
 
 minRepelDistanceSquared : Float
@@ -72,11 +40,11 @@ minRepelDistanceSquared =
 
 repelStrength : Float
 repelStrength =
-    0.001
+    30000.0
 
 
-maybeRepel : Vec2 -> Particle -> Particle
-maybeRepel m p =
+repelForce : Vec2 -> Particle -> Vec2
+repelForce m p =
     let
         diff =
             V2.sub p.position m
@@ -85,35 +53,64 @@ maybeRepel m p =
             V2.lengthSquared diff
     in
     if dd > minRepelDistanceSquared then
-        p
+        zero
 
     else
         let
-            d =
+            -- TODO: Simplify
+            dist =
                 sqrt dd
 
-            inverse =
-                1 - d / minRepelDistance
-
             away =
-                V2.scale (inverse * repelStrength) diff
+                V2.scale (1.0 / dist) diff
 
-            newVel =
-                V2.add p.velocity away
+            inverse =
+                -- Strength of repel is lower the further the mouse is
+                1 - (dist / minRepelDistance)
+
+            force =
+                V2.scale (inverse * repelStrength) away
         in
-        { p | velocity = newVel }
+        force
 
 
-integrate : Float -> Particle -> Particle
-integrate dt p =
+frictionStrength : Float
+frictionStrength =
+    100.0
+
+
+{-| Simple force from the current position towards the previous
+-}
+frictionForce : Particle -> Vec2
+frictionForce p =
+    V2.sub p.oldPosition p.position |> V2.scale frictionStrength
+
+
+returnStrength : Float
+returnStrength =
+    200.0
+
+
+returnForce : Particle -> Vec2
+returnForce p =
+    V2.sub p.origin p.position |> V2.scale returnStrength
+
+
+{-| Verlet integration implementation
+-}
+integrate : Vec2 -> Float -> Particle -> Particle
+integrate sumOfForces dt p =
     let
-        vel =
-            V2.scale dt p.acceleration |> V2.add p.velocity
+        twoP =
+            V2.scale 2 p.position
 
-        pos =
-            V2.scale dt vel |> V2.add p.position
+        acc =
+            V2.scale (dt * dt) sumOfForces
+
+        newPos =
+            V2.sub twoP p.oldPosition |> V2.add acc
     in
-    { p | position = pos, velocity = vel, acceleration = zero }
+    { p | position = newPos, oldPosition = p.position }
 
 
 updateParticle : State -> Particle -> Particle
@@ -121,12 +118,16 @@ updateParticle s p =
     let
         mousePos =
             V2.vec2 s.mouse.x s.mouse.y
+
+        sumOfForces =
+            List.foldl V2.add
+                zero
+                [ repelForce mousePos p
+                , frictionForce p
+                , returnForce p
+                ]
     in
-    p
-        |> maybeRepel mousePos
-        |> applyReturnForce
-        |> applyFriction
-        |> integrate s.dt
+    integrate sumOfForces s.dt p
 
 
 drawParticle : Particle -> DrawCmd
@@ -138,33 +139,32 @@ drawParticle p =
     circle 5 |> withFill "white" |> move x y
 
 
+centerVec : Vec2
 centerVec =
     V2.vec2 (toFloat width / 2) (toFloat height / 2)
 
 
+radius : Float
+radius =
+    150
+
+
 init =
     let
-        aux n i particles =
-            if i == n then
-                particles
+        n =
+            10
 
-            else
-                let
-                    theta =
-                        (toFloat i / toFloat n) * pi * 2
+        makeParticle i =
+            let
+                theta =
+                    (toFloat i / toFloat n) * pi * 2
 
-                    x =
-                        cos theta
-
-                    y =
-                        sin theta
-
-                    p =
-                        particle (V2.vec2 x y |> V2.scale 100 |> V2.add centerVec)
-                in
-                aux n (i + 1) (p :: particles)
+                ( x, y ) =
+                    fromPolar ( radius, theta )
+            in
+            particle (V2.vec2 x y |> V2.add centerVec)
     in
-    aux 10 0 []
+    List.map makeParticle (List.range 1 n)
 
 
 update state particles =
@@ -172,14 +172,4 @@ update state particles =
 
 
 draw particles =
-    -- let
-    --     drawPoint ( x, y ) =
-    --         circle 5
-    --             |> withFill "#fff"
-    --             |> center
-    --             |> move (100 * x) (100 * y)
-    --
-    --     drawPoints =
-    --         List.map drawPoint points
-    -- in
     clear "#111" :: List.map drawParticle particles
