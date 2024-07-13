@@ -100,10 +100,13 @@ export const handlers: Record<string, SketchHandler> = {
           }
         });
 
-        canvas.addEventListener("mousemove", (e) => {
-          const pos = computePointPos(e.offsetX, e.offsetY, canvas);
+        const sendMouseMove = ({ offsetX, offsetY }: MouseEvent) => {
+          const pos = computePointPos(offsetX, offsetY, canvas);
           app.ports.mouseMove.send(pos);
-        });
+        };
+
+        canvas.addEventListener("pointermove", sendMouseMove);
+        canvas.addEventListener("pointerdown", sendMouseMove);
 
         window.requestAnimationFrame(tick);
       });
