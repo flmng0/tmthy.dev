@@ -5,6 +5,8 @@
 
   let { sketch }: Props = $props();
 
+  let background = sketch.data.background;
+
   let sketchCanvas: HTMLCanvasElement;
 
   $effect(() => {
@@ -12,12 +14,14 @@
   })
 </script>
 
-<canvas width={600} height={600} bind:this={sketchCanvas} />
+<canvas width={600} height={600} bind:this={sketchCanvas} style:--background={background} />
 
 <style>
   canvas {
     width: 100%;
     aspect-ratio: 1;
+    
+    background-color: var(--background, transparent);
   }
 </style>
 
