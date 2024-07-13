@@ -103,6 +103,108 @@ export const handlers: Record<string, SketchHandler> = {
 
     lang: "elm",
   },
+
+  shader: {
+    async run(sourceId: string, canvas: HTMLCanvasElement) {
+      const vertSource = `#version 300 es
+in vec2 position;
+
+void main() {
+    gl_Position = vec4(position, 0.0, 1.0);
+}
+`;
+
+      const fragHeader = `#version 300 es
+precision highp float;
+uniform float u_Time;
+uniform vec2 u_Res;
+`;
+      const fragBody = (await import(`./shader/${sourceId}.glsl?raw`)).default;
+      const fragSource = fragHeader + fragBody;
+
+      const gl = canvas.getContext("webgl2")!;
+
+      const makeShader = (type: number, source: string) => {
+        const shader = gl.createShader(type)!;
+
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+
+        if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+          return shader;
+        }
+
+        const info = gl.getShaderInfoLog(shader);
+        gl.deleteShader(shader);
+        throw `Failed to compile WebGL program.\n\n${info}`;
+      };
+
+      const vert = makeShader(gl.VERTEX_SHADER, vertSource);
+      const frag = makeShader(gl.FRAGMENT_SHADER, fragSource);
+
+      const prog = gl.createProgram()!;
+      gl.attachShader(prog, vert);
+      gl.attachShader(prog, frag);
+      gl.linkProgram(prog);
+
+      const posLoc = gl.getAttribLocation(prog, "position");
+
+      const buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+
+      // prettier-ignore
+      const bufData = new Float32Array([
+        -1.0, -1.0, 
+         1.0, -1.0, 
+        -1.0,  1.0, 
+        -1.0,  1.0, 
+         1.0,  1.0, 
+         1.0, -1.0,
+      ]);
+
+      gl.bufferData(gl.ARRAY_BUFFER, bufData, gl.STATIC_DRAW);
+
+      const vao = gl.createVertexArray();
+      gl.bindVertexArray(vao);
+
+      gl.enableVertexAttribArray(posLoc);
+      gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+      gl.viewport(0, 0, canvas.width, canvas.height);
+
+      gl.useProgram(prog);
+      gl.bindVertexArray(vao);
+      gl.clearColor(0, 0, 0, 1);
+
+      const tLoc = gl.getUniformLocation(prog, "u_Time")!;
+      const resLoc = gl.getUniformLocation(prog, "u_Res")!;
+
+      gl.uniform2f(resLoc, canvas.width, canvas.height);
+
+      let firstT;
+
+      function tick(now: number) {
+        const t = (now - firstT) / 1000;
+
+        gl.uniform1f(tLoc, t);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+        window.requestAnimationFrame(tick);
+      }
+
+      window.requestAnimationFrame((t) => {
+        firstT = t;
+        tick(t);
+      });
+    },
+
+    async source(sourceId: string) {
+      return (await import(`./shader/${sourceId}.glsl?raw`)).default;
+    },
+
+    lang: "glsl",
+  },
 };
 
 export async function runSketch(
