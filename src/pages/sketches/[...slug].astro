@@ -8,6 +8,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import SketchRunner from "../../components/SketchRunner.svelte";
 import Modal from "../../components/Modal.svelte";
 
+import { getSketchSource } from "../../sketches";
+
 export async function getStaticPaths() {
   const sketchEntries = await getCollection("sketches");
 
@@ -20,12 +22,13 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const data = entry.data;
 
+const codeParams = await getSketchSource(entry);
 const { Content } = await entry.render();
 ---
 
 <BaseLayout title={data.name + " | Sketches"} description={data.brief}>
   <Modal id="showSketch" client:load>
-    <!-- <Code code={sketchCode} lang="elm" /> -->
+    <Code {...codeParams} />
     <CloseIcon slot="close-button" />
   </Modal>
 

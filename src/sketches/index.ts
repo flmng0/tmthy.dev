@@ -3,13 +3,26 @@ import type { CollectionEntry } from "astro:content";
 export type SketchEntry = CollectionEntry<"sketches">;
 
 export type SketchHandler = {
-  run(canvas: HTMLCanvasElement): Promise<void>;
-  source(): Promise<string>;
+  run(sourceId: string, canvas: HTMLCanvasElement): Promise<void>;
+  source(sourceId: string): Promise<string>;
+  lang: string;
 };
 
-export const runners: Record<string, (sourceId: string) => SketchHandler> = {
-  elm(sourceId: string) {
-    const run = async (canvas: HTMLCanvasElement) => {
+function computePointPos(
+  x: number,
+  y: number,
+  canvas: HTMLCanvasElement,
+): [number, number] {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+
+  return [x * scaleX, y * scaleY];
+}
+
+export const handlers: Record<string, SketchHandler> = {
+  elm: {
+    async run(sourceId: string, canvas: HTMLCanvasElement) {
       const ctx = canvas.getContext("2d")!;
 
       const { Elm } = await import(`./elm/${sourceId}.elm`);
@@ -60,20 +73,14 @@ export const runners: Record<string, (sourceId: string) => SketchHandler> = {
 
       let app: any;
 
-      let firstT: number;
-
-      function tick(now: number) {
-        const t = now - firstT;
-
-        app.ports.tick.send(t);
+      function tick(t: number) {
+        app.ports.tick.send(t / 1000);
 
         window.requestAnimationFrame(tick);
       }
 
       window.requestAnimationFrame((t) => {
-        firstT = t;
-
-        app = Elm[sourceId].init({ flags: t });
+        app = Elm[sourceId].init({ flags: t / 1000 });
 
         app.ports.submitFrame.subscribe((cmds: DrawCmd[]) => {
           for (const cmd of cmds) {
@@ -82,28 +89,40 @@ export const runners: Record<string, (sourceId: string) => SketchHandler> = {
         });
 
         canvas.addEventListener("mousemove", (e) => {
-          app.ports.mouseMove.send([e.offsetX, e.offsetY]);
+          const pos = computePointPos(e.offsetX, e.offsetY, canvas);
+          app.ports.mouseMove.send(pos);
         });
 
-        tick(t);
+        window.requestAnimationFrame(tick);
       });
-    };
+    },
 
-    const source = () =>
-      import(`./elm/${sourceId}.elm?raw`).then((r) => r.default);
+    async source(sourceId: string) {
+      return (await import(`./elm/${sourceId}.elm?raw`)).default;
+    },
 
-    return { run, source };
+    lang: "elm",
   },
-
-  // shader(entry: SketchEntry, canvas: HTMLCanvasElement) {},
 };
 
 export async function runSketch(
   sketch: SketchEntry,
   canvas: HTMLCanvasElement,
 ) {
-  const handler = runners[sketch.data.type];
-  const { run } = handler(sketch.data.sourceId);
+  const { run } = handlers[sketch.data.type];
 
-  await run(canvas);
+  await run(sketch.data.sourceId, canvas);
+}
+
+export async function getSketchSource(
+  sketch: SketchEntry,
+): Promise<{ code: string; lang: string }> {
+  const { source, lang } = handlers[sketch.data.type];
+
+  const code = await source(sketch.data.sourceId);
+
+  return {
+    code,
+    lang,
+  };
 }

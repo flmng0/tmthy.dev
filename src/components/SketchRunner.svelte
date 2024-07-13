@@ -14,3 +14,10 @@
 
 <canvas width={600} height={600} bind:this={sketchCanvas} />
 
+<style>
+  canvas {
+    width: 100%;
+    aspect-ratio: 1;
+  }
+</style>
+
