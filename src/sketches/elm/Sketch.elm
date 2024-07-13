@@ -40,6 +40,7 @@ type Shape
     = Line Float Float
     | Rect Float Float
     | Circle Float
+    | Polygon (List ( Float, Float ))
 
 
 type alias DrawCmdInner =
@@ -109,6 +110,11 @@ rect w h =
 circle : Float -> DrawCmd
 circle r =
     drawShape (Circle r)
+
+
+polygon : List ( Float, Float ) -> DrawCmd
+polygon ps =
+    drawShape (Polygon ps)
 
 
 withFill : String -> DrawCmd -> DrawCmd
@@ -272,6 +278,9 @@ encodeShape { shape, position } =
 
                 Circle r ->
                     ( "circle", [ x, y, r ] )
+
+                Polygon points ->
+                    ( "polygon", List.concatMap (\( px, py ) -> [ px, py ]) points )
     in
     E.object
         [ ( "type", E.string type_ )

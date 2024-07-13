@@ -27,7 +27,7 @@ export const handlers: Record<string, SketchHandler> = {
 
       const { Elm } = await import(`./elm/${sourceId}.elm`);
 
-      type DrawCmdType = "line" | "rect" | "circle";
+      type DrawCmdType = "line" | "rect" | "circle" | "polygon";
       type DrawCmd = {
         strokeWidth: number;
         strokeColor: string;
@@ -47,6 +47,18 @@ export const handlers: Record<string, SketchHandler> = {
 
         circle([x, y, r]) {
           ctx.arc(x, y, r, 0, 2 * Math.PI);
+        },
+
+        polygon(points) {
+          for (let i = 0; i < points.length / 2; i++) {
+            const x = points[i * 2 + 0];
+            const y = points[i * 2 + 1];
+
+            if (i == 0) {
+              ctx.moveTo(x, y);
+            }
+            ctx.lineTo(x, y);
+          }
         },
       };
 
