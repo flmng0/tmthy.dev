@@ -1,20 +1,38 @@
 ---
 import type { CollectionEntry } from "astro:content";
 
+import ElmIcon from "~icons/devicon/elm";
+import OpenGLIcon from "~icons/devicon/opengl";
+
 interface Props {
   sketch: CollectionEntry<"sketches">;
 }
 
 const { sketch } = Astro.props;
 const data = sketch.data;
+
+let Icon;
+let label;
+
+switch (data.type) {
+  case "elm":
+    Icon = ElmIcon;
+    label = "Sketch written using Elm";
+    break;
+
+  case "shader":
+    Icon = OpenGLIcon;
+    label = "GLSL shader animation";
+    break;
+}
 ---
 
 <a href={`/sketches/${sketch.slug}`} class="sketch-card">
-  <!-- TODO: Implement live preview for this -->
-
   <div class="details">
     <h2>{data.name}</h2>
     <p>{data.brief}</p>
+
+    <Icon class="icon" aria-label={label} />
   </div>
 </a>
 
@@ -32,5 +50,9 @@ const data = sketch.data;
 
   .sketch-card:hover {
     filter: unset;
+  }
+
+  .icon {
+    float: right;
   }
 </style>
