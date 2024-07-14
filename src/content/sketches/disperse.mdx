@@ -20,8 +20,11 @@ For each particle, apply the following forces:
 
 - A repelling force away from the mouse cursor / most recent tap.
 - An attractive force, back to where the particle spawned.
+- An attractive force, which attracts a particle towards its 2 nearest neighbours.
 - A friction force which, in this case, is a force in the opposite direction of the current movement.
 
 The repelling force gets weaker the further away the particle gets from the repeller.
 
-The attractive force has the opposite; it is stronger the further the particle is from its origin.
+Both of the attractive forces have the opposite; they are stronger the further the particle is from its attractor.
+
+A naive implementation of verlet integration is used to actually simulate the particles.

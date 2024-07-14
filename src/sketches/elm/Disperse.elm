@@ -16,6 +16,34 @@ type alias Particle =
     }
 
 
+type alias Neighbours a =
+    { left : a
+    , right : a
+    }
+
+
+cycle : Int -> List a -> List a
+cycle n l =
+    let
+        i =
+            if n < 0 then
+                List.length l + n
+
+            else
+                n
+    in
+    List.drop i l ++ List.take i l
+
+
+withNeighbours : List a -> List ( a, Neighbours a )
+withNeighbours ps =
+    let
+        join p l r =
+            ( p, { left = l, right = r } )
+    in
+    List.map3 join ps (cycle -1 ps) (cycle 1 ps)
+
+
 zero : Vec2
 zero =
     V2.vec2 0 0
@@ -41,7 +69,7 @@ minRepelDistanceSquared =
 
 repelStrength : Float
 repelStrength =
-    30000.0
+    1000.0
 
 
 repelForce : Vec2 -> Particle -> Vec2
@@ -58,7 +86,6 @@ repelForce m p =
 
     else
         let
-            -- TODO: Simplify
             dist =
                 sqrt dd
 
@@ -89,7 +116,7 @@ frictionForce p =
 
 returnStrength : Float
 returnStrength =
-    500.0
+    700.0
 
 
 maxOriginDistance : Float
@@ -116,6 +143,35 @@ returnForce p =
         V2.scale (scale * repelStrength) toOrigin
 
 
+attractionStrength : Float
+attractionStrength =
+    2000.0
+
+
+maxAttractDistance : Float
+maxAttractDistance =
+    1000.0
+
+
+neighbourAttractionForce : Neighbours Particle -> Particle -> Vec2
+neighbourAttractionForce { left, right } p =
+    let
+        attract q =
+            let
+                diff =
+                    V2.sub q.position p.position
+
+                toQ =
+                    V2.normalize diff
+
+                scale =
+                    V2.length diff / maxAttractDistance
+            in
+            V2.scale (scale * attractionStrength) toQ
+    in
+    V2.add (attract left) (attract right)
+
+
 {-| Verlet integration implementation
 -}
 integrate : Vec2 -> Float -> Particle -> Particle
@@ -133,8 +189,8 @@ integrate sumOfForces dt p =
     { p | position = newPos, oldPosition = p.position }
 
 
-updateParticle : State -> Particle -> Particle
-updateParticle s p =
+updateParticle : State -> Neighbours Particle -> Particle -> Particle
+updateParticle s ns p =
     let
         mousePos =
             V2.vec2 s.mouse.x s.mouse.y
@@ -145,6 +201,7 @@ updateParticle s p =
                 [ repelForce mousePos p
                 , frictionForce p
                 , returnForce p
+                , neighbourAttractionForce ns p
                 ]
     in
     integrate sumOfForces s.dt p
@@ -165,7 +222,13 @@ count =
     200
 
 
-init : List Particle
+type alias Model =
+    { particles : List Particle
+    , neighbours : List (Neighbours Particle)
+    }
+
+
+init : Model
 init =
     let
         makeParticle i =
@@ -177,13 +240,20 @@ init =
                     fromPolar ( radius, theta )
             in
             particle (V2.vec2 x y |> V2.add centerVec)
+
+        ( particles, neighbours ) =
+            List.map makeParticle (List.range 1 count) |> withNeighbours |> List.unzip
     in
-    List.map makeParticle (List.range 1 count)
+    { particles = particles, neighbours = neighbours }
 
 
-update : State -> List Particle -> List Particle
-update state particles =
-    List.map (updateParticle state) particles
+update : State -> Model -> Model
+update state { particles, neighbours } =
+    let
+        newParticles =
+            List.map2 (\ns -> updateParticle state ns) neighbours particles
+    in
+    { particles = newParticles, neighbours = neighbours }
 
 
 drawBlob particles =
@@ -192,6 +262,6 @@ drawBlob particles =
         |> withFill "#fff"
 
 
-draw : List Particle -> List DrawCmd
-draw particles =
+draw : Model -> List DrawCmd
+draw { particles } =
     [ clear "#111", drawBlob particles ]
