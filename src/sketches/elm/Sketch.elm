@@ -212,7 +212,7 @@ update config msg ( state, model ) =
         Tick t ->
             let
                 newState =
-                    { state | t = t, dt = t - state.t }
+                    { state | t = t, dt = min (t - state.t) 0.1 }
 
                 newModel =
                     config.update newState model
