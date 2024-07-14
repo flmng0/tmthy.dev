@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 
 import CloseIcon from "~icons/mdi/close";
+import FullScreenIcon from "~icons/mdi/fullscreen";
 
 import { Code } from "astro:components";
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -36,7 +37,18 @@ const { Content } = await entry.render();
     <header>
       <SketchRunner client:load sketch={entry} />
 
-      <button onclick="window.showSketch.showModal()">Show Source Code</button>
+      <div class="sketch-buttons">
+        <button onclick="window.showSketch.showModal()">
+          Show Source Code
+        </button>
+        <button
+          onclick="document.getElementById('sketch-canvas').requestFullscreen()"
+          class="fullscreen-toggle"
+        >
+          <span>Go Fullscreen</span>
+          <FullScreenIcon />
+        </button>
+      </div>
     </header>
 
     <main class="content">
@@ -77,11 +89,24 @@ const { Content } = await entry.render();
     padding-block: var(--top);
   }
 
-  header > button {
+  .sketch-buttons {
+    display: flex;
+    flex-flow: row wrap;
+    gap: var(--size-1);
+  }
+
+  .sketch-buttons > button {
     background-color: var(--background-alt);
     padding-block: var(--size-fluid-2);
     text-align: center;
-    width: 100%;
+    flex-grow: 1;
+    flex-basis: 20ch;
+  }
+
+  .fullscreen-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   hgroup {

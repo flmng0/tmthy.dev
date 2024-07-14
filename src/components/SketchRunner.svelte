@@ -14,7 +14,7 @@
   })
 </script>
 
-<canvas width={600} height={600} bind:this={sketchCanvas} style:--background={background} />
+<canvas id="sketch-canvas" width={600} height={600} bind:this={sketchCanvas} style:--background={background} />
 
 <style>
   canvas {
