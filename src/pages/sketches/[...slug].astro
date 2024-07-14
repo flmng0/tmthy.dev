@@ -23,13 +23,13 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const data = entry.data;
 
-const codeParams = await getSketchSource(entry);
+const { code, lang } = await getSketchSource(entry);
 const { Content } = await entry.render();
 ---
 
 <BaseLayout title={data.name + " | Sketches"} description={data.brief}>
   <Modal id="showSketch" client:load>
-    <Code {...codeParams} />
+    <Code {code} {lang} />
     <CloseIcon slot="close-button" />
   </Modal>
 

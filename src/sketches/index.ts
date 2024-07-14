@@ -1,11 +1,12 @@
 import type { CollectionEntry } from "astro:content";
+import type { BundledLanguage } from "shiki";
 
 export type SketchEntry = CollectionEntry<"sketches">;
 
 export type SketchHandler = {
   run(sourceId: string, canvas: HTMLCanvasElement): Promise<void>;
   source(sourceId: string): Promise<string>;
-  lang: string;
+  lang: BundledLanguage;
 };
 
 function computePointPos(
@@ -196,7 +197,7 @@ uniform vec2 u_Res;
 
       gl.uniform2f(resLoc, canvas.width, canvas.height);
 
-      let firstT;
+      let firstT: number;
 
       function tick(now: number) {
         const t = (now - firstT) / 1000;
@@ -233,7 +234,7 @@ export async function runSketch(
 
 export async function getSketchSource(
   sketch: SketchEntry,
-): Promise<{ code: string; lang: string }> {
+): Promise<{ code: string; lang: BundledLanguage }> {
   const { source, lang } = handlers[sketch.data.type];
 
   const code = await source(sketch.data.sourceId);
