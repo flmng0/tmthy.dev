@@ -1,4 +1,4 @@
-module Disperse exposing (main)
+module Blob exposing (main)
 
 import Debug
 import Math.Vector2 as V2 exposing (Vec2)

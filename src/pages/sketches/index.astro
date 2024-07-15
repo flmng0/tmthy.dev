@@ -4,14 +4,46 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SketchCard from "../../components/SketchCard.astro";
 
+import ElmIcon from "~icons/devicon/elm";
+import OpenGLIcon from "~icons/devicon/opengl";
+
 const sketchEntries = await getCollection("sketches");
+
+const legend = [
+  {
+    Icon: ElmIcon,
+    text: "Implemented with Elm",
+  },
+  {
+    Icon: OpenGLIcon,
+    text: "Implemented as an OpenGL/WebGL2 shader",
+  },
+];
 ---
 
 <BaseLayout
   title="Sketches"
   description="Index of creative coding projects created by Timothy Davis"
 >
-  <h1>Sketches</h1>
+  <hgroup>
+    <h1>Sketches</h1>
+    <p>
+      Below is a list of what I call "sketches". This is a collection of any
+      creative coding piece, or project that is too small to be listed on its
+      own.
+    </p>
+  </hgroup>
+
+  <div class="legend">
+    {
+      legend.map(({ Icon, text }) => (
+        <span>
+          <Icon />
+          {text}
+        </span>
+      ))
+    }
+  </div>
 
   <nav>
     {sketchEntries.map((entry) => <SketchCard sketch={entry} />)}
@@ -19,8 +51,14 @@ const sketchEntries = await getCollection("sketches");
 </BaseLayout>
 
 <style>
+  hgroup {
+    max-width: var(--size-content-2);
+    margin-inline: auto;
+    margin-block: var(--size-6) var(--size-8);
+    text-align: center;
+  }
+
   h1 {
-    margin-block: var(--size-8) var(--size-4);
     text-align: center;
   }
 
@@ -30,12 +68,30 @@ const sketchEntries = await getCollection("sketches");
       auto-fit,
       minmax(min(100%, var(--size-content-1)), 1fr)
     );
+
+    grid-template-rows:
+      auto
+      1fr
+      auto;
+
     padding-inline: var(--size-fluid-3);
 
     margin-inline: auto;
-    gap: var(--size-fluid-2);
+    margin-block-start: var(--size-3);
+
+    column-gap: var(--size-fluid-2);
 
     width: min(100%, var(--size-content));
     place-items: center;
+  }
+
+  .legend {
+    margin-inline: auto;
+    justify-content: center;
+    max-width: var(--size-content-2);
+    display: flex;
+    flex-flow: row wrap;
+    font-size: var(--font-size-1);
+    font-style: italic;
   }
 </style>
