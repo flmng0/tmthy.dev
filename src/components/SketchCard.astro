@@ -28,31 +28,29 @@ switch (data.type) {
 ---
 
 <a href={`/sketches/${sketch.slug}`} class="sketch-card">
-  <div class="details">
-    <h2>{data.name}</h2>
-    <p>{data.brief}</p>
+  <h2>{data.name}</h2>
+  <p>{data.brief}</p>
 
-    <Icon class="icon" aria-label={label} />
-  </div>
+  <Icon class="icon" aria-label={label} />
 </a>
 
 <style>
   .sketch-card {
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+
     color: var(--text);
     background-color: var(--background-alt);
 
     padding: var(--size-fluid-2);
     border: thin solid var(--text-alt);
-    gap: var(--size-4);
 
     width: 100%;
-  }
-
-  .sketch-card:hover {
-    filter: unset;
+    row-gap: var(--size-2);
   }
 
   .icon {
-    float: right;
+    place-self: end;
   }
 </style>
