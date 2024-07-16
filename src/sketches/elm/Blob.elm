@@ -59,7 +59,7 @@ particle pos =
 
 minRepelDistance : Float
 minRepelDistance =
-    100.0
+    150.0
 
 
 minRepelDistanceSquared : Float
@@ -69,7 +69,7 @@ minRepelDistanceSquared =
 
 repelStrength : Float
 repelStrength =
-    1000.0
+    3000.0
 
 
 repelForce : Vec2 -> Particle -> Vec2
@@ -104,7 +104,7 @@ repelForce m p =
 
 frictionStrength : Float
 frictionStrength =
-    300.0
+    100.0
 
 
 {-| Simple force from the current position towards the previous
