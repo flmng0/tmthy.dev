@@ -4,6 +4,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
 
 const entries = await getCollection("projects");
+entries.sort((a, b) => {
+  return +b.data.date - +a.data.date;
+});
 ---
 
 <BaseLayout

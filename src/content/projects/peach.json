@@ -1,4 +1,5 @@
 {
+  "date": "2019-12-09",
   "name": "Peach",
   "brief": "A processing-esque creative coding framework made in Rust. One of the first projects I ever made utilising modern rendering APIs.",
   "source": "https://github.com/flmng0/peach"

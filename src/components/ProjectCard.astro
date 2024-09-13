@@ -14,10 +14,11 @@ const data = project.data;
 ---
 
 <div class="project-card">
-  <div class="details">
+  <hgroup class="details">
     <h2>{data.name}</h2>
     <p>{data.brief}</p>
-  </div>
+    <span>Started {data.date.toLocaleDateString()}</span>
+  </hgroup>
 
   <nav class="links">
     {

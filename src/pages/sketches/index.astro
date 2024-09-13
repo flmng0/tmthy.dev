@@ -8,6 +8,9 @@ import ElmIcon from "~icons/devicon/elm";
 import OpenGLIcon from "~icons/devicon/opengl";
 
 const sketchEntries = await getCollection("sketches");
+sketchEntries.sort((a, b) => {
+  return +b.data.date - +a.data.date;
+});
 
 const legend = [
   {
@@ -80,6 +83,7 @@ const legend = [
     margin-block-start: var(--size-3);
 
     column-gap: var(--size-fluid-2);
+    row-gap: var(--size-fluid-1);
 
     width: min(100%, var(--size-content));
     place-items: center;
