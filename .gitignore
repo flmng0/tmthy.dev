@@ -12,7 +12,6 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-elm-stuff/
 
 # environment variables
 .env
@@ -20,3 +19,6 @@ elm-stuff/
 
 # macOS-specific files
 .DS_Store
+
+# jetbrains setting folder
+.idea/

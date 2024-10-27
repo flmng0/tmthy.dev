@@ -1,8 +1,0 @@
-{
-  "date": "2023-11-02",
-  "name": "Keyboard",
-  "brief": "Hand made 34-key split keyboard, with custom firmware.",
-  "thumbnail": "./images/keyboard.jpg",
-  "source": "https://github.com/flmng0/keyboard",
-  "writeup": "/blog/keyboard"
-}
