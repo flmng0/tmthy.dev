@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
-import { easeOutElastic, easeInOutSine } from "./util";
+import { easeOutElastic, easeInOutCubic } from "./util";
 
 let renderer: THREE.WebGLRenderer;
 let camera: THREE.OrthographicCamera;
@@ -14,7 +14,7 @@ const letterOffset = 0.125;
 const letterPadding = 0.5;
 const FRUSTUM_SIZE = word.length / 2 + letterPadding;
 
-export async function start(canvas: HTMLCanvasElement) {
+export async function start(canvas: HTMLCanvasElement, finished: () => void) {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
@@ -167,9 +167,9 @@ export async function start(canvas: HTMLCanvasElement) {
       return t >= 1 + (n - 2) * separation * (1 / speed);
     },
     (t) => {
-      const total = 1.5;
+      const total = 1.7;
 
-      const u = easeInOutSine(t / total);
+      const u = easeInOutCubic(t / total);
 
       camera.position.lerpVectors(camStart, camEnd, u);
       camera.quaternion.slerpQuaternions(camStartQuat, camEndQuat, u);
@@ -198,8 +198,8 @@ export async function start(canvas: HTMLCanvasElement) {
       }
     } else {
       renderer.setAnimationLoop(null);
+      finished();
     }
-    console.count("Animating!");
 
     renderer.render(scene, camera);
   }

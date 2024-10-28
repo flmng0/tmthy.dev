@@ -33,3 +33,19 @@ export function easeInOutSine(t: number): number {
 
   return -(Math.cos(Math.PI * t) - 1) / 2;
 }
+
+export function easeOutSine(t: number): number {
+  if (t <= 0) return 0;
+  if (t >= 1) return 1;
+
+  return Math.sin((Math.PI * t) / 2);
+}
+export function easeInSine(t: number): number {
+  if (t <= 0) return 0;
+  if (t >= 1) return 1;
+
+  return 1 - Math.cos((Math.PI * t) / 2);
+}
+export function easeInOutCubic(t: number): number {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
