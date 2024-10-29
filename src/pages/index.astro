@@ -6,22 +6,12 @@ import HomeHero from '../components/HomeHero.svelte'
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content" />
 		<meta name="generator" content={Astro.generator} />
 		<title>tmthy.dev</title>
-
-		<!--<link rel="preload" href="/JetBrainsMono NF_Regular.json" as="fetch" />-->
 	</head>
 	<body>
-		<HomeHero client:load>
-			<main>
-				<h1>Test</h1>
-				<p>Hello!</p>
-				<p>Hello!</p>
-				<p>Hello!</p>
-				<p>Bkah!</p>
-			</main>
-		</HomeHero>
+		<HomeHero client:load></HomeHero>
 	</body>
 </html>
 
