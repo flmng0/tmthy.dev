@@ -154,8 +154,9 @@ export async function start(cvs: HTMLCanvasElement, complete: () => void) {
   const frustumDelta = targetFrustum - FRUSTUM_SIZE;
 
   const [left, right, top, bottom] = cameraParams(FRUSTUM_SIZE + frustumDelta);
+  const camZ = camera.position.z + 1.5;
 
-  const timeline = anime.timeline();
+  const timeline = anime.timeline({ autoplay: false });
 
   timeline
     .add({
@@ -164,9 +165,6 @@ export async function start(cvs: HTMLCanvasElement, complete: () => void) {
       duration: 950,
       delay: anime.stagger(90, { start: 700 }),
       easing: "easeOutElastic",
-      update: function () {
-        renderer.render(scene, camera);
-      },
       complete,
     })
     .add({
@@ -179,9 +177,26 @@ export async function start(cvs: HTMLCanvasElement, complete: () => void) {
       duration: 1000,
       update: function () {
         camera.updateProjectionMatrix();
-        renderer.render(scene, camera);
       },
-    });
+    })
+    .add(
+      {
+        targets: camera.position,
+        z: camZ,
+        duration: 1000,
+        easing: "easeInSine",
+      },
+      "-=1000"
+    );
 
-  timeline.play();
+  function tick(t: number) {
+    timeline.tick(t);
+    renderer.render(scene, camera);
+
+    if (!timeline.completed) {
+      window.requestAnimationFrame(tick);
+    }
+  }
+
+  window.requestAnimationFrame(tick);
 }
