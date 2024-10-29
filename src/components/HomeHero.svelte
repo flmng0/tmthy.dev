@@ -1,24 +1,24 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
-	import { start, doZoom } from "../lib/home-hero.ts";
+	import { start } from "../lib/home-hero.ts";
 
 	let { children }: { children: Snippet } = $props();
 
 	let canvas: HTMLCanvasElement;
 
+	let ready: boolean = $state(false);
 	let finished: boolean = $state(false);
 
 	const onFinish = () => {
 		finished = true;
-		doZoom();
 	};
 
 	$effect(() => {
-		start(canvas, onFinish);
+		start(canvas, onFinish).then(() => ready = true);
 	});
 </script>
 
-<canvas bind:this={canvas}></canvas>
+<canvas bind:this={canvas} class:ready></canvas>
 
 {#if finished}
 	<div class="container">
@@ -33,6 +33,23 @@
 		overflow-y: auto;
 		position: absolute;
 		inset: 0;
+	}
+
+	@keyframes fadeIn {
+		0%{
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+
+	canvas.ready {
+		animation-fill-mode: forwards;
+		animation-name: fadeIn;
+		animation-delay: 0;
+		animation-duration: 0.5s;
+		animation-timing-function: ease-in;
 	}
 
 	@keyframes slideUp {

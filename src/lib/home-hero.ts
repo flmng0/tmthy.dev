@@ -31,27 +31,6 @@ const cameraParams = (frustum?: number) => {
   return [left, right, top, bottom, near, far];
 };
 
-export function doZoom() {
-  const targetFrustum = FRUSTUM_SIZE * 2;
-  const frustumDelta = targetFrustum - FRUSTUM_SIZE;
-
-  const [left, right, top, bottom] = cameraParams(FRUSTUM_SIZE + frustumDelta);
-
-  anime({
-    targets: camera,
-    left,
-    right,
-    top,
-    bottom,
-    easing: "easeOutSine",
-    duration: 1000,
-    update: function () {
-      camera.updateProjectionMatrix();
-      renderer.render(scene, camera);
-    },
-  });
-}
-
 export async function start(cvs: HTMLCanvasElement, complete: () => void) {
   canvas = cvs;
   canvas.width = window.innerWidth;
@@ -171,16 +150,38 @@ export async function start(cvs: HTMLCanvasElement, complete: () => void) {
 
   renderer.render(scene, camera);
 
-  anime({
-    targets: textMeshes.map((m) => m.position),
-    y: -1.3,
-    duration: 950,
-    delay: anime.stagger(90),
-    easing: "easeOutElastic",
-    autoplay: true,
-    update: function () {
-      renderer.render(scene, camera);
-    },
-    complete,
-  });
+  const targetFrustum = FRUSTUM_SIZE * 2;
+  const frustumDelta = targetFrustum - FRUSTUM_SIZE;
+
+  const [left, right, top, bottom] = cameraParams(FRUSTUM_SIZE + frustumDelta);
+
+  const timeline = anime.timeline();
+
+  timeline
+    .add({
+      targets: textMeshes.map((m) => m.position),
+      y: -1.3,
+      duration: 950,
+      delay: anime.stagger(90, { start: 700 }),
+      easing: "easeOutElastic",
+      update: function () {
+        renderer.render(scene, camera);
+      },
+      complete,
+    })
+    .add({
+      targets: camera,
+      left,
+      right,
+      top,
+      bottom,
+      easing: "easeInOutSine",
+      duration: 1000,
+      update: function () {
+        camera.updateProjectionMatrix();
+        renderer.render(scene, camera);
+      },
+    });
+
+  timeline.play();
 }
