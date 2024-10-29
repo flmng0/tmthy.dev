@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
-	import { start } from "../lib/home-hero.ts";
+	import { start, doZoom } from "../lib/home-hero.ts";
 
 	let { children }: { children: Snippet } = $props();
 
@@ -10,6 +10,7 @@
 
 	const onFinish = () => {
 		finished = true;
+		doZoom();
 	};
 
 	$effect(() => {
