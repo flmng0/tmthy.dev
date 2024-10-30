@@ -58,6 +58,7 @@
 	}
 
 	.home {
+		cursor: pointer;
 		position: fixed;
 		bottom: 0;
 		right: 0;
