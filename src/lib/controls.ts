@@ -9,6 +9,9 @@ export class IsoMapControls {
   minZoom: number = 0.5;
   maxZoom: number = 2;
 
+  limitRadius: number = 50;
+
+  readonly _camera0: THREE.Vector3;
   readonly _ray: THREE.Ray;
   readonly _oz: number;
   readonly _dx = new THREE.Vector3();
@@ -25,6 +28,7 @@ export class IsoMapControls {
     this.camera = camera;
     this.floorPlane = floorPlane;
 
+    this._camera0 = this.camera.position.clone();
     this._ray = new THREE.Ray();
     this._ray.direction.set(0, 0, -1).transformDirection(camera.matrixWorld);
 
@@ -59,6 +63,31 @@ export class IsoMapControls {
 
     this._dx.subVectors(intersectX, intersect0);
     this._dy.subVectors(intersectY, intersect0);
+  }
+
+  getDistSquared() {
+    const xz = new THREE.Vector2(
+      this.camera.position.x - this._camera0.x,
+      this.camera.position.z - this._camera0.z
+    );
+
+    return xz.lengthSq();
+  }
+
+  _limitDistance() {
+    // Duplication :(
+    const xz = new THREE.Vector2(
+      this.camera.position.x - this._camera0.x,
+      this.camera.position.z - this._camera0.z
+    );
+
+    const distSq = xz.lengthSq();
+    if (distSq > this.limitRadius * this.limitRadius) {
+      xz.normalize().multiplyScalar(this.limitRadius);
+
+      this.camera.position.x = this._camera0.x + xz.x;
+      this.camera.position.z = this._camera0.z + xz.y;
+    }
   }
 
   _dist<P extends { x: number; y: number }>(p: P, q: P): number {
@@ -124,6 +153,8 @@ export class IsoMapControls {
 
         this.camera.position.sub(moveX);
         this.camera.position.sub(moveY);
+
+        this._limitDistance();
 
         this._evCache[index] = ev;
         break;

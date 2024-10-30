@@ -1,20 +1,35 @@
 import * as THREE from "three";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 import { FontLoader, Font } from "three/addons/loaders/FontLoader.js";
-import { IsoMapControls } from "./controls.ts";
 
 import anime from "animejs";
 
 import * as data from "./data";
 import { shuffle } from "./util.ts";
+import { IsoMapControls } from "./controls.ts";
 
-// This is a placeholder
-const socials = ["github", "github", "github", "github", "github", "linkedin"];
+type BooleanSetter = (value: boolean) => void;
+
+// Eventually want to keep this in a separate file or done with astro:content
+type Social = { href: string; name: string };
+
+const socials: Social[] = [
+  { href: "https://github.com/flmng0", name: "GitHub" },
+  { href: "https://www.linkedin.com/in/timothy-davis-dev", name: "LinkedIn" },
+];
+
+const socialHandler = (social: Social) => {
+  return () => {
+    window.location.assign(social.href);
+  };
+};
 
 let canvas: HTMLCanvasElement;
 let renderer: THREE.WebGLRenderer;
 let camera: THREE.OrthographicCamera;
 let scene: THREE.Scene;
+
+const clickHandlers: Record<string, () => void> = {};
 
 const textGroup = new THREE.Group();
 const allPedestals = new THREE.Group();
@@ -24,6 +39,9 @@ allPedestals.add(socialPedestals);
 
 let floorPlane: THREE.Plane;
 let floor: THREE.Mesh;
+
+const farDist = 10;
+const farDistSq = farDist * farDist;
 
 // Used for grouping / querying only the pedestals.
 const pedestalLayer = 1;
@@ -54,8 +72,21 @@ const cameraParams = (frustum?: number) => {
   return [left, right, top, bottom, near, far];
 };
 
-function enableControls() {
-  new IsoMapControls(camera, renderer.domElement, floorPlane);
+export let goHome: () => void;
+
+function enableControls(setHover: BooleanSetter, setFar: BooleanSetter) {
+  const controls = new IsoMapControls(camera, renderer.domElement, floorPlane);
+
+  goHome = () => {
+    const home = controls._camera0;
+    anime({
+      targets: camera.position,
+      x: home.x,
+      z: home.z,
+      duration: 750,
+      easing: "easeOutCubic",
+    });
+  };
 
   const raycaster = new THREE.Raycaster();
   raycaster.layers.set(pedestalLayer);
@@ -64,10 +95,55 @@ function enableControls() {
 
   let pedestal: THREE.Object3D | null = null;
 
-  renderer.domElement.addEventListener("pointermove", (e) => {
+  const setY = (p: THREE.Object3D, y: number) => {
+    // Cancel any prior animation
+    anime.remove(p.position);
+    // Animate to target position
+    anime({
+      targets: p.position,
+      y,
+      duration: 200,
+    });
+  };
+
+  const setPointer = (e: PointerEvent) => {
     pointer.x = (2 * e.x) / window.innerWidth - 1;
     pointer.y = (-2 * e.y) / window.innerHeight + 1;
-  });
+  };
+
+  const elem = renderer.domElement;
+  elem.addEventListener("pointerdown", setPointer);
+  elem.addEventListener("pointermove", setPointer);
+
+  const handleClick = () => {
+    if (pedestal === null) {
+      return;
+    }
+
+    const id = pedestal.userData.clickHandlerId;
+    const clickHandler = clickHandlers[id];
+    clickHandler();
+  };
+
+  elem.addEventListener("click", handleClick);
+
+  const handleIntersection = (hit: THREE.Object3D) => {
+    if (hit === pedestal) {
+      return;
+    }
+
+    if (pedestal) {
+      setY(pedestal, pedestalIdleY);
+    }
+
+    if (hit === floor) {
+      pedestal = null;
+      return;
+    }
+
+    pedestal = hit;
+    setY(pedestal, pedestalHoverY);
+  };
 
   renderer.setAnimationLoop(() => {
     raycaster.setFromCamera(pointer, camera);
@@ -76,29 +152,11 @@ function enableControls() {
     if (hits.length > 0) {
       const hit = hits[0].object;
 
-      if (hit === floor) {
-        if (pedestal) {
-          anime.remove(pedestal.position);
-          anime({
-            targets: pedestal.position,
-            y: pedestalIdleY,
-            duration: 200,
-          });
-          pedestal = null;
-        }
-      } else {
-        if (pedestal && pedestal !== hit) {
-          anime.remove(pedestal.position);
-        }
-
-        pedestal = hits[0].object;
-        anime({
-          targets: pedestal.position,
-          y: pedestalHoverY,
-          duration: 200,
-        });
-      }
+      handleIntersection(hit);
     }
+
+    setHover(pedestal !== null);
+    setFar(controls.getDistSquared() >= farDistSq);
 
     renderer.render(scene, camera);
   });
@@ -186,8 +244,12 @@ function setupScene(floorTileTexture: THREE.Texture, font: Font) {
   for (const social of socials) {
     const pedestal = new THREE.Mesh(pedestalGeom, pedestalMat);
     pedestal.layers.enable(pedestalLayer);
-    //pedestal.name = pedestalLayer;
+
     pedestal.position.x = i++ * (gap + 1);
+
+    const cbId = "social-" + social.name;
+    clickHandlers[cbId] = socialHandler(social);
+    pedestal.userData.clickHandlerId = cbId;
 
     socialPedestals.add(pedestal);
   }
@@ -200,7 +262,11 @@ function setupScene(floorTileTexture: THREE.Texture, font: Font) {
   scene.add(allPedestals);
 }
 
-export async function start(cvs: HTMLCanvasElement) {
+export async function start(
+  cvs: HTMLCanvasElement,
+  setHover: BooleanSetter,
+  setFar: BooleanSetter
+) {
   canvas = cvs;
 
   renderer = new THREE.WebGLRenderer({
@@ -263,7 +329,9 @@ export async function start(cvs: HTMLCanvasElement) {
 
   const timeline = anime.timeline({
     autoplay: false,
-    complete: enableControls,
+    complete: () => {
+      enableControls(setHover, setFar);
+    },
   });
 
   const camDuration = 1500;
