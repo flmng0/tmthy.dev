@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 import { FontLoader, Font } from "three/addons/loaders/FontLoader.js";
-import { MapControls } from "three/addons/controls/MapControls.js";
+import { IsoMapControls } from "./controls.ts";
 
 import anime from "animejs";
 
@@ -38,103 +38,11 @@ const cameraParams = (frustum?: number) => {
 };
 
 function enableControls() {
-  const ray = new THREE.Ray();
-  ray.direction.set(0, 0, -1).transformDirection(camera.matrixWorld);
+  new IsoMapControls(camera, renderer.domElement, floorPlane);
 
-  const oz = (camera.near + camera.far) / (camera.near - camera.far);
-
-  // Calculate the unit movement that maps pointer motion to precise
-  // world panning.
-  //
-  // Variables declared here to stop slow down of memory management.
-  const intersect0 = new THREE.Vector3();
-  const intersectX = new THREE.Vector3();
-  const intersectY = new THREE.Vector3();
-
-  const xDiff = new THREE.Vector3();
-  const yDiff = new THREE.Vector3();
-
-  const calculateUnitVectors = () => {
-    const setRayPos = (screenX: number, screenY: number) => {
-      const ndcX = (2 * screenX) / window.innerWidth - 1;
-      const ndcY = (2 * screenY) / window.innerHeight - 1;
-
-      ray.origin.set(ndcX, ndcY, oz).unproject(camera);
-    };
-
-    setRayPos(0, 0);
-    ray.intersectPlane(floorPlane, intersect0);
-
-    setRayPos(1, 0);
-    ray.intersectPlane(floorPlane, intersectX);
-
-    setRayPos(0, 1);
-    ray.intersectPlane(floorPlane, intersectY);
-
-    xDiff.subVectors(intersectX, intersect0);
-    yDiff.subVectors(intersectY, intersect0);
-  };
-
-  calculateUnitVectors();
-  window.addEventListener("resize", () => calculateUnitVectors());
-
-  // Here and below, the actual interaction of the pointer is
-  // implemented.
-  //
-  // The main logic is in the pointermove event listener.
-  let start: { x: number; y: number };
-  let camStart: THREE.Vector3 = new THREE.Vector3();
-  let down: boolean = false;
-
-  const elem = renderer.domElement;
-
-  const onlyPrimary = (handler: (e: PointerEvent) => void) => {
-    return (e: PointerEvent) => {
-      if (e.isPrimary) {
-        handler(e);
-      }
-    };
-  };
-
-  elem.addEventListener(
-    "pointerdown",
-    onlyPrimary((e) => {
-      start = e;
-      camStart.copy(camera.position);
-      down = true;
-    })
-  );
-
-  elem.addEventListener(
-    "pointermove",
-    onlyPrimary((e) => {
-      if (!down) return;
-
-      const dx = e.x - start.x;
-      const dy = e.y - start.y;
-
-      const offsetX = xDiff.clone();
-      offsetX.multiplyScalar(dx);
-
-      const offsetY = yDiff.clone();
-      offsetY.multiplyScalar(dy);
-
-      const newPos = new THREE.Vector3();
-      newPos.copy(camStart);
-      newPos.sub(offsetX);
-      newPos.add(offsetY);
-
-      camera.position.copy(newPos);
-      renderer.render(scene, camera);
-    })
-  );
-
-  elem.addEventListener(
-    "pointerup",
-    onlyPrimary(() => {
-      down = false;
-    })
-  );
+  renderer.setAnimationLoop(() => {
+    renderer.render(scene, camera);
+  });
 }
 
 function setupScene(floorTileTexture: THREE.Texture, font: Font) {

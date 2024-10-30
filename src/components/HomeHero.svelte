@@ -32,6 +32,10 @@
 		}
 	}
 
+	canvas {
+		touch-action: none;
+	}
+
 	canvas.ready {
 		animation-fill-mode: forwards;
 		animation-name: fadeIn;
