@@ -6,20 +6,37 @@ import { IsoMapControls } from "./controls.ts";
 import anime from "animejs";
 
 import * as data from "./data";
+import { shuffle } from "./util.ts";
+
+// This is a placeholder
+const socials = ["github", "github", "github", "github", "github", "linkedin"];
 
 let canvas: HTMLCanvasElement;
 let renderer: THREE.WebGLRenderer;
 let camera: THREE.OrthographicCamera;
 let scene: THREE.Scene;
-let textObjects: THREE.Mesh[];
+
+const textGroup = new THREE.Group();
+const allPedestals = new THREE.Group();
+const socialPedestals = new THREE.Group();
+
+allPedestals.add(socialPedestals);
 
 let floorPlane: THREE.Plane;
+let floor: THREE.Mesh;
+
+// Used for grouping / querying only the pedestals.
+const pedestalLayer = 1;
+const pedestalHeight = 0.5;
+const pedestalIdleY = -(pedestalHeight - 0.1);
+const pedestalHoverY = pedestalIdleY + 0.2;
 
 const word = "tmthy.dev";
 
 const letterSpacing = 1;
 const letterOffset = 0.125;
 const letterPadding = 0.5;
+
 const FRUSTUM_START = word.length / 2 + letterPadding;
 let frustumSize = FRUSTUM_START;
 
@@ -40,7 +57,49 @@ const cameraParams = (frustum?: number) => {
 function enableControls() {
   new IsoMapControls(camera, renderer.domElement, floorPlane);
 
+  const raycaster = new THREE.Raycaster();
+  raycaster.layers.set(pedestalLayer);
+
+  const pointer = new THREE.Vector2();
+
+  let pedestal: THREE.Object3D | null = null;
+
+  renderer.domElement.addEventListener("pointermove", (e) => {
+    pointer.x = (2 * e.x) / window.innerWidth - 1;
+    pointer.y = (-2 * e.y) / window.innerHeight + 1;
+  });
+
   renderer.setAnimationLoop(() => {
+    raycaster.setFromCamera(pointer, camera);
+    const hits = raycaster.intersectObjects([allPedestals, floor]);
+
+    if (hits.length > 0) {
+      const hit = hits[0].object;
+
+      if (hit === floor) {
+        if (pedestal) {
+          anime.remove(pedestal.position);
+          anime({
+            targets: pedestal.position,
+            y: pedestalIdleY,
+            duration: 200,
+          });
+          pedestal = null;
+        }
+      } else {
+        if (pedestal && pedestal !== hit) {
+          anime.remove(pedestal.position);
+        }
+
+        pedestal = hits[0].object;
+        anime({
+          targets: pedestal.position,
+          y: pedestalHoverY,
+          duration: 200,
+        });
+      }
+    }
+
     renderer.render(scene, camera);
   });
 }
@@ -53,12 +112,18 @@ function setupScene(floorTileTexture: THREE.Texture, font: Font) {
   floorTileTexture.wrapS = THREE.RepeatWrapping;
   floorTileTexture.wrapT = THREE.RepeatWrapping;
   floorTileTexture.repeat.set(floorSize, floorSize);
-  floorTileTexture.offset.set(-0.5, 0.125);
+
+  // So that unit coordinates are in the middle of squares
+  floorTileTexture.offset.set(-0.5, -0.5);
+
+  const xOff = 0;
+  const zOff = 0.375;
 
   const floorGeom = new THREE.PlaneGeometry(floorSize, floorSize);
   const floorMat = new THREE.MeshPhongMaterial({ map: floorTileTexture });
 
-  const floor = new THREE.Mesh(floorGeom, floorMat);
+  floor = new THREE.Mesh(floorGeom, floorMat);
+  floor.layers.enable(pedestalLayer);
 
   floor.rotation.x = Math.PI * -0.5;
   floor.position.y = -0.5;
@@ -78,7 +143,6 @@ function setupScene(floorTileTexture: THREE.Texture, font: Font) {
     bevelSegments: 1,
   };
 
-  textObjects = [];
   const textGeom: Record<string, TextGeometry> = {};
   const textMat = new THREE.MeshPhongMaterial({ color: 0xffffff });
 
@@ -93,14 +157,14 @@ function setupScene(floorTileTexture: THREE.Texture, font: Font) {
     const textMesh = new THREE.Mesh(geom, textMat);
     textMesh.castShadow = true;
     textMesh.position.x = i * letterSpacing;
-    textMesh.position.y = -2.3;
     textMesh.rotation.x = Math.PI * -0.5;
-    textObjects.push(textMesh);
+    textGroup.add(textMesh);
 
     i += 1;
   }
 
-  scene.add(...textObjects);
+  textGroup.position.set(xOff, -2.3, zOff);
+  scene.add(textGroup);
 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
 
@@ -110,6 +174,30 @@ function setupScene(floorTileTexture: THREE.Texture, font: Font) {
   dirLight.castShadow = true;
 
   scene.add(ambientLight, dirLight);
+
+  allPedestals.position.y = -pedestalHeight * 0.5;
+  allPedestals.position.z = 2;
+
+  const pedestalGeom = new THREE.BoxGeometry(1, pedestalHeight, 1);
+  const pedestalMat = textMat.clone();
+
+  const gap = 1;
+  i = 0;
+  for (const social of socials) {
+    const pedestal = new THREE.Mesh(pedestalGeom, pedestalMat);
+    pedestal.layers.enable(pedestalLayer);
+    //pedestal.name = pedestalLayer;
+    pedestal.position.x = i++ * (gap + 1);
+
+    socialPedestals.add(pedestal);
+  }
+
+  // For the intro animation, shuffle everything
+  shuffle(socialPedestals.children);
+  socialPedestals.position.x =
+    -Math.floor(socialPedestals.children.length / 2) - 2;
+
+  scene.add(allPedestals);
 }
 
 export async function start(cvs: HTMLCanvasElement) {
@@ -173,38 +261,50 @@ export async function start(cvs: HTMLCanvasElement) {
 
   renderer.render(scene, camera);
 
-  const camZ = camera.position.z + 1.5;
-
   const timeline = anime.timeline({
     autoplay: false,
     complete: enableControls,
   });
 
+  const camDuration = 1500;
+
   timeline
     .add({
-      targets: textObjects.map((o) => o.position),
-      y: -1.3,
-      duration: 950,
+      targets: textGroup.children.map((o) => o.position),
+      y: 1.0,
+      duration: 700,
       delay: anime.stagger(90, { start: 700 }),
       easing: "easeOutElastic",
     })
-    .add({
-      targets: camera,
-      zoom: 0.75,
-      easing: "easeInOutSine",
-      duration: 1000,
-      update: function () {
-        camera.updateProjectionMatrix();
+    .add(
+      {
+        targets: camera,
+        zoom: 0.75,
+        easing: "easeInOutSine",
+        duration: camDuration,
+        update: function () {
+          camera.updateProjectionMatrix();
+        },
       },
-    })
+      "-=" + (90 * word.length - 200)
+    )
     .add(
       {
         targets: camera.position,
-        z: camZ,
-        duration: 1000,
-        easing: "easeInSine",
+        z: (pos: THREE.Vector3) => pos.z + 1.5,
+        easing: "easeInOutSine",
+        duration: camDuration,
       },
-      "-=1000"
+      "-=" + camDuration
+    )
+    .add(
+      {
+        targets: socialPedestals.children.map((o) => o.position),
+        y: [-pedestalHeight - 0.05, pedestalIdleY],
+        duration: 900,
+        delay: anime.stagger(125),
+      },
+      "-=700"
     );
 
   function tick(t: number) {

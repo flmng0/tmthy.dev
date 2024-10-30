@@ -43,7 +43,7 @@ export class IsoMapControls {
 
     const setRayPos = (screenX: number, screenY: number) => {
       const ndcX = (2 * screenX) / window.innerWidth - 1;
-      const ndcY = (2 * screenY) / window.innerHeight - 1;
+      const ndcY = -(2 * screenY) / window.innerHeight + 1;
 
       this._ray.origin.set(ndcX, ndcY, this._oz).unproject(this.camera);
     };
@@ -71,17 +71,11 @@ export class IsoMapControls {
     return Math.pow(0.95, this.zoomSpeed * Math.abs(delta * 0.1));
   }
 
-  _wheel(ev: WheelEvent) {
-    if (Math.abs(ev.deltaY) <= 0.001) {
-      return;
-    }
-
-    const zoomScale = this._zoomScale(ev.deltaY / 10);
-
-    if (ev.deltaY < 0) {
-      this.camera.zoom *= zoomScale;
-    } else if (ev.deltaY > 0) {
-      this.camera.zoom /= zoomScale;
+  _zoom(scale: number, direction: "in" | "out") {
+    if (direction === "in") {
+      this.camera.zoom *= scale;
+    } else if (direction === "out") {
+      this.camera.zoom /= scale;
     }
 
     this.camera.zoom = THREE.MathUtils.clamp(
@@ -91,6 +85,19 @@ export class IsoMapControls {
     );
 
     this.camera.updateProjectionMatrix();
+    this._calculateUnitVectors();
+  }
+
+  _wheel(ev: WheelEvent) {
+    ev.preventDefault();
+
+    if (Math.abs(ev.deltaY) <= 0.001) {
+      return;
+    }
+
+    const scale = this._zoomScale(ev.deltaY / 10);
+    const dir = ev.deltaY > 0 ? "in" : "out";
+    this._zoom(scale, dir);
   }
 
   _pointerDown(ev: PointerEvent) {
@@ -116,7 +123,7 @@ export class IsoMapControls {
         moveY.multiplyScalar(dy);
 
         this.camera.position.sub(moveX);
-        this.camera.position.add(moveY);
+        this.camera.position.sub(moveY);
 
         this._evCache[index] = ev;
         break;
@@ -133,21 +140,11 @@ export class IsoMapControls {
 
         if (this._pinchDiff > 0) {
           const delta = currDiff - this._pinchDiff;
-          const zoomScale = this._zoomScale(delta);
 
-          if (delta < 0) {
-            this.camera.zoom *= zoomScale;
-          } else if (delta > 0) {
-            this.camera.zoom /= zoomScale;
-          }
+          const scale = this._zoomScale(delta);
+          const dir = delta < 0 ? "in" : "out";
 
-          this.camera.zoom = THREE.MathUtils.clamp(
-            this.camera.zoom,
-            this.minZoom,
-            this.maxZoom
-          );
-
-          this.camera.updateProjectionMatrix();
+          this._zoom(scale, dir);
         }
 
         this._pinchDiff = currDiff;
@@ -164,12 +161,11 @@ export class IsoMapControls {
 
     if (this._evCache.length < 2) {
       this._pinchDiff = -1;
-      this._calculateUnitVectors();
     }
   }
 
   _setupEvents(elem: HTMLElement) {
-    elem.addEventListener("wheel", (ev) => this._wheel(ev));
+    elem.addEventListener("wheel", (ev) => this._wheel(ev), { passive: false });
 
     elem.addEventListener("pointerdown", (ev) => this._pointerDown(ev));
     elem.addEventListener("pointermove", (ev) => this._pointerMove(ev));
