@@ -88,36 +88,53 @@ function enableControls() {
 
   const elem = renderer.domElement;
 
-  elem.addEventListener("pointerdown", (e) => {
-    start = e;
-    camStart.copy(camera.position);
-    down = true;
-  });
+  const onlyPrimary = (handler: (e: PointerEvent) => void) => {
+    return (e: PointerEvent) => {
+      if (e.isPrimary) {
+        handler(e);
+      }
+    };
+  };
 
-  elem.addEventListener("pointermove", (e) => {
-    if (!down) return;
+  elem.addEventListener(
+    "pointerdown",
+    onlyPrimary((e) => {
+      start = e;
+      camStart.copy(camera.position);
+      down = true;
+    })
+  );
 
-    const dx = e.x - start.x;
-    const dy = e.y - start.y;
+  elem.addEventListener(
+    "pointermove",
+    onlyPrimary((e) => {
+      if (!down) return;
 
-    const offsetX = xDiff.clone();
-    offsetX.multiplyScalar(dx);
+      const dx = e.x - start.x;
+      const dy = e.y - start.y;
 
-    const offsetY = yDiff.clone();
-    offsetY.multiplyScalar(dy);
+      const offsetX = xDiff.clone();
+      offsetX.multiplyScalar(dx);
 
-    const newPos = new THREE.Vector3();
-    newPos.copy(camStart);
-    newPos.sub(offsetX);
-    newPos.add(offsetY);
+      const offsetY = yDiff.clone();
+      offsetY.multiplyScalar(dy);
 
-    camera.position.copy(newPos);
-    renderer.render(scene, camera);
-  });
+      const newPos = new THREE.Vector3();
+      newPos.copy(camStart);
+      newPos.sub(offsetX);
+      newPos.add(offsetY);
 
-  elem.addEventListener("pointerup", () => {
-    down = false;
-  });
+      camera.position.copy(newPos);
+      renderer.render(scene, camera);
+    })
+  );
+
+  elem.addEventListener(
+    "pointerup",
+    onlyPrimary(() => {
+      down = false;
+    })
+  );
 }
 
 function setupScene(floorTileTexture: THREE.Texture, font: Font) {
