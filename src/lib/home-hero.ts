@@ -112,7 +112,6 @@ function enableControls() {
     newPos.add(offsetY);
 
     camera.position.copy(newPos);
-
     renderer.render(scene, camera);
   });
 
@@ -203,20 +202,6 @@ export async function start(cvs: HTMLCanvasElement) {
 
   camera = new THREE.OrthographicCamera(...cameraParams());
 
-  window.addEventListener("resize", () => {
-    const [left, right, top, bottom] = cameraParams();
-
-    camera.left = left;
-    camera.right = right;
-    camera.top = top;
-    camera.bottom = bottom;
-
-    camera.updateProjectionMatrix();
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.render(scene, camera);
-  });
-
   const camStartPolar = {
     azimuth: Math.PI / 4,
     altitude: Math.PI / 2 - Math.atan(1 / Math.SQRT2),
@@ -245,6 +230,21 @@ export async function start(cvs: HTMLCanvasElement) {
   ]);
 
   setupScene(floorTileTexture, font);
+
+  window.addEventListener("resize", () => {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const [left, right, top, bottom] = cameraParams();
+
+    camera.left = left;
+    camera.right = right;
+    camera.top = top;
+    camera.bottom = bottom;
+
+    camera.updateProjectionMatrix();
+
+    renderer.render(scene, camera);
+  });
 
   renderer.render(scene, camera);
 
