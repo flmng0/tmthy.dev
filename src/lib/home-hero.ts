@@ -176,7 +176,7 @@ function setupScene(floorTileTexture: THREE.Texture, font: Font) {
   scene.add(ambientLight, dirLight);
 
   allPedestals.position.y = -pedestalHeight * 0.5;
-  allPedestals.position.z = 2;
+  allPedestals.position.z = 3;
 
   const pedestalGeom = new THREE.BoxGeometry(1, pedestalHeight, 1);
   const pedestalMat = textMat.clone();
@@ -301,8 +301,8 @@ export async function start(cvs: HTMLCanvasElement) {
       {
         targets: socialPedestals.children.map((o) => o.position),
         y: [-pedestalHeight - 0.05, pedestalIdleY],
-        duration: 900,
-        delay: anime.stagger(125),
+        duration: 800,
+        delay: anime.stagger(100),
       },
       "-=700"
     );
