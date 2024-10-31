@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 import { FontLoader, Font } from "three/addons/loaders/FontLoader.js";
+import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 
 import anime from "animejs";
 
@@ -13,17 +14,32 @@ type Setter<T> = (value: T) => void;
 // Eventually want to keep this in a separate file or done with astro:content
 export type Link = { href: string; name: string };
 
-const socials: Link[] = [
-  { href: "https://github.com/flmng0", name: "GitHub" },
-  { href: "https://www.linkedin.com/in/timothy-davis-dev", name: "LinkedIn" },
+type SocialLink = Link & { icon: string; color: number };
+const socials: SocialLink[] = [
+  {
+    href: "https://github.com/flmng0",
+    name: "GitHub",
+    icon: data.icons.github,
+    color: 0x24292e,
+  },
+  {
+    href: "https://www.linkedin.com/in/timothy-davis-dev",
+    name: "LinkedIn",
+    icon: data.icons.linkedin,
+    color: 0x0077b5,
+  },
+  {
+    href: "mailto:tmthydvs@gmail.com",
+    name: "Email to tmthydvs@gmail.com",
+    icon: data.icons.email,
+    color: 0xea7b12,
+  },
 ];
 
 let canvas: HTMLCanvasElement;
 let renderer: THREE.WebGLRenderer;
 let camera: THREE.OrthographicCamera;
 let scene: THREE.Scene;
-
-const clickHandlers: Record<string, () => void> = {};
 
 const textGroup = new THREE.Group();
 const allPedestals = new THREE.Group();
@@ -42,12 +58,15 @@ const pedestalLayer = 1;
 const pedestalHeight = 0.5;
 const pedestalIdleY = -(pedestalHeight - 0.1);
 const pedestalHoverY = pedestalIdleY + 0.2;
+const iconSize = 0.75;
 
 const word = "tmthy.dev";
 
 const letterSpacing = 1;
 const letterOffset = 0.125;
 const letterPadding = 0.5;
+
+const zFightOff = 0.001;
 
 const FRUSTUM_START = word.length / 2 + letterPadding;
 let frustumSize = FRUSTUM_START;
@@ -106,6 +125,8 @@ function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
   };
 
   const elem = renderer.domElement;
+  // TODO: Come up with a solution where taps don't immediately redirect you,
+  // without tapping first.
   elem.addEventListener("pointerdown", setPointer);
   elem.addEventListener("pointermove", setPointer);
 
@@ -144,7 +165,7 @@ function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
   });
 }
 
-function setupScene(floorTileTexture: THREE.Texture, font: Font) {
+async function setupScene(floorTileTexture: THREE.Texture, font: Font) {
   scene = new THREE.Scene();
 
   const floorSize = 256;
@@ -219,25 +240,55 @@ function setupScene(floorTileTexture: THREE.Texture, font: Font) {
   allPedestals.position.z = 3;
 
   const pedestalGeom = new THREE.BoxGeometry(1, pedestalHeight, 1);
-  const pedestalMat = textMat.clone();
+  const iconMat = textMat;
+
+  const svgLoader = new SVGLoader();
+  const iconExtrudeSettings: THREE.ExtrudeGeometryOptions = {
+    bevelEnabled: false,
+    steps: 2,
+    depth: 10,
+  };
 
   const gap = 1;
-  i = 0;
-  for (const social of socials) {
+  const socialPromises = socials.map(async (social, i) => {
+    const { paths } = await svgLoader.loadAsync(social.icon);
+
+    const iconMeshes = paths.map((path) => {
+      const shapes = SVGLoader.createShapes(path);
+
+      const iconGeom = new THREE.ExtrudeGeometry(shapes, iconExtrudeSettings);
+
+      return new THREE.Mesh(iconGeom, iconMat);
+    });
+    const iconGroup = new THREE.Group();
+    const y = pedestalHeight / 2 + zFightOff;
+
+    iconGroup.scale.setScalar(iconSize / data.iconViewBoxSize);
+    iconGroup.rotation.x = Math.PI / 2;
+    iconGroup.position.set(-iconSize / 2, y, -iconSize / 2);
+
+    iconGroup.add(...iconMeshes);
+
+    const pedestalMat = new THREE.MeshPhongMaterial({ color: social.color });
     const pedestal = new THREE.Mesh(pedestalGeom, pedestalMat);
+    pedestal.add(iconGroup);
+
     pedestal.layers.enable(pedestalLayer);
 
     pedestal.position.x = i++ * (gap + 1);
 
     pedestal.userData = social;
 
-    socialPedestals.add(pedestal);
-  }
+    return pedestal;
+  });
+
+  const pedestals = await Promise.all(socialPromises);
+  socialPedestals.add(...pedestals);
 
   // For the intro animation, shuffle everything
   shuffle(socialPedestals.children);
   socialPedestals.position.x =
-    -Math.floor(socialPedestals.children.length / 2) - 2;
+    -Math.floor(socialPedestals.children.length / 2) - 1;
 
   scene.add(allPedestals);
 }
@@ -288,7 +339,7 @@ export async function start(
     fontPromise,
   ]);
 
-  setupScene(floorTileTexture, font);
+  await setupScene(floorTileTexture, font);
 
   window.addEventListener("resize", () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
