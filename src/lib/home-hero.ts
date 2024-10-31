@@ -8,21 +8,15 @@ import * as data from "./data";
 import { shuffle } from "./util.ts";
 import { IsoMapControls } from "./controls.ts";
 
-type BooleanSetter = (value: boolean) => void;
+type Setter<T> = (value: T) => void;
 
 // Eventually want to keep this in a separate file or done with astro:content
-type Social = { href: string; name: string };
+export type Link = { href: string; name: string };
 
-const socials: Social[] = [
+const socials: Link[] = [
   { href: "https://github.com/flmng0", name: "GitHub" },
   { href: "https://www.linkedin.com/in/timothy-davis-dev", name: "LinkedIn" },
 ];
-
-const socialHandler = (social: Social) => {
-  return () => {
-    window.location.assign(social.href);
-  };
-};
 
 let canvas: HTMLCanvasElement;
 let renderer: THREE.WebGLRenderer;
@@ -74,7 +68,7 @@ const cameraParams = (frustum?: number) => {
 
 export let goHome: () => void;
 
-function enableControls(setHover: BooleanSetter, setFar: BooleanSetter) {
+function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
   const controls = new IsoMapControls(camera, renderer.domElement, floorPlane);
 
   goHome = () => {
@@ -115,18 +109,6 @@ function enableControls(setHover: BooleanSetter, setFar: BooleanSetter) {
   elem.addEventListener("pointerdown", setPointer);
   elem.addEventListener("pointermove", setPointer);
 
-  const handleClick = () => {
-    if (pedestal === null) {
-      return;
-    }
-
-    const id = pedestal.userData.clickHandlerId;
-    const clickHandler = clickHandlers[id];
-    clickHandler();
-  };
-
-  elem.addEventListener("click", handleClick);
-
   const handleIntersection = (hit: THREE.Object3D) => {
     if (hit === pedestal) {
       return;
@@ -155,7 +137,7 @@ function enableControls(setHover: BooleanSetter, setFar: BooleanSetter) {
       handleIntersection(hit);
     }
 
-    setHover(pedestal !== null);
+    setLink(pedestal?.userData as Link);
     setFar(controls.getDistSquared() >= farDistSq);
 
     renderer.render(scene, camera);
@@ -247,9 +229,7 @@ function setupScene(floorTileTexture: THREE.Texture, font: Font) {
 
     pedestal.position.x = i++ * (gap + 1);
 
-    const cbId = "social-" + social.name;
-    clickHandlers[cbId] = socialHandler(social);
-    pedestal.userData.clickHandlerId = cbId;
+    pedestal.userData = social;
 
     socialPedestals.add(pedestal);
   }
@@ -264,8 +244,8 @@ function setupScene(floorTileTexture: THREE.Texture, font: Font) {
 
 export async function start(
   cvs: HTMLCanvasElement,
-  setHover: BooleanSetter,
-  setFar: BooleanSetter
+  setLink: Setter<Link>,
+  setFar: Setter<boolean>
 ) {
   canvas = cvs;
 
@@ -330,7 +310,7 @@ export async function start(
   const timeline = anime.timeline({
     autoplay: false,
     complete: () => {
-      enableControls(setHover, setFar);
+      enableControls(setLink, setFar);
     },
   });
 

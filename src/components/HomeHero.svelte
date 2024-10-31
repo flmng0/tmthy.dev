@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { start, goHome } from "../lib/home-hero.ts";
+	import { start, goHome, type Link } from "../lib/home-hero.ts";
 
 	let canvas: HTMLCanvasElement;
 
@@ -7,15 +7,17 @@
 
 	let size = $state({ width: 0, height: 0 });
 
-	let hover = $state(false);
+	let link = $state<Link>();
+	link = undefined;
+
 	let far = $state(false);
 
-	const setHover = (h: boolean) => (hover = h);
+	const setLink = (l: Link) => (link = l);
 
 	const setFar = (f: boolean) => (far = f);
 
 	$effect(() => {
-		start(canvas, setHover, setFar).then(() => (ready = true));
+		start(canvas, setLink, setFar).then(() => (ready = true));
 
 		size.width = canvas.width;
 		size.height = canvas.height;
@@ -27,7 +29,9 @@
 	});
 </script>
 
-<canvas bind:this={canvas} class:ready class:hover></canvas>
+<a href={link?.href} target="_blank" aria-label={link?.name} title={link?.name}>
+	<canvas bind:this={canvas} class:ready></canvas>
+</a>
 
 <button class="home" class:far onclick={goHome}>Go Home!</button>
 
@@ -51,10 +55,6 @@
 		animation-delay: 0;
 		animation-duration: 0.5s;
 		animation-timing-function: ease-in;
-	}
-
-	canvas.hover {
-		cursor: pointer;
 	}
 
 	.home {
