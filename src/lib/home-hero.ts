@@ -274,9 +274,8 @@ async function setupScene(floorTileTexture: THREE.Texture, font: Font) {
     pedestal.add(iconGroup);
 
     pedestal.layers.enable(pedestalLayer);
-
     pedestal.position.x = i++ * (gap + 1);
-
+    pedestal.castShadow = true;
     pedestal.userData = social;
 
     return pedestal;
