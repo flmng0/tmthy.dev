@@ -165,7 +165,67 @@ function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
   });
 }
 
-async function setupScene(floorTileTexture: THREE.Texture, font: Font) {
+async function makeVolleyballCourt(
+  courtHalfTexture: THREE.Texture
+): Promise<THREE.Group> {
+  const court = new THREE.Group();
+
+  courtHalfTexture.colorSpace = THREE.SRGBColorSpace;
+  courtHalfTexture.magFilter = THREE.NearestFilter;
+
+  const courtScale = 1 / 3;
+  const poleHeight = 2.43 * courtScale;
+  const halfSize = 9 * courtScale;
+
+  const halfGeom = new THREE.PlaneGeometry(halfSize, halfSize);
+  const halfMat = new THREE.MeshPhongMaterial({
+    map: courtHalfTexture,
+  });
+
+  const halfA = new THREE.Mesh(halfGeom, halfMat);
+  halfA.rotation.x = Math.PI * -0.5;
+  halfA.position.z = halfSize / 2;
+
+  const halfB = halfA.clone();
+  halfB.position.z = -halfSize / 2;
+  halfB.rotation.z = Math.PI;
+
+  court.add(halfA, halfB);
+
+  const poleGeom = new THREE.BoxGeometry(0.05, poleHeight, 0.05);
+  const poleMat = new THREE.MeshPhongMaterial({
+    color: 0xc0c0c0,
+  });
+
+  const poleA = new THREE.Mesh(poleGeom, poleMat);
+  poleA.position.x = -halfSize / 2 - courtScale * 0.1;
+  poleA.position.y = poleHeight / 2;
+
+  const poleB = poleA.clone();
+  poleB.position.x = halfSize / 2 + courtScale * 0.1;
+
+  court.add(poleA, poleB);
+
+  court.position.x = Math.floor(-word.length / 2) - 2;
+  court.position.z = 1.5;
+  court.position.y = floor.position.y + zFightOff;
+
+  anime({
+    targets: court.position,
+    y: [20, court.position.y],
+    duration: 500,
+    easing: "easeOutCubic",
+    delay: 2500,
+  });
+
+  return court;
+}
+
+async function setupScene(
+  floorTileTexture: THREE.Texture,
+  font: Font,
+  courtHalfTexture: THREE.Texture
+) {
   scene = new THREE.Scene();
 
   const floorSize = 256;
@@ -290,6 +350,8 @@ async function setupScene(floorTileTexture: THREE.Texture, font: Font) {
     -Math.floor(socialPedestals.children.length / 2) - 1;
 
   scene.add(allPedestals);
+
+  scene.add(await makeVolleyballCourt(courtHalfTexture));
 }
 
 export async function start(
@@ -332,13 +394,15 @@ export async function start(
 
   const floorTilePromise = textureLoader.loadAsync(data.floorTileTextureData);
   const fontPromise = fontLoader.loadAsync(data.fontJsonData);
+  const courtHalfPromise = textureLoader.loadAsync(data.courtHalfData);
 
-  const [floorTileTexture, font] = await Promise.all([
+  const [floorTileTexture, font, courtHalfTexture] = await Promise.all([
     floorTilePromise,
     fontPromise,
+    courtHalfPromise,
   ]);
 
-  await setupScene(floorTileTexture, font);
+  await setupScene(floorTileTexture, font, courtHalfTexture);
 
   window.addEventListener("resize", () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
