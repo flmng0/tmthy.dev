@@ -40,6 +40,7 @@ let canvas: HTMLCanvasElement;
 let renderer: THREE.WebGLRenderer;
 let camera: THREE.OrthographicCamera;
 let scene: THREE.Scene;
+let dirLight: THREE.DirectionalLight;
 
 const textGroup = new THREE.Group();
 const allPedestals = new THREE.Group();
@@ -89,6 +90,7 @@ export let goHome: () => void;
 
 function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
   const controls = new IsoMapControls(camera, renderer.domElement, floorPlane);
+  controls.add(dirLight);
 
   goHome = () => {
     const home = controls._camera0;
@@ -173,9 +175,9 @@ async function makeVolleyballCourt(
   courtHalfTexture.colorSpace = THREE.SRGBColorSpace;
   courtHalfTexture.magFilter = THREE.NearestFilter;
 
-  const courtScale = 1 / 3;
-  const poleHeight = 2.43 * courtScale;
-  const halfSize = 9 * courtScale;
+  const poleHeight = 2.43;
+  const halfSize = 9;
+  const poleSize = 0.1;
 
   const halfGeom = new THREE.PlaneGeometry(halfSize, halfSize);
   const halfMat = new THREE.MeshPhongMaterial({
@@ -192,19 +194,22 @@ async function makeVolleyballCourt(
 
   court.add(halfA, halfB);
 
-  const poleGeom = new THREE.BoxGeometry(0.05, poleHeight, 0.05);
+  const poleGeom = new THREE.BoxGeometry(poleSize, poleHeight, poleSize);
   const poleMat = new THREE.MeshPhongMaterial({
     color: 0xc0c0c0,
   });
 
   const poleA = new THREE.Mesh(poleGeom, poleMat);
-  poleA.position.x = -halfSize / 2 - courtScale * 0.1;
+  poleA.position.x = -halfSize / 2 - 0.1;
   poleA.position.y = poleHeight / 2;
 
   const poleB = poleA.clone();
-  poleB.position.x = halfSize / 2 + courtScale * 0.1;
+  poleB.position.x = halfSize / 2 + 0.1;
 
   court.add(poleA, poleB);
+
+  const courtScale = 1 / 9;
+  court.scale.setScalar(courtScale);
 
   court.position.x = Math.floor(-word.length / 2) - 2;
   court.position.z = 1.5;
@@ -289,7 +294,7 @@ async function setupScene(
 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
 
-  const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+  dirLight = new THREE.DirectionalLight(0xffffff, 2);
   dirLight.position.set(10, 15, -10);
   dirLight.lookAt(0, 0, 0);
   dirLight.castShadow = true;
@@ -469,8 +474,7 @@ export async function start(
       "-=700"
     );
 
-  function tick(t: number) {
-    timeline.tick(t);
+  function tick() {
     renderer.render(scene, camera);
 
     if (!timeline.completed) {
@@ -478,5 +482,6 @@ export async function start(
     }
   }
 
+  timeline.play();
   window.requestAnimationFrame(tick);
 }
