@@ -1,80 +1,19 @@
 import * as THREE from "three";
-import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
-import { FontLoader, Font } from "three/addons/loaders/FontLoader.js";
+import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 
 import anime from "animejs";
 
-import * as data from "./data";
-import { shuffle } from "./util.ts";
+import * as data from "./data.ts";
+import setupSections, { type SetupState } from "./setup.ts";
+import globals, { type Link } from "./globals.ts";
 import { IsoMapControls } from "./controls.ts";
 
 type Setter<T> = (value: T) => void;
 
-// Eventually want to keep this in a separate file or done with astro:content
-export type Link = { href: string; name: string };
-
-type SocialLink = Link & { icon: string; color: number };
-const socials: SocialLink[] = [
-  {
-    href: "https://github.com/flmng0",
-    name: "GitHub",
-    icon: data.icons.github,
-    color: 0x24292e,
-  },
-  {
-    href: "https://www.linkedin.com/in/timothy-davis-dev",
-    name: "LinkedIn",
-    icon: data.icons.linkedin,
-    color: 0x0077b5,
-  },
-  {
-    href: "mailto:tmthydvs@gmail.com",
-    name: "Email to tmthydvs@gmail.com",
-    icon: data.icons.email,
-    color: 0xea7b12,
-  },
-];
-
-let canvas: HTMLCanvasElement;
-let renderer: THREE.WebGLRenderer;
-let camera: THREE.OrthographicCamera;
-let scene: THREE.Scene;
-let dirLight: THREE.DirectionalLight;
-
-const textGroup = new THREE.Group();
-const allPedestals = new THREE.Group();
-const socialPedestals = new THREE.Group();
-
-allPedestals.add(socialPedestals);
-
-let floorPlane: THREE.Plane;
-let floor: THREE.Mesh;
-
-const farDist = 10;
-const farDistSq = farDist * farDist;
-
-// Used for grouping / querying only the pedestals.
-const pedestalLayer = 1;
-const pedestalHeight = 0.5;
-const pedestalIdleY = -(pedestalHeight - 0.1);
-const pedestalHoverY = pedestalIdleY + 0.2;
-const iconSize = 0.75;
-
-const word = "tmthy.dev";
-
-const letterSpacing = 1;
-const letterOffset = 0.125;
-const letterPadding = 0.5;
-
-const zFightOff = 0.001;
-
-const FRUSTUM_START = word.length / 2 + letterPadding;
-let frustumSize = FRUSTUM_START;
-
 const cameraParams = (frustum?: number) => {
-  frustum = frustum || frustumSize;
-  const aspect = canvas.height / canvas.width;
+  frustum = frustum || globals.frustumSize;
+  const aspect = globals.canvas.height / globals.canvas.width;
 
   const left = -frustum;
   const right = frustum;
@@ -89,13 +28,21 @@ const cameraParams = (frustum?: number) => {
 export let goHome: () => void;
 
 function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
-  const controls = new IsoMapControls(camera, renderer.domElement, floorPlane);
-  controls.add(dirLight);
+  const controls = new IsoMapControls(
+    globals.camera,
+    globals.renderer.domElement,
+    globals.floorPlane
+  );
+
+  const farDist = 10;
+  const farDistSq = farDist * farDist;
+
+  controls.add(globals.dirLight);
 
   goHome = () => {
     const home = controls._camera0;
     anime({
-      targets: camera.position,
+      targets: globals.camera.position,
       x: home.x,
       z: home.z,
       duration: 750,
@@ -104,11 +51,11 @@ function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
   };
 
   const raycaster = new THREE.Raycaster();
-  raycaster.layers.set(pedestalLayer);
+  raycaster.layers.set(globals.buttonLayer);
 
   const pointer = new THREE.Vector2();
 
-  let pedestal: THREE.Object3D | null = null;
+  let button: THREE.Object3D | null = null;
 
   const setY = (p: THREE.Object3D, y: number) => {
     // Cancel any prior animation
@@ -126,33 +73,34 @@ function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
     pointer.y = (-2 * e.y) / window.innerHeight + 1;
   };
 
-  const elem = renderer.domElement;
+  const elem = globals.renderer.domElement;
   // TODO: Come up with a solution where taps don't immediately redirect you,
   // without tapping first.
   elem.addEventListener("pointerdown", setPointer);
   elem.addEventListener("pointermove", setPointer);
 
   const handleIntersection = (hit: THREE.Object3D) => {
-    if (hit === pedestal) {
+    if (hit === button) {
       return;
     }
 
-    if (pedestal) {
-      setY(pedestal, pedestalIdleY);
+    if (button) {
+      setY(button, globals.buttonIdleY);
     }
 
-    if (hit === floor) {
-      pedestal = null;
+    if (hit === globals.floor) {
+      button = null;
       return;
     }
 
-    pedestal = hit;
-    setY(pedestal, pedestalHoverY);
+    button = hit;
+    setY(button, globals.buttonHoverY);
   };
 
-  renderer.setAnimationLoop(() => {
-    raycaster.setFromCamera(pointer, camera);
-    const hits = raycaster.intersectObjects([allPedestals, floor]);
+  globals.renderer.setAnimationLoop(() => {
+    raycaster.setFromCamera(pointer, globals.camera);
+
+    const hits = raycaster.intersectObjects(globals.scene.children);
 
     if (hits.length > 0) {
       const hit = hits[0].object;
@@ -160,223 +108,67 @@ function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
       handleIntersection(hit);
     }
 
-    setLink(pedestal?.userData as Link);
+    setLink(button?.userData as Link);
     setFar(controls.getDistSquared() >= farDistSq);
 
-    renderer.render(scene, camera);
+    globals.renderer.render(globals.scene, globals.camera);
   });
 }
 
-async function makeVolleyballCourt(
-  courtHalfTexture: THREE.Texture
-): Promise<THREE.Group> {
-  const court = new THREE.Group();
+async function setupScene(timeline: anime.AnimeTimelineInstance) {
+  const scene = new THREE.Scene();
+  globals.scene = scene;
 
-  courtHalfTexture.colorSpace = THREE.SRGBColorSpace;
-  courtHalfTexture.magFilter = THREE.NearestFilter;
-
-  const poleHeight = 2.43;
-  const halfSize = 9;
-  const poleSize = 0.1;
-
-  const halfGeom = new THREE.PlaneGeometry(halfSize, halfSize);
-  const halfMat = new THREE.MeshPhongMaterial({
-    map: courtHalfTexture,
-  });
-
-  const halfA = new THREE.Mesh(halfGeom, halfMat);
-  halfA.rotation.x = Math.PI * -0.5;
-  halfA.position.z = halfSize / 2;
-
-  const halfB = halfA.clone();
-  halfB.position.z = -halfSize / 2;
-  halfB.rotation.z = Math.PI;
-
-  court.add(halfA, halfB);
-
-  const poleGeom = new THREE.BoxGeometry(poleSize, poleHeight, poleSize);
-  const poleMat = new THREE.MeshPhongMaterial({
-    color: 0xc0c0c0,
-  });
-
-  const poleA = new THREE.Mesh(poleGeom, poleMat);
-  poleA.position.x = -halfSize / 2 - 0.1;
-  poleA.position.y = poleHeight / 2;
-
-  const poleB = poleA.clone();
-  poleB.position.x = halfSize / 2 + 0.1;
-
-  court.add(poleA, poleB);
-
-  const courtScale = 1 / 9;
-  court.scale.setScalar(courtScale);
-
-  court.position.x = Math.floor(-word.length / 2) - 2;
-  court.position.z = 1.5;
-  court.position.y = floor.position.y + zFightOff;
-
-  anime({
-    targets: court.position,
-    y: [20, court.position.y],
-    duration: 500,
-    easing: "easeOutCubic",
-    delay: 2500,
-  });
-
-  return court;
-}
-
-async function setupScene(
-  floorTileTexture: THREE.Texture,
-  font: Font,
-  courtHalfTexture: THREE.Texture
-) {
-  scene = new THREE.Scene();
-
-  const floorSize = 256;
-
-  floorTileTexture.wrapS = THREE.RepeatWrapping;
-  floorTileTexture.wrapT = THREE.RepeatWrapping;
-  floorTileTexture.repeat.set(floorSize, floorSize);
-
-  // So that unit coordinates are in the middle of squares
-  floorTileTexture.offset.set(-0.5, -0.5);
-
-  const xOff = 0;
-  const zOff = 0.375;
-
-  const floorGeom = new THREE.PlaneGeometry(floorSize, floorSize);
-  const floorMat = new THREE.MeshPhongMaterial({ map: floorTileTexture });
-
-  floor = new THREE.Mesh(floorGeom, floorMat);
-  floor.layers.enable(pedestalLayer);
-
-  floor.rotation.x = Math.PI * -0.5;
-  floor.position.y = -0.5;
-  floor.receiveShadow = true;
-  scene.add(floor);
-
-  floorPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), floor.position.y);
-
-  const textParams = {
-    font,
-    size: 1,
-    depth: 1,
-    bevelEnabled: true,
-    bevelOffset: 0,
-    bevelSize: 0.05,
-    bevelThickness: 0.05,
-    bevelSegments: 1,
+  const state: SetupState = {
+    textureLoader: new THREE.TextureLoader(),
+    fontLoader: new FontLoader(),
+    svgLoader: new SVGLoader(),
   };
 
-  const textGeom: Record<string, TextGeometry> = {};
-  const textMat = new THREE.MeshPhongMaterial({ color: 0xffffff });
+  const sections = await Promise.all(
+    setupSections.map((setup) => setup(state))
+  );
 
-  let i = letterOffset + -word.length / 2;
-  for (const char of word) {
-    let geom = textGeom[char];
-    if (geom === undefined) {
-      geom = new TextGeometry(char, textParams);
-      textGeom[char] = geom;
+  for (const section of sections) {
+    scene.add(section.object);
+    for (const { params, timelineOffset } of section.animations) {
+      timeline.add(params, timelineOffset);
     }
-
-    const textMesh = new THREE.Mesh(geom, textMat);
-    textMesh.castShadow = true;
-    textMesh.position.x = i * letterSpacing;
-    textMesh.rotation.x = Math.PI * -0.5;
-    textGroup.add(textMesh);
-
-    i += 1;
   }
-
-  textGroup.position.set(xOff, -2.3, zOff);
-  scene.add(textGroup);
 
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
 
-  dirLight = new THREE.DirectionalLight(0xffffff, 2);
+  const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+  globals.dirLight = dirLight;
+
   dirLight.position.set(10, 15, -10);
   dirLight.lookAt(0, 0, 0);
   dirLight.castShadow = true;
 
   scene.add(ambientLight, dirLight);
-
-  allPedestals.position.y = -pedestalHeight * 0.5;
-  allPedestals.position.z = 3;
-
-  const pedestalGeom = new THREE.BoxGeometry(1, pedestalHeight, 1);
-  const iconMat = textMat;
-
-  const svgLoader = new SVGLoader();
-  const iconExtrudeSettings: THREE.ExtrudeGeometryOptions = {
-    bevelEnabled: false,
-    steps: 2,
-    depth: 10,
-  };
-
-  const gap = 1;
-  const socialPromises = socials.map(async (social, i) => {
-    const { paths } = await svgLoader.loadAsync(social.icon);
-
-    const iconMeshes = paths.map((path) => {
-      const shapes = SVGLoader.createShapes(path);
-
-      const iconGeom = new THREE.ExtrudeGeometry(shapes, iconExtrudeSettings);
-
-      return new THREE.Mesh(iconGeom, iconMat);
-    });
-    const iconGroup = new THREE.Group();
-    const y = pedestalHeight / 2 + zFightOff;
-
-    iconGroup.scale.setScalar(iconSize / data.iconViewBoxSize);
-    iconGroup.rotation.x = Math.PI / 2;
-    iconGroup.position.set(-iconSize / 2, y, -iconSize / 2);
-
-    iconGroup.add(...iconMeshes);
-
-    const pedestalMat = new THREE.MeshPhongMaterial({ color: social.color });
-    const pedestal = new THREE.Mesh(pedestalGeom, pedestalMat);
-    pedestal.add(iconGroup);
-
-    pedestal.layers.enable(pedestalLayer);
-    pedestal.position.x = i++ * (gap + 1);
-    pedestal.castShadow = true;
-    pedestal.userData = social;
-
-    return pedestal;
-  });
-
-  const pedestals = await Promise.all(socialPromises);
-  socialPedestals.add(...pedestals);
-
-  // For the intro animation, shuffle everything
-  shuffle(socialPedestals.children);
-  socialPedestals.position.x =
-    -Math.floor(socialPedestals.children.length / 2) - 1;
-
-  scene.add(allPedestals);
-
-  scene.add(await makeVolleyballCourt(courtHalfTexture));
 }
 
 export async function start(
-  cvs: HTMLCanvasElement,
+  canvas: HTMLCanvasElement,
   setLink: Setter<Link>,
   setFar: Setter<boolean>
 ) {
-  canvas = cvs;
+  globals.canvas = canvas;
 
-  renderer = new THREE.WebGLRenderer({
+  const renderer = new THREE.WebGLRenderer({
     antialias: true,
     canvas,
   });
+  globals.renderer = renderer;
+
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-  camera = new THREE.OrthographicCamera(...cameraParams());
+  const camera = new THREE.OrthographicCamera(...cameraParams());
+  globals.camera = camera;
 
   const camStartPolar = {
     azimuth: Math.PI / 4,
@@ -394,21 +186,6 @@ export async function start(
   camera.position.set(camStart.x, camStart.y, camStart.z);
   camera.lookAt(0, 0, 0);
 
-  const textureLoader = new THREE.TextureLoader();
-  const fontLoader = new FontLoader();
-
-  const floorTilePromise = textureLoader.loadAsync(data.floorTileTextureData);
-  const fontPromise = fontLoader.loadAsync(data.fontJsonData);
-  const courtHalfPromise = textureLoader.loadAsync(data.courtHalfData);
-
-  const [floorTileTexture, font, courtHalfTexture] = await Promise.all([
-    floorTilePromise,
-    fontPromise,
-    courtHalfPromise,
-  ]);
-
-  await setupScene(floorTileTexture, font, courtHalfTexture);
-
   window.addEventListener("resize", () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -421,28 +198,17 @@ export async function start(
 
     camera.updateProjectionMatrix();
 
-    renderer.render(scene, camera);
+    renderer.render(globals.scene, camera);
   });
 
-  renderer.render(scene, camera);
+  const timeline = anime.timeline({ autoplay: false });
+  await setupScene(timeline);
 
-  const timeline = anime.timeline({
-    autoplay: false,
-    complete: () => {
-      enableControls(setLink, setFar);
-    },
-  });
+  globals.renderer.render(globals.scene, globals.camera);
 
   const camDuration = 1500;
 
   timeline
-    .add({
-      targets: textGroup.children.map((o) => o.position),
-      y: 1.0,
-      duration: 700,
-      delay: anime.stagger(90, { start: 700 }),
-      easing: "easeOutElastic",
-    })
     .add(
       {
         targets: camera,
@@ -453,7 +219,7 @@ export async function start(
           camera.updateProjectionMatrix();
         },
       },
-      "-=" + (90 * word.length - 200)
+      "-=" + camDuration
     )
     .add(
       {
@@ -463,22 +229,15 @@ export async function start(
         duration: camDuration,
       },
       "-=" + camDuration
-    )
-    .add(
-      {
-        targets: socialPedestals.children.map((o) => o.position),
-        y: [-pedestalHeight - 0.05, pedestalIdleY],
-        duration: 800,
-        delay: anime.stagger(100),
-      },
-      "-=700"
     );
 
   function tick() {
-    renderer.render(scene, camera);
+    globals.renderer.render(globals.scene, globals.camera);
 
     if (!timeline.completed) {
       window.requestAnimationFrame(tick);
+    } else {
+      enableControls(setLink, setFar);
     }
   }
 
