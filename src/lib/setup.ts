@@ -5,7 +5,7 @@ import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 
 import anime from "animejs";
 
-import globals from "./globals.ts";
+import globals, { type Link } from "./globals.ts";
 import * as data from "./data.ts";
 import { shuffle } from "./util.ts";
 
@@ -185,6 +185,14 @@ const makeVolleyballCourt: SectionSetupCallback = async (state: SetupState) => {
   halfA.rotation.x = Math.PI * -0.5;
   halfA.position.z = halfSize / 2;
 
+  halfA.userData = {
+    href: "https://volley-kit.tmthy.dev",
+    name: "Volley Kit",
+    disableAnimation: true,
+  } as Link;
+
+  halfA.layers.enable(globals.buttonLayer);
+
   const halfB = halfA.clone();
   halfB.position.z = -halfSize / 2;
   halfB.rotation.z = Math.PI;
@@ -193,17 +201,44 @@ const makeVolleyballCourt: SectionSetupCallback = async (state: SetupState) => {
 
   const poleGeom = new THREE.BoxGeometry(poleSize, poleHeight, poleSize);
   const poleMat = new THREE.MeshPhongMaterial({
-    color: 0xc0c0c0,
+    color: 0x5050c0,
   });
 
+  const poleOffset = 0.5;
   const poleA = new THREE.Mesh(poleGeom, poleMat);
-  poleA.position.x = -halfSize / 2 - 0.1;
+  poleA.position.x = -halfSize / 2 - poleOffset;
   poleA.position.y = poleHeight / 2;
 
   const poleB = poleA.clone();
-  poleB.position.x = halfSize / 2 + 0.1;
+  poleB.position.x = halfSize / 2 + poleOffset;
 
   court.add(poleA, poleB);
+
+  const netWidth = halfSize + 1.8 * poleOffset;
+  const netHeight = 1.25;
+  const netDepth = poleSize / 2;
+  const netGeom = new THREE.BoxGeometry(netWidth, netHeight, netDepth);
+  const netMat = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.7,
+  });
+  const net = new THREE.Mesh(netGeom, netMat);
+  net.position.y = poleHeight - netHeight / 2;
+  court.add(net);
+
+  const tapeHeight = 0.2;
+  const tapeGeom = new THREE.BoxGeometry(
+    netWidth,
+    tapeHeight,
+    netDepth + globals.zFightOff
+  );
+  const tapeMat = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+  });
+  const tape = new THREE.Mesh(tapeGeom, tapeMat);
+  tape.position.y = (netHeight - tapeHeight) / 2;
+  net.add(tape);
 
   return {
     object: court,

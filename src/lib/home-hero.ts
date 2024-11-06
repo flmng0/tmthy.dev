@@ -4,7 +4,6 @@ import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 
 import anime from "animejs";
 
-import * as data from "./data.ts";
 import setupSections, { type SetupState } from "./setup.ts";
 import globals, { type Link } from "./globals.ts";
 import { IsoMapControls } from "./controls.ts";
@@ -58,6 +57,10 @@ function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
   let button: THREE.Object3D | null = null;
 
   const setY = (p: THREE.Object3D, y: number) => {
+    if (p.userData?.disableAnimation) {
+      return;
+    }
+
     // Cancel any prior animation
     anime.remove(p.position);
     // Animate to target position

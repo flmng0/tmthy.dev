@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { icons } from "./data";
 
 // Eventually want to keep this in a separate file or done with astro:content
-export type Link = { href: string; name: string };
+export type Link = { href: string; name: string; disableAnimation?: boolean };
 
 type SocialLink = Link & { icon: string; color: number };
 const socials: SocialLink[] = [
