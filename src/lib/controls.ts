@@ -11,6 +11,8 @@ export class IsoMapControls {
 
   limitRadius: number = 50;
 
+  _targets: THREE.Object3D[] = [];
+
   readonly _camera0: THREE.Vector3;
   readonly _ray: THREE.Ray;
   readonly _oz: number;
@@ -38,6 +40,10 @@ export class IsoMapControls {
     window.addEventListener("resize", () => this._calculateUnitVectors());
 
     this._setupEvents(domElement);
+  }
+
+  add(target: THREE.Object3D) {
+    this._targets.push(target);
   }
 
   _calculateUnitVectors() {
@@ -153,6 +159,11 @@ export class IsoMapControls {
 
         this.camera.position.sub(moveX);
         this.camera.position.sub(moveY);
+
+        for (const target of this._targets) {
+          target.position.sub(moveX);
+          target.position.sub(moveY);
+        }
 
         this._limitDistance();
 
