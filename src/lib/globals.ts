@@ -52,6 +52,7 @@ const globals = {
   buttonHeight,
   buttonIdleY,
   buttonHoverY,
+  buttonDelay: 100,
 
   socials,
 

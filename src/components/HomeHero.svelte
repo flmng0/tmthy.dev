@@ -1,37 +1,43 @@
 <script lang="ts">
-	import { start, goHome, type Link } from "../lib/home-hero.ts";
+	import { start, goHome } from "../lib/home-hero.ts";
+	import { type Link } from "../lib/globals.ts";
 
 	let canvas: HTMLCanvasElement;
 
 	let ready: boolean = $state(false);
 
-	let size = $state({ width: 0, height: 0 });
+	let pointer = $state({ x: 0, y: 0 });
 
 	let link = $state<Link>();
-	link = undefined;
 
 	let far = $state(false);
 
 	const setLink = (l: Link) => (link = l);
-
 	const setFar = (f: boolean) => (far = f);
 
 	$effect(() => {
 		start(canvas, setLink, setFar).then(() => (ready = true));
-
-		size.width = canvas.width;
-		size.height = canvas.height;
-
-		window.addEventListener("resize", () => {
-			size.width = canvas.width;
-			size.height = canvas.height;
-		});
 	});
 </script>
 
-<a href={link?.href} target="_blank" aria-label={link?.name} title={link?.name}>
-	<canvas bind:this={canvas} class:ready></canvas>
-</a>
+<canvas
+	onpointermove={(e) => (pointer = e)}
+	onpointerup={(e) => (pointer = e)}
+	bind:this={canvas}
+	class:pointer={link}
+	class:ready
+>
+</canvas>
+
+{#if link?.name}
+	<span
+		class="hover-title"
+		style:--x={pointer?.x + "px"}
+		style:--y={pointer?.y + "px"}
+	>
+		{link.name}
+	</span>
+{/if}
 
 <button class="home" class:far onclick={goHome}>Go Home!</button>
 
@@ -45,8 +51,31 @@
 		}
 	}
 
+	.hover-title,
+	.home {
+		font-family: "Courier New", Courier, monospace;
+	}
+
+	.hover-title {
+		position: absolute;
+		display: inline-block;
+		left: var(--x);
+		top: var(--y);
+		translate: -50% 50%;
+		background: black;
+		color: white;
+		padding: 0.5em 0.8em;
+		z-index: 1;
+		pointer-events: none;
+	}
+
 	canvas {
 		touch-action: none;
+		z-index: 0;
+	}
+
+	canvas.pointer {
+		cursor: pointer;
 	}
 
 	canvas.ready {
@@ -66,7 +95,6 @@
 		padding: 0.4em 0.6em;
 		background: black;
 		color: white;
-		font-family: "Courier New", Courier, monospace;
 
 		font-size: 1.5rem;
 

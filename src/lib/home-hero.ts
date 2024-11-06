@@ -26,6 +26,10 @@ const cameraParams = (frustum?: number) => {
 
 export let goHome: () => void;
 
+function openLink(location: string) {
+  window.open(location)?.focus();
+}
+
 function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
   const controls = new IsoMapControls(
     globals.camera,
@@ -35,8 +39,6 @@ function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
 
   const farDist = 10;
   const farDistSq = farDist * farDist;
-
-  controls.add(globals.dirLight);
 
   goHome = () => {
     const home = controls._camera0;
@@ -55,6 +57,8 @@ function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
   const pointer = new THREE.Vector2();
 
   let button: THREE.Object3D | null = null;
+  let intersectionTime: number = 0;
+  let now: number = 0;
 
   const setY = (p: THREE.Object3D, y: number) => {
     if (p.userData?.disableAnimation) {
@@ -71,18 +75,39 @@ function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
     });
   };
 
-  const setPointer = (e: PointerEvent) => {
+  const setPointer = (e: MouseEvent) => {
     pointer.x = (2 * e.x) / window.innerWidth - 1;
     pointer.y = (-2 * e.y) / window.innerHeight + 1;
   };
 
   const elem = globals.renderer.domElement;
-  // TODO: Come up with a solution where taps don't immediately redirect you,
-  // without tapping first.
-  elem.addEventListener("pointerdown", setPointer);
+
+  elem.addEventListener("pointerup", setPointer);
   elem.addEventListener("pointermove", setPointer);
 
-  const handleIntersection = (hit: THREE.Object3D) => {
+  elem.addEventListener("click", (e) => {
+    if (!button) {
+      return;
+    }
+
+    setPointer(e);
+
+    raycaster.setFromCamera(pointer, globals.camera);
+    const hits = raycaster.intersectObject(button, false);
+
+    // If not clicking the button that was previously selected
+    if (hits.length === 0 || hits[0].object !== button) {
+      return;
+    }
+
+    if (now - intersectionTime < globals.buttonDelay) {
+      return;
+    }
+
+    openLink(button.userData.href);
+  });
+
+  const handleIntersection = (hit: THREE.Object3D, t: number) => {
     if (hit === button) {
       return;
     }
@@ -96,11 +121,14 @@ function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
       return;
     }
 
+    intersectionTime = t;
     button = hit;
     setY(button, globals.buttonHoverY);
   };
 
-  globals.renderer.setAnimationLoop(() => {
+  globals.renderer.setAnimationLoop((t: number) => {
+    now = t;
+
     raycaster.setFromCamera(pointer, globals.camera);
 
     const hits = raycaster.intersectObjects(globals.scene.children);
@@ -108,7 +136,7 @@ function enableControls(setLink: Setter<Link>, setFar: Setter<boolean>) {
     if (hits.length > 0) {
       const hit = hits[0].object;
 
-      handleIntersection(hit);
+      handleIntersection(hit, t);
     }
 
     setLink(button?.userData as Link);
@@ -146,7 +174,7 @@ async function setupScene(timeline: anime.AnimeTimelineInstance) {
 
   dirLight.position.set(10, 15, -10);
   dirLight.lookAt(0, 0, 0);
-  dirLight.castShadow = true;
+  dirLight.castShadow = false;
 
   scene.add(ambientLight, dirLight);
 }
