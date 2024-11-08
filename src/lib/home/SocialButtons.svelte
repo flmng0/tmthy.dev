@@ -40,7 +40,6 @@
     const spacing = 1
 
     let refs: THREE.Group[] = $state([])
-    $inspect(refs)
 
     $animations.push(() => {
         return {
@@ -59,6 +58,10 @@
         {color}
         position.x={i * (1 + spacing) - 1}
         position.z={2}
+        onclick={(e: MouseEvent) => {
+            e.stopPropagation()
+            console.log(icon)
+        }}
         oncreate={(ref) => {
             refs.push(ref)
         }}

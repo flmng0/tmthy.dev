@@ -5,6 +5,11 @@
     import { floorTileTextureData } from './data'
     import { buttonLayer } from './constants'
 
+    interface Props {
+        ref?: THREE.Mesh
+    }
+    let { ref = $bindable() }: Props = $props()
+
     const floorSize = 256
 
     const texture = useTexture(floorTileTextureData, {
@@ -22,6 +27,11 @@
 
 {#await texture then map}
     <T.Mesh
+        bind:ref
+        interactive
+        onpointerenter={(e: PointerEvent) => e.stopPropagation()}
+        onpointerleave={(e: PointerEvent) => e.stopPropagation()}
+        onclick={(e: MouseEvent) => e.stopPropagation()}
         position.y={-0.5}
         rotation.x={Math.PI * -0.5}
         oncreate={(ref) => {

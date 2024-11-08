@@ -1,11 +1,13 @@
 <script lang="ts">
-    import { T, useLoader } from '@threlte/core'
-    import { useSuspense } from '@threlte/extras'
+    import { T, useLoader, useThrelte } from '@threlte/core'
+    import { useCursor, useSuspense } from '@threlte/extras'
     import * as THREE from 'three'
     import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js'
     import type { ComponentProps } from 'svelte'
+    import anime from 'animejs'
 
     import { icons, iconViewBoxSize } from './data'
+    import { useHomeContext } from './context'
 
     interface Props extends ComponentProps<typeof T.Group> {
         icon: keyof typeof icons
@@ -28,10 +30,42 @@
 
     const iconSize = 0.85
     const iconScale = iconSize / iconViewBoxSize
+
+    const { invalidate } = useThrelte()
+    const { hovering, onPointerEnter, onPointerLeave } = useCursor('pointer')
+    const { controlsEnabled } = useHomeContext()
+
+    $effect(() => {
+        if (!ref || !$controlsEnabled) return
+
+        if ($hovering) {
+            anime.remove(ref.position)
+            anime({
+                targets: ref.position,
+                duration: 200,
+                y: -0.3,
+                update: invalidate,
+            })
+        } else {
+            anime.remove(ref.position)
+            anime({
+                targets: ref.position,
+                duration: 200,
+                y: -0.5,
+                update: invalidate,
+            })
+        }
+    })
 </script>
 
 {#await iconSvg then icon}
-    <T.Group {...rest}>
+    <T.Group
+        bind:ref
+        {...rest}
+        interactive
+        onpointerenter={onPointerEnter}
+        onpointerleave={onPointerLeave}
+    >
         <T.Mesh name="button-box">
             <T.BoxGeometry args={[buttonSize, buttonHeight, buttonSize]} />
             <T.MeshPhongMaterial {color} />

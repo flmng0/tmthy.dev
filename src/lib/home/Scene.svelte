@@ -1,6 +1,6 @@
 <script lang="ts">
     import { extend, T, useThrelte } from '@threlte/core'
-    import { Suspense } from '@threlte/extras'
+    import { interactivity, Suspense } from '@threlte/extras'
     import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
     import { writable } from 'svelte/store'
     import anime from 'animejs'
@@ -11,8 +11,19 @@
     import Camera from './Camera.svelte'
     import Title from './Title.svelte'
     import SocialButtons from './SocialButtons.svelte'
+    import { setHomeContext, useHomeContext } from './context'
 
     extend({ TextGeometry })
+
+    setHomeContext()
+    const { controlsEnabled } = useHomeContext()
+
+    interactivity({
+        filter: (hits) => {
+            if ($controlsEnabled) return hits
+            return []
+        },
+    })
 
     let { onready } = $props<{ onready: () => void }>()
 
@@ -27,6 +38,9 @@
             autoplay: false,
             update: () => {
                 invalidate()
+            },
+            complete: () => {
+                controlsEnabled.set(true)
             },
         })
 
