@@ -1,12 +1,14 @@
 <script lang="ts">
     import { Canvas } from '@threlte/core'
+    import * as THREE from 'three'
+
     import Scene from '../lib/home/Scene.svelte'
 
     let ready = $state(false)
 </script>
 
 <main class:ready>
-    <Canvas>
+    <Canvas toneMapping={THREE.NeutralToneMapping}>
         <Scene onready={() => (ready = true)} />
     </Canvas>
 </main>

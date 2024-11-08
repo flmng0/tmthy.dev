@@ -6,7 +6,7 @@
     import anime from 'animejs'
 
     import { fontJsonData } from './data'
-    import type { AnimatedProps } from '.'
+    import type { AnimatedProps } from './types'
 
     let { animations }: AnimatedProps = $props()
 

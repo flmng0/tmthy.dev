@@ -5,11 +5,12 @@
     import { writable } from 'svelte/store'
     import anime from 'animejs'
 
+    import type { AnimationSpec } from './types'
+
     import Floor from './Floor.svelte'
     import Camera from './Camera.svelte'
     import Title from './Title.svelte'
-
-    import type { AnimationSpec } from '.'
+    import SocialButtons from './SocialButtons.svelte'
 
     extend({ TextGeometry })
 
@@ -45,7 +46,7 @@
 
 <T.DirectionalLight
     color={0xffffff}
-    intensity={2}
+    intensity={1.5}
     position={[10, 15, -10]}
     oncreate={(ref) => {
         ref.lookAt(0, 0, 0)
@@ -56,4 +57,6 @@
 
 <Suspense final {onload}>
     <Title {animations} />
+
+    <SocialButtons {animations} />
 </Suspense>
