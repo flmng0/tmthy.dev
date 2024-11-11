@@ -7,6 +7,7 @@
 
     import IconButton from './IconButton.svelte'
     import { goto, shuffle } from '../util'
+    import { setModal } from '../Modal.svelte'
 
     let { animations }: AnimatedProps = $props()
 
@@ -56,6 +57,10 @@
 </script>
 
 {#each socialLinks as { icon, color, href }, i}
+    {#snippet linkInfo()}
+        <span>Test {href}</span>
+    {/snippet}
+
     <IconButton
         {icon}
         {color}
@@ -63,7 +68,8 @@
         position.z={2}
         onclick={(e: MouseEvent) => {
             e.stopPropagation()
-            goto(href)
+            setModal(linkInfo, 'bottom')
+            //goto(href)
         }}
         oncreate={(ref) => {
             refs.push(ref)

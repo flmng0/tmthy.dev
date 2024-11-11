@@ -3,6 +3,7 @@
     import * as THREE from 'three'
 
     import Scene from '../lib/home/Scene.svelte'
+    import Modal from '../lib/Modal.svelte'
 
     let ready = $state(false)
 </script>
@@ -12,6 +13,8 @@
         <Scene onready={() => (ready = true)} />
     </Canvas>
 </main>
+
+<Modal />
 
 <style>
     main {
