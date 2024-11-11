@@ -6,6 +6,7 @@
     import type { AnimatedProps } from './types'
 
     import IconButton from './IconButton.svelte'
+    import { goto, shuffle } from '../util'
 
     let { animations }: AnimatedProps = $props()
 
@@ -42,6 +43,8 @@
     let refs: THREE.Group[] = $state([])
 
     $animations.push(() => {
+        shuffle(refs)
+
         return {
             params: {
                 targets: refs.map((r) => r.position),
@@ -52,7 +55,7 @@
     })
 </script>
 
-{#each socialLinks as { icon, color }, i}
+{#each socialLinks as { icon, color, href }, i}
     <IconButton
         {icon}
         {color}
@@ -60,7 +63,7 @@
         position.z={2}
         onclick={(e: MouseEvent) => {
             e.stopPropagation()
-            console.log(icon)
+            goto(href)
         }}
         oncreate={(ref) => {
             refs.push(ref)

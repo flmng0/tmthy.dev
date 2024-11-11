@@ -8,6 +8,7 @@
 
     import { icons, iconViewBoxSize } from './data'
     import { useHomeContext } from './context'
+    import { spring } from 'svelte/motion'
 
     interface Props extends ComponentProps<typeof T.Group> {
         icon: keyof typeof icons
@@ -31,30 +32,19 @@
     const iconSize = 0.85
     const iconScale = iconSize / iconViewBoxSize
 
-    const { invalidate } = useThrelte()
     const { hovering, onPointerEnter, onPointerLeave } = useCursor('pointer')
     const { controlsEnabled } = useHomeContext()
 
-    $effect(() => {
-        if (!ref || !$controlsEnabled) return
+    const idleHeight = -0.5
+    const activeHeight = -0.3
+    const y = spring(idleHeight, {
+        stiffness: 0.2,
+        damping: 0.4,
+    })
 
-        if ($hovering) {
-            anime.remove(ref.position)
-            anime({
-                targets: ref.position,
-                duration: 200,
-                y: -0.3,
-                update: invalidate,
-            })
-        } else {
-            anime.remove(ref.position)
-            anime({
-                targets: ref.position,
-                duration: 200,
-                y: -0.5,
-                update: invalidate,
-            })
-        }
+    $effect(() => {
+        if (!$controlsEnabled) return
+        $y = $hovering ? activeHeight : idleHeight
     })
 </script>
 
@@ -65,6 +55,7 @@
         interactive
         onpointerenter={onPointerEnter}
         onpointerleave={onPointerLeave}
+        position.y={$y}
     >
         <T.Mesh name="button-box">
             <T.BoxGeometry args={[buttonSize, buttonHeight, buttonSize]} />
