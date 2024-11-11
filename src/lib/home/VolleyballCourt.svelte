@@ -1,14 +1,13 @@
 <script lang="ts">
-    import { T, useThrelte } from '@threlte/core'
+    import { T } from '@threlte/core'
     import { useCursor, useTexture } from '@threlte/extras'
     import * as THREE from 'three'
 
     import type { AnimatedProps } from './types'
     import { courtHalfData } from './data'
     import { spring } from 'svelte/motion'
-    import { onDestroy } from 'svelte'
-    import { init } from 'astro/virtual-modules/prefetch.js'
     import { goto } from '../util'
+    import { setDrawer } from '../Drawer.svelte'
 
     interface Props extends AnimatedProps {
         scale: number
@@ -63,6 +62,15 @@
     const tapeHeight = 0.2
 </script>
 
+{#snippet info()}
+    <a href="https://volley-kit.tmthy.dev" target="_blank">
+        <h1>Volley Kit</h1>
+    </a>
+    <p>
+        Real-time synchronised scoring application made with Phoenix and Elixir.
+    </p>
+{/snippet}
+
 {#await courtHalfTexture then courtHalfTexture}
     <T.Group
         bind:ref
@@ -70,7 +78,7 @@
         position.x={-6.5}
         position.z={1}
         interactive
-        onclick={() => goto('https://volley-kit.tmthy.dev')}
+        onclick={() => setDrawer(info)}
         onpointerenter={onPointerEnter}
         onpointerleave={onPointerLeave}
     >

@@ -3,18 +3,19 @@
     import * as THREE from 'three'
 
     import Scene from '../lib/home/Scene.svelte'
-    import Modal from '../lib/Modal.svelte'
+    import Drawer, { closeDrawer } from '../lib/Drawer.svelte'
 
     let ready = $state(false)
+    let root = $state<HTMLElement>()
 </script>
 
-<main class:ready>
+<Drawer />
+
+<main class:ready bind:this={root} onpointerdown={() => closeDrawer()}>
     <Canvas toneMapping={THREE.NeutralToneMapping}>
         <Scene onready={() => (ready = true)} />
     </Canvas>
 </main>
-
-<Modal />
 
 <style>
     main {
@@ -27,5 +28,9 @@
 
     main.ready {
         opacity: 1;
+    }
+
+    main :global(canvas) {
+        touch-action: none;
     }
 </style>

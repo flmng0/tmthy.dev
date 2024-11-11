@@ -6,8 +6,8 @@
     import type { AnimatedProps } from './types'
 
     import IconButton from './IconButton.svelte'
-    import { goto, shuffle } from '../util'
-    import { setModal } from '../Modal.svelte'
+    import { shuffle } from '../util'
+    import { setDrawer } from '../Drawer.svelte'
 
     let { animations }: AnimatedProps = $props()
 
@@ -56,9 +56,11 @@
     })
 </script>
 
-{#each socialLinks as { icon, color, href }, i}
+{#each socialLinks as { icon, color, href, name }, i}
     {#snippet linkInfo()}
-        <span>Test {href}</span>
+        <a {href} target="_blank">
+            <h1>{name}</h1>
+        </a>
     {/snippet}
 
     <IconButton
@@ -68,8 +70,7 @@
         position.z={2}
         onclick={(e: MouseEvent) => {
             e.stopPropagation()
-            setModal(linkInfo, 'bottom')
-            //goto(href)
+            setDrawer(linkInfo)
         }}
         oncreate={(ref) => {
             refs.push(ref)
