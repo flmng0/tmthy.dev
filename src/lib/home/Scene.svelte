@@ -1,6 +1,7 @@
 <script lang="ts">
     import { extend, T, useThrelte } from '@threlte/core'
     import { interactivity, Suspense } from '@threlte/extras'
+    import * as THREE from 'three'
     import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
     import { writable } from 'svelte/store'
     import anime from 'animejs'
@@ -27,6 +28,7 @@
 
     let { onready } = $props<{ onready: () => void }>()
 
+    let cameraRef = $state<THREE.OrthographicCamera>()
     let animations = writable<AnimationSpec[]>([])
 
     const { invalidate } = useThrelte()
@@ -50,11 +52,21 @@
             timeline.add(params, offset)
         }
 
+        const camera = cameraRef!
+        anime({
+            targets: camera,
+            zoom: camera.zoom * 0.9,
+            easing: 'easeInOutSine',
+            duration: 700,
+            delay: 600,
+            update: () => camera.updateProjectionMatrix(),
+        })
+
         timeline.play()
     }
 </script>
 
-<Camera />
+<Camera bind:ref={cameraRef} />
 
 <T.AmbientLight color={0xffffff} intensity={0.8} />
 

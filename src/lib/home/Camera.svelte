@@ -5,6 +5,11 @@
     import IsometricMapControls from './IsometricMapControls'
     import { useHomeContext } from './context'
 
+    interface Props {
+        ref?: THREE.OrthographicCamera
+    }
+    let { ref = $bindable() }: Props = $props()
+
     const { controlsEnabled } = useHomeContext()
 
     const azimuth = Math.PI / 4
@@ -54,4 +59,5 @@
         // on the position and direction of the camera.
         enableControls(ref)
     }}
+    bind:ref
 />
