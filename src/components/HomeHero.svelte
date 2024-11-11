@@ -11,7 +11,7 @@
 
 <Drawer />
 
-<main class:ready bind:this={root} onpointerdown={() => closeDrawer()}>
+<main class:ready bind:this={root}>
     <Canvas toneMapping={THREE.NeutralToneMapping}>
         <Scene onready={() => (ready = true)} />
     </Canvas>

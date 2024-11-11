@@ -1,10 +1,9 @@
 <script lang="ts">
-    import { T, useLoader, useThrelte } from '@threlte/core'
+    import { T, useLoader } from '@threlte/core'
     import { useCursor, useSuspense } from '@threlte/extras'
     import * as THREE from 'three'
     import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js'
     import type { ComponentProps } from 'svelte'
-    import anime from 'animejs'
 
     import { icons, iconViewBoxSize } from './data'
     import { useHomeContext } from './context'
@@ -36,15 +35,18 @@
     const { controlsEnabled } = useHomeContext()
 
     const idleHeight = -0.5
-    const activeHeight = -0.3
+    const hoverHeight = -0.3
     const y = spring(idleHeight, {
         stiffness: 0.2,
         damping: 0.4,
     })
 
+    const activeOffset = 0.1
+    let activeHeight = $derived($y - activeOffset)
+
     $effect(() => {
         if (!$controlsEnabled) return
-        $y = $hovering ? activeHeight : idleHeight
+        $y = $hovering ? hoverHeight : idleHeight
     })
 </script>
 
@@ -55,6 +57,8 @@
         interactive
         onpointerenter={onPointerEnter}
         onpointerleave={onPointerLeave}
+        onpointerdown={() => ($y = activeHeight)}
+        onpointerup={() => ($y += activeOffset)}
         position.y={$y}
     >
         <T.Mesh name="button-box">

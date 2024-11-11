@@ -4,6 +4,7 @@
     import * as THREE from 'three'
     import { floorTileTextureData } from './data'
     import { buttonLayer } from './constants'
+    import { closeDrawer } from '../Drawer.svelte'
 
     interface Props {
         ref?: THREE.Mesh
@@ -23,6 +24,11 @@
             return texture
         },
     })
+
+    const onclick = (e: MouseEvent) => {
+        e.stopPropagation()
+        closeDrawer()
+    }
 </script>
 
 {#await texture then map}
@@ -31,7 +37,7 @@
         interactive
         onpointerenter={(e: PointerEvent) => e.stopPropagation()}
         onpointerleave={(e: PointerEvent) => e.stopPropagation()}
-        onclick={(e: MouseEvent) => e.stopPropagation()}
+        {onclick}
         position.y={-0.5}
         rotation.x={Math.PI * -0.5}
         oncreate={(ref) => {

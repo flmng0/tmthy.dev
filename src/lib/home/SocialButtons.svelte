@@ -8,12 +8,15 @@
     import IconButton from './IconButton.svelte'
     import { shuffle } from '../util'
     import { setDrawer } from '../Drawer.svelte'
+    import DrawerContent from '../DrawerContent.svelte'
 
     let { animations }: AnimatedProps = $props()
 
     interface Link {
+        linkAction?: string
         href: string
         name: string
+        description: string
         icon: keyof typeof icons
         color: THREE.ColorRepresentation
     }
@@ -22,18 +25,25 @@
         {
             href: 'https://github.com/flmng0',
             name: 'GitHub',
+            description:
+                'My GitHub page, where I host most of my programming projects.',
             icon: 'github',
             color: 0x24292e,
         },
         {
             href: 'https://www.linkedin.com/in/timothy-davis-dev',
             name: 'LinkedIn',
+            description:
+                'My personal LinkedIn page. Visit to connect with me online!',
             icon: 'linkedin',
             color: 0x0077b5,
         },
         {
+            linkAction: 'Contact',
             href: 'mailto:tmthydvs@gmail.com',
-            name: 'Email to tmthydvs@gmail.com',
+            name: 'tmthydvs@gmail.com',
+            description:
+                'Send me a message using the above email for direct communication / inquiries.',
             icon: 'email',
             color: 0xea7b12,
         },
@@ -56,11 +66,16 @@
     })
 </script>
 
-{#each socialLinks as { icon, color, href, name }, i}
+{#each socialLinks as { icon, color, href, name, description, linkAction }, i}
     {#snippet linkInfo()}
-        <a {href} target="_blank">
-            <h1>{name}</h1>
-        </a>
+        <DrawerContent title={name}>
+            <p>{description}</p>
+            {#snippet buttons()}
+                <button>
+                    <a {href} target="_blank">{linkAction || 'Visit'}</a>
+                </button>
+            {/snippet}
+        </DrawerContent>
     {/snippet}
 
     <IconButton

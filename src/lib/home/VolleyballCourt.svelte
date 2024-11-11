@@ -6,8 +6,8 @@
     import type { AnimatedProps } from './types'
     import { courtHalfData } from './data'
     import { spring } from 'svelte/motion'
-    import { goto } from '../util'
     import { setDrawer } from '../Drawer.svelte'
+    import DrawerContent from '../DrawerContent.svelte'
 
     interface Props extends AnimatedProps {
         scale: number
@@ -63,12 +63,18 @@
 </script>
 
 {#snippet info()}
-    <a href="https://volley-kit.tmthy.dev" target="_blank">
-        <h1>Volley Kit</h1>
-    </a>
-    <p>
-        Real-time synchronised scoring application made with Phoenix and Elixir.
-    </p>
+    <DrawerContent title="VolleyKit">
+        <p>
+            Real-time synchronised scoring application made with Phoenix and
+            Elixir.
+        </p>
+
+        {#snippet buttons()}
+            <button>
+                <a href="https://volley-kit.tmthy.dev" target="_blank">Visit</a>
+            </button>
+        {/snippet}
+    </DrawerContent>
 {/snippet}
 
 {#await courtHalfTexture then courtHalfTexture}
@@ -78,7 +84,10 @@
         position.x={-6.5}
         position.z={1}
         interactive
-        onclick={() => setDrawer(info)}
+        onclick={(e: MouseEvent) => {
+            e.stopPropagation()
+            setDrawer(info)
+        }}
         onpointerenter={onPointerEnter}
         onpointerleave={onPointerLeave}
     >
