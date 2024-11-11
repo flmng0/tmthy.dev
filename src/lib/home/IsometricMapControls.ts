@@ -1,3 +1,4 @@
+import anime from 'animejs'
 import * as THREE from 'three'
 
 export default class IsometricMapControls extends THREE.EventDispatcher<{
@@ -45,6 +46,17 @@ export default class IsometricMapControls extends THREE.EventDispatcher<{
         window.addEventListener('resize', () => this._calculateUnitVectors())
 
         this._setupEvents(domElement)
+    }
+
+    focusLocation(location: THREE.Vector3, onupdate?: () => void) {
+        anime({
+            targets: this.camera.position,
+            x: location.x + this._camera0.x,
+            z: location.z + this._camera0.z,
+            duration: 500,
+            easing: 'easeOutCubic',
+            update: onupdate,
+        })
     }
 
     _calculateUnitVectors() {

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { T } from '@threlte/core'
+    import { T, useThrelte } from '@threlte/core'
     import { useCursor, useTexture } from '@threlte/extras'
     import * as THREE from 'three'
 
@@ -8,6 +8,7 @@
     import { spring } from 'svelte/motion'
     import { setDrawer } from '../Drawer.svelte'
     import DrawerContent from '../DrawerContent.svelte'
+    import { useHomeContext } from './context'
 
     interface Props extends AnimatedProps {
         scale: number
@@ -30,6 +31,7 @@
                 duration: 500,
                 easing: 'easeOutCubic',
             },
+            offset: '-=700',
         }
     })
 
@@ -48,6 +50,17 @@
     $effect(() => {
         $scale = ($hovering ? 1.1 : 1.0) * initialScale
     })
+
+    const { controller } = useHomeContext()
+    const { invalidate } = useThrelte()
+
+    const onclick = (e: MouseEvent) => {
+        e.stopPropagation()
+        setDrawer(info)
+        $controller.focusLocation(position, invalidate)
+    }
+
+    const position = new THREE.Vector3(-6.5, 0.001, 1)
 
     const halfSize = 9 // standard court half length in metres
 
@@ -81,13 +94,9 @@
     <T.Group
         bind:ref
         scale={$scale}
-        position.x={-6.5}
-        position.z={1}
         interactive
-        onclick={(e: MouseEvent) => {
-            e.stopPropagation()
-            setDrawer(info)
-        }}
+        position={position.toArray()}
+        {onclick}
         onpointerenter={onPointerEnter}
         onpointerleave={onPointerLeave}
     >

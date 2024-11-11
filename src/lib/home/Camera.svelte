@@ -26,10 +26,12 @@
     let floorPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.5)
 
     let controls: IsometricMapControls | undefined = $state(undefined)
+    const { controller } = useHomeContext()
 
     $effect(() => {
         if (controls) {
             controls.enabled = $controlsEnabled
+            controller.set(controls)
         }
     })
 
