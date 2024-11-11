@@ -13,6 +13,12 @@
     import Title from './Title.svelte'
     import SocialButtons from './SocialButtons.svelte'
     import { setHomeContext, useHomeContext } from './context'
+    import VolleyballCourt from './VolleyballCourt.svelte'
+
+    interface Props {
+        onready: () => void
+    }
+    let { onready }: Props = $props()
 
     extend({ TextGeometry })
 
@@ -25,8 +31,6 @@
             return []
         },
     })
-
-    let { onready } = $props<{ onready: () => void }>()
 
     let cameraRef = $state<THREE.OrthographicCamera>()
     let animations = writable<AnimationSpec[]>([])
@@ -85,4 +89,6 @@
     <Title {animations} />
 
     <SocialButtons {animations} />
+
+    <VolleyballCourt {animations} scale={1 / 3} />
 </Suspense>
