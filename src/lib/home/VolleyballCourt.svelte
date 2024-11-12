@@ -69,7 +69,7 @@
         {#snippet buttons()}
             <button>
                 <a href="https://github.com/flmng0/volley_kit" target="_blank">
-                    View Source
+                    Source
                 </a>
             </button>
             <button>

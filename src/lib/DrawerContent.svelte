@@ -113,7 +113,6 @@
         --background: #eee;
         --text: #000;
 
-        align-self: start;
         gap: 0.2em;
         padding-block: 0.3em;
     }
