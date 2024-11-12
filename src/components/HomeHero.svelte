@@ -47,7 +47,7 @@
         color: white;
         position: fixed;
         cursor: pointer;
-        bottom: 0;
+        top: 0;
         right: 0;
         margin: 1em;
         padding: 0.4em 0.6em;
