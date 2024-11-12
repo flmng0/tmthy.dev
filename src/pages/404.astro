@@ -9,12 +9,18 @@ import RootLayout from '../layouts/RootLayout.astro'
         </header>
         <main>
             <h2>Uh oh!</h2>
-            <h3>There is no page at {Astro.url.pathname}</h3>
+            <h3>There is no page at<wbr /> <code></code></h3>
         </main>
         <nav>
             <a href="/">Return to Solid Ground</a>
         </nav>
     </div>
+    <script>
+        // This is stupid, but it's to get around the fact that
+        // Cloudflare will change the request path on the server
+        const elem = document.querySelector('main > h3 > code')
+        elem.textContent += window.location.pathname
+    </script>
 </RootLayout>
 
 <style>
@@ -27,11 +33,16 @@ import RootLayout from '../layouts/RootLayout.astro'
         height: 100%;
         gap: 2em;
         color: #fefef8;
+        width: min(45rem, 100%);
+        margin-inline: auto;
     }
     header > span {
         font-family: monospace;
         font-size: 2rem;
         font-weight: 700;
+    }
+    main {
+        width: 100%;
     }
     main > h2 {
         font-size: 3rem;
@@ -40,6 +51,9 @@ import RootLayout from '../layouts/RootLayout.astro'
         font-size: 2.5rem;
         font-weight: normal;
         color: #eeeee8;
+    }
+    main code {
+        white-space: nowrap;
     }
 
     nav {
