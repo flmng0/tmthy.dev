@@ -12,8 +12,10 @@
     import Camera from './Camera.svelte'
     import Title from './Title.svelte'
     import SocialButtons from './SocialButtons.svelte'
-    import { setHomeContext } from './context'
     import VolleyballCourt from './VolleyballCourt.svelte'
+
+    import { setHomeContext } from './context'
+    import { closeDrawer } from '../Drawer.svelte'
 
     interface Props {
         onready: () => void
@@ -42,6 +44,7 @@
     goHome = () => {
         $controller.focusLocation(new THREE.Vector3(0, 0, 0), invalidate)
         $isFar = false
+        closeDrawer()
     }
 
     const onload = () => {
