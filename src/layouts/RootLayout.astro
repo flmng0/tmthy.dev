@@ -1,0 +1,61 @@
+---
+interface Props {
+	title: string
+	meta?: Record<string, string>
+	background?: string
+}
+
+const { title, meta, background } = Astro.props
+
+if (!meta?.description) {
+	console.warn('No description tag for page: title =', title)
+}
+const metaEntries = Object.entries(meta || {})
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+		{metaEntries.map(([name, content]) => <meta {name} {content} />)}
+
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<title>{title} | tmthy.dev</title>
+	</head>
+
+	<body style={background && 'background: ' + background}>
+		<div style="display: none">
+			<h1>{title}</h1>
+			<a href="https://github.com/flmng0">flmng0 at GitHub.com</a>
+			<a href="https://www.linkedin.com/in/timothy-davis-dev">
+				Timothy Davis on LinkedIn
+			</a>
+			<a href="mailto:tmthydvs@gmail.com">
+				Contact me at tmthydvs@gmail.com
+			</a>
+		</div>
+
+		<slot />
+	</body>
+</html>
+
+<style>
+	:global(*) {
+		box-sizing: border-box;
+	}
+
+	html {
+		overflow: hidden;
+	}
+
+	body,
+	html {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
+</style>

@@ -48,14 +48,14 @@ export default class IsometricMapControls extends THREE.EventDispatcher<{
         this._setupEvents(domElement)
     }
 
-    focusLocation(location: THREE.Vector3, onupdate?: () => void) {
+    focusLocation(location: THREE.Vector3) {
         anime({
             targets: this.camera.position,
             x: location.x + this._camera0.x,
             z: location.z + this._camera0.z,
             duration: 500,
             easing: 'easeOutCubic',
-            update: onupdate,
+            update: () => this._change(),
         })
     }
 

@@ -1,38 +1,12 @@
 ---
 import HomeHero from '../components/HomeHero.svelte'
+import RootLayout from '../layouts/RootLayout.astro'
+
+const meta = {
+    description: `Learn more about a passionate, broadly skilled developer from Australia. Tim Davis' porfolio website.`,
+}
 ---
 
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="generator" content={Astro.generator} />
-        <title>tmthy.dev</title>
-    </head>
-    <body>
-        <HomeHero client:load />
-    </body>
-</html>
-
-<style>
-    :global(*) {
-        box-sizing: border-box;
-    }
-
-    html {
-        overflow: hidden;
-    }
-
-    body,
-    html {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-
-    body {
-        background: #bebebf;
-    }
-</style>
+<RootLayout {meta} title="Portfolio Home Page" background="#bebebf">
+    <HomeHero client:load />
+</RootLayout>
