@@ -1,7 +1,6 @@
 <script lang="ts">
     import { T, useThrelte } from '@threlte/core'
     import * as THREE from 'three'
-    import { onDestroy } from 'svelte'
     import IsometricMapControls from './IsometricMapControls'
     import { useHomeContext } from './context'
 
@@ -10,11 +9,12 @@
     }
     let { ref = $bindable() }: Props = $props()
 
-    const { controlsEnabled } = useHomeContext()
+    const { controlsEnabled, controller, isFar } = useHomeContext()
 
     const azimuth = Math.PI / 4
     const altitude = Math.PI / 2 - Math.atan(Math.SQRT1_2)
 
+    const farDistSq = 10
     const distance = 100
 
     const { size } = useThrelte()
@@ -26,7 +26,6 @@
     let floorPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.5)
 
     let controls: IsometricMapControls | undefined = $state(undefined)
-    const { controller } = useHomeContext()
 
     $effect(() => {
         if (controls) {
@@ -42,12 +41,12 @@
             floorPlane
         )
 
-        controls.addEventListener('change', invalidate)
-    }
+        controls.addEventListener('change', () => {
+            invalidate()
 
-    onDestroy(() => {
-        controls?.removeEventListener('change', invalidate)
-    })
+            $isFar = controls!.getDistSquared() >= farDistSq
+        })
+    }
 </script>
 
 <T.OrthographicCamera

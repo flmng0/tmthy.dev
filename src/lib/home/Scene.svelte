@@ -12,18 +12,19 @@
     import Camera from './Camera.svelte'
     import Title from './Title.svelte'
     import SocialButtons from './SocialButtons.svelte'
-    import { setHomeContext, useHomeContext } from './context'
+    import { setHomeContext } from './context'
     import VolleyballCourt from './VolleyballCourt.svelte'
 
     interface Props {
         onready: () => void
+        onfar: (far: boolean) => void
+        goHome: ((e: MouseEvent) => void) | undefined
     }
-    let { onready }: Props = $props()
+    let { onready, onfar, goHome = $bindable() }: Props = $props()
 
     extend({ TextGeometry })
 
-    setHomeContext()
-    const { controlsEnabled } = useHomeContext()
+    const { controlsEnabled, isFar, controller } = setHomeContext()
 
     interactivity({
         filter: (hits) => {
@@ -36,6 +37,12 @@
     let animations = writable<AnimationSpec[]>([])
 
     const { invalidate } = useThrelte()
+
+    $effect(() => onfar($isFar))
+    goHome = () => {
+        $controller.focusLocation(new THREE.Vector3(0, 0, 0), invalidate)
+        $isFar = false
+    }
 
     const onload = () => {
         onready()

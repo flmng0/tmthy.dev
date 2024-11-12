@@ -5,14 +5,16 @@ import type IsometricMapControls from './IsometricMapControls'
 type HomeContext = {
     controlsEnabled: Writable<boolean>
     controller: Writable<IsometricMapControls>
+    isFar: Writable<boolean>
 }
 
 const homeContextKey = 'home-tmthy.dev'
 
-export function setHomeContext() {
-    setContext(homeContextKey, {
+export function setHomeContext(): HomeContext {
+    return setContext(homeContextKey, {
         controlsEnabled: writable(false),
-        controller: writable(),
+        controller: writable<IsometricMapControls>(),
+        isFar: writable(false),
     })
 }
 
