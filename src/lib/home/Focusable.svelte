@@ -45,11 +45,10 @@
     )
 
     const { controller } = useHomeContext()
-    const { invalidate } = useThrelte()
 
     const onclick = (e: IntersectionEvent<MouseEvent>) => {
         if (ref) {
-            $controller?.focusLocation(ref.position, invalidate)
+            $controller?.focusLocation(ref.position)
         }
 
         setDrawer(details)

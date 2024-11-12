@@ -38,14 +38,14 @@
     let cameraRef = $state<THREE.OrthographicCamera>()
     let animations = writable<AnimationSpec[]>([])
 
-    const { invalidate } = useThrelte()
-
     $effect(() => onfar($isFar))
     goHome = () => {
-        $controller.focusLocation(new THREE.Vector3(0, 0, 0), invalidate)
+        $controller.focusLocation(new THREE.Vector3(0, 0, 0))
         $isFar = false
         closeDrawer()
     }
+
+    const { invalidate } = useThrelte()
 
     const onload = () => {
         onready()
