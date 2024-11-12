@@ -52,7 +52,10 @@
     .drawer-content {
         width: min(60ch, 100%);
 
-        background: white;
+        background: rgba(255 255 255 / 0.8);
+        backdrop-filter: blur(8px) grayscale(0.5);
+        box-shadow: 1px 3px 6px -2px rgba(0 0 0 / 0.8);
+
         border-radius: 1em 1em 0 0;
         padding: 0.5em 2em;
 
