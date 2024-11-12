@@ -1,14 +1,13 @@
 <script lang="ts">
-    import { T, useThrelte } from '@threlte/core'
-    import { useCursor, useTexture } from '@threlte/extras'
+    import { T } from '@threlte/core'
+    import { useTexture } from '@threlte/extras'
     import * as THREE from 'three'
 
     import type { AnimatedProps } from './types'
     import { courtHalfData } from './data'
     import { spring } from 'svelte/motion'
-    import { setDrawer } from '../Drawer.svelte'
     import DrawerContent from '../DrawerContent.svelte'
-    import { useHomeContext } from './context'
+    import Focusable from './Focusable.svelte'
 
     interface Props extends AnimatedProps {
         scale: number
@@ -35,8 +34,6 @@
         }
     })
 
-    const { hovering, onPointerEnter, onPointerLeave } = useCursor('pointer')
-
     type Side = 'a' | 'b'
     function sided<T>(side: Side, whenA: T, whenB: T) {
         return side === 'a' ? whenA : whenB
@@ -46,19 +43,6 @@
         stiffness: 0.3,
         damping: 0.3,
     })
-
-    $effect(() => {
-        $scale = ($hovering ? 1.1 : 1.0) * initialScale
-    })
-
-    const { controller } = useHomeContext()
-    const { invalidate } = useThrelte()
-
-    const onclick = (e: MouseEvent) => {
-        e.stopPropagation()
-        setDrawer(info)
-        $controller.focusLocation(position, invalidate)
-    }
 
     const position = new THREE.Vector3(-6.5, 0.001, 1)
 
@@ -91,14 +75,17 @@
 {/snippet}
 
 {#await courtHalfTexture then courtHalfTexture}
-    <T.Group
+    <Focusable
+        component={T.Group}
         bind:ref
+        details={info}
+        onPointerOver="pointer"
+        onhover={() => ($scale = 1.1 * initialScale)}
+        onidle={() => ($scale = initialScale)}
+        onactive={() => ($scale *= 0.95)}
+        oninactive={() => ($scale /= 0.95)}
         scale={$scale}
-        interactive
         position={position.toArray()}
-        {onclick}
-        onpointerenter={onPointerEnter}
-        onpointerleave={onPointerLeave}
     >
         {@render half(courtHalfTexture, 'a')}
         {@render half(courtHalfTexture, 'b')}
@@ -107,7 +94,7 @@
         {@render pole('b')}
 
         {@render net()}
-    </T.Group>
+    </Focusable>
 {/await}
 
 {#snippet half(texture: THREE.Texture, side: Side)}

@@ -67,7 +67,7 @@
 </script>
 
 {#each socialLinks as { icon, color, href, name, description, linkAction }, i}
-    {#snippet linkInfo()}
+    {#snippet details()}
         <DrawerContent title={name}>
             <p>{description}</p>
             {#snippet buttons()}
@@ -79,14 +79,11 @@
     {/snippet}
 
     <IconButton
+        {details}
         {icon}
         {color}
         position.x={i * (1 + spacing) - 1}
         position.z={2}
-        onclick={(e: MouseEvent) => {
-            e.stopPropagation()
-            setDrawer(linkInfo)
-        }}
         oncreate={(ref) => {
             refs.push(ref)
         }}

@@ -77,6 +77,7 @@
         display: flex;
         flex-flow: row;
         justify-content: space-between;
+        align-items: center;
         gap: 0.5em;
         width: 100%;
     }
@@ -114,5 +115,6 @@
 
         align-self: start;
         gap: 0.2em;
+        padding-block: 0.3em;
     }
 </style>
