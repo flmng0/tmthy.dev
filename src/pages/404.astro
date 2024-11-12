@@ -19,7 +19,9 @@ import RootLayout from '../layouts/RootLayout.astro'
         // This is stupid, but it's to get around the fact that
         // Cloudflare will change the request path on the server
         const elem = document.querySelector('main > h3 > code')
-        elem.textContent += window.location.pathname
+        if (elem !== null) {
+            elem.textContent += window.location.pathname
+        }
     </script>
 </RootLayout>
 
