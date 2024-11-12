@@ -2,13 +2,11 @@
 import HomeHero from '../components/HomeHero.svelte'
 import RootLayout from '../layouts/RootLayout.astro'
 
-const description = `Learn more about a passionate, broadly skilled developer from Australia. Tim Davis' porfolio website.`
-
 const meta = {
-    description,
+    description: `Learn more about a passionate, broadly skilled developer from Australia. Tim Davis' porfolio website.`,
 }
 ---
 
-<RootLayout {meta} title="Portfolio Home Page">
+<RootLayout {meta} title="Portfolio Home Page" background="#bebebf">
     <HomeHero client:load />
 </RootLayout>

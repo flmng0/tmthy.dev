@@ -2,9 +2,10 @@
 interface Props {
 	title: string
 	meta?: Record<string, string>
+	background?: string
 }
 
-const { title, meta } = Astro.props
+const { title, meta, background } = Astro.props
 
 if (!meta?.description) {
 	console.warn('No description tag for page: title =', title)
@@ -25,7 +26,7 @@ const metaEntries = Object.entries(meta || {})
 		<title>{title} | tmthy.dev</title>
 	</head>
 
-	<body>
+	<body style={background && 'background: ' + background}>
 		<div style="display: none">
 			<h1>{title}</h1>
 			<a href="https://github.com/flmng0">flmng0 at GitHub.com</a>
@@ -56,9 +57,5 @@ const metaEntries = Object.entries(meta || {})
 		height: 100%;
 		margin: 0;
 		padding: 0;
-	}
-
-	body {
-		background: #bebebf;
 	}
 </style>

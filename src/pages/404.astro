@@ -1,0 +1,61 @@
+---
+import RootLayout from '../layouts/RootLayout.astro'
+---
+
+<RootLayout title="Page Not Found!" background="#282a36">
+    <div>
+        <header>
+            <span>:(</span>
+        </header>
+        <main>
+            <h2>Uh oh!</h2>
+            <h3>There is no page at {Astro.url.pathname}</h3>
+        </main>
+        <nav>
+            <a href="/">Return to Solid Ground</a>
+        </nav>
+    </div>
+</RootLayout>
+
+<style>
+    div {
+        font-family: sans-serif;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        gap: 2em;
+        color: #fefef8;
+    }
+    header > span {
+        font-family: monospace;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+    main > h2 {
+        font-size: 3rem;
+    }
+    main > h3 {
+        font-size: 2.5rem;
+        font-weight: normal;
+        color: #eeeee8;
+    }
+
+    nav {
+        margin-top: 3em;
+    }
+    nav > a {
+        background-color: black;
+        color: white;
+        text-decoration: none;
+        font-size: 1.25rem;
+        padding: 0.6em 1em;
+        border-radius: 0.3em;
+        font-family: monospace;
+    }
+    nav > a:hover {
+        background: #101010;
+        color: #eeeee8;
+    }
+</style>
