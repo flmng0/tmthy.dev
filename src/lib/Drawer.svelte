@@ -42,8 +42,6 @@
     }
 </script>
 
-<!-- TODO: Continue styling of buttons... maybe remove close button and replace with CTAs? -->
-
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions, a11y_click_events_have_key_events -->
 <dialog bind:this={dialog} class={$content?.style}>
     {#if $content}
@@ -67,8 +65,10 @@
         display: flex;
         justify-content: center;
         padding: 0 0.5em;
+    }
 
-        pointer-events: all;
+    .inner > :global(*) {
+        pointer-events: initial;
     }
 
     dialog {
