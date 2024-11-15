@@ -7,7 +7,6 @@
 
     import IconButton from './IconButton.svelte'
     import { shuffle } from '../util'
-    import { setDrawer } from '../Drawer.svelte'
     import DrawerContent from '../DrawerContent.svelte'
 
     let { animations }: AnimatedProps = $props()
@@ -71,9 +70,9 @@
         <DrawerContent title={name}>
             <p>{description}</p>
             {#snippet buttons()}
-                <button>
-                    <a {href} target="_blank">{linkAction || 'Visit'}</a>
-                </button>
+                <a {href} class="button" target="_blank">
+                    {linkAction || 'Visit'}
+                </a>
             {/snippet}
         </DrawerContent>
     {/snippet}

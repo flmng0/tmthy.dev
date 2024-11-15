@@ -7,7 +7,7 @@ interface Props {
 
 const { title, meta, background } = Astro.props
 
-if (!meta?.description) {
+if (!meta?.description && title != 'Page Not Found!') {
 	console.warn('No description tag for page: title =', title)
 }
 const metaEntries = Object.entries(meta || {})
@@ -57,6 +57,8 @@ const metaEntries = Object.entries(meta || {})
 
 	html {
 		overflow: hidden;
+		--font-heading: 'Epilogue', serif;
+		--font-body: 'Inconsolata', monospace;
 	}
 
 	body,
@@ -68,20 +70,34 @@ const metaEntries = Object.entries(meta || {})
 	}
 
 	body {
-		font-family: 'Epilogue', serif;
+		font-family: var(--font-heading);
 		font-optical-sizing: auto;
 		font-weight: normal;
 		font-style: normal;
 		letter-spacing: 0.035em;
 	}
 
+	button,
+	a.button {
+		border: 0;
+		background: none;
+		font-family: var(--font-body);
+		font-weight: 600;
+		font-size: 0.95rem;
+		letter-spacing: 0.08em;
+	}
+
+	a {
+		color: currentColor;
+		text-decoration: none;
+	}
+
 	h1,
 	h2,
 	h3 {
-		font-family: 'Inconsolata', monospace;
+		font-family: var(--font-body);
 		font-optical-sizing: auto;
 		font-style: normal;
-		font-variation-settings: 'wdth' 100;
 	}
 
 	h1 {

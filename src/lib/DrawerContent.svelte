@@ -88,7 +88,8 @@
         gap: inherit;
     }
 
-    .drawer-content nav :global(button) {
+    .drawer-content nav :global(button),
+    .drawer-content nav :global(a.button) {
         --background: black;
         --text: white;
 
@@ -104,13 +105,8 @@
         cursor: pointer;
     }
 
-    .drawer-content nav :global(button > a) {
-        color: currentColor;
-        text-decoration: none;
-    }
-
     .drawer-content .close-button {
-        --background: #eee;
+        --background: #ddd;
         --text: #000;
 
         gap: 0.2em;
