@@ -14,7 +14,8 @@
     const azimuth = Math.PI / 4
     const altitude = Math.PI / 2 - Math.atan(Math.SQRT1_2)
 
-    const farDistSq = 10
+    const farDist = 10
+    const farDistSq = farDist * farDist
     const distance = 100
 
     const { size } = useThrelte()
