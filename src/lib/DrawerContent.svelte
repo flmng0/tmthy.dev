@@ -64,9 +64,6 @@
     }
 
     .drawer-content h2 {
-        font-size: 1.7rem;
-        /* TODO: Actually define --font-sans somewhere */
-        font-family: var(--font-sans, sans-serif);
         margin-top: 0.5em;
         margin-bottom: 0.2em;
     }
