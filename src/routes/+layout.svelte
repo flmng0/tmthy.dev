@@ -1,6 +1,4 @@
 <script>
-    import { onMount } from 'svelte'
-
     import '$lib/styles.css'
     import { onNavigate } from '$app/navigation'
 
@@ -11,6 +9,8 @@
     let { children } = $props()
 
     onNavigate((navigation) => {
+        document.body.scrollTo(0, 0)
+
         if (!document.startViewTransition) return
 
         return new Promise((resolve) => {
