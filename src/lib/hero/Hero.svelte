@@ -1,12 +1,27 @@
 <script>
-	import { Canvas } from "@threlte/core";
-	import Scene from "./Scene.svelte";
-	import { NeutralToneMapping } from "three";
+    import { Canvas } from '@threlte/core'
+    import Scene from './Scene.svelte'
+    import { NeutralToneMapping } from 'three'
+    import appState from '$lib/appState.svelte'
 
-	/** @type {{ title: string }} */
-	let { title } = $props();
+    /** @type {{ title: string }} */
+    let { title } = $props()
 </script>
 
-<Canvas toneMapping={NeutralToneMapping}>
-	<Scene {title} />
-</Canvas>
+<div class:ready={appState.ready}>
+    <Canvas toneMapping={NeutralToneMapping}>
+        <Scene {title} />
+    </Canvas>
+</div>
+
+<style>
+    div {
+        opacity: 0;
+        height: 100%;
+
+        transition: opacity 700ms ease-in;
+    }
+    div.ready {
+        opacity: 1;
+    }
+</style>

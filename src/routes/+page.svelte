@@ -1,6 +1,9 @@
 <script>
-	import Hero from "$lib/hero/Hero.svelte";
+    import appState from '$lib/appState.svelte'
+
+    appState.title = 'tmthy.dev'
 </script>
 
-<Hero title="tmthy.dev" />
-
+<svelte:head>
+    <title>Tim Davis' Web Development Portfolio | tmthy.dev</title>
+</svelte:head>

@@ -1,63 +1,77 @@
 <script>
-	import { extend, T, useLoader } from "@threlte/core";
+    import { extend, T, useLoader, useThrelte } from '@threlte/core'
 
-	import { FontLoader } from "three/addons/loaders/FontLoader.js";
-	import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+    import { FontLoader } from 'three/addons/loaders/FontLoader.js'
+    import { TextGeometry } from 'three/addons/geometries/TextGeometry.js'
 
-	import fontData from "$lib/data/font.typeface.json?url";
+    import { gsap } from 'gsap'
 
-	import Character from "./Character.svelte";
-	import Floor from "./Floor.svelte";
+    import fontData from '$lib/data/font.typeface.json?url'
 
-	const loader = useLoader(FontLoader);
-	const font = loader.load(fontData);
+    import Floor from './Floor.svelte'
+    import Title from './Title.svelte'
+    import { onMount } from 'svelte'
 
-	extend({ TextGeometry });
+    const loader = useLoader(FontLoader)
+    const font = loader.load(fontData)
 
-	/** @type {{ title: string }} */
-	let { title } = $props();
+    extend({ TextGeometry })
 
-	const distance = 10;
+    /** @type {{ title: string }} */
+    let { title } = $props()
 
-	const popup = createTransition((ref) => {});
-	///**
-	// * @param obj {import("three").Object3D}
-	// * @param delay {number}
-	// */
-	//const popup = (obj) => {
-	//	return {
-	//		/** @param t {number} */
-	//		tick: (t) => {
-	//			obj.position.y = -2.3 + t;
-	//		},
-	//	};
-	//};
+    const { invalidate, size } = useThrelte()
+    gsap.defaults({
+        onUpdate: () => {
+            invalidate()
+        },
+    })
+
+    const distance = 10
+
+    const maxTextLength = 10
+    const textPadding = 1
+
+    let width = maxTextLength + textPadding * 2
+    let height = $derived(width * ($size.height / $size.width))
+
+    let updater = () => {}
+
+    $effect(() => {
+        height
+        updater()
+    })
 </script>
 
 <T.OrthographicCamera
-	zoom={80}
-	makeDefault
-	position={distance}
-	oncreate={(ref) => {
-		ref.lookAt(0, 0, 0);
-	}}
+    makeDefault
+    manual
+    left={-width / 2}
+    right={width / 2}
+    top={height / 2}
+    bottom={-height / 2}
+    position={distance}
+    oncreate={(ref) => {
+        ref.lookAt(0, 0, 0)
+        const upAmount = 1.5
+        // "center" the text, and move it upwards slightly (in viewport space)
+        ref.position
+            .add({ x: 0.5, y: 0, z: -0.5 })
+            .add({ x: upAmount, y: 0, z: upAmount })
+
+        updater = () => ref.updateProjectionMatrix()
+    }}
 />
 
 <T.AmbientLight intensity={0.8} />
 <T.DirectionalLight
-	intensity={1.5}
-	position={[10, 15, -10]}
-	oncreate={(ref) => ref.lookAt(0, 0, 0)}
+    intensity={1.5}
+    position={[10, 15, -10]}
+    oncreate={(ref) => ref.lookAt(0, 0, 0)}
 />
 
 <Floor />
 
 {#await font then font}
-	{#key title}
-		{#each title as char, i}
-			{@const x = i + Math.round(-title.length / 2)}
-
-			<Character value={char} {font} position={[x + 0.6, -1.3, 1.375]} />
-		{/each}
-	{/key}
+    <Title {title} {font} />
 {/await}
