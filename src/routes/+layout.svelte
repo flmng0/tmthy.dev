@@ -1,4 +1,6 @@
 <script>
+    import { onMount } from 'svelte'
+
     import '$lib/styles.css'
     import { onNavigate } from '$app/navigation'
 
@@ -18,6 +20,38 @@
             })
         })
     })
+
+    /** @type {HTMLElement | undefined} */
+    let content = $state()
+
+    /** @type {IntersectionObserverCallback} */
+    const onintersect = (entries) => {
+        const entry = entries[0]
+        appState.contentIntersecting = entry.isIntersecting
+    }
+
+    /** @type {IntersectionObserver | undefined} */
+    let observer
+
+    $effect(() => {
+        if (!content) return
+
+        if (observer === undefined) {
+            const margin = window.innerHeight / 5
+            observer = new IntersectionObserver(onintersect, {
+                root: document.body,
+                rootMargin: `-${margin}px`,
+            })
+        }
+
+        observer.observe(content)
+
+        return () => {
+            if (observer && content) {
+                observer.unobserve(content)
+            }
+        }
+    })
 </script>
 
 {#if appState.ready}
@@ -26,13 +60,13 @@
 
 <Hero title={appState.title} />
 
-<main>
+<main class="page-content" bind:this={content}>
     {@render children()}
 </main>
 
 <style>
-    main {
-        position: absolute;
-        background: white;
+    .page-content {
+        position: relative;
+        z-index: 1;
     }
 </style>

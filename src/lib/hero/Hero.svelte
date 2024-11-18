@@ -16,6 +16,8 @@
 
 <style>
     div {
+        position: sticky;
+        inset: 0;
         opacity: 0;
         height: 100%;
 
