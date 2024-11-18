@@ -1,16 +1,32 @@
 <script>
     import '$lib/styles.css'
-
-    import Hero from '$lib/hero/Hero.svelte'
-
-    import appState from '$lib/appState.svelte'
     import { page } from '$app/stores'
     import { onNavigate } from '$app/navigation'
+
+    import appState from '$lib/appState.svelte'
+    import Hero from '$lib/hero/Hero.svelte'
+    import GitHub from '$lib/icons/GitHub.svelte'
+    import LinkedIn from '$lib/icons/LinkedIn.svelte'
 
     const pages = [
         { href: '/', name: 'Home' },
         { href: '/projects', name: 'Projects' },
         { href: '/sketches', name: 'Sketches' },
+    ]
+
+    const iconLinks = [
+        {
+            href: 'https://github.com/flmng0',
+            icon: GitHub,
+            color: '#24292e',
+            name: 'GitHub',
+        },
+        {
+            href: 'https://www.linkedin.com/in/timothy-davis-dev',
+            icon: LinkedIn,
+            color: '#0077b5',
+            name: 'LinkedIn',
+        },
     ]
 
     let { children } = $props()
@@ -32,7 +48,7 @@
 
 <header class:ready={appState.ready}>
     <nav>
-        <section>
+        <section class="pages">
             {#each pages as { href, name }, i}
                 <a
                     {href}
@@ -45,9 +61,12 @@
             {/each}
         </section>
 
-        <section>
-            <span>A</span>
-            <span>B</span>
+        <section class="socials">
+            {#each iconLinks as { href, icon: Icon, color, name }}
+                <a {href} aria-label={name} style:--color={color}>
+                    <Icon />
+                </a>
+            {/each}
         </section>
     </nav>
 </header>
@@ -126,30 +145,62 @@
 
     nav a {
         display: inline-block;
+    }
+
+    .pages a {
         text-decoration: none;
         padding: 0.6em 1em;
         position: relative;
     }
 
-    nav a[aria-current='page'] {
+    .pages a:hover {
+        background-color: hsl(0 0 50%/ 0.1);
+        outline: solid thin hsl(0 0 50% / 0.3);
+    }
+    .pages a:active {
+        background-color: hsl(0 0 50% / 0.3);
+    }
+
+    .pages a[aria-current='page'] {
         font-weight: 500;
     }
 
-    nav a[aria-current='page']::before {
+    .pages a[aria-current='page']::before {
         content: '';
         position: absolute;
         inset: 0;
 
         background-image: linear-gradient(
             to bottom,
-            hsl(310deg 50% 50%),
-            hsl(310deg 50% 50%) 2px,
-            hsl(310deg 50% 50% / 0.3) 2px,
+            hsl(var(--accent-h) 50% 50%),
+            hsl(var(--accent-h) 50% 50%) 2px,
+            hsl(var(--accent-h) 70% 50% / 0.3) 2px,
             transparent 0.35em
         );
         background-color: hsl(0 0 50% / 0.08);
         border-inline: solid thin hsl(0 0 50% / 0.3);
 
         view-transition-name: current-page-indicator;
+    }
+
+    .socials {
+        display: flex;
+        flex-flow: row;
+        gap: 0.5em;
+    }
+    .socials a {
+        font-size: 1.5rem;
+        width: 1em;
+        height: 1em;
+        border-radius: 0.2em;
+    }
+    .socials a:hover {
+        color: var(--color);
+        outline: solid thin hsl(0 0 20% / 0.5);
+        background-color: hsl(0 0 90% / 0.4);
+    }
+    .socials a:active {
+        outline-width: 2px;
+        background-color: hsl(0 0 90% / 0.7);
     }
 </style>

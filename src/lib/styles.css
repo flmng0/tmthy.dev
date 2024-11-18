@@ -7,9 +7,28 @@
 
     overflow: hidden;
 
+    --accent-h: 310deg;
+
     --font-mono: 'Inconsolata', monospace;
     --font-heading: var(--font-mono);
     --font-body: 'Epilogue', serif;
+}
+
+*:focus:not(:focus-visible) {
+    outline: unset;
+}
+
+/* 
+ * Probably over-kill focus-visible... but over-kill is better than 
+ * something low-contrast and hard to see 
+ */
+*:focus-visible {
+    outline: solid 2px hsl(var(--accent-h) 90% 60% / 0.4);
+    outline-offset: -1px;
+    box-shadow:
+        0 0 0 2px hsl(0 0 20% / 0.4),
+        inset 0 0 0 1px hsl(var(--accent-h) 70% 60% / 0.4);
+    border-radius: 2px;
 }
 
 body {
