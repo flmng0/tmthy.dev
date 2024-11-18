@@ -19,7 +19,7 @@
         opacity: 0;
         height: 100%;
 
-        transition: opacity 700ms ease-in;
+        transition: opacity 400ms ease-in;
     }
     div.ready {
         opacity: 1;

@@ -40,11 +40,15 @@
         })
     }
 
+    // NOTE: For some reason the order matters here...
+
+    // Handle outro animation
     $effect(() => {
         title
         animateOut(() => (currentTitle = title))
     })
 
+    // Handle intro animation
     $effect(() => {
         currentTitle
         animateIn()

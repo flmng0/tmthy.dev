@@ -10,10 +10,16 @@
 
     import Floor from './Floor.svelte'
     import Title from './Title.svelte'
-    import { onMount } from 'svelte'
 
     const loader = useLoader(FontLoader)
-    const font = loader.load(fontData)
+
+    const font = loader.load(fontData).then(
+        (value) =>
+            // Little hack to add delay to the intro of the text.
+            new Promise((resolve, _reject) => {
+                setTimeout(() => resolve(value), 300)
+            })
+    )
 
     extend({ TextGeometry })
 
