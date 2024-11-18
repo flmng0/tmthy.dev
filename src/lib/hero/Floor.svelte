@@ -1,19 +1,14 @@
-<script lang="ts">
+<script>
     import { T } from '@threlte/core'
     import { useTexture } from '@threlte/extras'
     import * as THREE from 'three'
-    import { floorTileTextureData } from './data'
-    import { buttonLayer } from './constants'
-    import { closeDrawer } from '../Drawer.svelte'
 
-    interface Props {
-        ref?: THREE.Mesh
-    }
-    let { ref = $bindable() }: Props = $props()
+    import floorTextureUrl from '$lib/data/tile.png'
+    import appState from '$lib/appState.svelte'
 
     const floorSize = 256
 
-    const texture = useTexture(floorTileTextureData, {
+    const texture = useTexture(floorTextureUrl, {
         transform: (texture) => {
             texture.wrapS = THREE.RepeatWrapping
             texture.wrapT = THREE.RepeatWrapping
@@ -25,24 +20,17 @@
         },
     })
 
-    const onclick = (e: MouseEvent) => {
-        e.stopPropagation()
-        closeDrawer()
+    const oncreate = () => {
+        appState.ready = true
     }
 </script>
 
 {#await texture then map}
     <T.Mesh
-        bind:ref
         interactive
-        onpointerenter={(e: PointerEvent) => e.stopPropagation()}
-        onpointerleave={(e: PointerEvent) => e.stopPropagation()}
-        {onclick}
         position.y={-0.5}
         rotation.x={Math.PI * -0.5}
-        oncreate={(ref) => {
-            ref.layers.enable(buttonLayer)
-        }}
+        {oncreate}
     >
         <T.PlaneGeometry args={[floorSize, floorSize]} />
         <T.MeshBasicMaterial {map} />
