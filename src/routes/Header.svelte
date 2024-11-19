@@ -1,5 +1,6 @@
 <script>
     import { page } from '$app/stores'
+    import appState from '$lib/appState.svelte'
 
     import GitHub from '$lib/icons/GitHub.svelte'
     import LinkedIn from '$lib/icons/LinkedIn.svelte'
@@ -29,7 +30,7 @@
     const current = (href) => $page.url.pathname === href
 </script>
 
-<header>
+<header class="glass" class:ready={appState.ready}>
     <nav>
         <section class="pages">
             {#each pages as { href, name }, i}
@@ -77,22 +78,17 @@
         flex-flow: row nowrap;
         justify-content: space-between;
 
-        color: hsl(0 0 25%);
-        border-bottom: thin solid hsl(0 0 55% / 0.8);
-
-        background-color: hsl(0 0 80% / 0.8);
+        border-bottom-width: thin;
     }
 
-    @supports (backdrop-filter: blur(5px) saturate(150%)) {
-        header {
-            background-color: hsl(0 0 100% / 0.3);
-            backdrop-filter: blur(7px) saturate(150%);
-        }
+    header.ready,
+    .ready .slide-down {
+        animation-play-state: running;
     }
 
     header,
     .slide-down {
-        animation: 400ms slideDown ease-out both;
+        animation: 400ms slideDown ease-out both paused;
         animation-delay: calc(1s + var(--delay, 0s));
     }
 
