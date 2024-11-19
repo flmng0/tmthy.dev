@@ -1,8 +1,6 @@
 <script>
     import * as THREE from 'three'
     import { T, useThrelte } from '@threlte/core'
-    import { gsap } from 'gsap'
-    import appState from '$lib/appState.svelte'
 
     const { invalidate, size } = useThrelte()
     const distance = 10
@@ -13,94 +11,92 @@
     let width = maxTextLength + textPadding * 2
     let height = $derived(width * ($size.height / $size.width))
 
-    let updater = () => {}
+    /** @type {THREE.OrthographicCamera} */
+    let camera
 
-    $effect(() => {
-        height
-        updater()
-    })
+    const downVec = new THREE.Vector3()
+
+    const ray = new THREE.Ray()
+    const floorPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0))
+
+    const setFrustum = () => {
+        camera.left = -width / 2
+        camera.right = width / 2
+        camera.top = height / 2
+        camera.bottom = -height / 2
+    }
+
+    const calculateDownVec = () => {
+        const intersect0 = new THREE.Vector3()
+        const intersectY = new THREE.Vector3()
+
+        camera.getWorldDirection(ray.direction)
+        const rayZ = (camera.near + camera.far) / (camera.near - camera.far)
+
+        /**
+         * @param {number} screenX
+         * @param {number} screenY
+         */
+        const setRayPos = (screenX, screenY) => {
+            const ndcX = (2 * screenX) / window.innerWidth - 1
+            const ndcY = -(2 * screenY) / window.innerHeight + 1
+
+            ray.origin.set(ndcX, ndcY, rayZ).unproject(camera)
+        }
+
+        setRayPos(0, 0)
+        ray.intersectPlane(floorPlane, intersect0)
+
+        setRayPos(0, 1)
+        ray.intersectPlane(floorPlane, intersectY)
+
+        downVec.subVectors(intersectY, intersect0)
+        downVec.y = 0
+    }
+
+    const updateCamera = () => {
+        setFrustum()
+        camera.updateProjectionMatrix()
+        calculateDownVec()
+        invalidate()
+    }
 
     /** @param {import("three").OrthographicCamera} ref */
     const oncreate = (ref) => {
-        ref.lookAt(0, 0, 0)
+        camera = ref
+        camera.lookAt(0, 0, 0)
 
         const upAmount = 0.7
+
         // "center" the text, and move it upwards slightly (in viewport space)
-        ref.position
+        camera.position
             .add({ x: 0.5, y: 0, z: -0.5 })
             .add({ x: upAmount, y: 0, z: upAmount })
 
-        updater = () => ref.updateProjectionMatrix()
+        const camStart = camera.position.clone()
 
-        const startDir = ref.quaternion.clone()
+        const scroll = () => {
+            const deltaPos = downVec
+                .clone()
+                .multiplyScalar(document.body.scrollTop)
 
-        const forwards = new THREE.Vector3(0, 0, -1)
-        const down = new THREE.Vector3(0, -1, 0)
+            camera.position.addVectors(camStart, deltaPos)
 
-        const endDir = new THREE.Quaternion()
-        endDir.setFromUnitVectors(forwards, down)
+            invalidate()
+        }
 
-        const endSpherical = new THREE.Spherical()
-        endSpherical.setFromCartesianCoords(1, distance, 0)
+        updateCamera()
 
-        const finalEndPosition = new THREE.Vector3()
-        finalEndPosition.setFromSpherical(endSpherical)
-        finalEndPosition.add({ x: 0, y: 0, z: 2 })
-
-        const spherical = new THREE.Spherical()
-        spherical.setFromVector3(ref.position)
-
-        const t = { value: 0 }
-
-        const timeline = gsap.timeline({
-            defaults: { duration: 1 },
-            onUpdate: () => {
-                invalidate()
-            },
-        })
-
-        timeline.to(spherical, {
-            ...endSpherical,
-            onUpdate: () => {
-                ref.position.setFromSpherical(spherical)
-            },
-        })
-        timeline.to(
-            t,
-            {
-                value: 1,
-                onUpdate: () => {
-                    ref.quaternion.slerpQuaternions(startDir, endDir, t.value)
-                },
-            },
-            '-=100%'
-        )
-
-        timeline.to(ref.position, {
-            z: finalEndPosition.z,
-            duration: 0.5,
-            ease: 'sine.inOut',
-        })
-
-        $effect(() => {
-            if (appState.contentIntersecting) {
-                timeline.timeScale(1)
-                timeline.play()
-            } else {
-                timeline.timeScale(2)
-                timeline.reverse()
-            }
+        scroll()
+        document.body.addEventListener('scroll', () => {
+            scroll()
         })
     }
+
+    $effect(() => {
+        height
+        updateCamera()
+    })
 </script>
 
-<T.OrthographicCamera
-    makeDefault
-    manual
-    left={-width / 2}
-    right={width / 2}
-    top={height / 2}
-    bottom={-height / 2}
-    position={distance}
-    {oncreate}
-/>
+<T.OrthographicCamera makeDefault manual position={distance} {oncreate} />

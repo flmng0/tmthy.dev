@@ -1,6 +1,7 @@
 <script>
     import { gsap } from 'gsap'
     import Character from './Character.svelte'
+    import { useThrelte } from '@threlte/core'
 
     /** @type {{title: string, font: object}} */
     let { title, font } = $props()
@@ -12,10 +13,18 @@
     /** @type {Refs} */
     let refs = $state([])
 
+    const { size } = useThrelte()
+
+    let animationEnabled = () => {
+        return document.body.scrollTop < $size.height * 0.8
+    }
+
     /** @param {Refs} refs */
     const positions = (refs) => refs.map((ref) => ref.position)
 
     const animateIn = () => {
+        if (!animationEnabled()) return
+
         gsap.fromTo(
             positions(refs),
             { y: -2.3 },
@@ -30,6 +39,8 @@
 
     /** @param {() => void} onComplete */
     const animateOut = (onComplete) => {
+        if (!animationEnabled()) return
+
         gsap.to(positions(refs), {
             y: -2.3,
             stagger: {
@@ -62,6 +73,7 @@
         {value}
         {font}
         position.x={x + 0.6}
+        position.y={-1.3}
         position.z={0.375}
         bind:ref={refs[i]}
     />
