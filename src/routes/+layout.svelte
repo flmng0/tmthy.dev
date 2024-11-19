@@ -20,53 +20,25 @@
             })
         })
     })
-
-    /** @type {HTMLElement | undefined} */
-    let content = $state()
-
-    /** @type {IntersectionObserverCallback} */
-    const onintersect = (entries) => {
-        const entry = entries[0]
-        appState.contentIntersecting = entry.isIntersecting
-    }
-
-    /** @type {IntersectionObserver | undefined} */
-    let observer
-
-    $effect(() => {
-        if (!content) return
-
-        if (observer === undefined) {
-            const margin = window.innerHeight / 5
-            observer = new IntersectionObserver(onintersect, {
-                root: document.body,
-                rootMargin: `-${margin}px`,
-            })
-        }
-
-        observer.observe(content)
-
-        return () => {
-            if (observer && content) {
-                observer.unobserve(content)
-            }
-        }
-    })
 </script>
 
-{#if appState.ready}
-    <Header />
-{/if}
+<Header />
 
 <Hero title={appState.title} />
 
-<main class="page-content" bind:this={content}>
+<div class="page-content" class:ready={appState.ready}>
     {@render children()}
-</main>
+</div>
 
 <style>
     .page-content {
         position: relative;
         z-index: 1;
+
+        transition: margin-top 500ms ease-out 1.3s;
+    }
+
+    .page-content.ready {
+        margin-top: -5rem;
     }
 </style>
