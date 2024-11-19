@@ -2,6 +2,7 @@
     import { gsap } from 'gsap'
     import Character from './Character.svelte'
     import { useThrelte } from '@threlte/core'
+    import { get } from 'svelte/store'
 
     /** @type {{title: string, font: object}} */
     let { title, font } = $props()
@@ -15,8 +16,9 @@
 
     const { size } = useThrelte()
 
-    let animationEnabled = () => {
-        return document.body.scrollTop < $size.height * 0.8
+    function animationEnabled() {
+        // NOTE: Get is used here to force this to not be reactive
+        return document.body.scrollTop < get(size).height * 0.8
     }
 
     /** @param {Refs} refs */

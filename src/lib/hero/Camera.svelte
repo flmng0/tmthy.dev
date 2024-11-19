@@ -3,7 +3,9 @@
     import { T, useThrelte } from '@threlte/core'
 
     const { invalidate, size } = useThrelte()
+
     const distance = 10
+    const scrollScale = 0.5
 
     const maxTextLength = 10
     const textPadding = 1
@@ -78,7 +80,7 @@
         const scroll = () => {
             const deltaPos = downVec
                 .clone()
-                .multiplyScalar(document.body.scrollTop)
+                .multiplyScalar(document.body.scrollTop * scrollScale)
 
             camera.position.addVectors(camStart, deltaPos)
 
