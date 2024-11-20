@@ -40,26 +40,6 @@
             <a class="button" href="https://volley-kit.tmthy.dev">Visit</a>
         {/snippet}
     </ProjectCard>
-    <ProjectCard key="volley-kit2" position={{ x: -6.5, z: 8 }}>
-        {#snippet object()}
-            <VolleyballCourt position.x={-6.5} position.z={1} />
-        {/snippet}
-        {#snippet title()}
-            Volley Kit
-        {/snippet}
-
-        <p>
-            Real-time synchronized scoring app, mainly for volleyball. This was
-            developed using Phoenix and Elixir.
-        </p>
-
-        {#snippet actions()}
-            <a class="button" href="https://github.com/flmng0/volley_kit">
-                View Source
-            </a>
-            <a class="button" href="https://volley-kit.tmthy.dev">Visit</a>
-        {/snippet}
-    </ProjectCard>
 </main>
 
 <style>

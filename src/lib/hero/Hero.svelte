@@ -3,10 +3,6 @@
     import Scene from './Scene.svelte'
     import { NeutralToneMapping } from 'three'
     import appState from '$lib/appState.svelte'
-    import { onNavigate } from '$app/navigation'
-
-    $inspect(appState.scrollTriggers)
-    $inspect(appState.objects)
 
     /** @type {{ title: string }} */
     let { title } = $props()
