@@ -3,6 +3,10 @@
     import Scene from './Scene.svelte'
     import { NeutralToneMapping } from 'three'
     import appState from '$lib/appState.svelte'
+    import { onNavigate } from '$app/navigation'
+
+    $inspect(appState.scrollTriggers)
+    $inspect(appState.objects)
 
     /** @type {{ title: string }} */
     let { title } = $props()
@@ -16,7 +20,7 @@
 
 <style>
     div {
-        position: sticky;
+        position: fixed;
         inset: 0;
         opacity: 0;
         height: 100%;

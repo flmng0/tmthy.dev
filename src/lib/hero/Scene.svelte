@@ -12,6 +12,7 @@
     import Floor from './Floor.svelte'
     import Title from './Title.svelte'
     import Camera from './Camera.svelte'
+    import appState from '$lib/appState.svelte'
 
     const loader = useLoader(FontLoader)
 
@@ -47,6 +48,10 @@
 />
 
 <Floor />
+
+{#each appState.objects.values() as object}
+    {@render object()}
+{/each}
 
 {#await font then font}
     <Title {title} {font} />

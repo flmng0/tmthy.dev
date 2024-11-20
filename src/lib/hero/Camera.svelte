@@ -1,6 +1,11 @@
 <script>
     import * as THREE from 'three'
     import { T, useThrelte } from '@threlte/core'
+    import { gsap } from 'gsap'
+    import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+    import appState from '$lib/appState.svelte'
+    import { tick } from 'svelte'
 
     const { invalidate, size } = useThrelte()
 
@@ -15,6 +20,8 @@
 
     /** @type {THREE.OrthographicCamera} */
     let camera
+    /** @type {THREE.Vector3} */
+    let cameraOrigin
 
     const downVec = new THREE.Vector3()
 
@@ -75,14 +82,18 @@
             .add({ x: 0.5, y: 0, z: -0.5 })
             .add({ x: upAmount, y: 0, z: upAmount })
 
-        const camStart = camera.position.clone()
+        cameraOrigin = camera.position.clone()
 
         const scroll = () => {
+            if (appState.scrollTriggers.length !== 0) {
+                return
+            }
+
             const deltaPos = downVec
                 .clone()
                 .multiplyScalar(document.body.scrollTop * scrollScale)
 
-            camera.position.addVectors(camStart, deltaPos)
+            camera.position.addVectors(cameraOrigin, deltaPos)
 
             invalidate()
         }
@@ -95,10 +106,70 @@
         })
     }
 
-    $effect(() => {
-        height
-        updateCamera()
-    })
+    const setupScrollTriggers = () => {
+        const triggerConfigs = appState.scrollTriggers
+
+        if (triggerConfigs.length === 0) {
+            return
+        }
+
+        const mm = gsap.matchMedia()
+
+        /** @type {gsap.core.Tween?} */
+        let currentAnim = null
+
+        const scroller = document.getElementById('scroller')
+
+        mm.add(
+            {
+                desktop: '(min-width: 768px)',
+                mobile: '(max-width: 767px)',
+            },
+            (context) => {
+                let horizontal
+                if (context.conditions?.desktop) {
+                    horizontal = false
+                } else if (context.conditions?.mobile) {
+                    horizontal = true
+                } else {
+                    console.error(
+                        'Failed to set-up scroll triggers. Neither desktop or mobile'
+                    )
+                    return
+                }
+
+                for (const config of triggerConfigs) {
+                    const { target, trigger } = config
+
+                    const toPosition = cameraOrigin.clone().add(target)
+
+                    ScrollTrigger.create({
+                        trigger,
+                        scroller,
+                        horizontal: true,
+                        start: 'top center',
+                        end: 'bottom center',
+                        onToggle: ({ isActive }) => {
+                            if (isActive) {
+                                currentAnim?.kill()
+                                currentAnim = gsap.to(
+                                    camera.position,
+                                    toPosition
+                                )
+                            }
+                        },
+                    })
+                }
+            }
+        )
+
+        return () => {
+            mm.revert()
+        }
+    }
+
+    $effect(updateCamera)
+    $effect(setupScrollTriggers)
 </script>
 
 <T.OrthographicCamera makeDefault manual position={distance} {oncreate} />

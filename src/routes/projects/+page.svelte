@@ -1,6 +1,9 @@
 <script>
     import appState from '$lib/appState.svelte'
 
+    import VolleyballCourt from '$lib/models/VolleyballCourt.svelte'
+    import ProjectCard from './ProjectCard.svelte'
+
     appState.title = 'Projects'
 </script>
 
@@ -8,77 +11,91 @@
     <title>View Projects | tmthy.dev</title>
 </svelte:head>
 
-<main>
-    <hgroup class="glass">
-        <h1>Projects</h1>
-        <p>Porfolio of larger, public, projects that I've made.</p>
-    </hgroup>
+<main id="scroller">
+    <ProjectCard key="projects-header" position={{ x: 0, z: 0 }}>
+        {#snippet title()}
+            Projects
+        {/snippet}
 
-    <nav>
-        <article class="glass">
-            <h2>Volley Kit</h2>
-            <p>
-                Real-time synchronized scoring app, mainly for volleyball. This
-                was developed using Phoenix and Elixir.
-            </p>
-            <nav>
-                <a class="button" href="https://github.com/flmng0/volley_kit">
-                    View Source
-                </a>
-                <a class="button" href="https://volley-kit.tmthy.dev">Visit</a>
-            </nav>
-        </article>
-    </nav>
+        <p>Porfolio of larger, public, projects that I've made.</p>
+    </ProjectCard>
+
+    <ProjectCard key="volley-kit" position={{ x: -6.5, z: 1 }}>
+        {#snippet object()}
+            <VolleyballCourt position.x={-6.5} position.z={1} />
+        {/snippet}
+        {#snippet title()}
+            Volley Kit
+        {/snippet}
+
+        <p>
+            Real-time synchronized scoring app, mainly for volleyball. This was
+            developed using Phoenix and Elixir.
+        </p>
+
+        {#snippet actions()}
+            <a class="button" href="https://github.com/flmng0/volley_kit">
+                View Source
+            </a>
+            <a class="button" href="https://volley-kit.tmthy.dev">Visit</a>
+        {/snippet}
+    </ProjectCard>
+    <ProjectCard key="volley-kit2" position={{ x: -6.5, z: 8 }}>
+        {#snippet object()}
+            <VolleyballCourt position.x={-6.5} position.z={1} />
+        {/snippet}
+        {#snippet title()}
+            Volley Kit
+        {/snippet}
+
+        <p>
+            Real-time synchronized scoring app, mainly for volleyball. This was
+            developed using Phoenix and Elixir.
+        </p>
+
+        {#snippet actions()}
+            <a class="button" href="https://github.com/flmng0/volley_kit">
+                View Source
+            </a>
+            <a class="button" href="https://volley-kit.tmthy.dev">Visit</a>
+        {/snippet}
+    </ProjectCard>
 </main>
 
 <style>
-    hgroup {
-        padding: 0.8em 1.2em;
-        border-top-width: thin;
-    }
+    main {
+        width: 100%;
+        height: 100%;
+        overflow-x: auto;
 
-    main > nav {
-        display: grid;
-        flex-flow: column;
-    }
-
-    article {
-        padding: 0.8em 1.8em;
-        border-width: thin;
-    }
-    article > p {
-        color: hsl(0 0 25% / 0.9);
-    }
-    article > nav {
         display: flex;
-        flex-flow: row wrap;
-        justify-content: end;
-        gap: 1em;
+
+        --peek: 1em;
+        --gap: 1em;
+        gap: var(--gap);
+
+        --card-width: 100%;
+
+        padding-inline: calc(var(--peek) + var(--gap));
+
+        align-items: end;
+        scroll-snap-type: x mandatory;
+
+        position: relative;
     }
-    article > nav a {
-        background-color: hsl(0 0 20%);
-        color: hsl(0 0 80%);
-        padding: 0.5em 0.9em;
+
+    main > :global(*) {
+        scroll-snap-align: center;
+        flex: 0 0 var(--card-width);
     }
 
     @media screen and (min-width: 768px) {
-        hgroup {
-            width: min(66ch, 100%);
-            border-radius: 0.5em;
-            border-width: thin;
-            margin-bottom: 1em;
-        }
         main {
-            margin: 2em;
-            margin-bottom: 1em;
-        }
-        main > nav {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(35ch, 1fr));
-        }
+            --card-width: 66ch;
+            justify-items: center;
+            scroll-padding-inline: 1em;
 
-        article {
-            border-radius: 0.5em;
+            padding-inline: calc(50% - var(--card-width) / 2);
         }
     }
 </style>

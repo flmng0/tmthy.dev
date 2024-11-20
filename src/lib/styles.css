@@ -1,4 +1,6 @@
-* {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
@@ -12,6 +14,8 @@
     --font-mono: 'Inconsolata', monospace;
     --font-heading: var(--font-mono);
     --font-body: 'Epilogue', serif;
+
+    --color-text: hsl(0 0 25%);
 }
 
 *:focus:not(:focus-visible) {
@@ -37,6 +41,7 @@ body {
     margin: 0;
     overflow-y: auto;
 
+    color: var(--color-text);
     background-color: #a9abae;
 
     font-family: var(--font-body);
@@ -44,23 +49,6 @@ body {
     font-weight: normal;
     font-style: normal;
     letter-spacing: 0.035em;
-}
-
-button,
-.button {
-    border: 0;
-    background: none;
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.95rem;
-    letter-spacing: 0.08em;
-}
-
-/* TODO: Active & hover states for buttons */
-
-a {
-    color: currentColor;
-    text-decoration: none;
 }
 
 h1,
@@ -95,11 +83,29 @@ hgroup > :is(h1, h2, h3) + p {
     margin-top: 0;
 }
 
+button,
+.button {
+    border: 0;
+    background: hsl(0 0 20%);
+    color: hsl(0 0 90%);
+    padding: 0.3em 0.7em;
+    border-radius: 0.4em;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+}
+
+/* TODO: Active & hover states for buttons */
+
+a {
+    color: currentColor;
+    text-decoration: none;
+}
+
 /* Glass-morphism effect */
 .glass {
-    background-color: hsl(0 0 80% / 0.8);
-
-    color: hsl(0 0 25%);
+    background-color: hsl(0 0 80% / 0.9);
 
     border-color: hsl(0 0 55% / 0.8);
     border-style: solid;
@@ -108,7 +114,7 @@ hgroup > :is(h1, h2, h3) + p {
 
 @supports (backdrop-filter: blur(5px) saturate(150%)) {
     .glass {
-        background-color: hsl(0 0 100% / 0.3);
-        backdrop-filter: blur(7px) saturate(150%);
+        background-color: hsl(0 0 100% / 0.5);
+        backdrop-filter: blur(14px) saturate(180%);
     }
 }

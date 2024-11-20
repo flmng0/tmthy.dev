@@ -26,19 +26,4 @@
 
 <Hero title={appState.title} />
 
-<div class="page-content" class:ready={appState.ready}>
-    {@render children()}
-</div>
-
-<style>
-    .page-content {
-        position: relative;
-        z-index: 1;
-
-        transition: margin-top 500ms ease-out 1.3s;
-    }
-
-    .page-content.ready {
-        margin-top: -5rem;
-    }
-</style>
+{@render children()}
