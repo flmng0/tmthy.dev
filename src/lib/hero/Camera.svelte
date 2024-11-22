@@ -120,7 +120,7 @@
 
         const ctx = gsap.context(() => {
             for (const config of triggerConfigs) {
-                const { target, trigger } = config
+                const { target, trigger, ontoggle } = config
 
                 const toPosition = cameraOrigin.clone().add(target)
 
@@ -135,6 +135,7 @@
                             currentAnim?.kill()
                             currentAnim = gsap.to(camera.position, toPosition)
                         }
+                        ontoggle && ontoggle(isActive)
                     },
                 })
             }

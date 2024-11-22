@@ -3,6 +3,7 @@
  * @property {string} key
  * @property {import("three").Vector3Like} target
  * @property {HTMLElement | string} trigger
+ * @property {(active: boolean) => void} [ontoggle]
  */
 
 import { SvelteMap } from 'svelte/reactivity'
