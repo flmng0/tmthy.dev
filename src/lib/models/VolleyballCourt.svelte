@@ -5,7 +5,7 @@
     import courtHalfUrl from '$lib/data/court-half.png'
     import { useTexture } from '@threlte/extras'
 
-    /** @type {import("./types.d.ts").GroupProps} */
+    /** @type {import("svelte").ComponentProps<typeof T.Group>} */
     let props = $props()
 
     let courtHalfTexture = useTexture(courtHalfUrl, {

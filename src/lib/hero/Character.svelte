@@ -1,7 +1,15 @@
 <script>
     import { T } from '@threlte/core'
 
-    /** @type {import("./Character").Props} */
+    /**
+     * @typedef {Object} BaseProps
+     * @property {string} value
+     * @property {any} font
+     */
+
+    /** @typedef {BaseProps & import("svelte").ComponentProps<typeof T.Mesh>} Props */
+
+    /** @type {Props} */
     let { value, font, ref = $bindable(), ...meshProps } = $props()
 
     const parameters = {
