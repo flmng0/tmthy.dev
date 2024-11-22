@@ -103,7 +103,7 @@
         align-items: center;
 
         font-family: var(--font-mono);
-        font-size: clamp(0.9rem, 0.9rem + 0.8vw, 1.25rem);
+
         text-transform: uppercase;
     }
 
