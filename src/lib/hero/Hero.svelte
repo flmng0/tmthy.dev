@@ -22,6 +22,7 @@
         height: 100%;
 
         transition: opacity 400ms ease-in;
+        pointer-events: none;
     }
     div.ready {
         opacity: 1;
