@@ -10,8 +10,8 @@
 </svelte:head>
 
 <ContentWrapper>
-    <main class="glass">
-        <hgroup>
+    <main>
+        <hgroup class="glass">
             <h1>Hello, I'm Tim Davis!</h1>
             <p>This site is currently under construction, sorry!</p>
         </hgroup>
@@ -20,8 +20,15 @@
 
 <style>
     main {
+        display: grid;
+        width: min(66ch, 100%);
+        height: 100%;
+        align-items: end;
+        margin-inline: auto;
+    }
+
+    hgroup {
         margin-inline: 1em;
-        margin-bottom: 0.5em;
         border-radius: 0.3em;
         border-width: thin;
         padding: 0.8em 1.2em;

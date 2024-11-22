@@ -4,6 +4,7 @@
     import VolleyballCourt from '$lib/models/VolleyballCourt.svelte'
     import { fly } from 'svelte/transition'
     import ProjectCard from './ProjectCard.svelte'
+    import ContentWrapper from '$lib/ContentWrapper.svelte'
 
     appState.title = 'Projects'
 </script>
@@ -12,36 +13,38 @@
     <title>View Projects | tmthy.dev</title>
 </svelte:head>
 
-<main id="scroller" in:fly={{ y: 200, duration: 300, opacity: 1 }}>
-    <ProjectCard key="projects-header" position={{ x: 0, z: 0 }}>
-        {#snippet title()}
-            Projects
-        {/snippet}
+<ContentWrapper>
+    <main id="scroller">
+        <ProjectCard key="projects-header" position={{ x: 0, z: 0 }}>
+            {#snippet title()}
+                Projects
+            {/snippet}
 
-        <p>Porfolio of larger, public, projects that I've made.</p>
-    </ProjectCard>
+            <p>Porfolio of larger, public, projects that I've made.</p>
+        </ProjectCard>
 
-    <ProjectCard key="volley-kit" position={{ x: -6.5, z: 1 }}>
-        {#snippet object()}
-            <VolleyballCourt position.x={-6.5} position.z={1} />
-        {/snippet}
-        {#snippet title()}
-            Volley Kit
-        {/snippet}
+        <ProjectCard key="volley-kit" position={{ x: -6.5, z: 1 }}>
+            {#snippet object()}
+                <VolleyballCourt position.x={-6.5} position.z={1} />
+            {/snippet}
+            {#snippet title()}
+                Volley Kit
+            {/snippet}
 
-        <p>
-            Real-time synchronized scoring app, mainly for volleyball. This was
-            developed using Phoenix and Elixir.
-        </p>
+            <p>
+                Real-time synchronized scoring app, mainly for volleyball. This
+                was developed using Phoenix and Elixir.
+            </p>
 
-        {#snippet actions()}
-            <a class="button" href="https://github.com/flmng0/volley_kit">
-                View Source
-            </a>
-            <a class="button" href="https://volley-kit.tmthy.dev">Visit</a>
-        {/snippet}
-    </ProjectCard>
-</main>
+            {#snippet actions()}
+                <a class="button" href="https://github.com/flmng0/volley_kit">
+                    View Source
+                </a>
+                <a class="button" href="https://volley-kit.tmthy.dev">Visit</a>
+            {/snippet}
+        </ProjectCard>
+    </main>
+</ContentWrapper>
 
 <style>
     main {
