@@ -1,8 +1,8 @@
 <script module>
     export const breakpoints = {
         mini: '(max-width: 480px)',
-        mobile: '(max-width: 768px)',
-        tablet: '(max-width: 1024px)',
+        mobile: '(min-width: 481px)',
+        tablet: '(min-width: 769px)',
         desktop: '(min-width: 1025px)',
     }
 
@@ -40,8 +40,8 @@
     const queries = {
         mini: mediaQuery('mini'),
         mobile: mediaQuery('mobile'),
-        tablet: mediaQuery('mobile'),
-        desktop: mediaQuery('mobile'),
+        tablet: mediaQuery('tablet'),
+        desktop: mediaQuery('desktop'),
     }
 </script>
 
