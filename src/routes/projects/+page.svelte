@@ -2,6 +2,7 @@
     import appState from '$lib/appState.svelte'
 
     import VolleyballCourt from '$lib/models/VolleyballCourt.svelte'
+    import { fly } from 'svelte/transition'
     import ProjectCard from './ProjectCard.svelte'
 
     appState.title = 'Projects'
@@ -11,7 +12,7 @@
     <title>View Projects | tmthy.dev</title>
 </svelte:head>
 
-<main id="scroller">
+<main id="scroller" in:fly={{ y: 200, duration: 300, opacity: 1 }}>
     <ProjectCard key="projects-header" position={{ x: 0, z: 0 }}>
         {#snippet title()}
             Projects

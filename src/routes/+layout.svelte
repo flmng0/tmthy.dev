@@ -26,4 +26,6 @@
 
 <Hero title={appState.title} />
 
-{@render children()}
+{#if appState.ready}
+    {@render children()}
+{/if}

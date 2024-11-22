@@ -1,11 +1,11 @@
 <script>
-    import appState from './appState.svelte'
+    import { fly } from 'svelte/transition'
 
     /** @type {{ children: import("svelte").Snippet }} */
     let { children } = $props()
 </script>
 
-<div class="content-wrapper" class:ready={appState.ready}>
+<div class="content-wrapper" in:fly={{ y: 200, duration: 300, opacity: 1 }}>
     {@render children()}
 </div>
 
@@ -22,12 +22,5 @@
         margin-inline: auto;
         padding-inline: 0.5em;
         width: min(66ch, 100%);
-
-        translate: 0 100%;
-        transition: 400ms translate ease-out;
-    }
-
-    .content-wrapper.ready {
-        translate: 0 0;
     }
 </style>
