@@ -5,7 +5,7 @@
     import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
     import appState from '$lib/appState.svelte'
-    import { tick } from 'svelte'
+    import { onNavigate } from '$app/navigation'
 
     const { invalidate, size } = useThrelte()
 
@@ -113,63 +113,44 @@
             return
         }
 
-        const mm = gsap.matchMedia()
-
         /** @type {gsap.core.Tween?} */
         let currentAnim = null
 
         const scroller = document.getElementById('scroller')
 
-        mm.add(
-            {
-                desktop: '(min-width: 768px)',
-                mobile: '(max-width: 767px)',
-            },
-            (context) => {
-                let horizontal
-                if (context.conditions?.desktop) {
-                    horizontal = false
-                } else if (context.conditions?.mobile) {
-                    horizontal = true
-                } else {
-                    console.error(
-                        'Failed to set-up scroll triggers. Neither desktop or mobile'
-                    )
-                    return
-                }
+        const ctx = gsap.context(() => {
+            for (const config of triggerConfigs) {
+                const { target, trigger } = config
 
-                for (const config of triggerConfigs) {
-                    const { target, trigger } = config
+                const toPosition = cameraOrigin.clone().add(target)
 
-                    const toPosition = cameraOrigin.clone().add(target)
-
-                    ScrollTrigger.create({
-                        trigger,
-                        scroller,
-                        horizontal: true,
-                        start: 'top center',
-                        end: 'bottom center',
-                        onToggle: ({ isActive }) => {
-                            if (isActive) {
-                                currentAnim?.kill()
-                                currentAnim = gsap.to(
-                                    camera.position,
-                                    toPosition
-                                )
-                            }
-                        },
-                    })
-                }
+                ScrollTrigger.create({
+                    trigger,
+                    scroller,
+                    horizontal: true,
+                    start: 'top center',
+                    end: 'bottom center',
+                    onToggle: ({ isActive }) => {
+                        if (isActive) {
+                            currentAnim?.kill()
+                            currentAnim = gsap.to(camera.position, toPosition)
+                        }
+                    },
+                })
             }
-        )
+        })
 
         return () => {
-            mm.revert()
+            ctx.kill()
         }
     }
 
     $effect(updateCamera)
     $effect(setupScrollTriggers)
+
+    onNavigate(() => {
+        gsap.to(camera.position, { ...cameraOrigin, overwrite: true })
+    })
 </script>
 
 <T.OrthographicCamera makeDefault manual position={distance} {oncreate} />
