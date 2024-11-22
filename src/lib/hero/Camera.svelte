@@ -15,8 +15,8 @@
     const maxTextLength = 10
     const textPadding = 1
 
-    let width = maxTextLength + textPadding * 2
-    let height = $derived(width * ($size.height / $size.width))
+    const width = maxTextLength + textPadding * 2
+    const height = $derived(width * ($size.height / $size.width))
 
     /** @type {THREE.OrthographicCamera} */
     let camera

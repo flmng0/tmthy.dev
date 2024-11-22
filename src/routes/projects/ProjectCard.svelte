@@ -21,7 +21,7 @@
 
     let active = $state(false)
 
-    let cursor = $derived(active ? 'default' : 'pointer')
+    const cursor = $derived(active ? 'default' : 'pointer')
 
     onMount(() => {
         if (!trigger) return
