@@ -2,13 +2,14 @@
     import { page } from '$app/stores'
     import appState from '$lib/appState.svelte'
 
-    import GitHub from '$lib/icons/GitHub.svelte'
-    import LinkedIn from '$lib/icons/LinkedIn.svelte'
+    import { Close, GitHub, HamburgerMenu, LinkedIn } from '$lib/icons'
+    import Responsive, { queries } from '$lib/Responsive.svelte'
 
     const pages = [
         { href: '/', name: 'Home' },
         { href: '/projects', name: 'Projects' },
-        { href: '/sketches', name: 'Sketches' },
+        // One day this page will be back
+        //{ href: '/sketches', name: 'Sketches' },
     ]
 
     const iconLinks = [
@@ -28,21 +29,55 @@
 
     /** @param {string} href */
     const current = (href) => $page.url.pathname === href
+
+    let open = $state(false)
+
+    $effect(() => {
+        if (queries.mobile.matches) {
+            open = false
+        }
+    })
 </script>
 
+{#snippet links(
+    /** @type {import("svelte/elements").HTMLAnchorAttributes} */ props
+)}
+    {#each pages as { href, name }, i}
+        <a
+            {...props}
+            {href}
+            aria-current={current(href) ? 'page' : null}
+            class="slide-down"
+            style:--delay={0.2 + 0.1 * i + 's'}
+        >
+            {name}
+        </a>
+    {/each}
+{/snippet}
+
 <header class="glass" class:ready={appState.ready}>
+    <div class="mobile-links pages" class:open>
+        {@render links({
+            onclick: () => {
+                open = false
+            },
+        })}
+    </div>
     <nav>
         <section class="pages">
-            {#each pages as { href, name }, i}
-                <a
-                    {href}
-                    aria-current={current(href) ? 'page' : null}
-                    class="slide-down"
-                    style:--delay={0.2 + 0.1 * i + 's'}
-                >
-                    {name}
-                </a>
-            {/each}
+            <Responsive>
+                <button class="mobile-toggle" onclick={() => (open = !open)}>
+                    {#if open}
+                        <Close />
+                    {:else}
+                        <HamburgerMenu />
+                    {/if}
+                </button>
+
+                {#snippet mobile()}
+                    {@render links()}
+                {/snippet}
+            </Responsive>
         </section>
 
         <section class="socials">
@@ -75,10 +110,11 @@
         width: 100%;
         z-index: 10;
         display: flex;
-        flex-flow: row nowrap;
-        justify-content: space-between;
+        flex-flow: column;
+        isolation: isolate;
 
         border-bottom-width: thin;
+        --inline-padding: 1rem;
     }
 
     header.ready,
@@ -89,7 +125,7 @@
     header,
     .slide-down {
         animation: 400ms slideDown ease-out both paused;
-        animation-delay: calc(1s + var(--delay, 0s));
+        animation-delay: calc(500ms + var(--delay, 0s));
     }
 
     nav {
@@ -105,13 +141,53 @@
         font-family: var(--font-mono);
 
         text-transform: uppercase;
+
+        padding-inline: var(--inline-padding);
     }
 
     nav a {
         display: inline-block;
     }
 
+    .mobile-links {
+        position: sticky;
+        overflow: hidden;
+        top: 0;
+        max-height: 0;
+        transition: 200ms max-height ease-out;
+        display: flex;
+
+        flex-direction: column;
+        text-align: center;
+    }
+    .mobile-links.open {
+        max-height: 10em;
+    }
+    .mobile-links a {
+        padding-block: 1em;
+    }
+
+    .mobile-toggle {
+        font-size: 1.5em;
+        background-color: unset;
+        color: var(--color-text);
+        aspect-ratio: 1;
+        width: 1em;
+        height: auto;
+        cursor: pointer;
+        padding: 0;
+        margin-block: 0.5em;
+    }
+
+    .pages.mobile-links a[aria-current='page']::before {
+        background-image: linear-gradient(to right, var(--gradient-steps)),
+            linear-gradient(to left, var(--gradient-steps));
+    }
+
     .pages a {
+        --gradient-steps: hsl(var(--accent-h) 50% 50%),
+            hsl(var(--accent-h) 50% 50%) 2px,
+            hsl(var(--accent-h) 70% 50% / 0.3) 2px, transparent 0.35em;
         text-decoration: none;
         padding: 0.6em 1em;
         position: relative;
@@ -134,13 +210,7 @@
         position: absolute;
         inset: 0;
 
-        background-image: linear-gradient(
-            to bottom,
-            hsl(var(--accent-h) 50% 50%),
-            hsl(var(--accent-h) 50% 50%) 2px,
-            hsl(var(--accent-h) 70% 50% / 0.3) 2px,
-            transparent 0.35em
-        );
+        background-image: linear-gradient(to bottom, var(--gradient-steps));
         background-color: hsl(0 0 50% / 0.08);
         border-inline: solid thin hsl(0 0 50% / 0.3);
 

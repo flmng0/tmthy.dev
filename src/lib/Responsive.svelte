@@ -37,7 +37,7 @@
     }
 
     /** @type {Record<Breakpoint, MediaQuery>} */
-    const queries = {
+    export const queries = {
         mini: mediaQuery('mini'),
         mobile: mediaQuery('mobile'),
         tablet: mediaQuery('tablet'),
