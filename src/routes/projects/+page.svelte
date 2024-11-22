@@ -53,7 +53,7 @@
         display: flex;
 
         --peek: 1em;
-        --gap: 1em;
+        --gap: 0.5em;
         gap: var(--gap);
 
         --card-width: 100%;
@@ -73,7 +73,8 @@
 
     @media screen and (min-width: 768px) {
         main {
-            --card-width: 66ch;
+            --card-width: 50ch;
+            --gap: 1em;
             justify-items: center;
             scroll-padding-inline: 1em;
 

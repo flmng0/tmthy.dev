@@ -77,10 +77,10 @@
     }
 
     article {
-        padding: 1.2em 1.8em;
+        padding: 0.9em 1.5em;
         border-width: thin;
         color: hsl(0 0 25% / 0.9);
-        line-height: 2em;
+        line-height: 1.7em;
         border-radius: 0.5em 0.5em 0 0;
     }
 
@@ -94,5 +94,11 @@
         flex-flow: row wrap;
         justify-content: end;
         gap: 1em;
+    }
+
+    @media screen and (min-width: 768px) {
+        article {
+            padding: 1.2em 1.8em;
+        }
     }
 </style>
