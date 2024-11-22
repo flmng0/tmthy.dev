@@ -1,5 +1,5 @@
-<script>
-    const breakpoints = {
+<script module>
+    export const breakpoints = {
         mini: '(max-width: 480px)',
         mobile: '(max-width: 768px)',
         tablet: '(max-width: 1024px)',
@@ -43,7 +43,9 @@
         tablet: mediaQuery('mobile'),
         desktop: mediaQuery('mobile'),
     }
+</script>
 
+<script>
     /**
      * @typedef {{ [B in Breakpoint]?: import("svelte").Snippet }} Snippets
      */
@@ -69,7 +71,7 @@
         }
     }
 
-    let activeSnippet = $derived(getHighest(snippets))
+    const activeSnippet = $derived(getHighest(snippets))
 </script>
 
 {#if activeSnippet}
