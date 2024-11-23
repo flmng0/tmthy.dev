@@ -12,7 +12,7 @@
     <title>View Projects | tmthy.dev</title>
     <meta
         name="description"
-        content="Medium-large scale projects developed by Tim Davis."
+        content="Medium to large-scale projects developed by Tim Davis."
     />
 </svelte:head>
 
