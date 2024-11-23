@@ -7,6 +7,10 @@
 
 <svelte:head>
     <title>Tim Davis' Web Development Portfolio | tmthy.dev</title>
+    <meta
+        name="description"
+        content="Learn more about a passionate, broadly skilled developer from Australia. Tim Davis' porfolio website."
+    />
 </svelte:head>
 
 <ContentWrapper>

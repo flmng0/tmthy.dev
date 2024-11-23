@@ -66,7 +66,11 @@
     <nav>
         <section class="pages">
             <Responsive>
-                <button class="mobile-toggle" onclick={() => (open = !open)}>
+                <button
+                    class="mobile-toggle"
+                    aria-label={(open ? 'Close' : 'Show') + ' Navigation Links'}
+                    onclick={() => (open = !open)}
+                >
                     {#if open}
                         <Close />
                     {:else}

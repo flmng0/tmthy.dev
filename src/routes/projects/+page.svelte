@@ -2,7 +2,6 @@
     import appState from '$lib/appState.svelte'
 
     import VolleyballCourt from '$lib/models/VolleyballCourt.svelte'
-    import { fly } from 'svelte/transition'
     import ProjectCard from './ProjectCard.svelte'
     import ContentWrapper from '$lib/ContentWrapper.svelte'
 
@@ -11,6 +10,10 @@
 
 <svelte:head>
     <title>View Projects | tmthy.dev</title>
+    <meta
+        name="description"
+        content="Medium-large scale projects developed by Tim Davis."
+    />
 </svelte:head>
 
 <ContentWrapper>
