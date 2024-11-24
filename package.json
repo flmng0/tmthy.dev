@@ -11,17 +11,19 @@
     },
     "devDependencies": {
         "@sveltejs/adapter-static": "^3.0.6",
-        "@sveltejs/kit": "^2.0.0",
-        "@sveltejs/vite-plugin-svelte": "^4.0.0",
+        "@sveltejs/kit": "^2.8.2",
+        "@sveltejs/vite-plugin-svelte": "^4.0.1",
+        "@threlte/core": "^8.0.0-next.31",
+        "@threlte/extras": "^9.0.0-next.40",
+        "browserslist": "^4.24.2",
         "gsap": "^3.12.5",
+        "lightningcss": "^1.28.1",
         "prettier": "^3.3.3",
-        "prettier-plugin-svelte": "^3.2.8",
-        "svelte": "^5.0.0",
-        "svelte-check": "^4.0.0",
-        "@threlte/core": "^8.0.0-next.30",
-        "@threlte/extras": "^9.0.0-next.39",
+        "prettier-plugin-svelte": "^3.3.2",
+        "svelte": "^5.2.7",
+        "svelte-check": "^4.1.0",
         "three": "^0.170.0",
-        "typescript": "^5.0.0",
-        "vite": "^5.0.3"
+        "typescript": "^5.7.2",
+        "vite": "^5.4.11"
     }
 }

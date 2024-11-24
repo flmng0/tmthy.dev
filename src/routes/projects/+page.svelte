@@ -2,7 +2,6 @@
     import appState from '$lib/appState.svelte'
 
     import VolleyballCourt from '$lib/models/VolleyballCourt.svelte'
-    import { fly } from 'svelte/transition'
     import ProjectCard from './ProjectCard.svelte'
     import ContentWrapper from '$lib/ContentWrapper.svelte'
 
@@ -11,6 +10,10 @@
 
 <svelte:head>
     <title>View Projects | tmthy.dev</title>
+    <meta
+        name="description"
+        content="Medium to large-scale projects developed by Tim Davis."
+    />
 </svelte:head>
 
 <ContentWrapper>
@@ -47,6 +50,8 @@
 </ContentWrapper>
 
 <style>
+    @import '$lib/media.css';
+
     main {
         width: 100%;
         height: 100%;
@@ -68,15 +73,13 @@
         scroll-snap-type: x mandatory;
 
         position: relative;
-    }
 
-    main > :global(*) {
-        scroll-snap-align: center;
-        flex: 0 0 var(--card-width);
-    }
+        > :global(*) {
+            scroll-snap-align: center;
+            flex: 0 0 var(--card-width);
+        }
 
-    @media screen and (min-width: 768px) {
-        main {
+        @media (--mobile) {
             --card-width: 50ch;
             --gap: 1em;
             justify-items: center;

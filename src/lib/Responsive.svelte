@@ -1,15 +1,14 @@
 <script module>
     export const breakpoints = {
-        mini: '(max-width: 480px)',
-        mobile: '(min-width: 481px)',
-        tablet: '(min-width: 769px)',
-        desktop: '(min-width: 1025px)',
+        mobile: '(min-width: 480px)',
+        tablet: '(min-width: 768px)',
+        desktop: '(min-width: 1024px)',
     }
 
     /** @typedef {keyof typeof breakpoints} Breakpoint */
 
     /** @type {Breakpoint[]} */
-    const order = ['desktop', 'tablet', 'mobile', 'mini']
+    const order = ['desktop', 'tablet', 'mobile']
 
     /** @typedef {{ matches: boolean }} MediaQuery */
 
@@ -38,7 +37,6 @@
 
     /** @type {Record<Breakpoint, MediaQuery>} */
     export const queries = {
-        mini: mediaQuery('mini'),
         mobile: mediaQuery('mobile'),
         tablet: mediaQuery('tablet'),
         desktop: mediaQuery('desktop'),
