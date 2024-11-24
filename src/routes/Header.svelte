@@ -249,13 +249,13 @@
             height: 1em;
             border-radius: 0.2em;
 
-            :hover {
+            &:hover {
                 color: var(--color);
                 outline: solid thin hsl(0 0 20% / 0.5);
                 background-color: hsl(0 0 90% / 0.4);
             }
 
-            :active {
+            &:active {
                 outline-width: 2px;
                 background-color: hsl(0 0 90% / 0.7);
             }
