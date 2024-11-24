@@ -50,6 +50,8 @@
 </ContentWrapper>
 
 <style>
+    @import '$lib/media.css';
+
     main {
         width: 100%;
         height: 100%;
@@ -71,15 +73,13 @@
         scroll-snap-type: x mandatory;
 
         position: relative;
-    }
 
-    main > :global(*) {
-        scroll-snap-align: center;
-        flex: 0 0 var(--card-width);
-    }
+        > :global(*) {
+            scroll-snap-align: center;
+            flex: 0 0 var(--card-width);
+        }
 
-    @media screen and (min-width: 768px) {
-        main {
+        @media (--mobile) {
             --card-width: 50ch;
             --gap: 1em;
             justify-items: center;

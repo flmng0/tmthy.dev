@@ -55,15 +55,15 @@
     {/each}
 {/snippet}
 
-<header class="glass" class:ready={appState.ready}>
-    <div class="mobile-links pages" class:open>
+<header class:ready={appState.ready}>
+    <div class="mobile-links pages glass" class:open>
         {@render links({
             onclick: () => {
                 open = false
             },
         })}
     </div>
-    <nav>
+    <nav class="glass">
         <section class="pages">
             <Responsive>
                 <button
@@ -95,6 +95,8 @@
 </header>
 
 <style>
+    @import '$lib/media.css';
+
     @keyframes slideDown {
         from {
             opacity: 0;
@@ -117,8 +119,9 @@
         flex-flow: column;
         isolation: isolate;
 
-        border-bottom-width: thin;
-        --inline-padding: 1rem;
+        @media (--mobile) {
+            padding-inline: 1rem;
+        }
     }
 
     header.ready,
@@ -142,33 +145,44 @@
         grid-template-columns: 1fr auto;
         align-items: center;
 
+        overflow: hidden;
+
         font-family: var(--font-mono);
 
         text-transform: uppercase;
 
-        padding-inline: var(--inline-padding);
-    }
+        padding-inline: 1rem;
 
-    nav a {
-        display: inline-block;
+        a {
+            display: inline-block;
+        }
+
+        @media (--mobile) {
+            margin-top: 0.5em;
+            border-radius: 0.5em;
+            box-shadow: 1px 0 2px 1px var(--color-shadow);
+        }
     }
 
     .mobile-links {
         position: sticky;
         overflow: hidden;
         top: 0;
-        max-height: 0;
-        transition: 200ms max-height ease-out;
         display: flex;
 
         flex-direction: column;
         text-align: center;
-    }
-    .mobile-links.open {
-        max-height: 10em;
-    }
-    .mobile-links a {
-        padding-block: 1em;
+
+        transition: 200ms max-height ease-out;
+        max-height: 0;
+
+        &.open {
+            max-height: 10em;
+        }
+
+        a {
+            padding-block: 1em;
+        }
     }
 
     .mobile-toggle {
@@ -183,6 +197,7 @@
         margin-block: 0.5em;
     }
 
+    /* NOTE: Needed for specificity */
     .pages.mobile-links a[aria-current='page']::before {
         background-image: linear-gradient(to right, var(--gradient-steps)),
             linear-gradient(to left, var(--gradient-steps));
@@ -192,53 +207,58 @@
         --gradient-steps: hsl(var(--accent-h) 50% 50%),
             hsl(var(--accent-h) 50% 50%) 2px,
             hsl(var(--accent-h) 70% 50% / 0.3) 2px, transparent 0.35em;
+
         text-decoration: none;
         padding: 0.6em 1em;
         position: relative;
-    }
 
-    .pages a:hover {
-        background-color: hsl(0 0 50%/ 0.1);
-        outline: solid thin hsl(0 0 50% / 0.3);
-    }
-    .pages a:active {
-        background-color: hsl(0 0 50% / 0.3);
-    }
+        &:hover {
+            background-color: hsl(0 0 50%/ 0.1);
+            outline: solid thin hsl(0 0 50% / 0.3);
+        }
 
-    .pages a[aria-current='page'] {
-        font-weight: 500;
-    }
+        &:active {
+            background-color: hsl(0 0 50% / 0.3);
+        }
 
-    .pages a[aria-current='page']::before {
-        content: '';
-        position: absolute;
-        inset: 0;
+        &[aria-current='page'] {
+            font-weight: 500;
+        }
 
-        background-image: linear-gradient(to bottom, var(--gradient-steps));
-        background-color: hsl(0 0 50% / 0.08);
-        border-inline: solid thin hsl(0 0 50% / 0.3);
+        &[aria-current='page']::before {
+            content: '';
+            position: absolute;
+            inset: 0;
 
-        view-transition-name: current-page-indicator;
+            background-image: linear-gradient(to bottom, var(--gradient-steps));
+            background-color: hsl(0 0 50% / 0.08);
+            border-inline: solid thin hsl(0 0 50% / 0.3);
+
+            view-transition-name: current-page-indicator;
+        }
     }
 
     .socials {
         display: flex;
         flex-flow: row;
         gap: 0.5em;
-    }
-    .socials a {
-        font-size: 1.5rem;
-        width: 1em;
-        height: 1em;
-        border-radius: 0.2em;
-    }
-    .socials a:hover {
-        color: var(--color);
-        outline: solid thin hsl(0 0 20% / 0.5);
-        background-color: hsl(0 0 90% / 0.4);
-    }
-    .socials a:active {
-        outline-width: 2px;
-        background-color: hsl(0 0 90% / 0.7);
+
+        a {
+            font-size: 1.5rem;
+            width: 1em;
+            height: 1em;
+            border-radius: 0.2em;
+
+            :hover {
+                color: var(--color);
+                outline: solid thin hsl(0 0 20% / 0.5);
+                background-color: hsl(0 0 90% / 0.4);
+            }
+
+            :active {
+                outline-width: 2px;
+                background-color: hsl(0 0 90% / 0.7);
+            }
+        }
     }
 </style>

@@ -71,6 +71,8 @@
 </button>
 
 <style>
+    @import '$lib/media.css';
+
     :where(button) {
         all: unset;
         cursor: pointer;
@@ -82,22 +84,20 @@
         color: hsl(0 0 25% / 0.9);
         line-height: 1.7em;
         border-radius: 0.5em 0.5em 0 0;
-    }
 
-    article > h2 {
-        color: var(--color-text);
-    }
+        > h2 {
+            color: var(--color-text);
+        }
 
-    article > nav {
-        margin-top: 2em;
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: end;
-        gap: 1em;
-    }
+        > nav {
+            margin-top: 2em;
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: end;
+            gap: 1em;
+        }
 
-    @media screen and (min-width: 768px) {
-        article {
+        @media (--mobile) {
             padding: 1.2em 1.8em;
         }
     }
