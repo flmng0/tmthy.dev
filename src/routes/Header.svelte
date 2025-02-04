@@ -31,6 +31,9 @@
     const current = (href) => $page.url.pathname === href
 
     let open = $state(false)
+    let complete = $state(0)
+
+    const completeTotal = pages.length + 1
 
     $effect(() => {
         if (queries.mobile.matches) {
@@ -55,7 +58,11 @@
     {/each}
 {/snippet}
 
-<header class:ready={appState.ready}>
+<header
+    class:ready={appState.ready}
+    class:complete={complete == completeTotal}
+    onanimationend={() => complete++}
+>
     <div class="mobile-links pages glass" class:open>
         {@render links({
             onclick: () => {
@@ -127,6 +134,10 @@
     header.ready,
     .ready .slide-down {
         animation-play-state: running;
+    }
+
+    header.complete,
+    .complete .slide-down {
         animation-fill-mode: forwards;
     }
 
