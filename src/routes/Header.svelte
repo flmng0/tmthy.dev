@@ -127,6 +127,7 @@
     header.ready,
     .ready .slide-down {
         animation-play-state: running;
+        animation-fill-mode: forwards;
     }
 
     header,
