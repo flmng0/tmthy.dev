@@ -1,5 +1,5 @@
 <script>
-    import { page } from '$app/stores'
+    import { page } from '$app/state'
     import appState from '$lib/appState.svelte'
 
     import { Close, GitHub, HamburgerMenu, LinkedIn } from '$lib/icons'
@@ -28,7 +28,7 @@
     ]
 
     /** @param {string} href */
-    const current = (href) => $page.url.pathname === href
+    const current = (href) => page.url.pathname === href
 
     let open = $state(false)
     let complete = $state(0)
