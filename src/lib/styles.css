@@ -59,6 +59,8 @@ body {
   font-weight: normal;
   font-style: normal;
   letter-spacing: 0.035em;
+
+  font-size: clamp(1rem, 0.96vi + 0.51rem, 1.2rem);
 }
 
 @layer defaults {

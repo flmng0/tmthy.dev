@@ -188,6 +188,11 @@
     transition: 200ms max-height ease-out;
     max-height: 0;
 
+    @media (--mobile) {
+      display: none;
+    }
+
+    &:focus-within,
     &.open {
       max-height: 10em;
     }
