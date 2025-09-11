@@ -5,17 +5,17 @@ import browserslist from 'browserslist'
 import { browserslistToTargets } from 'lightningcss'
 
 export default defineConfig({
-    plugins: [sveltekit()],
-    css: {
-        transformer: 'lightningcss',
-        lightningcss: {
-            targets: browserslistToTargets(browserslist('>= 0.25%')),
-            drafts: {
-                customMedia: true,
-            },
-        },
+  plugins: [sveltekit()],
+  css: {
+    transformer: 'lightningcss',
+    lightningcss: {
+      targets: browserslistToTargets(browserslist('>= 0.25%')),
+      drafts: {
+        customMedia: true,
+      },
     },
-    build: {
-        cssMinify: 'lightningcss',
-    },
+  },
+  build: {
+    cssMinify: 'lightningcss',
+  },
 })

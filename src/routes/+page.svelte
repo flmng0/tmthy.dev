@@ -1,8 +1,8 @@
 <script>
-  import appState from "$lib/appState.svelte";
-  import ContentWrapper from "$lib/ContentWrapper.svelte";
+  import appState from '$lib/appState.svelte'
+  import ContentWrapper from '$lib/ContentWrapper.svelte'
 
-  appState.title = "tmthy.dev";
+  appState.title = 'tmthy.dev'
 </script>
 
 <svelte:head>
@@ -14,12 +14,11 @@
 </svelte:head>
 
 <ContentWrapper>
-    <main>
-        <hgroup class="glass">
-            <h1>Hello, I'm Tim Davis!</h1>
-            <p>This site is currently under construction, sorry!</p>
-        </hgroup>
-    </main>
+  <main>
+    <hgroup class="glass">
+      <h1>Hello, I'm Tim Davis!</h1>
+    </hgroup>
+  </main>
 </ContentWrapper>
 
 <style>
