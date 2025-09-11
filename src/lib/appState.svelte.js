@@ -9,14 +9,14 @@
 import { SvelteMap } from 'svelte/reactivity'
 
 const appState = $state({
-    title: '',
-    ready: false,
+  title: '',
+  ready: false,
 
-    /** @type {SvelteMap<string, import('svelte').Snippet>} */
-    objects: new SvelteMap(),
+  /** @type {SvelteMap<string, import('svelte').Snippet>} */
+  objects: new SvelteMap(),
 
-    /** @type {ScrollTrigger[]} */
-    scrollTriggers: [],
+  /** @type {ScrollTrigger[]} */
+  scrollTriggers: [],
 })
 
 export default appState
