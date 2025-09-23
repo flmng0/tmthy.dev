@@ -1,0 +1,3 @@
+{:paths ["pages"]
+ :output-dir "_site"
+ :extension "js"}
