@@ -1,5 +1,10 @@
 (ns test
-  (:require [other :refer [my-name]]))
+  (:require [sketch :refer [run-sketch]]))
 
-(println "This is a test, it's like the 3000th one")
-(println (str "Hello, " my-name))
+(run-sketch 
+  nil
+  (fn [state model]
+    (println model)
+    ))
+    
+    
