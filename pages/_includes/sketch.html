@@ -1,0 +1,23 @@
+---
+layout: root
+---
+
+{% html "head" %}
+	{% if sketchId %}
+		<script src="{{elmOutputPath}}/{{sketchId}}.js"></script>
+		<script type="module">
+			import { runSketch } from "/assets/js/sketchRunner.js";
+
+			const sketchInit = Elm["{{sketchId}}"].init;
+
+			const canvas = document.getElementById("sketchCanvas");
+			runSketch(sketchInit, canvas);
+		</script>
+	{% endif %}
+{% endhtml %}
+
+{{ content | safe }}
+
+<canvas id="sketchCanvas"></canvas>
+
+

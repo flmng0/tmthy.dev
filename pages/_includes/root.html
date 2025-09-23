@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+	<head>
+		{% if title %}
+			<title>{{ title }} | tmthy.dev</title>
+		{% else %}
+			<title>tmthy.dev</title>
+		{% endif %}
+
+		<link rel="icon" href="/assets/favicon.svg">
+
+		{% getBundle "html", "head" %}
+	</head>
+	<body>
+		{{ content | safe }}
+	</body>
+</html>
