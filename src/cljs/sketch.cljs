@@ -64,12 +64,12 @@
   (when (first-frame?) (f)))
 
 (defn rgb [r g b]
-  (let [[r g b] (map #(* 255 (or % 0)) [r g b])]
+  (let [[r g b] (map #(* 255 (mod (or % 0) 1)) [r g b])]
     (str "rgb(" r "," g "," b ")")))
 
 (defn spy [v] (println v) v)
 
-(defn time [] (:time @state))
+(defn time [] (/ (:time @state) 1000))
 
 (defn size [] ((juxt #(.-width %) #(.-height %)) (canvas)))
 
