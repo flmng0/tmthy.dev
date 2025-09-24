@@ -5,7 +5,7 @@
 (defn- init-state []
   (let [canvas (js/document.getElementById "sketchCanvas")
         context (.getContext canvas "2d")]
-    {:time 0 :context context}))
+    {:time 0 :frame 0 :context context}))
 
 (def default-size [500 500])
 
@@ -46,6 +46,7 @@
     (when clear? (clear clear-color))
     (draw (:model @state))
 
+    (swap! state update :frame inc)
     (js/window.requestAnimationFrame tick))
   
   (js/window.requestAnimationFrame tick))
@@ -58,7 +59,7 @@
 (def TAU (* 2 PI))
 
 (defn first-frame? []
-  (zero? (:time @state)))
+  (zero? (:frame @state)))
 
 (defn once [f]
   (when (first-frame?) (f)))
@@ -89,10 +90,17 @@
 
 
 ; Helpers for defining drawing methods
-(defn- apply-opts [ctx {:keys [fill stroke stroke-width]}]
+(defn- apply-opts [ctx {:keys [fill stroke stroke-width scale rotate translate]}]
   (when fill (set! (.-fillStyle ctx) fill))
   (when stroke (set! (.-strokeStyle ctx) stroke))
-  (when stroke-width (set! (.-lineWidth ctx) stroke-width)))
+  (when stroke-width (set! (.-lineWidth ctx) stroke-width))
+  (when scale 
+    (let [[x y] (if (seq? scale) scale [scale scale]) 
+          (.scale ctx x y)]))
+  (when translate
+    (let [[x y] translate]
+      (.translate ctx x y)))
+  (when rotate (.rotate ctx rotate)))
 
 (defn- draw [opts {:keys [init fill stroke]}]
   (let [opts (apply merge opts)]
@@ -120,6 +128,15 @@
     opts
     {:fill #(.fillRect % x y w h)
      :stroke #(.strokeRect % x y w h)}))
+
+(defn line [x1 y1 x2 y2 & opts]
+  (draw
+    opts
+    {:init #(doto %
+              (.beginPath)
+              (.moveTo x1 y1)
+              (.lineTo x2 y2))
+     :stroke #(.stroke %)}))
 
 (defn circle [x y r & opts]
   (draw 

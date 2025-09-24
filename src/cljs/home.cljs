@@ -1,18 +1,19 @@
-(ns home [:require [sketch :as s]])
+(ns home 
+  (:require [sketch :as s]
+            [home.icon :as icon]))
 
 (def tile-size 20)
 
 (defn draw []
-  (let [[cw ch] (s/size)
-        w (/ cw tile-size)
-        h (/ ch tile-size)
-        t (s/time)]
-    (doall 
-      (for [x (range w)
-            y (range h)]
-        (s/rect (* x tile-size) (* y tile-size) 
-                tile-size tile-size 
-                {:fill (s/rgb (/ (+ t x) w) (/ (+ t y) h))})))))
+  (doall
+    (for [[a b] icon/lines]
+      (let [[x1 y1] a
+            [x2 y2] b]
+        (s/once #(println x1 y1))
+        (s/line x1 y1 x2 y2 
+                {:stroke "black"
+                 :rotate (* (s/time) s/PI)
+                 :translate (s/center)})))))
 
 (s/run
   {:clear? true
