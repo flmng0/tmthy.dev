@@ -1,7 +1,12 @@
 import EleventyPluginVite from "@11ty/eleventy-plugin-vite";
+import tailwindcss from "@tailwindcss/vite";
 
 export default function (eleventyConfig) {
-  eleventyConfig.addPlugin(EleventyPluginVite);
+  eleventyConfig.addPlugin(EleventyPluginVite, {
+    viteOptions: {
+      plugins: [tailwindcss()],
+    },
+  });
 
   eleventyConfig.addBundle("html");
 
@@ -12,12 +17,12 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({
     static: "/",
   });
+  eleventyConfig.addPassthroughCopy("src/**/*.css");
 
   return {
     dir: {
       input: "src",
     },
-
     templateFormats: ["html", "njk"],
     htmlTemplateEngine: "njk",
   };

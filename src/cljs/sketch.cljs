@@ -5,19 +5,32 @@
 (defn- init-state []
   (let [canvas (js/document.getElementById "sketchCanvas")
         context (.getContext canvas "2d")]
-    {:t 0 :context context}))
+    {:time 0 :context context}))
 
 (def default-size [500 500])
 
+(defn- auto-size 
+  "Synchronise canvas size with element's DOM size" 
+  []
+  (fn handle-resize []
+    (let [cvs (canvas)
+          w (.-clientWidth cvs)
+          h (.-clientHeight cvs)]
+      (resize w h)))
+  (js/window.addEventListener "resize" handle-resize)
+  (handle-resize))
+      
 (defn run
-  [{update-fn :update :keys [draw clear? clear-color seed size default-opts]}]
+  [{update-fn :update :keys [draw clear? clear-color seed size]}]
   (when update-fn (assert seed) ":seed state expected when using :update")
 
   ; Set initial state
   (when (nil? @state) (reset! state (init-state)))
 
   ; Resize canvas to desired size
-  (apply resize (or size default-size))
+  (if (= size :auto)
+    (auto-size)
+    (resize (or size default-size)))
 
   ; Add the seed model value if provided
   (when update-fn (swap! state assoc :model seed))
@@ -25,7 +38,7 @@
   (fn tick [t]
     (if (nil? (:start @state))
       (swap! state assoc :start t)
-      (swap! state assoc :t (- t (:start @state))))
+      (swap! state assoc :time (- t (:start @state))))
       
     (when update-fn
       (swap! state update :model update-fn))
@@ -44,12 +57,35 @@
 (def PI Math.PI)
 (def TAU (* 2 PI))
 
+(defn first-frame? []
+  (zero? (:time @state)))
+
+(defn once [f]
+  (when (first-frame?) (f)))
+
+(defn rgb [r g b]
+  (let [[r g b] (map #(* 255 (or % 0)) [r g b])]
+    (str "rgb(" r "," g "," b ")")))
+
+(defn spy [v] (println v) v)
+
+(defn time [] (:time @state))
+
 (defn size [] ((juxt #(.-width %) #(.-height %)) (canvas)))
 
-(defn resize [w h] 
-  (let [cvs (canvas)]
-    (set! (.-width cvs) w)
-    (set! (.-height cvs) h)))
+(defn resize 
+  ([size]
+   (if (seq? size)
+     (apply resize size)
+     (resize size size)))
+  ([w h] 
+   (let [cvs (canvas)]
+     (set! (.-width cvs) w)
+     (set! (.-height cvs) h))))
+
+(defn center []
+  (let [[w h] (size)] [(/ w 2) (/ h 2)]))
+    
 
 
 ; Helpers for defining drawing methods
@@ -71,11 +107,12 @@
 
       (.restore))))
 
+
 ; Drawing methods
 (defn clear [color]
   (let [[w h] (size)]
     (if color 
-      (rect 0 0 w h {:fill color :stroke 0})
+      (rect 0 0 w h {:fill color})
       (.clearRect (context) 0 0 w h))))
 
 (defn rect [x y w h & opts]

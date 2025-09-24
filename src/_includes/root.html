@@ -8,18 +8,11 @@
 		{% endif %}
 
 		<link rel="icon" href="/favicon.svg">
-
-		<script type="importmap">
-		{
-			"imports": {
-				"shadow-cljs/core.js": "/js/squint-cljs/core.js"
-			}
-		}
-		</script>
+		<link rel="stylesheet" href="/css/app.css">
 
 		{% getBundle "html", "head" %}
 	</head>
-	<body>
+	<body class="min-h-screen m-0">
 		{{ content | safe }}
 	</body>
 </html>
