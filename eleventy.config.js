@@ -15,7 +15,7 @@ export default function (eleventyConfig) {
 
   return {
     dir: {
-      input: "pages",
+      input: "src",
     },
 
     templateFormats: ["html", "njk"],

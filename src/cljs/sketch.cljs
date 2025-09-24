@@ -1,0 +1,95 @@
+(ns sketch) 
+
+(def state (atom nil))
+
+(defn- init-state []
+  (let [canvas (js/document.getElementById "sketchCanvas")
+        context (.getContext canvas "2d")]
+    {:t 0 :context context}))
+
+(def default-size [500 500])
+
+(defn run
+  [{update-fn :update :keys [draw clear? clear-color seed size default-opts]}]
+  (when update-fn (assert seed) ":seed state expected when using :update")
+
+  ; Set initial state
+  (when (nil? @state) (reset! state (init-state)))
+
+  ; Resize canvas to desired size
+  (apply resize (or size default-size))
+
+  ; Add the seed model value if provided
+  (when update-fn (swap! state assoc :model seed))
+
+  (fn tick [t]
+    (if (nil? (:start @state))
+      (swap! state assoc :start t)
+      (swap! state assoc :t (- t (:start @state))))
+      
+    (when update-fn
+      (swap! state update :model update-fn))
+
+    (when clear? (clear clear-color))
+    (draw (:model @state))
+
+    (js/window.requestAnimationFrame tick))
+  
+  (js/window.requestAnimationFrame tick))
+
+(defn- context [] (:context @state))
+(defn- canvas [] (.-canvas (context)))
+
+; Constants and public getters
+(def PI Math.PI)
+(def TAU (* 2 PI))
+
+(defn size [] ((juxt #(.-width %) #(.-height %)) (canvas)))
+
+(defn resize [w h] 
+  (let [cvs (canvas)]
+    (set! (.-width cvs) w)
+    (set! (.-height cvs) h)))
+
+
+; Helpers for defining drawing methods
+(defn- apply-opts [ctx {:keys [fill stroke stroke-width]}]
+  (when fill (set! (.-fillStyle ctx) fill))
+  (when stroke (set! (.-strokeStyle ctx) stroke))
+  (when stroke-width (set! (.-lineWidth ctx) stroke-width)))
+
+(defn- draw [opts {:keys [init fill stroke]}]
+  (let [opts (apply merge opts)]
+    (doto (context)
+      (.save)
+      (apply-opts opts)
+
+      ((fn [ctx]
+         (when init (init ctx))
+         (when (and fill (:fill opts)) (fill ctx))
+         (when (and stroke (:stroke opts)) (stroke ctx))))
+
+      (.restore))))
+
+; Drawing methods
+(defn clear [color]
+  (let [[w h] (size)]
+    (if color 
+      (rect 0 0 w h {:fill color :stroke 0})
+      (.clearRect (context) 0 0 w h))))
+
+(defn rect [x y w h & opts]
+  (draw 
+    opts
+    {:fill #(.fillRect % x y w h)
+     :stroke #(.strokeRect % x y w h)}))
+
+(defn circle [x y r & opts]
+  (draw 
+    opts
+    {:init #(doto %
+              (.beginPath)
+              (.arc x y r 0 TAU))
+     :fill #(.fill %)
+     :stroke #(.stroke %)})) 
+
