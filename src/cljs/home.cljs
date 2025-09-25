@@ -2,6 +2,27 @@
   (:require [sketch :as s]
             [home.icon :as icon]))
 
+(defn point->id [p] (str p))
+(defn points-equal? [a b]
+  (zero? (compare a b)))
+
+(defn collect-points [lines]
+  (reduce conj {} (map (juxt point->id identity) (.flat lines))))
+
+(defn collect-connections [points lines]
+  (map (partial mapv point->id) lines))
+
+(defn make-particle [id p]
+  {:id id 
+   :pos (mapv parseFloat p) 
+   :vel [0 0] 
+   :acc [0 0]})
+
+(defn seed []
+  (let [points (collect-points icon/lines)
+        connections (collect-connections points icon/lines)
+        particles (mapv (partial apply make-particle) points)]
+    (println particles)))
 
 (defn draw-icon [r]
   (doall
@@ -17,6 +38,5 @@
 (s/run
   {:clear? true
    :size :auto
-   :seed 0 
-   :update (fn [m] (+ m (s/delta)))
+   :seed seed 
    :draw draw})
