@@ -2,10 +2,10 @@
 
 (def state (atom nil))
 
-(defn- init-state []
+(defn- init-state [{:keys [frame-rate]}]
   (let [canvas (js/document.getElementById "sketchCanvas")
         context (.getContext canvas "2d")]
-    {:time 0 :frame 0 :context context}))
+    {:time 0 :frame-rate frame-rate :frame 0 :context context}))
 
 (def default-size [500 500])
 
@@ -19,13 +19,24 @@
       (resize w h)))
   (js/window.addEventListener "resize" handle-resize)
   (handle-resize))
+
+(defn- update-time [t]
+  (let [{start :start t' :time frame-rate :frame-rate} @state]
+    (if (nil? frame-rate)
+      (let [new-time (- t start)
+            dt (- new-time t')]
+        {:time new-time :dt dt})
+      (let [dt (/ 1000 frame-rate)
+            new-time (+ t' dt)]
+        {:time new-time :dt dt}))))
+ 
       
 (defn run
-  [{update-fn :update :keys [draw clear? clear-color seed size]}]
+  [{update-fn :update :keys [draw clear? clear-color seed size frame-rate] :as opts}]
   (when update-fn (assert seed) ":seed state expected when using :update")
 
   ; Set initial state
-  (when (nil? @state) (reset! state (init-state)))
+  (when (nil? @state) (reset! state (init-state opts)))
 
   ; Resize canvas to desired size
   (if (= size :auto)
@@ -33,23 +44,30 @@
     (resize (or size default-size)))
 
   ; Add the seed model value if provided
-  (when update-fn (swap! state assoc :model seed))
+  (let [model (if (fn? seed) (seed) seed)]
+    (swap! state assoc :model model))
 
   (fn tick [t]
-    (if (nil? (:start @state))
-      (swap! state assoc :start t)
-      (swap! state assoc :time (- t (:start @state))))
-      
-    (when update-fn
+    (swap! state merge (update-time t))
+
+    (when (and update-fn (not (first-frame?)))
       (swap! state update :model update-fn))
 
     (when clear? (clear clear-color))
     (draw (:model @state))
 
-    (swap! state update :frame inc)
-    (js/window.requestAnimationFrame tick))
-  
-  (js/window.requestAnimationFrame tick))
+    (swap! state update :frame inc))
+
+  (fn frame-loop [t]
+    (when (nil? (:start @state)) (swap! state assoc :start t))
+    (let [{:keys [frame-rate start time]} @state
+          frame-time (if frame-rate (/ 1000 frame-rate))
+          t' (+ time start)
+          tick? (or (first-frame?) (nil? frame-rate) (> (- t t') frame-time))]
+      (when tick? (tick t))
+      (js/window.requestAnimationFrame frame-loop)))
+  (js/window.requestAnimationFrame frame-loop))
+    
 
 (defn- context [] (:context @state))
 (defn- canvas [] (.-canvas (context)))
@@ -71,6 +89,10 @@
 (defn spy [v] (println v) v)
 
 (defn time [] (/ (:time @state) 1000))
+(defn delta [] (/ (:dt @state) 1000))
+
+(defn set-frame-rate [frame-rate]
+  (swap! state assoc :frame-rate frame-rate))
 
 (defn size [] ((juxt #(.-width %) #(.-height %)) (canvas)))
 
@@ -122,6 +144,16 @@
     (if color 
       (rect 0 0 w h {:fill color})
       (.clearRect (context) 0 0 w h))))
+
+; TODO: Currently this has issues, since things with stroke or fill are 
+; only drawn when the draw function itself has :stroke or :fill set.
+(defn scoped [f & opts]
+  (doto (context)
+    (.save)
+    (apply-opts (apply merge opts))
+    (f)
+    (.restore)))
+  
 
 (defn rect [x y w h & opts]
   (draw 
