@@ -1,6 +1,8 @@
 (ns home 
-  (:require [sketch :as s]
-            [home.icon :as icon]))
+  (:require 
+    [sketch :as s]
+    [home.icon :as icon]
+    [util :refer [map-values clamp mapn]]))
 
 (defn point->id [p] (str p))
 (defn points-equal? [a b]
@@ -9,20 +11,37 @@
 (defn collect-points [lines]
   (reduce conj {} (map (juxt point->id identity) (.flat lines))))
 
-(defn collect-connections [points lines]
-  (map (partial mapv point->id) lines))
+(defn dist-sq [a b]
+  (let [[x1 y1] a
+        [x2 y2] b
+        dx (- x2 x1)
+        dy (- y2 y1)]
+    (+ (* dx dx) (* dy dy))))
 
-(defn make-particle [id p]
-  {:id id 
-   :pos (mapv parseFloat p) 
+(defn dist [a b]
+    (Math.sqrt (dist-sq a b)))
+
+(defn collect-connections [points lines]
+  (mapv 
+    (fn [[a b]] 
+      (let [aid (point->id a)
+            bid (point->id b)
+            d (dist a b)]
+        [aid bid d]))
+    lines))
+
+(defn make-particle [p]
+  {:pos (mapv parseFloat p) 
    :vel [0 0] 
    :acc [0 0]})
 
 (defn seed []
   (let [points (collect-points icon/lines)
         connections (collect-connections points icon/lines)
-        particles (mapv (partial apply make-particle) points)]
-    (println particles)))
+        particles (map-values make-particle points)]
+    {:connections connections
+     :particles particles}))
+
 
 (defn draw-icon [r]
   (doall
@@ -30,10 +49,26 @@
       (let [[x1 y1] a
             [x2 y2] b]
         (s/line x1 y1 x2 y2 {:stroke "black" :rotate r}))))) 
+
+(defn draw-connection [pa pb dd]
+  (let [[x1 y1] (:pos pa)
+        [x2 y2] (:pos pb)
+        width (-> dd
+                  (clamp 0.01 100)
+                  (mapn 0.01 100 2 0.01))]
+    (s/line x1 y1 x2 y2 {:stroke "black" :stroke-width width :translate (s/center)})))
   
-(defn draw [t]
-  (s/scoped draw-icon {:translate [500 500] :rotate t})
-  (s/scoped draw-icon {:translate (s/center) :rotate (s/time)}))
+(defn draw [{:keys [particles connections]}]
+  (draw-icon 0)
+  (doall 
+    (for [[a b d] connections]
+      (let [pa (get particles a)
+            pb (get particles b)
+            d' (dist (:pos pa) (:pos pb))
+            dd (Math.abs (- d' d))]
+        (draw-connection pa pb dd)))))
+        
+  
 
 (s/run
   {:clear? true
