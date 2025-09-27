@@ -31,8 +31,8 @@
         {:time new-time :dt dt}))))
  
 (def event-queue (atom []))
-(defn- push-event [event]
-  (swap! event-queue conj event))
+(defn- push-event [event data]
+  (swap! event-queue conj [event data]))
 
 (defn- flush-events []
   (let [events @event-queue]
@@ -40,26 +40,32 @@
     events))
 
 (defn- listen-input []
-  (fn pointer-moved [{x :clientX y :clientY}]
-    (push-event [:pointer-moved x y]))
-  (fn pointer-down [{x :clientX y :clientY}]
-    (push-event [:pointer-down x y]))
-  (fn pointer-up [{x :clientX y :clientY}]
-    (push-event [:pointer-up x y]))
+  (fn pointer-moved [{x :clientX y :clientY}] (push-event :pointer-moved [x y]))
+  (fn pointer-down [{x :clientX y :clientY}] (push-event :pointer-moved [x y]))
+  (fn pointer-up [{x :clientX y :clientY}] (push-event :pointer-down [x y]))
+
+  (fn device-motion [{:keys [acceleration accelerationIncludingGravity]}]
+    (let [acc (or acceleration accelerationIncludingGravity)
+          data (select-keys acc [:x :y :z])]
+      (push-event :device-motion data)))
+
   (let [cvs (canvas)]
     (.addEventListener cvs "pointermove" pointer-moved)
     (.addEventListener cvs "pointerdown" pointer-down)
-    (.addEventListener cvs "pointerup" pointer-up)))
+    (.addEventListener cvs "pointerup" pointer-up)
+    
+    (.addEventListener cvs "devicemotion" device-motion)))
 
 (defn- event->state [event]
-  (let [[etype & args] event]
+  (let [[etype args] event]
     (case etype
       :pointer-moved (let [[x y] args]
                        {:mouse {:x x :y y}})
       :pointer-down (let [[x y] args]
                       {:mouse {:down true :x x :y y}})
       :pointer-up (let [[x y] args]
-                    {:mouse {:down false :x x :y y}}))))
+                    {:mouse {:down false :x x :y y}})
+      :device-motions {:motion args})))
 
 (defn- process-input []
   (let [events (flush-events)]
@@ -155,7 +161,11 @@
 
 (defn mouse-down? []
   (get-in @state [:mouse :down]))
-    
+
+(defn motion []
+  (if-let [motion (:motion @state)]
+    ((juxt :x :y :z) motion)
+    [0 0 0]))
 
 
 ; Helpers for defining drawing methods
@@ -225,4 +235,10 @@
               (.arc x y r 0 TAU))
      :fill #(.fill %)
      :stroke #(.stroke %)})) 
+
+(defn text [x y text & opts]
+  (draw
+    opts
+    {:fill #(.fillText % text x y)
+     :stroke #(.strokeText % text x y)}))
 

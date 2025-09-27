@@ -113,6 +113,10 @@
   
 (defn draw [{:keys [particles connections]}]
   (when (s/mouse-down?) (draw-repeller))
+  (let [[x y z] (s/motion)]
+    (s/text 10 20 x {:fill "black"})
+    (s/text 10 40 y {:fill "black"})
+    (s/text 10 60 z {:fill "black"}))
   (doall 
     (for [[a b d] connections]
       (let [pa (get particles a)
