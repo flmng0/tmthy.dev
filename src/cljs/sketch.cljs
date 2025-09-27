@@ -25,7 +25,7 @@
     (if (nil? frame-rate)
       (let [new-time (- t start)
             dt (- new-time t')]
-        {:time new-time :dt dt})
+        {:time new-time :dt (js/Math.min dt (/ 1000 60))})
       (let [dt (/ 1000 frame-rate)
             new-time (+ t' dt)]
         {:time new-time :dt dt}))))
@@ -40,22 +40,32 @@
     events))
 
 (defn- listen-input []
-  (fn pointer-moved [{x :clientX y :clientY :as e}]
+  (fn pointer-moved [{x :clientX y :clientY}]
     (push-event [:pointer-moved x y]))
+  (fn pointer-down [{x :clientX y :clientY}]
+    (push-event [:pointer-down x y]))
+  (fn pointer-up [{x :clientX y :clientY}]
+    (push-event [:pointer-up x y]))
   (let [cvs (canvas)]
-    (.addEventListener cvs "pointermove" pointer-moved)))
+    (.addEventListener cvs "pointermove" pointer-moved)
+    (.addEventListener cvs "pointerdown" pointer-down)
+    (.addEventListener cvs "pointerup" pointer-up)))
 
 (defn- event->state [event]
   (let [[etype & args] event]
     (case etype
       :pointer-moved (let [[x y] args]
-                       {:mouse {:x x :y y}}))))
+                       {:mouse {:x x :y y}})
+      :pointer-down (let [[x y] args]
+                      {:mouse {:down true :x x :y y}})
+      :pointer-up (let [[x y] args]
+                    {:mouse {:down false :x x :y y}}))))
 
 (defn- process-input []
   (let [events (flush-events)]
     (->> events
         (mapv event->state)
-        (apply merge-with merge))))
+        (apply merge-with merge @state))))
 
 (defn run
   [{update-fn :update :keys [draw clear? clear-color seed size frame-rate] :as opts}]
@@ -142,6 +152,9 @@
   (if-let [mouse (:mouse @state)]
     ((juxt :x :y) mouse)
     [0 0]))
+
+(defn mouse-down? []
+  (get-in @state [:mouse :down]))
     
 
 

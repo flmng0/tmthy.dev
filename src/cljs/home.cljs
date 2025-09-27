@@ -4,17 +4,26 @@
     [home.icon :as icon]
     [util :refer [map-values clamp mapn]]))
 
-(def repel-radius 30)
-(def repel-scale 50)
+(def repel-radius 75)
+(def repel-scale 100)
 (def restore-scale 10)
-(def drag-scale 2)
+(def drag-scale 5)
+(def icon-scale 4)
+(def stretch-extent 250)
 
 (defn point->id [p] (str p))
 (defn points-equal? [a b]
   (zero? (compare a b)))
 
+(defn transform-point [p]
+  (let [{:keys [x y w h]} icon/viewbox
+        center (mapv #(/ % 2) [w h])
+        centered (mapv - p [x y] center)
+        scaled (mapv (partial * icon-scale) centered)]
+    scaled))
+  
 (defn collect-points [lines]
-  (reduce conj {} (map (juxt point->id identity) (.flat lines))))
+  (reduce conj {} (map (juxt point->id transform-point) (.flat lines))))
 
 (defn dist-sq [a b]
   (let [[dx dy] (mapv - a b)] 
@@ -28,7 +37,7 @@
     (fn [[a b]] 
       (let [aid (point->id a)
             bid (point->id b)
-            d (dist a b)]
+            d (* icon-scale (dist a b))]
         [aid bid d]))
     lines))
 
@@ -52,7 +61,7 @@
 (defn repel [{p :pos :as particle} r min-dist]
   "Add force to particle that repels repeller r"
   (let [dd (dist-sq p r)
-        repel? (< dd (* min-dist min-dist))
+        repel? (and (s/mouse-down?) (< dd (* min-dist min-dist)))
         repel-force (mapv - p r)]
     (if repel?
       (add-force particle repel-force repel-scale)
@@ -98,12 +107,12 @@
   (let [[x1 y1] (:pos pa)
         [x2 y2] (:pos pb)
         width (-> dd
-                  (clamp 0.01 100)
-                  (mapn 0.01 100 2 0.01))]
+                  (clamp 0.01 stretch-extent)
+                  (mapn 0.01 stretch-extent 3 0.01))]
     (s/line x1 y1 x2 y2 {:stroke "black" :stroke-width width :translate (s/center)})))
   
 (defn draw [{:keys [particles connections]}]
-  (draw-repeller)
+  (when (s/mouse-down?) (draw-repeller))
   (doall 
     (for [[a b d] connections]
       (let [pa (get particles a)
