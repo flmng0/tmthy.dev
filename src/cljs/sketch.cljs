@@ -73,7 +73,7 @@
 (defn- canvas [] (.-canvas (context)))
 
 ; Constants and public getters
-(def PI Math.PI)
+(def PI js/Math.PI)
 (def TAU (* 2 PI))
 
 (defn first-frame? []

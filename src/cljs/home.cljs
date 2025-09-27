@@ -12,14 +12,11 @@
   (reduce conj {} (map (juxt point->id identity) (.flat lines))))
 
 (defn dist-sq [a b]
-  (let [[x1 y1] a
-        [x2 y2] b
-        dx (- x2 x1)
-        dy (- y2 y1)]
+  (let [[dx dy] (mapv - a b)] 
     (+ (* dx dx) (* dy dy))))
 
 (defn dist [a b]
-    (Math.sqrt (dist-sq a b)))
+    (js/Math.sqrt (dist-sq a b)))
 
 (defn collect-connections [points lines]
   (mapv 
