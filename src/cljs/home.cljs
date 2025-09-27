@@ -4,6 +4,11 @@
     [home.icon :as icon]
     [util :refer [map-values clamp mapn]]))
 
+(def repel-radius 30)
+(def repel-scale 50)
+(def restore-scale 10)
+(def drag-scale 2)
+
 (defn point->id [p] (str p))
 (defn points-equal? [a b]
   (zero? (compare a b)))
@@ -28,9 +33,11 @@
     lines))
 
 (defn make-particle [p]
-  {:pos (mapv parseFloat p) 
-   :vel [0 0] 
-   :acc [0 0]})
+  (let [pos (mapv parseFloat p)]
+   {:pos pos 
+    :start pos
+    :vel [0 0] 
+    :acc [0 0]}))
 
 (defn seed []
   (let [points (collect-points icon/lines)
@@ -39,13 +46,53 @@
     {:connections connections
      :particles particles}))
 
+(defn add-force [particle f scale]
+  (update particle :acc (partial mapv (comp (partial * scale) +) f)))
 
-(defn draw-icon [r]
-  (doall
-    (for [[a b] icon/lines]
-      (let [[x1 y1] a
-            [x2 y2] b]
-        (s/line x1 y1 x2 y2 {:stroke "black" :rotate r}))))) 
+(defn repel [{p :pos :as particle} r min-dist]
+  "Add force to particle that repels repeller r"
+  (let [dd (dist-sq p r)
+        repel? (< dd (* min-dist min-dist))
+        repel-force (mapv - p r)]
+    (if repel?
+      (add-force particle repel-force repel-scale)
+      particle)))
+
+(defn restore [{p :pos s :start :as particle}]
+  (let [restore-force (mapv - s p)]
+    (add-force particle restore-force restore-scale)))
+
+(defn drag [{v :vel :as particle}]
+  (let [drag-force (mapv - v)]
+    (add-force particle drag-force drag-scale))) 
+        
+
+(defn apply-physics [p dt]
+  (let [scale #(mapv (partial * dt) %)
+        acc (:acc p)
+        vel (mapv + (:vel p) (scale acc))
+        pos (mapv + (:pos p) (scale vel))]
+    (assoc p :vel vel :pos pos)))
+
+(defn update-particle [{:keys [dt mouse]} p]
+  (-> p
+      (assoc :acc [0 0])
+      (repel mouse repel-radius)
+      (restore)
+      (drag)
+      (apply-physics dt)))
+    
+
+(defn update-particles [{:keys [particles] :as model}]
+  (let [dt (s/delta)
+        mouse (mapv - (s/mouse-pos) (s/center))
+        particles (map-values (partial update-particle {:dt dt :mouse mouse}) particles)]
+    (assoc model :particles particles)))
+    
+(defn draw-repeller []
+  (let [[x y] (s/mouse-pos)]
+   (s/circle x y repel-radius {:stroke "grey"})))
+    
 
 (defn draw-connection [pa pb dd]
   (let [[x1 y1] (:pos pa)
@@ -56,7 +103,7 @@
     (s/line x1 y1 x2 y2 {:stroke "black" :stroke-width width :translate (s/center)})))
   
 (defn draw [{:keys [particles connections]}]
-  (draw-icon 0)
+  (draw-repeller)
   (doall 
     (for [[a b d] connections]
       (let [pa (get particles a)
@@ -65,10 +112,10 @@
             dd (Math.abs (- d' d))]
         (draw-connection pa pb dd)))))
         
-  
 
 (s/run
   {:clear? true
    :size :auto
    :seed seed 
+   :update update-particles
    :draw draw})

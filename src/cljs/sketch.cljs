@@ -30,13 +30,41 @@
             new-time (+ t' dt)]
         {:time new-time :dt dt}))))
  
-      
+(def event-queue (atom []))
+(defn- push-event [event]
+  (swap! event-queue conj event))
+
+(defn- flush-events []
+  (let [events @event-queue]
+    (reset! event-queue [])
+    events))
+
+(defn- listen-input []
+  (fn pointer-moved [{x :clientX y :clientY :as e}]
+    (push-event [:pointer-moved x y]))
+  (let [cvs (canvas)]
+    (.addEventListener cvs "pointermove" pointer-moved)))
+
+(defn- event->state [event]
+  (let [[etype & args] event]
+    (case etype
+      :pointer-moved (let [[x y] args]
+                       {:mouse {:x x :y y}}))))
+
+(defn- process-input []
+  (let [events (flush-events)]
+    (->> events
+        (mapv event->state)
+        (apply merge-with merge))))
+
 (defn run
   [{update-fn :update :keys [draw clear? clear-color seed size frame-rate] :as opts}]
   (when update-fn (assert seed) ":seed state expected when using :update")
 
   ; Set initial state
   (when (nil? @state) (reset! state (init-state opts)))
+
+  (listen-input)
 
   ; Resize canvas to desired size
   (if (= size :auto)
@@ -49,6 +77,7 @@
 
   (fn tick [t]
     (swap! state merge (update-time t))
+    (swap! state merge (process-input))
 
     (when (and update-fn (not (first-frame?)))
       (swap! state update :model update-fn))
@@ -108,6 +137,11 @@
 
 (defn center []
   (let [[w h] (size)] [(/ w 2) (/ h 2)]))
+
+(defn mouse-pos []
+  (if-let [mouse (:mouse @state)]
+    ((juxt :x :y) mouse)
+    [0 0]))
     
 
 
