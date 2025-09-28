@@ -65,7 +65,7 @@
                       {:mouse {:down true :x x :y y}})
       :pointer-up (let [[x y] args]
                     {:mouse {:down false :x x :y y}})
-      :device-motions {:motion args})))
+      :device-motion {:motion args})))
 
 (defn- process-input []
   (let [events (flush-events)]
