@@ -11,6 +11,8 @@
 (def icon-scale 4)
 (def stretch-extent 250)
 
+(def connection-color "#555")
+
 (defn point->id [p] (str p))
 (defn points-equal? [a b]
   (zero? (compare a b)))
@@ -98,7 +100,8 @@
 (defn update-particles [{:keys [particles] :as model}]
   (let [dt (s/delta)
         pointer (mapv - (s/pointer-pos) (s/center))
-        particles (map-values (partial update-particle {:dt dt :pointer pointer}) particles)]
+        arg {:dt dt :pointer pointer}
+        particles (map-values (partial update-particle arg) particles)]
     (assoc model :particles particles)))
 
 (defn draw-repeller []
@@ -111,7 +114,7 @@
         width (-> dd
                   (clamp 0.01 stretch-extent)
                   (mapn 0.01 stretch-extent 3 0.01))]
-    (s/line x1 y1 x2 y2 {:stroke "black" :stroke-width width :translate (s/center)})))
+    (s/line x1 y1 x2 y2 {:stroke connection-color :stroke-width width :translate (s/center)})))
 
 (defn draw [{:keys [particles connections]}]
   (when (s/pointer-down?) (draw-repeller))
@@ -126,6 +129,7 @@
 (s/run
  {:clear? true
   :size :auto
+  :frame-rate 60
   :seed seed
   :update update-particles
   :draw draw})

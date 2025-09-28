@@ -84,8 +84,7 @@
     (swap! state assoc :model model))
 
   (fn tick [t]
-    (swap! state merge (update-time t))
-    (swap! state merge (process-input))
+    (swap! state merge (update-time t) (process-input))
 
     (when (and update-fn (not (first-frame?)))
       (swap! state update :model update-fn))
@@ -119,7 +118,7 @@
   (when (first-frame?) (f)))
 
 (defn rgb [r g b]
-  (let [[r g b] (map #(* 255 (mod (or % 0) 1)) [r g b])]
+  (let [[r g b] (mapv #(* 255 (mod (or % 0) 1)) [r g b])]
     (str "rgb(" r "," g "," b ")")))
 
 (defn spy [v] (println v) v)

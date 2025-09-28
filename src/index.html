@@ -5,7 +5,18 @@ bodyClass: touch-pinch-zoom
 
 {% html "head" %}
 <script src="/js/home.js" type="module"></script>
+<link href="/css/home.css" rel="stylesheet">
 {% endhtml %}
 
-<canvas id="sketchCanvas" class="absolute w-full h-full"></canvas>
+<div class="grid w-full h-full place-items-center *:col-1 *:row-1">
+	<main class="z-10">
+		<hgroup class="animate-fade-in animation-fill-both animation-delay-500">
+			<h1 class="text-2xl font-mono">tmthy.dev</h1>
+		</hgroup>
+	</main>
+
+	<canvas id="sketchCanvas" class="size-full animate-blur animation-fill-forwards animation-delay-500"></canvas>
+	<!-- <div class="size-full backdrop-blur-[3px] pointer-events-none "></div> -->
+</div>
+
 

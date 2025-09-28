@@ -7,7 +7,7 @@
   (+ lo' (* (- hi' lo') (/ (- x lo) (- hi lo)))))
 
 (defn map-values [f coll]
-  (into {} (map (juxt first (comp f second)) coll)))
+  (into {} (mapv (juxt first (comp f second)) coll)))
 
 ; Definitely not optimised. Very naive, but it works :)
 (defn distinct-by [comparer coll]

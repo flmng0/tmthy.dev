@@ -1,0 +1,5 @@
+@reference "./app.css";
+
+.glass {
+  @apply backdrop-blur-sm p-4 rounded-md border border-gray-100;
+}

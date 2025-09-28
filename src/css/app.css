@@ -1,1 +1,29 @@
 @import "tailwindcss";
+
+@theme {
+  --animate-blur: 500ms blur ease-in;
+  --animate-fade-in: 1s fade-in ease-in;
+
+  @keyframes blur {
+    100% {
+      filter: blur(4px);
+    }
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+@utility animation-fill-* {
+  animation-fill-mode: --value("backwards", "forwards", "both");
+}
+
+@utility animation-delay-* {
+  animation-delay: calc(--value(integer) * 1ms);
+}
