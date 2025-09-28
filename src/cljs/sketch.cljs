@@ -13,9 +13,9 @@
   "Synchronise canvas size with element's DOM size"
   []
   (fn handle-resize []
-    (let [cvs (canvas)
-          w (.-clientWidth cvs)
-          h (.-clientHeight cvs)]
+    (let [parent (.-parentElement (canvas))
+          w (.-clientWidth parent)
+          h (.-clientHeight parent)]
       (resize w h)))
   (js/window.addEventListener "resize" handle-resize)
   (handle-resize))
