@@ -41,8 +41,8 @@
 
 (defn- listen-input []
   (fn pointer-moved [{x :clientX y :clientY}] (push-event :pointer-moved [x y]))
-  (fn pointer-down [{x :clientX y :clientY}] (push-event :pointer-moved [x y]))
-  (fn pointer-up [{x :clientX y :clientY}] (push-event :pointer-down [x y]))
+  (fn pointer-down [{x :clientX y :clientY}] (push-event :pointer-down [x y]))
+  (fn pointer-up [{x :clientX y :clientY}] (push-event :pointer-up [x y]))
 
   (fn device-motion [{:keys [acceleration accelerationIncludingGravity]}]
     (let [acc (or acceleration accelerationIncludingGravity)
