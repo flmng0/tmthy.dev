@@ -130,6 +130,7 @@
  {:clear? true
   :size :auto
   :frame-rate 60
+  :lock-pointer? true
   :seed seed
   :update update-particles
   :draw draw})

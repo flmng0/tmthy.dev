@@ -39,25 +39,38 @@
     (reset! event-queue [])
     events))
 
-(defn- listen-input []
-  (fn pointer-moved [{x :clientX y :clientY}] (push-event :pointer-moved [x y]))
-  (fn pointer-down [{x :clientX y :clientY}] (push-event :pointer-down [x y]))
-  (fn pointer-up [{x :clientX y :clientY}] (push-event :pointer-up [x y]))
-
+(defn- listen-input [lock-pointer?]
   (let [cvs (canvas)]
+    (fn pointer-moved [e]
+      (let [pos (if (get-in @state [:pointer :locked])
+                  (mapv + ((juxt :x :y) (:pointer @state)) ((juxt :movementX :movementY) e))
+                  ((juxt :clientX :clientY) e))]
+        (push-event :pointer-moved pos)))
+    (fn pointer-down [{x :clientX y :clientY}]
+      (when lock-pointer?
+        (.requestPointerLock cvs))
+      (push-event :pointer-down [x y]))
+    (fn pointer-up [{x :clientX y :clientY}]
+      (when (and lock-pointer? (= cvs (.-pointerLockElement js/document)))
+        (.exitPointerLock js/document))
+      (push-event :pointer-up [x y]))
+
+    (fn pointer-lock-change [e]
+      (push-event :pointer-lock-changed (some? (.-pointerLockElement js/document))))
+
     (.addEventListener cvs "pointermove" pointer-moved)
     (.addEventListener cvs "pointerdown" pointer-down)
-    (.addEventListener cvs "pointerup" pointer-up)))
+    (.addEventListener cvs "pointerup" pointer-up)
+
+    (.addEventListener js/window "pointerlockchange" pointer-lock-change)))
 
 (defn- event->state [event]
   (let [[etype args] event]
     (case etype
-      :pointer-moved (let [[x y] args]
-                       {:pointer {:x x :y y}})
-      :pointer-down (let [[x y] args]
-                      {:pointer {:down true :x x :y y}})
-      :pointer-up (let [[x y] args]
-                    {:pointer {:down false :x x :y y}}))))
+      :pointer-moved (let [[x y] args] {:pointer {:x x :y y}})
+      :pointer-down (let [[x y] args] {:pointer {:down true :x x :y y}})
+      :pointer-up (let [[x y] args] {:pointer {:down false :x x :y y}})
+      :pointer-lock-changed {:pointer {:locked args}})))
 
 (defn- process-input []
   (let [events (flush-events)]
@@ -66,13 +79,13 @@
          (apply merge-with merge @state))))
 
 (defn run
-  [{update-fn :update :keys [draw clear? clear-color seed size frame-rate] :as opts}]
+  [{update-fn :update :keys [draw clear? clear-color seed size frame-rate lock-pointer?] :as opts}]
   (when update-fn (assert seed) ":seed state expected when using :update")
 
   ; Set initial state
   (when (nil? @state) (reset! state (init-state opts)))
 
-  (listen-input)
+  (listen-input lock-pointer?)
 
   ; Resize canvas to desired size
   (if (= size :auto)
