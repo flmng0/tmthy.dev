@@ -1,6 +1,5 @@
 (ns util)
 
-
 (defn clamp [x lo hi]
   (min (max x lo) hi))
 
@@ -14,14 +13,14 @@
 (defn distinct-by [comparer coll]
   "Get distinct entries with a custom equality function (comparer)"
   (reduce
-    (fn [acc x]
+   (fn [acc x]
      (if (nil? x)
        result
        (if (some (fn [y] (comparer x y)) acc)
          acc
          (conj acc x))))
-    []
-    coll))
+   []
+   coll))
 
 ; https://gist.github.com/danielpcox/c70a8aa2c36766200a95#gistcomment-2759497
 (defn deep-merge [a & maps]

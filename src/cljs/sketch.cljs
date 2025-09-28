@@ -1,4 +1,4 @@
-(ns sketch) 
+(ns sketch)
 
 (def state (atom nil))
 
@@ -9,8 +9,8 @@
 
 (def default-size [500 500])
 
-(defn- auto-size 
-  "Synchronise canvas size with element's DOM size" 
+(defn- auto-size
+  "Synchronise canvas size with element's DOM size"
   []
   (fn handle-resize []
     (let [cvs (canvas)
@@ -29,7 +29,7 @@
       (let [dt (/ 1000 frame-rate)
             new-time (+ t' dt)]
         {:time new-time :dt dt}))))
- 
+
 (def event-queue (atom []))
 (defn- push-event [event data]
   (swap! event-queue conj [event data]))
@@ -44,34 +44,26 @@
   (fn pointer-down [{x :clientX y :clientY}] (push-event :pointer-down [x y]))
   (fn pointer-up [{x :clientX y :clientY}] (push-event :pointer-up [x y]))
 
-  (fn device-motion [{:keys [acceleration accelerationIncludingGravity]}]
-    (let [acc (or acceleration accelerationIncludingGravity)
-          data (select-keys acc [:x :y :z])]
-      (push-event :device-motion data)))
-
   (let [cvs (canvas)]
     (.addEventListener cvs "pointermove" pointer-moved)
     (.addEventListener cvs "pointerdown" pointer-down)
-    (.addEventListener cvs "pointerup" pointer-up)
-    
-    (.addEventListener cvs "devicemotion" device-motion)))
+    (.addEventListener cvs "pointerup" pointer-up)))
 
 (defn- event->state [event]
   (let [[etype args] event]
     (case etype
       :pointer-moved (let [[x y] args]
-                       {:mouse {:x x :y y}})
+                       {:pointer {:x x :y y}})
       :pointer-down (let [[x y] args]
-                      {:mouse {:down true :x x :y y}})
+                      {:pointer {:down true :x x :y y}})
       :pointer-up (let [[x y] args]
-                    {:mouse {:down false :x x :y y}})
-      :device-motion {:motion args})))
+                    {:pointer {:down false :x x :y y}}))))
 
 (defn- process-input []
   (let [events (flush-events)]
     (->> events
-        (mapv event->state)
-        (apply merge-with merge @state))))
+         (mapv event->state)
+         (apply merge-with merge @state))))
 
 (defn run
   [{update-fn :update :keys [draw clear? clear-color seed size frame-rate] :as opts}]
@@ -112,7 +104,6 @@
       (when tick? (tick t))
       (js/window.requestAnimationFrame frame-loop)))
   (js/window.requestAnimationFrame frame-loop))
-    
 
 (defn- context [] (:context @state))
 (defn- canvas [] (.-canvas (context)))
@@ -141,12 +132,12 @@
 
 (defn size [] ((juxt #(.-width %) #(.-height %)) (canvas)))
 
-(defn resize 
+(defn resize
   ([size]
    (if (seq? size)
      (apply resize size)
      (resize size size)))
-  ([w h] 
+  ([w h]
    (let [cvs (canvas)]
      (set! (.-width cvs) w)
      (set! (.-height cvs) h))))
@@ -154,27 +145,21 @@
 (defn center []
   (let [[w h] (size)] [(/ w 2) (/ h 2)]))
 
-(defn mouse-pos []
-  (if-let [mouse (:mouse @state)]
-    ((juxt :x :y) mouse)
+(defn pointer-pos []
+  (if-let [pointer (:pointer @state)]
+    ((juxt :x :y) pointer)
     [0 0]))
 
-(defn mouse-down? []
-  (get-in @state [:mouse :down]))
-
-(defn motion []
-  (if-let [motion (:motion @state)]
-    ((juxt :x :y :z) motion)
-    [0 0 0]))
-
+(defn pointer-down? []
+  (get-in @state [:pointer :down]))
 
 ; Helpers for defining drawing methods
 (defn- apply-opts [ctx {:keys [fill stroke stroke-width scale rotate translate]}]
   (when fill (set! (.-fillStyle ctx) fill))
   (when stroke (set! (.-strokeStyle ctx) stroke))
   (when stroke-width (set! (.-lineWidth ctx) stroke-width))
-  (when scale 
-    (let [[x y] (if (seq? scale) scale [scale scale]) 
+  (when scale
+    (let [[x y] (if (seq? scale) scale [scale scale])
           (.scale ctx x y)]))
   (when translate
     (let [[x y] translate]
@@ -194,11 +179,10 @@
 
       (.restore))))
 
-
 ; Drawing methods
 (defn clear [color]
   (let [[w h] (size)]
-    (if color 
+    (if color
       (rect 0 0 w h {:fill color})
       (.clearRect (context) 0 0 w h))))
 
@@ -210,35 +194,34 @@
     (apply-opts (apply merge opts))
     (f)
     (.restore)))
-  
 
 (defn rect [x y w h & opts]
-  (draw 
-    opts
-    {:fill #(.fillRect % x y w h)
-     :stroke #(.strokeRect % x y w h)}))
+  (draw
+   opts
+   {:fill #(.fillRect % x y w h)
+    :stroke #(.strokeRect % x y w h)}))
 
 (defn line [x1 y1 x2 y2 & opts]
   (draw
-    opts
-    {:init #(doto %
-              (.beginPath)
-              (.moveTo x1 y1)
-              (.lineTo x2 y2))
-     :stroke #(.stroke %)}))
+   opts
+   {:init #(doto %
+             (.beginPath)
+             (.moveTo x1 y1)
+             (.lineTo x2 y2))
+    :stroke #(.stroke %)}))
 
 (defn circle [x y r & opts]
-  (draw 
-    opts
-    {:init #(doto %
-              (.beginPath)
-              (.arc x y r 0 TAU))
-     :fill #(.fill %)
-     :stroke #(.stroke %)})) 
+  (draw
+   opts
+   {:init #(doto %
+             (.beginPath)
+             (.arc x y r 0 TAU))
+    :fill #(.fill %)
+    :stroke #(.stroke %)}))
 
 (defn text [x y text & opts]
   (draw
-    opts
-    {:fill #(.fillText % text x y)
-     :stroke #(.strokeText % text x y)}))
+   opts
+   {:fill #(.fillText % text x y)
+    :stroke #(.strokeText % text x y)}))
 

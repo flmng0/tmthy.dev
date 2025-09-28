@@ -1,10 +1,9 @@
 (ns home.icon
   (:require-macros [home.svg :refer [parse-path]]))
 
-
 (def viewbox {:x 0 :y 0 :w 100 :h 100})
 
-(defn normalize 
+(defn normalize
   ([p] (apply normalize p))
   ([x y]
    (let [x' (/ (- x (:x viewbox)) (:w viewbox))

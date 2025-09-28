@@ -6,8 +6,8 @@
 
 (defn- extract-connections [path]
   (loop [parts (->> path
-                 (re-seq #"([A-Z])([\d\.]+) ([\d\.]+)")
-                 (map parse-part))
+                    (re-seq #"([A-Z])([\d\.]+) ([\d\.]+)")
+                    (map parse-part))
          aux nil
          lines []]
     (if (empty? parts)
@@ -19,4 +19,4 @@
 
 (defmacro parse-path [path]
   (extract-connections path))
-  
+
