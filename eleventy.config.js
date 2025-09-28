@@ -19,6 +19,10 @@ export default function (eleventyConfig) {
   });
   eleventyConfig.addPassthroughCopy("src/**/*.css");
 
+  eleventyConfig.setServerOptions({
+    showAllHosts: true,
+  });
+
   return {
     dir: {
       input: "src",

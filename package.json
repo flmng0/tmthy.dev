@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "npm run dev:squint & npm run dev:11ty",
     "dev:squint": "squint watch",
-    "dev:11ty": "eleventy --serve"
+    "dev:11ty": "eleventy --serve",
+    "build": "npm run build:squint && npm run build:11ty",
+    "build:11ty": "eleventy --output=./build",
+    "build:squint": "squint compile --output-dir=./build/js"
   },
   "repository": {
     "type": "git",

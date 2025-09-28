@@ -8,4 +8,5 @@ Right now this is just a place where I put my random coding ideas.
 
 Most of the static content is compiled via [11ty](https://11ty.dev).
 
-All dynamic content is written in Elm, and run from JavaScript.
+All dynamic content is written in ClojureScript, and run from JavaScript.
+
