@@ -1,8 +1,17 @@
 @import "tailwindcss";
 
+::selection {
+  @apply bg-fuchsia-400 text-white;
+}
+
 @theme {
+  --color-github: #24292e;
+  --color-linkedin: #0077b5;
+  --color-email: #ea7b12;
+
   --animate-blur: 500ms blur ease-in;
   --animate-fade-in: 1s fade-in ease-in;
+  --animate-slide-in: 500ms slide-in ease-in;
 
   @keyframes blur {
     100% {
@@ -16,6 +25,17 @@
     }
     100% {
       opacity: 1;
+    }
+  }
+
+  @keyframes slide-in {
+    0% {
+      opacity: 0;
+      translate: 0 -1em;
+    }
+    100% {
+      opacity: 1;
+      translate: 0 0;
     }
   }
 }
