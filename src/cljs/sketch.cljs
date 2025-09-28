@@ -127,6 +127,11 @@
 (defn time [] (/ (:time @state) 1000))
 (defn delta [] (/ (:dt @state) 1000))
 
+(defn random [lo hi]
+  (-> (js/Math.random)
+      (* (- hi lo))
+      (+ lo)))
+
 (defn set-frame-rate [frame-rate]
   (swap! state assoc :frame-rate frame-rate))
 

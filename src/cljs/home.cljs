@@ -6,8 +6,8 @@
 
 (def repel-radius 75)
 (def repel-scale 100)
-(def restore-scale 10)
-(def drag-scale 5)
+(def restore-scale 7)
+(def drag-scale 1)
 (def icon-scale 4)
 (def stretch-extent 250)
 
@@ -42,9 +42,14 @@
    lines))
 
 (defn make-particle [p]
-  (let [pos (mapv parseFloat p)]
+  (let [start (mapv parseFloat p)
+        start-scale 2
+        jiggle-scale 200
+        scale (partial * start-scale)
+        jiggle #(+ (s/random (- jiggle-scale) jiggle-scale) %)
+        pos (mapv (comp jiggle scale) start)]
     {:pos pos
-     :start pos
+     :start start
      :vel [0 0]
      :acc [0 0]}))
 
