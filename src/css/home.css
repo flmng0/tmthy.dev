@@ -3,3 +3,7 @@
 .glass {
   @apply backdrop-blur-sm p-4 rounded-md border border-gray-100;
 }
+
+.icon { --shadow-icon-offset: 4px; }
+.icon:hover { --shadow-icon-offset: 3px; }
+.icon:active { --shadow-icon-offset: 2px; }

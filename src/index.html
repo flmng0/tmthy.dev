@@ -31,9 +31,9 @@ socials:
     <nav>
       <ul class="flex gap-4 justify-center">
         {%- for social in socials -%}
-        <li class="animation-fill-backwards animate-slide-in animation-delay-{{600 + loop.index * 150}}">
+        <li class="animation-fill-backwards animate-slide-in animation-delay-{{600 + loop.index * 150}} active:translate-px">
           <a 
-            class="block bg-{{social.color}} rounded-sm p-2 text-white cursor-pointer hover:brightness-80 hover:saturate-80"
+            class="block icon bg-icon-{{social.color}} shadow-icon-{{social.color}} p-2 text-white cursor-pointer hover:brightness-80 hover:saturate-80"
             target="_blank"
             href="{{social.href}}"
             title="{{social.name}}"
