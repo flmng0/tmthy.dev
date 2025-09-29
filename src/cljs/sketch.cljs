@@ -74,9 +74,11 @@
 
 (defn- process-input []
   (let [events (flush-events)]
-    (->> events
-         (mapv event->state)
-         (apply merge-with merge @state))))
+    (if (empty? events)
+      []
+      (->> events
+           (mapv event->state)
+           (apply merge-with merge @state)))))
 
 (defn run
   [{update-fn :update :keys [draw clear? clear-color seed size frame-rate lock-pointer?] :as opts}]
@@ -97,7 +99,7 @@
     (swap! state assoc :model model))
 
   (fn tick [t]
-    (swap! state merge (update-time t) (process-input))
+    (swap! state merge (process-input) (update-time t))
 
     (when (and update-fn (not (first-frame?)))
       (swap! state update :model update-fn))

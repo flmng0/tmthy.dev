@@ -117,7 +117,8 @@
     (s/line x1 y1 x2 y2 {:stroke connection-color :stroke-width width :translate (s/center)})))
 
 (defn draw [{:keys [particles connections]}]
-  (when (s/pointer-down?) (draw-repeller))
+  (when (s/pointer-down?) 
+    (draw-repeller))
   (doall
    (for [[a b d] connections]
      (let [pa (get particles a)
@@ -130,7 +131,7 @@
  {:clear? true
   :size :auto
   :frame-rate 60
-  :lock-pointer? true
+  :lock-pointer? false
   :seed seed
   :update update-particles
   :draw draw})
