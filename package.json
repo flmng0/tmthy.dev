@@ -7,8 +7,8 @@
     "dev:squint": "squint watch",
     "dev:11ty": "eleventy --serve",
     "build": "npm run build:squint && npm run build:11ty",
-    "build:11ty": "eleventy --output=./build",
-    "build:squint": "squint compile --output-dir=./build/js"
+    "build:11ty": "eleventy",
+    "build:squint": "squint compile"
   },
   "repository": {
     "type": "git",
