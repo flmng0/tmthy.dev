@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+[inert] {
+  @apply pointer-events-none;
+}
+[inert], [inert] * {
+  @apply select-none;
+}
+
 ::selection {
   @apply bg-fuchsia-400 text-white;
 }
