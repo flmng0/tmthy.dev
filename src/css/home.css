@@ -4,6 +4,31 @@
   @apply backdrop-blur-sm p-4 rounded-md border border-gray-100;
 }
 
-.icon { --shadow-icon-offset: 4px; }
-.icon:hover { --shadow-icon-offset: 3px; }
-.icon:active { --shadow-icon-offset: 2px; }
+.btn { 
+  --btn-shadow-offset: 4px;
+
+  background-color: var(--btn-color, grey);
+  box-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 0 var(--btn-shadow-color, black);
+}
+
+.btn:hover { --btn-shadow-offset: 5px; }
+.btn:active { --btn-shadow-offset: 3px; }
+
+.btn-github {
+  --btn-color: oklab(0.278 -0.004 -0.011);
+  --btn-shadow-color: oklab(0.178 -0.004 -0.011);
+}
+
+.btn-linkedin {
+  --btn-color: oklab(0.546 -0.061 -0.115);
+  --btn-shadow-color: oklab(0.446 -0.061 -0.115);
+}
+
+.btn-email {
+  --btn-color: oklab(0.696 0.097 0.137);
+  --btn-shadow-color: oklab(0.596 0.097 0.137);
+}
+
+.btn-link {
+
+}

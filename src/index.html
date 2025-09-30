@@ -5,15 +5,15 @@ socials:
   - name: GitHub
     href: https://github.com/flmng0
     icon: github
-    color: github
+    variant: github
   - name: LinkedIn
     href: https://www.linkedin.com/in/timothy-davis-dev
     icon: linkedin
-    color: linkedin
+    variant: linkedin
   - name: Email to me@tmthy.dev
     href: mailto:me@tmthy.dev
     icon: mail
-    color: email
+    variant: email
 ---
 
 {% html "head" %}
@@ -31,9 +31,9 @@ socials:
     <nav>
       <ul class="flex gap-4 justify-center">
         {%- for social in socials -%}
-        <li class="animation-fill-backwards animate-slide-in animation-delay-{{600 + loop.index * 150}} active:translate-px">
+        <li class="animation-fill-backwards animate-slide-in animation-delay-{{600 + loop.index * 150}} hover:-translate-px active:translate-px">
           <a 
-            class="block icon bg-icon-{{social.color}} shadow-icon-{{social.color}} p-2 text-white cursor-pointer hover:brightness-80 hover:saturate-80"
+            class="block btn btn-{{social.variant}} p-2 text-white cursor-pointer hover:brightness-80 hover:saturate-80"
             target="_blank"
             href="{{social.href}}"
             title="{{social.name}}"
