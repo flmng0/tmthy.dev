@@ -1,20 +1,21 @@
 <!doctype html>
-<html>
-	<head>
-		{% if title %}
-			<title>{{ title }} | tmthy.dev</title>
-		{% else %}
-			<title>tmthy.dev</title>
-		{% endif %}
+<html lang="en">
+  <head>
+    {% if title %}
+      <title>{{ title }} | tmthy.dev</title>
+    {% else %}
+      <title>tmthy.dev</title>
+    {% endif %}
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="charset" content="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-		<link rel="icon" href="/favicon.svg">
-		<link rel="stylesheet" href="/css/app.css">
+    <link rel="icon" href="/favicon.svg">
+    <link rel="stylesheet" href="/css/app.css">
 
-		{% getBundle "html", "head" %}
-	</head>
-	<body class="bg-white h-screen m-0 {{bodyClass}}">
-		{{ content | safe }}
-	</body>
+    {% getBundle "html", "head" %}
+  </head>
+  <body class="bg-white h-screen m-0 {{bodyClass}}">
+    {{ content | safe }}
+  </body>
 </html>
