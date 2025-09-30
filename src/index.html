@@ -14,6 +14,14 @@ socials:
     href: mailto:me@tmthy.dev
     icon: mail
     variant: email
+
+pages:
+  - name: sketches
+    href: /sketches
+  - name: blog
+    href: /blog
+  - name: projects
+    href: /projects
 ---
 
 {% html "head" %}
@@ -24,16 +32,29 @@ socials:
 <div class="grid w-full h-full place-items-center *:col-1 *:row-1">
   <canvas id="sketchCanvas" class="size-full animate-blur animation-fill-forwards animation-delay-500"></canvas>
 
-  <main class="z-10 animate-fade-in animation-fill-both animation-delay-500 text-center space-y-6">
+  <main class="z-10 animate-fade-in animation-fill-both animation-delay-500 text-center space-y-10 max-w-full">
     <hgroup class="p-2">
       <h1 class="text-4xl font-mono">tmthy.dev</h1>
     </hgroup>
-    <nav>
+    <nav class="space-y-6 w-full">
+      <ul class="flex flex-row flex-wrap mx-auto font-mono gap-4 justify-center">
+        {%- for page in pages -%}
+        <li class="animation-fill-backwards animate-slide-in animation-delay-{{1200 - loop.index * 150}}">
+          <a 
+            class="btn btn-link py-2 px-3 w-full block"
+            href="{{page.href}}"
+            title="{{page.name}}"
+          >
+            {{page.name}}
+          </a>
+        </li>
+        {%- endfor -%}
+      </ul>
       <ul class="flex gap-4 justify-center">
         {%- for social in socials -%}
-        <li class="animation-fill-backwards animate-slide-in animation-delay-{{600 + loop.index * 150}} hover:-translate-px active:translate-px">
+        <li class="animation-fill-backwards animate-slide-in animation-delay-{{600 + loop.index * 150}}">
           <a 
-            class="block btn btn-{{social.variant}} p-2 text-white cursor-pointer hover:brightness-80 hover:saturate-80"
+            class="block btn btn-{{social.variant}} p-2"
             target="_blank"
             href="{{social.href}}"
             title="{{social.name}}"
