@@ -11,6 +11,7 @@
   --btn-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 0 var(--btn-shadow-color, grey);
 
   @apply text-(--btn-color) bg-(--btn-bg) shadow-(--btn-shadow) hover:brightness-95 hover:saturate-90 hover:-translate-px active:translate-px;
+  @apply border border-(--btn-shadow-color);
 }
 
 .btn:hover { --btn-shadow-offset: 5px; }
@@ -32,7 +33,7 @@
 }
 
 .btn-link {
-  --btn-color: oklab(0.12 0.02 -0.01);
-  --btn-bg: oklab(0.98 0.02 -0.01);
-  --btn-shadow-color: oklab(0.88 0.02 -0.01);
+  --btn-color: oklab(0.12 0 0);
+  --btn-bg: oklab(0.98 0 0);
+  --btn-shadow-color: oklab(0.88 0 0);
 }
