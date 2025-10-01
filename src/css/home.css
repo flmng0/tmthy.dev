@@ -4,6 +4,10 @@
   @apply backdrop-blur-sm p-4 rounded-md border border-gray-100;
 }
 
+.btn {
+  --btn-color: white;
+}
+
 .btn-github {
   --btn-bg: oklab(0.278 -0.004 -0.011);
   --btn-shadow-color: oklab(0.178 -0.004 -0.011);
