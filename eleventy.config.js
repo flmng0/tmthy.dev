@@ -16,6 +16,10 @@ export default function (eleventyConfig) {
         path: "node_modules/lucide-static/icons",
         default: true,
       },
+      {
+        name: "tmthy",
+        path: "./icons"
+      }
     ],
   });
 
@@ -23,6 +27,7 @@ export default function (eleventyConfig) {
 
   eleventyConfig.setLayoutResolution(false);
   eleventyConfig.addLayoutAlias("root", "root.html");
+  eleventyConfig.addLayoutAlias("main", "main.html");
   eleventyConfig.addLayoutAlias("sketch", "sketch.html");
 
   eleventyConfig.addPassthroughCopy({

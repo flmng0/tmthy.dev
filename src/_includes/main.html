@@ -1,0 +1,18 @@
+---
+layout: root
+---
+
+<div class="mx-auto container flex flex-col sm:gap-y-2">
+  <header class="grid grid-cols-(--cols-heading) gap-2 items-center border-b-2 border-black/25 sm:shadow-solid sm:border sm:border-black/50 font-mono text-heading px-4 py-2 sm:my-2 sm:mx-4">
+    <h1 class="justify-self-start lowercase">{{title}}</h1>
+
+    {% icon "tmthy:logo", width="48", height="48" %}
+
+    <a class="justify-self-end underline hover:no-underline" href="/">home</a>
+  </header>
+
+  <main class="max-w-(--content) mx-4 sm:mx-8 mt-4 px-6 py-4 self-center">
+    {{ content | safe }}
+  </main>
+</div>
+

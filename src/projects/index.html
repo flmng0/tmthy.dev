@@ -1,0 +1,18 @@
+---
+layout: main
+title: Projects
+eleventyImport:
+  collections: ["project"]
+---
+
+{%- for project in collections.project -%}
+<article>
+  <h2>{{project.data.title}}</h2>
+  <p>{{project.data.description}}</p>
+
+  <footer>
+    <a href="{{project.data.link}}">Visit</a>
+    <a href="{{project.url}}">Read More</a>
+  </footer>
+</article>
+{%- endfor -%}
