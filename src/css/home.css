@@ -4,24 +4,6 @@
   @apply backdrop-blur-sm p-4 rounded-md border border-gray-100;
 }
 
-.btn {
-  --btn-bg: black;
-  --btn-color: white;
-  --btn-shadow-offset: 4px;
-  --btn-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 0
-    var(--btn-shadow-color, grey);
-
-  @apply text-(--btn-color) bg-(--btn-bg) shadow-(--btn-shadow) hover:brightness-95 hover:saturate-90 hover:-translate-px active:translate-px;
-  @apply border border-(--btn-shadow-color);
-}
-
-.btn:hover {
-  --btn-shadow-offset: 5px;
-}
-.btn:active {
-  --btn-shadow-offset: 3px;
-}
-
 .btn-github {
   --btn-bg: oklab(0.278 -0.004 -0.011);
   --btn-shadow-color: oklab(0.178 -0.004 -0.011);
@@ -42,5 +24,5 @@
   --btn-bg: oklab(0.99 0 0);
   --btn-shadow-color: oklab(0.88 0 0);
 
-  @apply bg-(image:--blur);
+  @apply bg-(image:--blur) bg-center;
 }
