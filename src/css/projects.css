@@ -1,0 +1,17 @@
+@import "./app.css";
+
+footer > a.btn {
+  @apply px-4 py-2 font-mono inline-block;
+}
+
+.btn-visit {
+  --btn-color: oklab(0.12 0 0);
+  --btn-bg: oklab(0.99 0.01 -0.02);
+  --btn-shadow-color: oklab(0.89 0.01 -0.02);
+}
+
+.btn-read {
+  --btn-color: white;
+  --btn-bg: oklab(0.42 0.047 -0.078);
+  --btn-shadow-color: oklab(0.32 0.047 -0.078);
+}
