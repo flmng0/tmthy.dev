@@ -18,6 +18,7 @@
   --animate-slide-in: 500ms slide-in ease-out;
 
   --content: min(70ch, 100%);
+  --blur: url(/rand.png);
 
   --shadow-solid: 4px 4px 0 0 rgb(0 0 0 / 0.25);
 
