@@ -7,7 +7,7 @@
 (def repel-radius 75)
 (def repel-scale 100)
 (def restore-scale 7)
-(def drag-scale 1)
+(def drag-scale 3)
 (def icon-scale 4)
 (def stretch-extent 250)
 
@@ -117,7 +117,7 @@
     (s/line x1 y1 x2 y2 {:stroke connection-color :stroke-width width :translate (s/center)})))
 
 (defn draw [{:keys [particles connections]}]
-  (when (s/pointer-down?) 
+  (when (s/pointer-down?)
     (draw-repeller))
   (doall
    (for [[a b d] connections]

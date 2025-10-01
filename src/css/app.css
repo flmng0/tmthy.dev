@@ -3,7 +3,8 @@
 [inert] {
   @apply pointer-events-none;
 }
-[inert], [inert] * {
+[inert],
+[inert] * {
   @apply select-none;
 }
 
@@ -14,7 +15,7 @@
 @theme {
   --animate-blur: 500ms blur ease-in;
   --animate-fade-in: 1s fade-in ease-in;
-  --animate-slide-in: 500ms slide-in ease-in;
+  --animate-slide-in: 500ms slide-in ease-out;
 
   --content: min(70ch, 100%);
 
@@ -23,7 +24,6 @@
   --text-title: var(--text-4xl);
   --text-heading: var(--text-xl);
   --cols-heading: 1fr auto 1fr;
-
 
   @keyframes blur {
     100% {
@@ -43,11 +43,11 @@
   @keyframes slide-in {
     0% {
       opacity: 0;
-      translate: 0 -1em;
+      transform: translateY(-75%);
     }
     100% {
       opacity: 1;
-      translate: 0 0;
+      transform: translateY(0);
     }
   }
 }
@@ -59,4 +59,3 @@
 @utility animation-delay-* {
   animation-delay: calc(--value(integer) * 1ms);
 }
-

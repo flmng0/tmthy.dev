@@ -25,12 +25,17 @@ pages:
     href: /projects/
 ---
 
-{% html "head" %}
+{%- html "head" -%}
 <meta name="description" content="Creative coding showcase, project index, and social media directory for Timothy Davis; a freelance software developer from Darwin, Australia." />
 
 <script src="/js/home.js" type="module"></script>
 <link href="/css/home.css" rel="stylesheet">
-{% endhtml %}
+{%- endhtml -%}
+
+{%- set startDelay = 600 -%} 
+{%- set itemDelay = 300 -%} 
+{%- set socialsLength = socials | length -%} 
+{%- set groupOffset = startDelay / 2 -%}
 
 <div class="grid w-full h-full place-items-center *:col-1 *:row-1">
   <canvas id="sketchCanvas" class="size-full animate-blur animation-fill-forwards animation-delay-500"></canvas>
@@ -42,7 +47,8 @@ pages:
     <nav class="space-y-6 w-full">
       <ul class="flex flex-row flex-wrap mx-auto font-mono gap-4 justify-center">
         {%- for page in pages -%}
-        <li class="animation-fill-backwards animate-slide-in animation-delay-{{1200 - loop.index * 150}}">
+        {%- set delay = startDelay + itemDelay * loop.index -%}
+        <li class="animation-fill-backwards animate-slide-in animation-delay-{{delay}}">
           <a 
             class="btn btn-link py-2 px-3 w-full block"
             href="{{page.href}}"
@@ -55,14 +61,15 @@ pages:
       </ul>
       <ul class="flex gap-4 justify-center">
         {%- for social in socials -%}
-        <li class="animation-fill-backwards animate-slide-in animation-delay-{{600 + loop.index * 150}}">
+        {%- set delay = groupOffset + startDelay + itemDelay * loop.index -%}
+        <li class="animation-fill-backwards animate-slide-in animation-delay-{{delay}}">
           <a 
             class="block btn btn-{{social.variant}} p-2"
             target="_blank"
             href="{{social.href}}"
             title="{{social.name}}"
           >
-            {% icon social.icon %}
+            {% icon social.icon %} 
           </a>
         </li>
         {%- endfor -%}
