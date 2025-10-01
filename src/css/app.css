@@ -12,24 +12,24 @@
   @apply bg-fuchsia-400 text-white;
 }
 
-.btn {
-  --btn-bg: black;
-  --btn-color: white;
-  --btn-lift: 0px;
-  --btn-shadow-offset: calc(4px + var(--btn-lift));
-  --btn-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 0
-    var(--btn-shadow-color, grey);
+@layer components {
+  .btn {
+    --btn-lift: 0px;
+    --btn-shadow-offset: calc(4px + var(--btn-lift));
+    --btn-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 0
+      var(--btn-shadow-color, grey);
 
-  @apply text-(--btn-color) bg-(--btn-bg) shadow-(--btn-shadow);
-  @apply hover:brightness-95 hover:saturate-90 -translate-(--btn-lift);
-  @apply border border-(--btn-shadow-color);
-}
+    @apply text-(--btn-color) bg-(--btn-bg) shadow-(--btn-shadow);
+    @apply hover:brightness-95 hover:saturate-90 -translate-(--btn-lift);
+    @apply border border-(--btn-shadow-color);
+  }
 
-.btn:hover {
-  --btn-lift: 1px;
-}
-.btn:active {
-  --btn-lift: -1px;
+  .btn:hover {
+    --btn-lift: 1px;
+  }
+  .btn:active {
+    --btn-lift: -1px;
+  }
 }
 
 @theme {
