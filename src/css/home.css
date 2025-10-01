@@ -27,6 +27,4 @@
   --btn-color: oklab(0.12 0 0);
   --btn-bg: oklab(0.99 0 0);
   --btn-shadow-color: oklab(0.88 0 0);
-
-  @apply bg-(image:--blur) bg-center;
 }

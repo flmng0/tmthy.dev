@@ -12,6 +12,10 @@
   @apply bg-fuchsia-400 text-white;
 }
 
+.noise {
+  @apply bg-[url(/rand.png)] bg-center bg-clip-padding;
+}
+
 @layer components {
   .btn {
     --btn-lift: 0px;
