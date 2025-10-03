@@ -36,6 +36,30 @@
   }
 }
 
+.btn-github {
+  --btn-color: white;
+  --btn-bg: oklab(0.278 -0.004 -0.011);
+  --btn-shadow-color: oklab(0.178 -0.004 -0.011);
+}
+
+.btn-linkedin {
+  --btn-color: white;
+  --btn-bg: oklab(0.546 -0.061 -0.115);
+  --btn-shadow-color: oklab(0.446 -0.061 -0.115);
+}
+
+.btn-email {
+  --btn-color: white;
+  --btn-bg: oklab(0.696 0.097 0.137);
+  --btn-shadow-color: oklab(0.596 0.097 0.137);
+}
+
+.btn-link {
+  --btn-color: oklab(0.12 0 0);
+  --btn-bg: oklab(0.99 0 0);
+  --btn-shadow-color: oklab(0.88 0 0);
+}
+
 @theme {
   --animate-blur: 500ms blur ease-in;
   --animate-fade-in: 1s fade-in ease-in;
@@ -48,7 +72,7 @@
 
   --text-title: var(--text-4xl);
   --text-heading: var(--text-xl);
-  --cols-heading: 1fr auto 1fr;
+  --cols-heading: auto 1fr auto;
 
   @keyframes blur {
     100% {

@@ -1,4 +1,5 @@
 import pluginVite from "@11ty/eleventy-plugin-vite";
+import pluginNavigation from "@11ty/eleventy-navigation";
 import pluginIcons from "eleventy-plugin-icons";
 import tailwindcss from "@tailwindcss/vite";
 
@@ -22,6 +23,8 @@ export default function (eleventyConfig) {
       }
     ],
   });
+
+  eleventyConfig.addPlugin(pluginNavigation);
 
   eleventyConfig.addBundle("html");
 

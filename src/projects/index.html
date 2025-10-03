@@ -1,6 +1,9 @@
 ---
 layout: main
 title: Projects
+eleventyNavigation:
+  key: projects
+  parent: home
 eleventyImport:
   collections: ["project"]
 ---
@@ -9,14 +12,17 @@ eleventyImport:
   <link rel="stylesheet" href="/css/projects.css">
 {%- endhtml -%}
 
-{%- for project in collections.project -%}
-<article>
-  <h2>{{project.data.title}}</h2>
-  <p>{{project.data.description}}</p>
+<main class="grid grid-cols-none sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+  {%- for project in collections.project -%}
+  <article class="flex flex-col h-full">
+    <h2 class="text-xl font-mono">{{project.data.title}}</h2>
 
-  <footer class="flex gap-2 justify-end">
-    <a class="btn btn-visit" href="{{project.data.link}}">Visit</a>
-    <a class="btn btn-read" href="{{project.url}}">Read More</a>
-  </footer>
-</article>
-{%- endfor -%}
+    <p class="h-full">{{project.data.description}}</p>
+
+    <footer class="flex gap-2 justify-end mt-8">
+      {% if project.data.link %}<a class="btn btn-visit" href="{{project.data.link}}">Visit</a>{% endif %}
+      {% if project.url %}<a class="btn btn-read" href="{{project.url}}">Read More</a>{% endif %}
+    </footer>
+  </article>
+  {%- endfor -%}
+</main>
