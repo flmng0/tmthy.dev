@@ -16,26 +16,6 @@
   @apply bg-[url(/rand.png)] bg-center bg-clip-padding;
 }
 
-@layer components {
-  .btn {
-    --btn-lift: 0px;
-    --btn-shadow-offset: calc(4px + var(--btn-lift));
-    --btn-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 0
-      var(--btn-shadow-color, grey);
-
-    @apply text-(--btn-color) bg-(--btn-bg) shadow-(--btn-shadow);
-    @apply hover:brightness-95 hover:saturate-90 -translate-(--btn-lift);
-    @apply border border-(--btn-shadow-color);
-  }
-
-  .btn:hover {
-    --btn-lift: 1px;
-  }
-  .btn:active {
-    --btn-lift: -1px;
-  }
-}
-
 .btn-github {
   --btn-color: white;
   --btn-bg: oklab(0.278 -0.004 -0.011);
@@ -58,6 +38,26 @@
   --btn-color: oklab(0.12 0 0);
   --btn-bg: oklab(0.99 0 0);
   --btn-shadow-color: oklab(0.88 0 0);
+}
+
+@layer components {
+  .btn {
+    --btn-lift: 0px;
+    --btn-shadow-offset: calc(4px + var(--btn-lift));
+    --btn-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 0
+      var(--btn-shadow-color, grey);
+
+    @apply text-(--btn-color) bg-(--btn-bg) shadow-(--btn-shadow);
+    @apply hover:brightness-95 hover:saturate-90 -translate-(--btn-lift);
+    @apply border border-(--btn-shadow-color);
+  }
+
+  .btn:hover {
+    --btn-lift: 1px;
+  }
+  .btn:active {
+    --btn-lift: -1px;
+  }
 }
 
 @theme {
