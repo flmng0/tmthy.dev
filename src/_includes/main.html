@@ -15,7 +15,7 @@ layout: root
         {% set breadcrumbs = collections.all | eleventyNavigationBreadcrumb(eleventyNavigation.key, {includeSelf: true}) %}
         {% for crumb in breadcrumbs %}
           <span class="text-neutral/50 text-lg" aria-hidden="true">/</span>
-          <li>
+          <li {% if page.url == crumb.url -%} aria-current="page" {%- endif %}>
             {%- set name = crumb.title | default(crumb.key) -%}
             {%- if loop.last -%}
               <span class="text-neutral/80">{{name}}</span>

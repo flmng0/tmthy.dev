@@ -1,6 +1,8 @@
 ---
 layout: main
 title: Projects
+meta:
+  description: Various projects made by Tim Davis.
 eleventyNavigation:
   key: projects
   parent: home
@@ -15,7 +17,7 @@ eleventyImport:
 <main class="grid grid-cols-none sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
   {% for project in collections.project -%}
   <article class="flex flex-col h-full">
-    <h2 class="text-xl font-mono">{{project.data.title}}</h2>
+    <h2 class="text-xl font-mono mb-2">{{project.data.title}}</h2>
 
     <p class="h-full">{{project.data.description}}</p>
 
