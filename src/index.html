@@ -6,10 +6,12 @@ eleventyNavigation:
   key: home
 
 pages:
-#  - name: sketches
-#    href: /sketches/
-#  - name: blog
-#    href: /blog/
+  - name: sketches
+    href: /sketches/
+    indev: true
+  - name: blog
+    href: /blog/
+    indev: true
   - name: projects
     href: /projects/
 ---
@@ -37,9 +39,15 @@ pages:
         {%- set delay = startDelay + itemDelay * loop.index -%}
         <li class="animation-fill-backwards animate-slide-in animation-delay-{{delay}}">
           <a 
+            {% if page.indev | default(false) %}
+            class="noise btn btn-development py-2 px-3 w-full block"
+            href="#"
+            title="{{page.name}} page under development!"
+            {% else %}
             class="noise btn btn-link py-2 px-3 w-full block"
             href="{{page.href}}"
             title="{{page.name}}"
+            {% endif %}
           >
             {{page.name}}
           </a>
