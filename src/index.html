@@ -27,12 +27,10 @@ pages:
 {%- set groupOffset = startDelay / 2 -%}
 
 <div class="grid w-full h-full place-items-center *:col-1 *:row-1">
-  <canvas id="sketchCanvas" class="size-full animate-blur animation-fill-forwards animation-delay-500"></canvas>
+  <canvas id="sketchCanvas" class="size-full animate-blur animation-fill-forwards animation-delay-500" aria-hidden="true"></canvas>
 
   <main class="z-10 animate-fade-in animation-fill-both animation-delay-500 text-center space-y-10 max-w-full">
-    <hgroup class="p-2">
-      <h1 class="text-title font-mono">tmthy.dev</h1>
-    </hgroup>
+    <h1 class="p-2 text-title font-mono">tmthy.dev</h1>
     <nav class="space-y-6 w-full">
       <ul class="flex flex-row flex-wrap mx-auto font-mono gap-4 justify-center">
         {%- for page in pages -%}
@@ -58,7 +56,7 @@ pages:
             href="{{social.href}}"
             title="{{social.name}}"
           >
-            {% icon social.icon %} 
+            {% icon social.icon, "aria-hidden"="true" %} 
           </a>
         </li>
         {%- endfor -%}
