@@ -13,22 +13,27 @@ eleventyImport:
 {%- endhtml -%}
 
 <main class="grid grid-cols-none sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-  {%- for project in collections.project -%}
+  {% for project in collections.project -%}
   <article class="flex flex-col h-full">
     <h2 class="text-xl font-mono">{{project.data.title}}</h2>
 
     <p class="h-full">{{project.data.description}}</p>
 
-    <footer class="flex gap-2 justify-end mt-8">
+    <footer class="flex gap-2 flex-wrap justify-end mt-8">
       {% if project.data.source %}
-      <a class="btn btn-github" href="{{project.data.source}}">
-        {%- icon "github", width="20", height="20", class="inline-block" -%} 
+      <a class="btn btn-github" href="{{project.data.source}}" target="_blank">
         <span>Source Code</span>
+        {%- icon "github", width="16", height="16", class="inline-block" -%} 
       </a>
       {% endif %}
-      {% if project.data.link %}<a class="btn btn-visit" href="{{project.data.link}}">Visit</a>{% endif %}
+      {% if project.data.link -%}
+      <a class="btn btn-visit" href="{{project.data.link}}" target="_blank">
+        <span>Visit</span>
+        {%- icon "external-link", width="16", height="16", class="inline-block" -%}
+      </a>
+      {%- endif %}
       {% if project.url %}<a class="btn btn-read" href="{{project.url}}">Read More</a>{% endif %}
     </footer>
   </article>
-  {%- endfor -%}
+  {% endfor %}
 </main>
