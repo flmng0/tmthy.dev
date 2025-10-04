@@ -7,6 +7,7 @@ description: >
 metaDescription: Peach is a Processing-esque creative code framework; one of Tim's first, public, open-source ventures into graphics programming.
 source: https://github.com/flmng0/peach
 layout: main
+permalink: false
 eleventyNavigation:
   key: peach
   parent: projects
