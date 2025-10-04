@@ -5,29 +5,29 @@ layout: root
 {%- set headerSectionClass = "sm:shadow-solid sm:border sm:border-black/40 p-2 sm:p-2" -%}
 
 <div class="mx-auto container flex flex-col sm:gap-y-2">
-  <header class="flex sm:gap-4 border-b-2 border-black/25 sm:border-none font-mono text-heading sm:my-2 sm:mx-2">
-    <div class="{{headerSectionClass}} hidden sm:block bg-neutral-100 text-black h-full w-auto aspect-square">
-      {% icon "tmthy:logo", width="32", height="32", "stroke-width"="3" %}
-    </div>
+  <header class="flex sm:gap-4 border-b-2 border-black/25 sm:border-none font-mono sm:my-2 sm:mx-2">
 
-    <nav class="{{headerSectionClass}} noise sm:px-4 flex-grow">
-      <ol class="flex gap-x-1 items-center h-full">
-      {% set breadcrumbs = collections.all | eleventyNavigationBreadcrumb(eleventyNavigation.key, {includeSelf: true}) %}
-      {% for crumb in breadcrumbs %}
-        <li><span class="text-neutral/50 text-lg">/</span></li>
-        <li>
-          {%- set name = crumb.title | default(crumb.key) -%}
-          {%- if loop.last -%}
-            <span class="text-neutral/80">{{name}}</span>
-          {%- else -%}
-            <a href="{{crumb.url}}" class="underline hover:no-underline decoration-black/50">{{name}}</a>
-          {%- endif -%}
-        </li>
-      {% endfor %}
+    <nav class="{{headerSectionClass}} noise sm:px-4 flex-grow text-base sm:text-heading">
+      <ol class="flex gap-x-0.5 sm:gap-x-1 items-center h-full">
+        <div class="hidden sm:inline-block bg-neutral-100 text-black">
+          {% icon "tmthy:logo", width="32", height="32", "stroke-width"="3" %}
+        </div>
+        {% set breadcrumbs = collections.all | eleventyNavigationBreadcrumb(eleventyNavigation.key, {includeSelf: true}) %}
+        {% for crumb in breadcrumbs %}
+          <span class="text-neutral/50 text-lg">/</span>
+          <li>
+            {%- set name = crumb.title | default(crumb.key) -%}
+            {%- if loop.last -%}
+              <span class="text-neutral/80">{{name}}</span>
+            {%- else -%}
+              <a href="{{crumb.url}}" class="underline hover:no-underline decoration-black/50">{{name}}</a>
+            {%- endif -%}
+          </li>
+        {% endfor %}
       </ol>
     </nav>
 
-    <ul class="flex flex-row">
+    <ul class="flex flex-row text-sm sm:text-base md:text-lg">
       {%- for social in socials -%}
       <li class="h-full">
         <a 
@@ -36,12 +36,11 @@ layout: root
           href="{{social.href}}"
           title="{{social.name}}"
         >
-          {% icon social.icon %}
+          {% icon social.icon, width="1.25em", height="1.25em" %}
         </a>
       </li>
       {%- endfor -%}
     </ul>
-    <!-- <h1 class="justify-self-end lowercase">{{title}}</h1> -->
   </header>
 
   <div class="mx-4 sm:mx-8 mt-4 px-6 py-4 self-center">
