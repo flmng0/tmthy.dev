@@ -47,12 +47,11 @@
   (fn wait []
     (+ 5000 (* 10000 (js/Math.random))))
   (fn jiggle []
-    (println "Jiggle!")
     (let [keyframes [{:transform "rotate(-10deg)"}
                      {:transform "rotate(10deg)"}
                      {:transform "rotate(0deg)"}]
           options {:duration 500 :easing "ease-out"}] 
-      (.animate elem keyframes options)
+      (when (empty? @animations) (.animate elem keyframes options))
       (.setTimeout js/window jiggle (wait))))
   (.setTimeout js/window jiggle (wait)))
 
@@ -65,5 +64,7 @@
       (add-animation (factory elem))))
   (doall
    (for [elem (.querySelectorAll js/document "button[data-whimsy]")]
-     (setup-jiggle elem)
-     (.addEventListener elem "click" (partial on-click elem)))))
+     (do
+       (setup-jiggle elem)
+       (.addEventListener elem "click" (partial on-click elem))))))
+      
