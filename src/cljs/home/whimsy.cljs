@@ -21,15 +21,6 @@
   (when (empty? @animations) (start-loop))
   (swap! animations conj anim))
 
-; Currently this doesn't work. Want this to "pop" back in the hardhat though
-#_(defn spawner [elem]
-    {:ticker
-     (fn [t]
-       (let [a (- (* 2 t) 1)
-             v (- 1 (* a a))
-             s (+ 1 (* 0.1 v))]
-         (set! (.-style.transform elem) (str "scale(" s ")"))))})
-
 (defn hardhat [elem]
   (let [offset (- (* 2 (js/Math.random) 1))]
     {:ticker
@@ -45,7 +36,12 @@
          (> t 1.0)))
      :reset (fn []
               (set! (.-style.transform elem) nil)
-              (set! (.-style.opacity elem) nil))}))
+              (set! (.-style.opacity elem) nil)
+              (let [keyframes [{:transform "scale(0.3)" :opacity 0}
+                               {:transform "scale(1.2)"}
+                               {:transform "scale(1.0)" :opacity 1}]
+                    options {:duration 600 :easing "ease-out"}]
+                (.animate elem keyframes options)))}))
 
 (def whimsy
   {:hardhat hardhat})
