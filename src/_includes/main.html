@@ -36,7 +36,8 @@ layout: root
           href="{{social.href}}"
           title="{{social.name}}"
         >
-          {% icon social.icon, width="1.25em", height="1.25em", "aria-hidden"="true" %}
+          {% set label = social.accessibleName | default(social.name) + " icon" %}
+          {% icon social.icon, width="1.25em", height="1.25em", "aria-role"="presentation", "aria-label"=label %}
         </a>
       </li>
       {%- endfor -%}
