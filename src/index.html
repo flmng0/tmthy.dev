@@ -39,11 +39,22 @@ pages:
         {%- set delay = startDelay + itemDelay * loop.index -%}
         <li class="animation-fill-backwards animate-slide-in animation-delay-{{delay}}">
           {% if page.indev | default(false) %}
-          <div class="relative" title="{{page.name}} page is under construction.">
+          <div class="relative group">
+            <div 
+              class="
+                absolute z-10 top-full pointer-events-none transition-[translate,opacity] w-auto left-1/2 -translate-x-1/2 translate-y-0 opacity-0 
+                group-focus-within:translate-y-2 group-focus-within:opacity-100 
+                group-hover:translate-y-2 group-hover:opacity-100
+              "
+            >
+              <span id="{{page.name}}ConstructionMessage" class="italic bg-neutral-50 text-sm px-2 py-1 border border-neutral-200 text-nowrap">
+                {{page.name}} page is under construction.
+              </span>
+            </div>
             <button 
               data-whimsy="hardhat" 
               class="cursor-pointer absolute top-0 left-0 -translate-y-1/2 -translate-x-2" 
-              aria-role="presentation"
+              aria-labelledby="{{page.name}}ConstructionMessage"
             >
               {% icon "tmthy:hardhat-filled", class="-rotate-30", "aria-label"="Hardhat icon" %}
             </button>
