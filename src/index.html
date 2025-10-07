@@ -39,16 +39,15 @@ pages:
         {%- set delay = startDelay + itemDelay * loop.index -%}
         <li class="animation-fill-backwards animate-slide-in animation-delay-{{delay}}">
           {% if page.indev | default(false) %}
-          <div class="relative">
+          <div class="relative" title="{{page.name}} page is under construction.">
             <button 
               data-whimsy="hardhat" 
               class="cursor-pointer absolute top-0 left-0 -translate-y-1/2 -translate-x-2" 
-              aria-label="{{page.name}} page is under construction." 
               aria-role="presentation"
             >
-              {% icon "tmthy:hardhat-filled", class="-rotate-30", "aria-role"="presentation", "aria-label"="Hardhat icon" %}
+              {% icon "tmthy:hardhat-filled", class="-rotate-30", "aria-label"="Hardhat icon" %}
             </button>
-            <span class="noise bg-neutral-50 border border-neutral-300 py-2 px-3 block text-black/50">{{page.name}}</span>
+            <span class="noise bg-neutral-50 border border-dashed py-2 px-3 block text-black/80">{{page.name}}</span>
           </div>
           {% else %}
           <a 
@@ -73,7 +72,7 @@ pages:
             title="{{social.name}}"
           >
             {% set label = social.accessibleName | default(social.name) + " icon" %}
-            {% icon social.icon, "aria-role"="presentation", "aria-label"=label %} 
+            {% icon social.icon, "aria-label"=label %} 
           </a>
         </li>
         {%- endfor -%}

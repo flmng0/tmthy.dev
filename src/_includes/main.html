@@ -37,7 +37,7 @@ layout: root
           title="{{social.name}}"
         >
           {% set label = social.accessibleName | default(social.name) + " icon" %}
-          {% icon social.icon, width="1.25em", height="1.25em", "aria-role"="presentation", "aria-label"=label %}
+          {% icon social.icon, width="1.25em", height="1.25em", "aria-label"=label %}
         </a>
       </li>
       {%- endfor -%}
