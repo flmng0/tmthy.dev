@@ -19,22 +19,22 @@ eleventyImport:
   <article class="flex flex-col h-full">
     <h2 class="text-xl font-mono mb-2">{{project.data.title}}</h2>
 
-    <p class="h-full">{{project.data.description}}</p>
+    <p class="text-neutral-700 h-full">{{project.data.description}}</p>
 
     <footer class="flex gap-2 flex-wrap justify-end mt-8">
       {% if project.data.source %}
-      <a class="btn btn-github" href="{{project.data.source}}" target="_blank">
+      <a class="btn btn-lift btn-github" href="{{project.data.source}}" target="_blank">
         <span>Source Code</span>
         {%- icon "github", width="16", height="16", class="inline-block", "aria-role"="presentation", "aria-label"="GitHub icon" -%} 
       </a>
       {% endif %}
       {% if project.data.link -%}
-      <a class="btn btn-visit" href="{{project.data.link}}" target="_blank">
+      <a class="btn btn-lift btn-visit" href="{{project.data.link}}" target="_blank">
         <span>Visit</span>
         {%- icon "external-link", width="16", height="16", class="inline-block", "aria-role"="presentation", "aria-label"="External link icon" -%}
       </a>
       {%- endif %}
-      {% if project.url %}<a class="btn btn-read" href="{{project.url}}">Read More</a>{% endif %}
+      {% if project.url %}<a class="btn btn-lift btn-read" href="{{project.url}}">Read More</a>{% endif %}
     </footer>
   </article>
   {% endfor %}

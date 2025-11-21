@@ -42,20 +42,24 @@
 
 @layer components {
   .btn {
-    --btn-lift: 0px;
-    --btn-shadow-offset: calc(4px + var(--btn-lift));
-    --btn-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 0
-      var(--btn-shadow-color, grey);
-
-    @apply text-(--btn-color) bg-(--btn-bg) shadow-(--btn-shadow);
-    @apply hover:brightness-95 hover:saturate-90 sm:-translate-(--btn-lift);
+    @apply text-(--btn-color) bg-(--btn-bg) shadow-(color:--btn-shadow-color);
+    @apply hover:brightness-95 hover:saturate-90;
     @apply border border-(--btn-shadow-color);
   }
+}
 
-  .btn:hover {
+@utility btn-lift {
+  --btn-lift: 0px;
+
+  --btn-shadow-offset: calc(4px + var(--btn-lift));
+  --btn-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 0 var(--btn-shadow-color, grey);
+
+  @apply shadow-(--btn-shadow) -translate-(--btn-lift);
+
+  &:hover {
     --btn-lift: 1px;
   }
-  .btn:active {
+  &:active {
     --btn-lift: -1px;
   }
 }
