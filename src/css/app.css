@@ -48,7 +48,7 @@
       var(--btn-shadow-color, grey);
 
     @apply text-(--btn-color) bg-(--btn-bg) shadow-(--btn-shadow);
-    @apply hover:brightness-95 hover:saturate-90 -translate-(--btn-lift);
+    @apply hover:brightness-95 hover:saturate-90 sm:-translate-(--btn-lift);
     @apply border border-(--btn-shadow-color);
   }
 
