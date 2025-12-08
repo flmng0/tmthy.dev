@@ -8,18 +8,21 @@
     {% endif %}
 
     <meta name="charset" content="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
 
     {%- for name, content in meta -%}
-    <meta name="{{name}}" content="{{content}}">
+      <meta name="{{ name }}" content="{{ content }}" />
     {%- endfor -%}
 
-    <link rel="icon" href="/favicon.svg">
-    <link rel="stylesheet" href="/css/app.css">
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="stylesheet" href="/css/app.css" />
 
     {% getBundle "html", "head" %}
   </head>
-  <body class="bg-white h-screen m-0 {{bodyClass}}">
+  <body class="{{ bodyClass }} m-0 h-screen bg-white">
     {{ content | safe }}
   </body>
 </html>
