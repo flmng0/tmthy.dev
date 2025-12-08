@@ -1,0 +1,21 @@
+---
+layout: main
+title: Sketches
+meta:
+  description: Creative coding sketches made by Tim Davis.
+eleventyNavigation:
+  key: sketches
+  parent: home
+eleventyImport:
+  collections: ["sketch"]
+---
+
+{%- html "head" -%}
+  <link rel="stylesheet" href="/css/sketches.css" />
+{%- endhtml -%}
+
+<main class="grid grid-cols-none gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
+  {% for sketch in collections.sketch %}
+    <a href="{{ sketch.url }}">{{ sketch.data.title }}</a>
+  {% endfor %}
+</main>
