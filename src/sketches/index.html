@@ -15,7 +15,14 @@ eleventyImport:
 {%- endhtml -%}
 
 <main class="grid grid-cols-none gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
-  {% for sketch in collections.sketch %}
-    <a href="{{ sketch.url }}">{{ sketch.data.title }}</a>
-  {% endfor %}
+  {%- for sketch in collections.sketch -%}
+    <article class="flex h-full flex-col">
+      <h2 class="mb-2 font-mono text-xl">{{ sketch.data.title }}</h2>
+      <p class="h-full text-neutral-700">{{ sketch.data.description }}</p>
+
+      <footer class="mt-8 flex flex-wrap justify-end gap-2">
+        <a class="btn btn-visit-sketch btn-lift" href="{{ sketch.url }}">View Sketch</a>
+      </footer>
+    </article>
+  {%- endfor -%}
 </main>

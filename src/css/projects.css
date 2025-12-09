@@ -1,7 +1,7 @@
 @reference "./app.css";
 
 footer > a.btn {
-  @apply px-3 py-2 font-mono flex gap-x-2 items-center text-sm;
+  @apply flex items-center gap-x-2 px-3 py-2 font-mono text-sm;
 }
 
 .btn-visit {
