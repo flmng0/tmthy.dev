@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant played (&:where([data-played="true"] *));
+
 [inert] {
   @apply pointer-events-none;
 }
@@ -13,7 +15,7 @@
 }
 
 .noise {
-  @apply bg-[url(/rand.png)] bg-center bg-clip-padding;
+  @apply bg-[url(/rand.png)] bg-clip-padding bg-center;
 }
 
 .btn-github {
@@ -42,7 +44,7 @@
 
 @layer components {
   .btn {
-    @apply text-(--btn-color) bg-(--btn-bg) shadow-(color:--btn-shadow-color);
+    @apply bg-(--btn-bg) text-(--btn-color) shadow-(color:--btn-shadow-color);
     @apply hover:brightness-95 hover:saturate-90;
     @apply border border-(--btn-shadow-color);
   }
@@ -54,7 +56,7 @@
   --btn-shadow-offset: calc(4px + var(--btn-lift));
   --btn-shadow: var(--btn-shadow-offset) var(--btn-shadow-offset) 0 0 var(--btn-shadow-color, grey);
 
-  @apply shadow-(--btn-shadow) -translate-(--btn-lift);
+  @apply -translate-(--btn-lift) shadow-(--btn-shadow);
 
   &:hover {
     --btn-lift: 1px;
@@ -111,4 +113,9 @@
 
 @utility animation-delay-* {
   animation-delay: calc(--value(integer) * 1ms);
+}
+
+@utility no-animate {
+  animation-duration: 0ms;
+  animation-delay: 0ms;
 }

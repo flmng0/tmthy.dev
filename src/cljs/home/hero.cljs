@@ -43,10 +43,10 @@
        [aid bid d]))
    lines))
 
-(defn make-particle [p]
+(defn make-particle [p jiggle?]
   (let [start (mapv parseFloat p)
-        start-scale 2
-        jiggle-scale 200
+        start-scale (if jiggle? 2 1)
+        jiggle-scale (if jiggle? 200 0)
         scale (partial * start-scale)
         jiggle #(+ (s/random (- jiggle-scale) jiggle-scale) %)
         pos (mapv (comp jiggle scale) start)]
@@ -55,12 +55,14 @@
      :vel [0 0]
      :acc [0 0]}))
 
-(defn seed []
-  (let [points (collect-points icon/lines)
-        connections (collect-connections points icon/lines)
-        particles (map-values make-particle points)]
-    {:connections connections
-     :particles particles}))
+(defn seed [played?]
+  (fn []
+    (let [jiggle? (not played?)
+          points (collect-points icon/lines)
+          connections (collect-connections points icon/lines)
+          particles (map-values #(make-particle % jiggle?) points)]
+      {:connections connections
+         :particles particles})))
 
 (defn add-force [particle f scale]
   (update particle :acc (partial mapv (comp (partial * scale) +) f)))
@@ -127,12 +129,12 @@
            dd (Math.abs (- d' d))]
        (draw-connection pa pb dd)))))
 
-(defn run-hero []
+(defn run-hero [played?]
   (s/run
    {:clear? true
     :size :auto
     :frame-rate 60
     :isolate? true
-    :seed seed
+    :seed (seed played?)
     :update update-particles
     :draw draw}))

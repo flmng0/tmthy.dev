@@ -33,12 +33,12 @@ pages:
 <div class="grid h-full w-full place-items-center *:col-1 *:row-1">
   <canvas
     id="sketchCanvas"
-    class="size-full animate-blur animation-delay-500 animation-fill-forwards"
+    class="size-full animate-blur animation-delay-500 animation-fill-forwards played:no-animate"
     aria-hidden="true"
   ></canvas>
 
   <main
-    class="z-10 max-w-full animate-fade-in space-y-10 text-center animation-delay-500 animation-fill-both"
+    class="z-10 max-w-full animate-fade-in space-y-10 text-center animation-delay-500 animation-fill-both played:no-animate"
   >
     <h1 class="p-2 font-mono text-title">tmthy.dev</h1>
     <nav class="w-full space-y-6">
@@ -48,7 +48,7 @@ pages:
         {%- for page in pages -%}
           {%- set delay = startDelay + itemDelay * loop.index -%}
           <li
-            class="animation-delay-{{ delay }} animate-slide-in animation-fill-backwards"
+            class="animation-delay-{{ delay }} animate-slide-in animation-fill-backwards played:no-animate"
           >
             {% if page.indev | default(false) %}
               <div class="group relative">
@@ -88,7 +88,7 @@ pages:
         {%- for social in socials -%}
           {%- set delay = groupOffset + startDelay + itemDelay * loop.index -%}
           <li
-            class="animation-delay-{{ delay }} animate-slide-in animation-fill-backwards"
+            class="animation-delay-{{ delay }} animate-slide-in animation-fill-backwards played:no-animate"
           >
             <a
               class="btn btn-{{ social.variant }} block p-2"
