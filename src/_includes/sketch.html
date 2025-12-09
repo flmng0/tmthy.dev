@@ -2,13 +2,18 @@
 layout: root
 ---
 
-{{ src | log}}
-{{ type | log}}
-
 {{ content | safe }}
 
 <canvas id="sketchCanvas"></canvas>
 
 {% html "head" %}
-  <script src="/js/{{sketchId}}" type="module" defer></script>
+  {% if type == "shader" %}
+    <script type="module" defer>
+      import { runShader } from "/js/shader";
+      runShader("/sketches/{{src}}")
+    </script>
+  {% else %}
+    <script src="/js/{{sketchId}}" type="module" defer></script>
+  {% endif %}
+
 {% endhtml %}
