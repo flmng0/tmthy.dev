@@ -10,10 +10,9 @@ layout: root
   {% if type == "shader" %}
     <script type="module" defer>
       import { runShader } from "/js/shader";
-      runShader("/sketches/{{src}}")
+      runShader("/sketches/{{src}}");
     </script>
   {% else %}
     <script src="/js/{{sketchId}}" type="module" defer></script>
   {% endif %}
-
 {% endhtml %}

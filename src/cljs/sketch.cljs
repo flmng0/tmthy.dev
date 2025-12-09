@@ -2,9 +2,9 @@
 
 (def state (atom nil))
 
-(defn- init-state [{:keys [frame-rate]}]
+(defn- init-state [{:keys [frame-rate context-type]}]
   (let [canvas (js/document.getElementById "sketchCanvas")
-        context (.getContext canvas "2d")]
+        context (.getContext canvas (or context-type "2d"))]
     {:time 0 :frame-rate frame-rate :frame 0 :context context}))
 
 (def default-size [500 500])
@@ -85,7 +85,7 @@
            (apply merge-with merge @state)))))
 
 (defn run
-  [{update-fn :update :keys [draw clear? clear-color seed size frame-rate isolate?] :as opts}]
+  [{update-fn :update :keys [draw clear? clear-color seed size frame-rate isolate? context-type] :as opts}]
   (when update-fn (assert seed) ":seed state expected when using :update")
 
   ; Set initial state
@@ -123,8 +123,8 @@
       (js/window.requestAnimationFrame frame-loop)))
   (js/window.requestAnimationFrame frame-loop))
 
-(defn- context [] (:context @state))
-(defn- canvas [] (.-canvas (context)))
+(defn context [] (:context @state))
+(defn canvas [] (.-canvas (context)))
 
 ; Constants and public getters
 (def PI js/Math.PI)
