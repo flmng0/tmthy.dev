@@ -6,6 +6,7 @@ description: >
 layout: sketch
 type: shader
 src: julia.glsl
+canvasStyle: "background-color: black;"
 eleventyNavigation:
   key: julia
   parent: sketches
@@ -56,15 +57,15 @@ $$
 c = 0.7885e^{ia}
 $$
 
-$a$ is animated over the range $a \in [0, 2\pi]$ with a period of $4\pi$ seconds.
+$a$ is animated over the range $a \in [0, 2pi]$ with a period of $4pi$ seconds.
 
 In-case you haven't worked with complex numbers for a while, the above definition of $c$ is in the form:
 
 $$
-c = Ae^{i \theta}
+c = Ae^{i theta}
 $$
 
-This, in practice, is a representation of a polar coordinate, where $A$ is magnitude and $\theta$ is the angle (radians).
+This, in practice, is a representation of a polar coordinate, where $A$ is magnitude and $theta$ is the angle (radians).
 
 To represent this in code, you can do the following (pseudo-code):
 

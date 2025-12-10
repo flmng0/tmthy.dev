@@ -3,8 +3,9 @@ layout: main
 ---
 
 {% html "head" %}
-  <link rel="stylesheet" href="/css/prose.css">
-  <link rel="stylesheet" href="/css/prism-gruvbox-dark.css" />
+  <link rel="stylesheet" href="/css/prose.css" />
+  <link rel="stylesheet" href="/vendor/mathup.css" />
+  <link rel="stylesheet" href="/vendor/prism-gruvbox-dark.css" />
 
   {% if type == "shader" %}
     <script type="module">
@@ -17,9 +18,10 @@ layout: main
   {% endif %}
 {% endhtml %}
 
-<canvas id="sketchCanvas" class="mb-8"></canvas>
+<canvas
+  id="sketchCanvas"
+  class="mx-auto mb-8 aspect-square w-full max-w-xl"
+  style="{{ canvasStyle }}"
+></canvas>
 
-<article>
-  {{ content | safe }}
-</article>
-
+<article>{{ content | safe }}</article>
