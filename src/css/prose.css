@@ -1,0 +1,5 @@
+@reference "./app.css";
+
+article {
+  @apply prose prose-headings:font-mono;
+}

@@ -1,5 +1,7 @@
 import pluginVite from "@11ty/eleventy-plugin-vite";
 import pluginNavigation from "@11ty/eleventy-navigation";
+import pluginSyntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
+import mathjax3 from "markdown-it-mathjax3";
 import pluginIcons from "eleventy-plugin-icons";
 import tailwindcss from "@tailwindcss/vite";
 
@@ -25,6 +27,9 @@ export default function (eleventyConfig) {
   });
 
   eleventyConfig.addPlugin(pluginNavigation);
+  eleventyConfig.addPlugin(pluginSyntaxHighlight);
+
+  eleventyConfig.amendLibrary("md", (mdLib) => mdLib.use(mathjax3));
 
   eleventyConfig.addBundle("html");
 

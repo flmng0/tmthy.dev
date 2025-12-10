@@ -2,13 +2,12 @@
 layout: main
 ---
 
-{{ content | safe }}
-
-<canvas id="sketchCanvas"></canvas>
-
 {% html "head" %}
+  <link rel="stylesheet" href="/css/prose.css">
+  <link rel="stylesheet" href="/css/prism-gruvbox-dark.css" />
+
   {% if type == "shader" %}
-    <script type="module" defer>
+    <script type="module">
       import { runShader } from "/js/shader";
       import fragSource from "/sketches/{{src}}?raw";
       runShader(fragSource);
@@ -17,3 +16,10 @@ layout: main
     <script src="/js/{{sketchId}}" type="module" defer></script>
   {% endif %}
 {% endhtml %}
+
+<canvas id="sketchCanvas" class="mb-8"></canvas>
+
+<article>
+  {{ content | safe }}
+</article>
+

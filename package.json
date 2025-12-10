@@ -31,7 +31,10 @@
     "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
     "@11ty/eleventy-plugin-vite": "^7.1.0-alpha.2",
+    "@tailwindcss/typography": "^0.5.19",
+    "markdown-it-mathjax3": "^5.2.0",
     "prettier": "^3.7.4",
     "prettier-plugin-jinja-template": "^2.1.0",
     "prettier-plugin-tailwindcss": "^0.7.2",
