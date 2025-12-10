@@ -86,7 +86,7 @@ uniform float uTime;
     (.enableVertexAttribArray gl aVertexPos)
     (.vertexAttribPointer gl aVertexPos quad-vertex-components (.-FLOAT gl) false 0 0)))
     
-(defn- start-shader [frag-src]
+(defn runShader [frag-src]
   (fn seed []
     (let [gl (s/context)
           shader (compile-shader-program gl vert-src frag-src)]
@@ -99,7 +99,3 @@ uniform float uTime;
           :draw draw
           :context-type "webgl2"}))
 
-(defn runShader [frag-path]
-  (-> (fetch frag-path)
-      (.then #(.text %))
-      (.then #(start-shader %))))

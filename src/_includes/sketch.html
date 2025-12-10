@@ -10,7 +10,8 @@ layout: main
   {% if type == "shader" %}
     <script type="module" defer>
       import { runShader } from "/js/shader";
-      runShader("/sketches/{{src}}");
+      import fragSource from "/sketches/{{src}}?raw";
+      runShader(fragSource);
     </script>
   {% else %}
     <script src="/js/{{sketchId}}" type="module" defer></script>

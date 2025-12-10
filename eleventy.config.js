@@ -19,8 +19,8 @@ export default function (eleventyConfig) {
       },
       {
         name: "tmthy",
-        path: "./icons"
-      }
+        path: "./icons",
+      },
     ],
   });
 
