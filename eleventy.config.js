@@ -5,6 +5,8 @@ import markdownItMath from "markdown-it-math";
 import pluginIcons from "eleventy-plugin-icons";
 import tailwindcss from "@tailwindcss/vite";
 
+import { resolve } from "node:path";
+
 export default function (eleventyConfig) {
   eleventyConfig.addPlugin(pluginVite, {
     viteOptions: {
@@ -47,6 +49,15 @@ export default function (eleventyConfig) {
 
   eleventyConfig.setServerOptions({
     showAllHosts: true,
+  });
+
+  eleventyConfig.addFilter("srcPath", function (path) {
+    const {
+      env: { root },
+      directories: { input },
+    } = this.eleventy;
+
+    return resolve(root, input, path);
   });
 
   return {

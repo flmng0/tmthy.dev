@@ -8,10 +8,7 @@
     {% endif %}
 
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
     {%- for name, content in meta -%}
       <meta name="{{ name }}" content="{{ content }}" />
@@ -24,5 +21,6 @@
   </head>
   <body class="{{ bodyClass }} m-0 h-screen bg-white">
     {{ content | safe }}
+    {% getBundle "html", "body" %}
   </body>
 </html>

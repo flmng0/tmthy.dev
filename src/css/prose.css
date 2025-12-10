@@ -4,6 +4,10 @@ article {
   @apply prose prose-headings:font-mono;
 }
 
-pre {
+article pre {
   @apply rounded-none shadow-solid;
+}
+
+dialog pre {
+  @apply p-0;
 }

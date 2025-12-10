@@ -3,6 +3,10 @@
 
 @custom-variant played (&:where([data-played="true"] *));
 
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
 [inert] {
   @apply pointer-events-none;
 }
@@ -43,10 +47,17 @@
   --btn-shadow-color: oklab(0.88 0 0);
 }
 
+.btn-view-source {
+  --btn-color: oklab(0.12 0 0);
+  --btn-bg: oklab(0.99 0 0);
+  --btn-shadow-color: oklab(0.88 0 0);
+}
+
 @layer components {
   .btn {
+    --btn-shadow-color: rgb(0 0 0 / 0.25);
     @apply bg-(--btn-bg) text-(--btn-color) shadow-(color:--btn-shadow-color);
-    @apply hover:brightness-95 hover:saturate-90;
+    @apply cursor-pointer hover:brightness-95 hover:saturate-90;
     @apply border border-(--btn-shadow-color);
   }
 }

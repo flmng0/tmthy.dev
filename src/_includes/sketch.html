@@ -2,26 +2,53 @@
 layout: main
 ---
 
+{%- set sourcePath = ("sketches/" + src) | srcPath -%}
+
 {% html "head" %}
   <link rel="stylesheet" href="/css/prose.css" />
   <link rel="stylesheet" href="/vendor/mathup.css" />
   <link rel="stylesheet" href="/vendor/prism-gruvbox-dark.css" />
 
   {% if type == "shader" %}
+    {% set syntaxLang = "glsl" %}
+    <script type="x-shader/x-fragment" id="fragShader">
+      {%- include sourcePath -%}
+    </script>
     <script type="module">
       import { runShader } from "/js/shader";
-      import fragSource from "/sketches/{{src}}?raw";
+      const fragSource = fragShader.textContent;
       runShader(fragSource);
     </script>
   {% else %}
+    {% set syntaxLang = "clojure" %}
     <script src="/js/{{sketchId}}" type="module" defer></script>
   {% endif %}
 {% endhtml %}
 
-<canvas
-  id="sketchCanvas"
-  class="mx-auto mb-8 aspect-square w-full max-w-xl shadow-solid"
-  style="{{ canvasStyle }}"
-></canvas>
+{% html "body" %}
+  <dialog
+    id="sourceModal"
+    class="size-full max-h-screen max-w-screen bg-transparent backdrop:bg-black/25"
+  >
+    <form method="dialog" class="grid h-full place-items-center">
+      <div class="z-10 my-4 max-w-prose">
+        {% highlight syntaxLang %}
+          {%- include sourcePath -%}
+        {% endhighlight %}
+      </div>
+      <button class="absolute inset-0 cursor-pointer" aria-label="close"></button>
+    </form>
+  </dialog>
+{% endhtml %}
+
+<div class="mx-auto mb-8 flex max-w-xl flex-col gap-4">
+  <canvas
+    id="sketchCanvas"
+    class="aspect-square w-full shadow-solid"
+    style="{{ canvasStyle }}"
+  ></canvas>
+
+  <button onclick="sourceModal.showModal()" class="btn btn-lift p-2">View Source</button>
+</div>
 
 <article>{{ content | safe }}</article>
