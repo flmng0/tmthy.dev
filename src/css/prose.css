@@ -3,3 +3,7 @@
 article {
   @apply prose prose-headings:font-mono;
 }
+
+pre {
+  @apply rounded-none shadow-solid;
+}

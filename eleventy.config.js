@@ -43,6 +43,7 @@ export default function (eleventyConfig) {
   });
   eleventyConfig.addPassthroughCopy("src/**/*.css");
   eleventyConfig.addPassthroughCopy("src/**/*.glsl");
+  eleventyConfig.addPassthroughCopy("src/**/*.png");
 
   eleventyConfig.setServerOptions({
     showAllHosts: true,

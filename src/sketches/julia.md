@@ -7,6 +7,7 @@ layout: sketch
 type: shader
 src: julia.glsl
 canvasStyle: "background-color: black;"
+thumbnail: julia.png
 eleventyNavigation:
   key: julia
   parent: sketches

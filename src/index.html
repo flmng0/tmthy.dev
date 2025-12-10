@@ -37,7 +37,7 @@ pages:
 ></canvas>
 
 <main
-  class="z-10 max-w-full h-full flex flex-col justify-center animate-fade-in space-y-10 text-center animation-delay-500 animation-fill-both played:no-animate"
+  class="z-10 flex h-full max-w-full animate-fade-in flex-col justify-center space-y-10 text-center animation-delay-500 animation-fill-both played:no-animate"
 >
   <h1 class="p-2 font-mono text-title">tmthy.dev</h1>
   <nav class="w-full space-y-6">
@@ -63,7 +63,9 @@ pages:
               >
                 {% icon "tmthy:hardhat-filled", class="-rotate-30", "aria-label"="Hardhat icon" %}
               </button>
-              <span class="noise block border border-dashed bg-neutral-50 px-3 py-2 text-black/80">
+              <span
+                class="noise block border border-dashed bg-neutral-50 px-3 py-2 text-black/80"
+              >
                 {{ page.name }}
               </span>
             </div>

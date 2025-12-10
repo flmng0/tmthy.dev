@@ -23,19 +23,29 @@ eleventyImport:
 
       <footer class="mt-8 flex flex-wrap justify-end gap-2">
         {% if project.data.source %}
-          <a class="btn btn-github btn-lift" href="{{ project.data.source }}" target="_blank">
+          <a
+            class="btn btn-github btn-lift"
+            href="{{ project.data.source }}"
+            target="_blank"
+          >
             <span>Source Code</span>
             {%- icon "github", width="16", height="16", class="inline-block", "aria-role"="presentation", "aria-label"="GitHub icon" -%}
           </a>
         {% endif %}
         {% if project.data.link -%}
-          <a class="btn btn-visit btn-lift" href="{{ project.data.link }}" target="_blank">
+          <a
+            class="btn btn-visit btn-lift"
+            href="{{ project.data.link }}"
+            target="_blank"
+          >
             <span>Visit</span>
             {%- icon "external-link", width="16", height="16", class="inline-block", "aria-role"="presentation", "aria-label"="External link icon" -%}
           </a>
         {%- endif %}
         {% if project.url %}
-          <a class="btn btn-read btn-lift" href="{{ project.url }}">Read More</a>
+          <a class="btn btn-read btn-lift" href="{{ project.url }}">
+            Read More
+          </a>
         {% endif %}
       </footer>
     </article>
