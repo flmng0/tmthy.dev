@@ -59,6 +59,7 @@ body:has(dialog[open]) {
     @apply bg-(--btn-bg) text-(--btn-color) shadow-(color:--btn-shadow-color);
     @apply cursor-pointer hover:brightness-95 hover:saturate-90;
     @apply border border-(--btn-shadow-color);
+    @apply font-mono;
   }
 }
 
