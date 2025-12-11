@@ -1,0 +1,18 @@
+---
+layout: main
+---
+
+{% html "head" %}
+  <link rel="stylesheet" href="/css/post.css" />
+  <link rel="stylesheet" href="/vendor/mathup.css" />
+  <link rel="stylesheet" href="/vendor/prism-gruvbox-dark.css" />
+{% endhtml %}
+
+<article>
+  {% block preamble %}{% endblock %}
+
+  <main>
+    {{ content | safe }}
+  </main>
+</article>
+

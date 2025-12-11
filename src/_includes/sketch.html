@@ -1,14 +1,8 @@
----
-layout: main
----
+{% extends "post.html" %}
 
 {%- set sourcePath = ("sketches/" + src) | srcPath -%}
 
 {% html "head" %}
-  <link rel="stylesheet" href="/css/prose.css" />
-  <link rel="stylesheet" href="/vendor/mathup.css" />
-  <link rel="stylesheet" href="/vendor/prism-gruvbox-dark.css" />
-
   {% if type == "shader" %}
     {% set syntaxLang = "glsl" %}
     <script type="x-shader/x-fragment" id="fragShader">
@@ -44,6 +38,7 @@ layout: main
   </dialog>
 {% endhtml %}
 
+{% block preamble %}
 <div class="mx-auto mb-8 flex max-w-xl flex-col gap-4">
   <canvas
     id="sketchCanvas"
@@ -53,5 +48,4 @@ layout: main
 
   <button onclick="sourceModal.showModal()" class="btn btn-lift p-2">View Source</button>
 </div>
-
-<article>{{ content | safe }}</article>
+{% endblock %}

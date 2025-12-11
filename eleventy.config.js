@@ -38,6 +38,7 @@ export default function (eleventyConfig) {
   eleventyConfig.setLayoutResolution(false);
   eleventyConfig.addLayoutAlias("root", "root.html");
   eleventyConfig.addLayoutAlias("main", "main.html");
+  eleventyConfig.addLayoutAlias("post", "post.html");
   eleventyConfig.addLayoutAlias("sketch", "sketch.html");
 
   eleventyConfig.addPassthroughCopy({

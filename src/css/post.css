@@ -1,7 +1,7 @@
 @reference "./app.css";
 
 article {
-  @apply prose prose-headings:font-mono;
+  @apply prose prose-headings:font-mono prose-img:shadow-md;
 }
 
 article pre {
