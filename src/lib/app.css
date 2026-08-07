@@ -54,6 +54,10 @@ details {
 	@apply bg-fuchsia-400 text-white;
 }
 
+.separator {
+	@apply border-b border-neutral-200;
+}
+
 .noise {
 	--gradient-stop: 80%;
 	background:

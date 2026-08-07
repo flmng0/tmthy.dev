@@ -100,3 +100,13 @@ export const projects = makeCollection(
 	import.meta.glob('./projects/*.json', { eager: true }),
 	Project
 )
+
+const Position = v.object({
+	title: v.string(),
+	business: v.string(),
+	address: v.array(v.string()),
+	skills: v.optional(v.array(v.string())),
+	start: IsoDateString,
+	end: v.optional(IsoDateString)
+})
+export const cv = makeCollection(import.meta.glob('./cv/*.md', { eager: true }), Position)
