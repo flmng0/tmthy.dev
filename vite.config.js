@@ -2,6 +2,11 @@ import tailwindcss from '@tailwindcss/vite'
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig } from 'vite'
 
+/** @type {import('vite').CorsOptions} */
+const cors = {
+	origin: 'https://challenges.cloudflare.com'
+}
+
 export default defineConfig(({ mode }) => ({
 	plugins: [tailwindcss(), sveltekit()],
 	server: {
@@ -13,8 +18,9 @@ export default defineConfig(({ mode }) => ({
 				rewrite: (path) => path.replace(/^\/api\/shanvas/, '')
 			}
 		},
-		cors: {
-			origin: 'https://challenges.cloudflare.com'
-		}
+		cors
+	},
+	preview: {
+		cors
 	}
 }))

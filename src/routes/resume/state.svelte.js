@@ -8,7 +8,6 @@ export const state = $state({
  * @param {string} token
  */
 export async function loadSecrets(token) {
-	console.log('Token', token)
 	const params = new URLSearchParams({ token })
 
 	const res = await fetch(`/resume/secrets?${params.toString()}`)

@@ -7,18 +7,23 @@
 
 	let widgetElem = $state()
 
-	onMount(() => {
+	/** @type {string | null} */
+	let widgetId = $state(null)
+
+	function runTurnstile() {
 		//@ts-ignore
-		const widgetId = window.turnstile.render(widgetElem, {
+		widgetId = window.turnstile.render(widgetElem, {
 			sitekey: env.PUBLIC_TURNSTILE_SITE_KEY,
 			theme: 'light',
 			size: 'normal',
 			callback
 		})
+	}
 
+	onMount(() => {
 		return () => {
 			//@ts-ignore
-			window.turnstile.remove(widgetId)
+			widgetId && window.turnstile.remove(widgetId)
 		}
 	})
 </script>
@@ -26,6 +31,7 @@
 <svelte:head>
 	<script
 		src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+		onload={() => runTurnstile()}
 		defer
 	></script>
 	<link rel="preconnect" href="https://challenges.cloudflare.com" />
