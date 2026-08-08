@@ -124,5 +124,9 @@
 		:global(.separator) {
 			border: none;
 		}
+
+		aside {
+			display: none;
+		}
 	}
 </style>

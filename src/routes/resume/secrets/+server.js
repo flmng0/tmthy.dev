@@ -49,6 +49,6 @@ export const GET = ({ url, fetch }) => {
 		return json(JSON.parse(text))
 	} catch (e) {
 		const msg = e instanceof Error ? e.message : 'Unknown error'
-		return error(500, msg)
+		error(500, msg)
 	}
 }
