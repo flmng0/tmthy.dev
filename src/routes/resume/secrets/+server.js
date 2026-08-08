@@ -3,8 +3,9 @@ import { error, json } from '@sveltejs/kit'
 
 /**
  * @param {string | null} token
+ * @param {typeof fetch} fetch
  */
-async function validateToken(token) {
+async function validateToken(token, fetch) {
 	try {
 		const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
 			method: 'POST',
@@ -25,7 +26,7 @@ async function validateToken(token) {
 }
 
 /** @type {import("./$types").RequestHandler} */
-export const GET = ({ url }) => {
+export const GET = ({ url, fetch }) => {
 	// Verify with turnstile, decode Base64 JSON Cloudflare secret.
 	//
 	// Brief:
@@ -35,14 +36,19 @@ export const GET = ({ url }) => {
 	// 4. Once verified, decode secret value and return to frontend.
 
 	const token = url.searchParams.get('token')
-	const valid = validateToken(token)
+	const valid = validateToken(token, fetch)
 
 	if (!valid) {
 		error(403, 'Turnstile challenge failed, are you a robot?')
 	}
 
-	const buffer = Buffer.from(env.RESUME_SECRETS, 'base64')
-	const text = buffer.toString('utf8')
+	try {
+		const buffer = Buffer.from(env.RESUME_SECRETS, 'base64')
+		const text = buffer.toString('utf8')
 
-	return json(JSON.parse(text))
+		return json(JSON.parse(text))
+	} catch (e) {
+		const msg = e instanceof Error ? e.message : 'Unknown error'
+		return error(500, msg)
+	}
 }
