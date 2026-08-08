@@ -109,4 +109,7 @@ const Position = v.object({
 	start: IsoDateString,
 	end: v.optional(IsoDateString)
 })
-export const cv = makeCollection(import.meta.glob('./cv/*.md', { eager: true }), Position)
+export const positions = makeCollection(
+	import.meta.glob('./cv/positions/*.md', { eager: true }),
+	Position
+)

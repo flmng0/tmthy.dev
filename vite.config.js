@@ -12,6 +12,9 @@ export default defineConfig(({ mode }) => ({
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api\/shanvas/, '')
 			}
+		},
+		cors: {
+			origin: 'https://challenges.cloudflare.com'
 		}
 	}
 }))
