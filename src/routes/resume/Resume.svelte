@@ -2,6 +2,8 @@
 	import PositionCard from './PositionCard.svelte'
 	import { state } from './state.svelte'
 	import ReferenceCard from './ReferenceCard.svelte'
+	import Projects from './Projects.svelte'
+	import { telHref } from './util'
 
 	let { positions, skills } = $props()
 </script>
@@ -30,11 +32,7 @@
 		<address class="flex flex-col items-center gap-x-2 gap-y-1 not-italic">
 			{@render contact('Business Email', 'mailto:me@timd.dev', 'me@timd.dev')}
 			{@render contact('Personal Email', 'mailto:tmthydvs@gmail.com', 'tmthydvs@gmail.com')}
-			{#if state.secrets !== null}
-				{@render contact('Mobile', state.secrets.mobile.href, state.secrets.mobile.display)}
-			{:else}
-				{@render contact('Mobile', '#', 'checking...')}
-			{/if}
+			{@render contact('Mobile', telHref(state.secrets.mobile), state.secrets.mobile)}
 		</address>
 
 		<div class="space-y-4 leading-7 tracking-wide text-neutral-700 italic">
@@ -67,25 +65,23 @@
 		</ol>
 	</section>
 
-	<!-- <div class="separator my-10"></div> -->
-	<!-- <section id="projects"> -->
-	<!-- 	{@render header('Projects')} -->
-	<!-- 	<ul class="flex flex-col space-y-12"></ul> -->
-	<!-- </section> -->
+	<div class="separator my-10"></div>
+	<section id="projects" class="break-inside-avoid">
+		{@render header('Projects')}
+		<Projects />
+	</section>
 
-	{#if state.secrets}
-		<div class="separator my-10"></div>
-		<section id="references">
-			{@render header('References')}
-			<ul class="flex flex-wrap gap-x-12 gap-y-8 text-center">
-				{#each state.secrets.references as reference}
-					<li class="flex-1">
-						<ReferenceCard {reference} />
-					</li>
-				{/each}
-			</ul>
-		</section>
-	{/if}
+	<div class="separator my-10"></div>
+	<section id="references">
+		{@render header('References')}
+		<ul class="flex flex-wrap gap-x-12 gap-y-8 text-center">
+			{#each state.secrets.references as reference}
+				<li class="flex-1">
+					<ReferenceCard {reference} />
+				</li>
+			{/each}
+		</ul>
+	</section>
 </div>
 
 <style>
@@ -102,5 +98,9 @@
 		:global(.separator) {
 			border: none;
 		}
+	}
+
+	:global(a):not(:hover) {
+		text-decoration: underline;
 	}
 </style>

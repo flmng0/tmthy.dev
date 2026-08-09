@@ -1,4 +1,6 @@
 <script>
+	import { telHref } from './util'
+
 	let { reference } = $props()
 </script>
 
@@ -10,10 +12,10 @@
 
 	<address class="mt-4 not-italic">
 		{#if reference.mobile}
-			<p>{reference.mobile}</p>
+			<p><a href={telHref(reference.mobile)} class="text-neutral-700">{reference.mobile}</a></p>
 		{/if}
 		{#if reference.email}
-			<p>{reference.email}</p>
+			<p><a href="mailto:{reference.email}" class="text-neutral-700">{reference.email}</a></p>
 		{/if}
 	</address>
 </div>

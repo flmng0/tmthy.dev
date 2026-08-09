@@ -37,4 +37,4 @@
 	<link rel="preconnect" href="https://challenges.cloudflare.com" />
 </svelte:head>
 
-<div bind:this={widgetElem} style:width="300px" style:height="65px"></div>
+<div bind:this={widgetElem} style:width="300px" style:height="65px" class="bg-neutral-200"></div>
